@@ -70,6 +70,17 @@
   touch-action: none;
 }
 
+.hanging-lamp__body-hit {
+  /* Desktop keeps pull-cord only; lamp body is tappable on touch devices */
+  touch-action: none;
+}
+
+@media (pointer: fine) {
+  .hanging-lamp__body-hit {
+    pointer-events: none !important;
+  }
+}
+
 .hanging-lamp__pull-hit:active {
   cursor: grabbing;
 }

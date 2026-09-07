@@ -1,9 +1,12 @@
 "use client";
 
 import ExhibitionRail from "@/components/exhibition-rail/ExhibitionRail";
+import HeroSun from "@/components/celestial/HeroSun";
 import HeroGarden from "@/components/hero-garden/HeroGarden";
 import HeroRotatingWord from "@/components/hero/HeroRotatingWord";
 import { useHeroScrollBoundary } from "@/components/hero/useHeroScrollBoundary";
+import LightSkyBackground from "@/components/LightSkyBackground";
+import { useTheme } from "@/components/ThemeController";
 import { heroEditorialTypography, heroFontClassName } from "@/lib/heroFonts";
 import { contentContainerClassName } from "@/lib/sectionLayout";
 import { motion, type Variants } from "framer-motion";
@@ -28,11 +31,16 @@ const typography = heroEditorialTypography;
 
 export default function Hero() {
   const boundaryRef = useRef<HTMLDivElement>(null);
+  const { theme, reducedMotion } = useTheme();
   useHeroScrollBoundary(boundaryRef);
 
   return (
     <div ref={boundaryRef} className="hero-scroll-boundary">
       <section className={`hero-section relative ${heroFontClassName}`}>
+        {theme === "light" ? (
+          <LightSkyBackground cloudsOnly reducedMotion={reducedMotion} />
+        ) : null}
+        <HeroSun />
         <HeroGarden />
         <div
           className={`hero-section__inner relative flex ${contentContainerClassName}`}

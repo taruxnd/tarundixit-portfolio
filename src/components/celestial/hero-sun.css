@@ -1,32 +1,66 @@
-/* Reference sun — fixed left sky, desktop only */
+/* Day sun — absolute inside hero, does not follow scroll past the fold */
 
 .hero-sun {
-  --sun-size: 15.6rem;
-
-  position: fixed;
-  top: max(6.5rem, 14vh);
-  left: clamp(1.5rem, 4.5vw, 4.5rem);
-  z-index: 5;
-  width: var(--sun-size);
-  height: var(--sun-size);
+  position: absolute;
+  top: max(5.5rem, 10vh);
+  left: clamp(3.5rem, 8vw, 7.5rem);
+  z-index: 1;
+  width: 7.5rem;
+  height: 7.5rem;
   pointer-events: none;
   -webkit-user-select: none;
   user-select: none;
 }
 
-@media (min-width: 1280px) {
-  .hero-sun {
-    --sun-size: 17.55rem;
-    top: max(7rem, 15vh);
-    left: clamp(2rem, 5vw, 5.5rem);
+.hero-sun__rays {
+  position: absolute;
+  inset: -45%;
+  border-radius: 50%;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(circle, black 10%, transparent 68%);
+  mask-image: radial-gradient(circle, black 10%, transparent 68%);
+  opacity: 0.75;
+  animation: heroSunRaysSpin 48s linear infinite;
+}
+
+.hero-sun__glare {
+  position: absolute;
+  inset: -45%;
+  pointer-events: none;
+}
+
+.hero-sun__disc {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+@keyframes heroSunRaysSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 
-@media (min-width: 1440px) and (min-height: 900px) {
+@media (prefers-reduced-motion: reduce) {
+  .hero-sun__rays {
+    animation: none;
+  }
+}
+
+@media (min-width: 1280px) {
   .hero-sun {
-    --sun-size: 19.5rem;
-    top: max(7.5rem, 16vh);
-    left: clamp(2.5rem, 5.5vw, 6rem);
+    width: 8.5rem;
+    height: 8.5rem;
+    top: max(6rem, 11vh);
+    left: clamp(4rem, 8.5vw, 8rem);
   }
 }
 
@@ -34,13 +68,4 @@
   .hero-sun {
     display: none;
   }
-}
-
-.hero-sun__img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  /* Drop the photo’s black field so only the sun reads */
-  mix-blend-mode: screen;
 }

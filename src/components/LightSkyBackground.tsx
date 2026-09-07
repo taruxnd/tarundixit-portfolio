@@ -3,18 +3,14 @@
 import { useMemo, type CSSProperties } from "react";
 import "./light-sky.css";
 
-/** Published Framer instance props (loyal-beautifully) — ocean omitted */
+/** Soft pale day sky — desaturated powder blue (ocean omitted) */
 const DEFAULTS = {
-  skyColor: "rgb(186, 230, 253)",
-  horizonGlowColor: "#e0f2fe",
-  horizonColor: "rgb(125, 211, 252)",
-  sunColor: "rgb(255, 255, 255)",
-  sunGlareOpacity: 0.5,
-  sunPositionX: 50,
-  sunPositionY: 40,
-  cloudOpacity: 0.7,
+  skyColor: "#ffffff",
+  horizonGlowColor: "#ffffff",
+  horizonColor: "#ffffff",
+  cloudOpacity: 0.85,
   cloudAmount: 10,
-  cloudSpeed: 1,
+  cloudSpeed: 0.55,
   cloudDirection: "right" as const,
 };
 
@@ -23,41 +19,15 @@ interface LightSkyBackgroundProps {
   skyColor?: string;
   horizonGlowColor?: string;
   horizonColor?: string;
-  sunColor?: string;
-  sunGlareOpacity?: number;
-  sunPositionX?: number;
-  sunPositionY?: number;
   cloudOpacity?: number;
   cloudAmount?: number;
   cloudSpeed?: number;
   cloudDirection?: "left" | "right";
   reducedMotion?: boolean;
-}
-
-function parseColor(input: string): { r: number; g: number; b: number } {
-  const rgb = input.match(
-    /rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)/i,
-  );
-  if (rgb) {
-    return {
-      r: Math.round(Number(rgb[1])),
-      g: Math.round(Number(rgb[2])),
-      b: Math.round(Number(rgb[3])),
-    };
-  }
-  const hex = input.replace("#", "").trim();
-  const full =
-    hex.length === 3
-      ? hex
-          .split("")
-          .map((c) => c + c)
-          .join("")
-      : hex;
-  return {
-    r: parseInt(full.slice(0, 2), 16) || 255,
-    g: parseInt(full.slice(2, 4), 16) || 255,
-    b: parseInt(full.slice(4, 6), 16) || 255,
-  };
+  /** Page wash only — clouds live in the hero */
+  showClouds?: boolean;
+  /** Clouds-only layer (transparent) for the hero fold */
+  cloudsOnly?: boolean;
 }
 
 type CloudSpec = {
@@ -76,22 +46,24 @@ function buildClouds(
   opacity: number,
   speed: number,
 ): CloudSpec[] {
+  const scale = 0.68;
   return Array.from({ length: amount }, (_, index) => {
     const seed = index * 123.45;
     const tier = Math.floor(seed % 3);
     const width =
-      tier === 2
+      (tier === 2
         ? 120 + (seed % 80)
         : tier === 1
           ? 80 + (seed % 50)
-          : 40 + (seed % 30);
+          : 40 + (seed % 30)) * scale;
     const height =
-      tier === 2
+      (tier === 2
         ? 40 + (seed % 25)
         : tier === 1
           ? 30 + (seed % 15)
-          : 15 + (seed % 10);
-    const top = 2 + (seed % 35);
+          : 15 + (seed % 10)) * scale;
+    // Keep clouds in the upper band of the hero
+    const top = 4 + (seed % 28);
     const cloudOpacity = opacity * (0.8 + (seed % 20) / 100);
     const cycle = 60 + (seed % 60);
     const duration = cycle / Math.max(0.1, speed);
@@ -121,67 +93,20 @@ function buildClouds(
   });
 }
 
-/**
- * Faithful extract of the Framer sky component (sun, glare, clouds, sky wash).
- * Ocean / waves / reflections / horizon line are intentionally omitted.
- */
-export default function LightSkyBackground({
-  className = "",
-  skyColor = DEFAULTS.skyColor,
-  horizonGlowColor = DEFAULTS.horizonGlowColor,
-  horizonColor = DEFAULTS.horizonColor,
-  sunColor = DEFAULTS.sunColor,
-  sunGlareOpacity = DEFAULTS.sunGlareOpacity,
-  sunPositionX = DEFAULTS.sunPositionX,
-  sunPositionY = DEFAULTS.sunPositionY,
-  cloudOpacity = DEFAULTS.cloudOpacity,
-  cloudAmount = DEFAULTS.cloudAmount,
-  cloudSpeed = DEFAULTS.cloudSpeed,
-  cloudDirection = DEFAULTS.cloudDirection,
-  reducedMotion = false,
-}: LightSkyBackgroundProps) {
-  const sunRgb = useMemo(() => {
-    const { r, g, b } = parseColor(sunColor);
-    return `${r}, ${g}, ${b}`;
-  }, [sunColor]);
-
-  const clouds = useMemo(
-    () => buildClouds(cloudAmount, cloudOpacity, cloudSpeed),
-    [cloudAmount, cloudOpacity, cloudSpeed],
-  );
-
-  // Original stops used ocean at 50–100%. Without ocean, extend the sky wash.
-  const skyGradient = `linear-gradient(to bottom, ${skyColor} 0%, ${horizonGlowColor} 40%, ${horizonColor} 70%, ${horizonGlowColor} 100%)`;
-
+function CloudLayer({
+  clouds,
+  cloudDirection,
+  reducedMotion,
+}: {
+  clouds: CloudSpec[];
+  cloudDirection: "left" | "right";
+  reducedMotion: boolean;
+}) {
   const moveName =
     cloudDirection === "right" ? "cloudMoveRight" : "cloudMoveLeft";
 
   return (
-    <div
-      className={`light-sky ${className}`.trim()}
-      style={{ background: skyGradient }}
-      aria-hidden
-    >
-      {/* Sun glare */}
-      <div
-        className="light-sky__glare"
-        style={{
-          background: `radial-gradient(circle at ${sunPositionX}% ${sunPositionY}%, rgba(${sunRgb}, ${sunGlareOpacity}) 0%, rgba(${sunRgb}, 0) 50%)`,
-        }}
-      />
-
-      {/* Sun disc */}
-      <div
-        className="light-sky__sun"
-        style={{
-          left: `${sunPositionX}%`,
-          top: `${sunPositionY}%`,
-          background: sunColor,
-          boxShadow: `0 0 40px 10px rgba(${sunRgb}, ${sunGlareOpacity})`,
-        }}
-      />
-
-      {/* Clouds */}
+    <>
       {clouds.map((cloud, index) => {
         const style: CSSProperties = {
           top: `${cloud.top}%`,
@@ -220,6 +145,64 @@ export default function LightSkyBackground({
           </div>
         );
       })}
+    </>
+  );
+}
+
+/**
+ * Day sky wash (page) and/or clouds (hero-only via cloudsOnly).
+ */
+export default function LightSkyBackground({
+  className = "",
+  skyColor = DEFAULTS.skyColor,
+  horizonGlowColor = DEFAULTS.horizonGlowColor,
+  horizonColor = DEFAULTS.horizonColor,
+  cloudOpacity = DEFAULTS.cloudOpacity,
+  cloudAmount = DEFAULTS.cloudAmount,
+  cloudSpeed = DEFAULTS.cloudSpeed,
+  cloudDirection = DEFAULTS.cloudDirection,
+  reducedMotion = false,
+  showClouds = false,
+  cloudsOnly = false,
+}: LightSkyBackgroundProps) {
+  const clouds = useMemo(
+    () =>
+      showClouds || cloudsOnly
+        ? buildClouds(cloudAmount, cloudOpacity, cloudSpeed)
+        : [],
+    [showClouds, cloudsOnly, cloudAmount, cloudOpacity, cloudSpeed],
+  );
+
+  const skyGradient = `linear-gradient(to bottom, ${skyColor} 0%, ${horizonGlowColor} 45%, ${horizonColor} 78%, ${horizonGlowColor} 100%)`;
+
+  if (cloudsOnly) {
+    return (
+      <div
+        className={`light-sky light-sky--clouds ${className}`.trim()}
+        aria-hidden
+      >
+        <CloudLayer
+          clouds={clouds}
+          cloudDirection={cloudDirection}
+          reducedMotion={reducedMotion}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={`light-sky ${className}`.trim()}
+      style={{ background: skyGradient }}
+      aria-hidden
+    >
+      {showClouds ? (
+        <CloudLayer
+          clouds={clouds}
+          cloudDirection={cloudDirection}
+          reducedMotion={reducedMotion}
+        />
+      ) : null}
     </div>
   );
 }

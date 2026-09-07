@@ -11,8 +11,16 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 const PULL_THRESHOLD = 22;
 const MAX_PULL = 46;
+const TAP_MAX_MOVE = 12;
 const RESUME_DELAY_MS = 1500;
 const INTERACTION_HIT_PAD = 24;
+
+function isCoarsePointer() {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia("(pointer: coarse)").matches
+  );
+}
 
 export function useLampInteraction() {
   const { isLampOn, toggleTheme, reducedMotion, hydrated, theme } = useTheme();
@@ -29,6 +37,7 @@ export function useLampInteraction() {
   const bulbOpacity = useMotionValue(1);
   const dragStartY = useRef(0);
   const pulled = useRef(false);
+  const maxPullDelta = useRef(0);
   const dragging = useRef(false);
   const pullingRef = useRef(false);
   const pendulumBusy = useRef(false);
@@ -187,7 +196,12 @@ export function useLampInteraction() {
       setPulling(false);
       pullRaw.set(0);
 
-      if (!triggered) {
+      // Mobile / touch: a tap (little movement) toggles without needing a full pull.
+      const tapToggle =
+        !triggered && isCoarsePointer() && maxPullDelta.current <= TAP_MAX_MOVE;
+      const shouldToggle = triggered || tapToggle;
+
+      if (!shouldToggle) {
         await runSwing(2);
       } else {
         await runFlicker();
@@ -216,6 +230,7 @@ export function useLampInteraction() {
         Math.min(MAX_PULL, event.clientY - dragStartY.current),
       );
       pullRaw.set(delta);
+      maxPullDelta.current = Math.max(maxPullDelta.current, delta);
       if (delta >= PULL_THRESHOLD) pulled.current = true;
 
       if (!reducedMotion) {
@@ -246,6 +261,7 @@ export function useLampInteraction() {
       pullingRef.current = true;
       setPulling(true);
       pulled.current = false;
+      maxPullDelta.current = 0;
       dragStartY.current = event.clientY;
       pullRaw.set(0);
 

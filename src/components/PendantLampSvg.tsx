@@ -273,6 +273,22 @@ export default function PendantLampSvg({
 
       <g transform={`translate(0, ${BODY_OFFSET})`}>
         <rect
+          className="hanging-lamp__body-hit"
+          x={CX - bottomHalf - 8}
+          y={topY - 8}
+          width={bottomHalf * 2 + 16}
+          height={bottomY - topY + 36}
+          fill="transparent"
+          pointerEvents="all"
+          onPointerDown={onPullPointerDown}
+          onPointerMove={onPullPointerMove}
+          onPointerUp={onPullPointerUp}
+          onPointerCancel={onPullPointerUp}
+        />
+      </g>
+
+      <g transform={`translate(0, ${BODY_OFFSET})`}>
+        <rect
           className="hanging-lamp__pull-hit"
           x={br.x - 18}
           y={bottomY - 4}
