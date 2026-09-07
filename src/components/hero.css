@@ -9,6 +9,9 @@
 
 .hero-section {
   --hero-rail-height: 3.75rem;
+  /* Matches DotGridBackground spacing — used for optical nudges */
+  --hero-dot-step: 36px;
+  --hero-dot-nudge: calc(var(--hero-dot-step) * 2);
   display: flex;
   flex-direction: column;
   overflow-x: clip;
@@ -92,98 +95,67 @@
 
 .hero-section__inner {
   flex: 1 1 auto;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: flex-start;
   min-height: max(calc(88svh - var(--hero-rail-height)), 36rem);
-  padding-top: max(10rem, calc(6.35rem + env(safe-area-inset-top, 0px)));
-  padding-bottom: var(--hero-rail-gap);
-}
-
-@media (min-width: 640px) {
-  .hero-section__inner {
-    padding-top: 11.25rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .hero-section__inner {
-    padding-top: 12.25rem;
-  }
+  padding-top: max(5.5rem, calc(3.75rem + env(safe-area-inset-top, 0px)));
+  /* Reserve garden band without pinning copy under the nav */
+  padding-bottom: max(var(--hero-rail-gap), 32vh);
 }
 
 .hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  align-items: start;
-  gap: 2.5rem;
+  justify-items: center;
+  align-items: center;
   width: 100%;
+  transform: none;
 }
 
-@media (min-width: 1024px) {
-  .hero-grid {
-    grid-template-columns: minmax(0, 0.58fr) minmax(0, 0.42fr);
-    gap: 2.75rem;
-  }
-}
-
-.hero-video {
+.hero-grid__copy {
+  align-items: center;
+  text-align: center;
   width: 100%;
-  max-width: 480px;
-  margin-inline: auto;
-}
-
-@media (min-width: 1024px) {
-  .hero-video {
-    max-width: none;
-    margin-inline: 0;
-    justify-self: end;
-    width: 100%;
-  }
-}
-
-.hero-video__glass {
-  --lg-blur: 32px;
-  --lg-saturate: 190%;
-  --lg-brightness: 1.04;
-  --lg-tint-top: rgba(255, 255, 255, 0.42);
-  --lg-tint-mid: rgba(255, 255, 255, 0.22);
-  --lg-tint-bot: rgba(255, 255, 255, 0.14);
-  --lg-rim: rgba(255, 255, 255, 0.62);
-  --lg-shadow: 0 8px 32px rgba(15, 23, 42, 0.08), 0 2px 8px rgba(99, 102, 241, 0.1);
-
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  border-radius: 1.25rem;
-  box-shadow: var(--lg-shadow);
-}
-
-.hero-video__glass .liquid-glass__shimmer,
-.hero-video__glass .liquid-glass__noise {
-  display: none;
-}
-
-[data-theme="dark"] .hero-video__glass {
-  --lg-tint-top: rgba(30, 30, 30, 0.72);
-  --lg-tint-mid: rgba(20, 20, 20, 0.55);
-  --lg-tint-bot: rgba(12, 12, 12, 0.45);
-  --lg-rim: rgba(255, 255, 255, 0.1);
-  --lg-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.25);
-}
-
-.hero-video__frame {
-  aspect-ratio: 16 / 10;
-  width: 100%;
-  min-height: 12rem;
-  background: rgba(255, 255, 255, 0.04);
-}
-
-[data-theme="dark"] .hero-video__frame {
-  background: rgba(255, 255, 255, 0.03);
+  max-width: 42rem;
 }
 
 .hero-headline {
   max-width: min(560px, 100%);
+  margin-inline: auto;
   text-wrap: balance;
+}
+
+.hero-rotating-word {
+  position: relative;
+  display: inline-flex;
+  vertical-align: baseline;
+  font-style: italic;
+}
+
+.hero-rotating-word__sizer {
+  visibility: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
+.hero-rotating-word__viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+}
+
+.hero-headline__desktop-only .hero-rotating-word__viewport {
+  justify-content: center;
+}
+
+.hero-rotating-word__item {
+  display: block;
+  white-space: nowrap;
+  will-change: transform, opacity;
 }
 
 .hero-headline__desktop-only {
@@ -211,6 +183,8 @@
 .hero-cta {
   width: 100%;
   margin-top: 2rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .hero-cta__button {
@@ -230,8 +204,35 @@
 }
 
 /*
- * Laptop / MacBook-class displays — full first fold, keep the familiar
- * top-weighted placement (do not vertically center here).
+ * Phone / small tablet — keep copy clear of garden, no optical transforms.
+ */
+@media (max-width: 1023px) {
+  .hero-section__inner {
+    padding-top: max(5.75rem, calc(4rem + env(safe-area-inset-top, 0px)));
+    padding-bottom: max(var(--hero-rail-gap), 28vh);
+  }
+
+  .hero-grid {
+    transform: none;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .hero-section__inner {
+    padding-top: 6.5rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-section__inner {
+    padding-top: 7rem;
+  }
+}
+
+/*
+ * Laptop / MacBook-class displays — full first fold.
+ * 13" MacBook: lift copy + CTAs further above the garden.
+ * Scoped by width so short-viewport phone rules cannot clobber this.
  */
 @media (min-width: 1024px) and (max-width: 1799px) {
   .hero-section {
@@ -240,12 +241,32 @@
 
   .hero-section__inner {
     min-height: calc(100svh - var(--hero-rail-height));
+    justify-content: flex-start;
+    padding-top: max(4.5rem, calc(3.25rem + env(safe-area-inset-top, 0px)));
+    padding-bottom: max(var(--hero-rail-gap), 36vh);
+  }
+
+  .hero-grid {
+    /* ~5 dotted lines up */
+    transform: translateY(calc(var(--hero-dot-step) * -5));
+  }
+}
+
+/* Taller laptops (16" / scaled) — slightly less aggressive lift */
+@media (min-width: 1024px) and (max-width: 1799px) and (min-height: 900px) {
+  .hero-section__inner {
+    padding-top: max(5rem, calc(3.5rem + env(safe-area-inset-top, 0px)));
+    padding-bottom: max(var(--hero-rail-gap), 34vh);
+  }
+
+  .hero-grid {
+    transform: translateY(calc(var(--hero-dot-step) * -4.5));
   }
 }
 
 /*
- * Large external monitors (≈1920px+ wide) — vertically center the hero
- * composition. Uses width, not height, so 1080p desktops still match.
+ * Large external monitors (≈1920px+ wide) — optically center copy,
+ * then nudge two dotted lines further down.
  */
 @media (min-width: 1800px) {
   .hero-section {
@@ -256,37 +277,45 @@
     min-height: calc(100svh - var(--hero-rail-height));
     align-items: center;
     justify-content: center;
-    padding-top: max(5.5rem, calc(4rem + env(safe-area-inset-top, 0px)));
-    padding-bottom: var(--hero-rail-gap);
+    padding-top: max(6.5rem, calc(4.5rem + env(safe-area-inset-top, 0px)));
+    padding-bottom: max(var(--hero-rail-gap), 30vh);
   }
 
   .hero-grid {
     width: 100%;
-    transform: none;
+    transform: translateY(calc(-2vh + var(--hero-dot-nudge)));
   }
 }
 
-/* Extra-tall large desktops — slight optical lift above true center */
+/* Extra-tall large desktops — same two-dot downward nudge */
 @media (min-width: 1800px) and (min-height: 1200px) {
   .hero-section__inner {
-    padding-top: max(5.25rem, calc(3.75rem + env(safe-area-inset-top, 0px)));
-    padding-bottom: var(--hero-rail-gap);
+    padding-top: max(7rem, calc(5rem + env(safe-area-inset-top, 0px)));
+    padding-bottom: max(var(--hero-rail-gap), 32vh);
+  }
+
+  .hero-grid {
+    transform: translateY(calc(-3vh + var(--hero-dot-nudge)));
   }
 }
 
-/* Short viewports — avoid excessive vertical centering gap */
-@media (max-height: 720px) {
+/* Short phones only — do not override laptop / desktop placement */
+@media (max-height: 720px) and (max-width: 1023px) {
   .hero-section__inner {
     min-height: auto;
-    padding-bottom: var(--hero-rail-gap);
+    padding-top: max(4.75rem, calc(3.25rem + env(safe-area-inset-top, 0px)));
+    padding-bottom: max(var(--hero-rail-gap), 22vh);
   }
 
   .hero-grid {
     transform: none;
   }
+
+  .hero-cta {
+    margin-top: 1.5rem;
+  }
 }
 
-/* Very narrow phones — keep the second line readable */
 @media (max-width: 380px) {
   .hero-headline {
     font-size: clamp(1.75rem, 8.8vw, 2.2rem);
@@ -295,9 +324,9 @@
 }
 
 /* Small phones in landscape */
-@media (max-height: 480px) and (orientation: landscape) {
+@media (max-height: 480px) and (orientation: landscape) and (max-width: 1023px) {
   .hero-section__inner {
-    padding-top: max(5rem, calc(3.5rem + env(safe-area-inset-top, 0px)));
+    padding-top: max(4.25rem, calc(2.75rem + env(safe-area-inset-top, 0px)));
     padding-bottom: var(--hero-rail-gap);
   }
 
