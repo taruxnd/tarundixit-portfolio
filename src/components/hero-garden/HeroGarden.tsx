@@ -1,7 +1,7 @@
 "use client";
 
 import { useTheme } from "@/components/ThemeController";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./hero-garden.css";
 
 const FLOWER_URLS = ["/garden/flower-1.png", "/garden/flower-2.png"];
@@ -192,8 +192,19 @@ function paintFrame(
 export default function HeroGarden() {
   const { reducedMotion } = useTheme();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
+    const desktopQuery = window.matchMedia("(min-width: 1024px)");
+    const sync = () => setEnabled(desktopQuery.matches);
+    sync();
+    desktopQuery.addEventListener("change", sync);
+    return () => desktopQuery.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    if (!enabled) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -245,7 +256,7 @@ export default function HeroGarden() {
       if (!reducedMotion) {
         // Keep idle pinned to the load-time depth; wind/sway keeps moving.
         idleTravel = initialIdleTravel;
-        time += 0.02;
+        time += 0.052;
       }
       scrollSmoothed += (window.scrollY - scrollSmoothed) * 0.08;
       travel = scrollSmoothed * SCROLL_SPEED + idleTravel;
@@ -287,8 +298,10 @@ export default function HeroGarden() {
       window.removeEventListener("scroll", onScroll);
       window.history.scrollRestoration = previousScrollRestoration;
     };
-  }, [reducedMotion]);
+  }, [reducedMotion, enabled]);
 
+  // Always render the same markup on server + client to avoid hydration mismatch.
+  // Mobile hides via CSS; the canvas loop only runs when `enabled`.
   return (
     <div className="hero-garden" aria-hidden>
       <canvas ref={canvasRef} className="hero-garden__canvas" />

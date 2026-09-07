@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Caveat, Inter } from "next/font/google";
-import Script from "next/script";
 import SiteShell from "@/components/SiteShell";
 import "./globals.css";
 
@@ -21,6 +20,8 @@ export const metadata: Metadata = {
     "Product designer crafting AI products, scalable design systems, and thoughtful user experiences.",
 };
 
+const THEME_INIT = `(function(){try{var t=localStorage.getItem("portfolio-lamp-theme");if(t==="dark"){document.documentElement.dataset.theme="dark";document.documentElement.style.colorScheme="dark";}}catch(e){}})();`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,10 +29,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          id="portfolio-theme-init"
+          dangerouslySetInnerHTML={{ __html: THEME_INIT }}
+        />
+      </head>
       <body className={`${inter.variable} ${caveat.variable} font-sans antialiased`}>
-        <Script id="portfolio-theme-init" strategy="beforeInteractive">
-          {`(function(){try{var t=localStorage.getItem("portfolio-lamp-theme");if(t==="dark"){document.documentElement.dataset.theme="dark";document.documentElement.style.colorScheme="dark";}}catch(e){}})();`}
-        </Script>
         <SiteShell>{children}</SiteShell>
       </body>
     </html>

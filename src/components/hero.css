@@ -204,28 +204,49 @@
 }
 
 /*
- * Phone / small tablet — keep copy clear of garden, no optical transforms.
+ * Phone / small tablet — restore first-push layout:
+ * left-aligned copy + CTAs, original spacing (no glass panel).
  */
 @media (max-width: 1023px) {
   .hero-section__inner {
-    padding-top: max(5.75rem, calc(4rem + env(safe-area-inset-top, 0px)));
-    padding-bottom: max(var(--hero-rail-gap), 28vh);
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-top: max(10rem, calc(6.35rem + env(safe-area-inset-top, 0px)));
+    padding-bottom: var(--hero-rail-gap);
   }
 
   .hero-grid {
+    justify-items: stretch;
+    align-items: start;
+    gap: 2.5rem;
     transform: none;
+  }
+
+  .hero-grid__copy {
+    align-items: flex-start;
+    text-align: left;
+    max-width: none;
+  }
+
+  .hero-headline {
+    margin-inline: 0;
+  }
+
+  .hero-cta {
+    align-items: stretch;
+    justify-content: flex-start;
   }
 }
 
 @media (min-width: 640px) and (max-width: 1023px) {
   .hero-section__inner {
-    padding-top: 6.5rem;
+    padding-top: 11.25rem;
   }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
   .hero-section__inner {
-    padding-top: 7rem;
+    padding-top: 12.25rem;
   }
 }
 
@@ -301,16 +322,11 @@
 @media (max-height: 720px) and (max-width: 1023px) {
   .hero-section__inner {
     min-height: auto;
-    padding-top: max(4.75rem, calc(3.25rem + env(safe-area-inset-top, 0px)));
-    padding-bottom: max(var(--hero-rail-gap), 22vh);
+    padding-bottom: var(--hero-rail-gap);
   }
 
   .hero-grid {
     transform: none;
-  }
-
-  .hero-cta {
-    margin-top: 1.5rem;
   }
 }
 
@@ -324,7 +340,7 @@
 /* Small phones in landscape */
 @media (max-height: 480px) and (orientation: landscape) and (max-width: 1023px) {
   .hero-section__inner {
-    padding-top: max(4.25rem, calc(2.75rem + env(safe-area-inset-top, 0px)));
+    padding-top: max(5rem, calc(3.5rem + env(safe-area-inset-top, 0px)));
     padding-bottom: var(--hero-rail-gap);
   }
 
