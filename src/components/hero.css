@@ -230,9 +230,8 @@
 }
 
 /*
- * Laptop / MacBook-class displays — full first fold.
- * 13" MacBook: lift copy + CTAs further above the garden.
- * Scoped by width so short-viewport phone rules cannot clobber this.
+ * Laptop / MacBook-class displays — clear the nav, clear the garden.
+ * No aggressive lift (that was clipping the headline under the pill).
  */
 @media (min-width: 1024px) and (max-width: 1799px) {
   .hero-section {
@@ -242,25 +241,24 @@
   .hero-section__inner {
     min-height: calc(100svh - var(--hero-rail-height));
     justify-content: flex-start;
-    padding-top: max(4.5rem, calc(3.25rem + env(safe-area-inset-top, 0px)));
-    padding-bottom: max(var(--hero-rail-gap), 36vh);
+    padding-top: max(8rem, calc(5.75rem + env(safe-area-inset-top, 0px)));
+    padding-bottom: max(var(--hero-rail-gap), 30vh);
   }
 
   .hero-grid {
-    /* ~5 dotted lines up */
-    transform: translateY(calc(var(--hero-dot-step) * -5));
+    transform: none;
   }
 }
 
-/* Taller laptops (16" / scaled) — slightly less aggressive lift */
+/* Taller laptops — slight optical lift only (one dotted line) */
 @media (min-width: 1024px) and (max-width: 1799px) and (min-height: 900px) {
   .hero-section__inner {
-    padding-top: max(5rem, calc(3.5rem + env(safe-area-inset-top, 0px)));
-    padding-bottom: max(var(--hero-rail-gap), 34vh);
+    padding-top: max(8.25rem, calc(6rem + env(safe-area-inset-top, 0px)));
+    padding-bottom: max(var(--hero-rail-gap), 28vh);
   }
 
   .hero-grid {
-    transform: translateY(calc(var(--hero-dot-step) * -4.5));
+    transform: translateY(calc(var(--hero-dot-step) * -1));
   }
 }
 
