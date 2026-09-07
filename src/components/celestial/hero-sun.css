@@ -1,0 +1,46 @@
+/* Reference sun — fixed left sky, desktop only */
+
+.hero-sun {
+  --sun-size: 15.6rem;
+
+  position: fixed;
+  top: max(6.5rem, 14vh);
+  left: clamp(1.5rem, 4.5vw, 4.5rem);
+  z-index: 5;
+  width: var(--sun-size);
+  height: var(--sun-size);
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+@media (min-width: 1280px) {
+  .hero-sun {
+    --sun-size: 17.55rem;
+    top: max(7rem, 15vh);
+    left: clamp(2rem, 5vw, 5.5rem);
+  }
+}
+
+@media (min-width: 1440px) and (min-height: 900px) {
+  .hero-sun {
+    --sun-size: 19.5rem;
+    top: max(7.5rem, 16vh);
+    left: clamp(2.5rem, 5.5vw, 6rem);
+  }
+}
+
+@media (max-width: 1023px) {
+  .hero-sun {
+    display: none;
+  }
+}
+
+.hero-sun__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* Drop the photo’s black field so only the sun reads */
+  mix-blend-mode: screen;
+}

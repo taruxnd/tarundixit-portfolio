@@ -132,9 +132,10 @@ function paintFrame(
 
   visible.sort((a, b) => b.relativeZ - a.relativeZ);
 
-  // Soften both ends of the depth loop so the wrap doesn't leave a hard seam.
-  const fadeNearEnd = 140;
-  const fadeFarStart = SCENE_DEPTH - 900;
+  // Soften only the extreme depth wrap — keep the visible bed fully opaque
+  // so soft PNG edges don't read as white/black haze on the silhouette.
+  const fadeNearEnd = 48;
+  const fadeFarStart = SCENE_DEPTH - 220;
   const fadeFarSpan = SCENE_DEPTH - fadeFarStart;
 
   for (let i = 0; i < visible.length; i++) {
@@ -163,7 +164,8 @@ function paintFrame(
     if (sprite.relativeZ > fadeFarStart) {
       alpha *= 1 - ((sprite.relativeZ - fadeFarStart) / fadeFarSpan) ** 1.5;
     }
-    if (alpha <= 0.01) continue;
+    // Drop ghost sprites — translucent paint was causing the silhouette haze.
+    if (alpha < 0.72) continue;
 
     const sway = Math.sin(time * sprite.swaySpeed + sprite.swayPhase);
     const source = sprite.type === 0 ? flowers : leaves;
@@ -172,7 +174,7 @@ function paintFrame(
     if (!spriteImage?.complete) continue;
 
     ctx.save();
-    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+    ctx.globalAlpha = 1;
     ctx.translate(
       x + sway * WIND_STRENGTH * perspective * 0.2 * layoutScale,
       drawY,

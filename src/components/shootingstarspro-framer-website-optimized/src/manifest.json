@@ -1,0 +1,43 @@
+{
+  "pages": [
+    {
+      "route": "/",
+      "component": "HomePage",
+      "file": "index.html",
+      "prologue": "<!DOCTYPE html><!-- Made in Framer · framer.com ✨ --><!-- Published Jul 25, 2026, 6:12 PM UTC -->",
+      "htmlAttrs": " lang=\"en\" data-redirect-timezone=\"1\" dir=\"ltr\"",
+      "head": "<link rel=\"preconnect\" href=\"https://framerusercontent.com\" crossorigin=\"\">\n\t<meta charset=\"utf-8\">\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n\t<meta name=\"generator\" content=\"Framer bee8ea6\">\n\t<title>Shooting Stars Pro - Shooting stars &amp; meteor sky</title>\n    <meta name=\"description\" content=\"Animated shooting stars &amp; meteor shower background for Framer. Night sky with 5 meteor styles, 4 dark themes, mouse parallax, fragment trails, glow effects and interactive Demo Mode panel. Canvas-based, 60fps, mobile-ready, zero config.\">\n    <meta name=\"framer-search-index\" content=\"https://framerusercontent.com/sites/3TnqqNvmrhhjXq10EqTLmP/searchIndex-CeEPqwPO11m1.json\">\n    <meta name=\"framer-search-index-fallback\" content=\"https://framerusercontent.com/sites/3TnqqNvmrhhjXq10EqTLmP/searchIndex-YZOlgjGMoHl9.json\">\n    <link href=\"/assets/img/957e5805d8c36c45.png\" rel=\"icon\" media=\"(prefers-color-scheme: light)\">\n    <link href=\"/assets/img/deea58f852af8d43.png\" rel=\"icon\" media=\"(prefers-color-scheme: dark)\">\n    <!-- Open Graph -->\n    <meta property=\"og:type\" content=\"website\">\n    <meta property=\"og:title\" content=\"Shooting Stars Pro - Shooting stars &amp; meteor sky\">\n    <meta property=\"og:description\" content=\"Animated shooting stars &amp; meteor shower background for Framer. Night sky with 5 meteor styles, 4 dark themes, mouse parallax, fragment trails, glow effects and interactive Demo Mode panel. Canvas-based, 60fps, mobile-ready, zero config.\">\n    <meta property=\"og:image\" content=\"https://framerusercontent.com/images/UwoBWXhjwOEHZF10AXEKHknusU.png\">\n    <!-- X -->\n    <meta name=\"twitter:card\" content=\"summary_large_image\">\n    <meta name=\"twitter:title\" content=\"Shooting Stars Pro - Shooting stars &amp; meteor sky\">\n    <meta name=\"twitter:description\" content=\"Animated shooting stars &amp; meteor shower background for Framer. Night sky with 5 meteor styles, 4 dark themes, mouse parallax, fragment trails, glow effects and interactive Demo Mode panel. Canvas-based, 60fps, mobile-ready, zero config.\">\n    <meta name=\"twitter:image\" content=\"https://framerusercontent.com/images/UwoBWXhjwOEHZF10AXEKHknusU.png\">\n\t\n\t\n\t<script>try{if(localStorage.getItem(\"__framer_force_showing_editorbar_since\")){const n=document.createElement(\"link\");n.rel=\"modulepreload\";n.href=\"https://framer.com/edit/init.mjs\";document.head.appendChild(n)}}catch(e){}</script>\n\t<link rel=\"canonical\" href=\"/\"><meta property=\"og:url\" content=\"/\"><!-- Start of headStart -->\n    \n    <!-- End of headStart -->\n\t\n\t<style data-framer-font-css=\"\"></style>\n\t\n\t\n\t<meta name=\"robots\" content=\"max-image-preview:large\"><style data-framer-breakpoint-css=\"\">@media(min-width: 1200px){.hidden-72rtr7{display:none!important}}@media(min-width: 810px) and (max-width: 1199.98px){.hidden-gsij4b{display:none!important}}@media(max-width: 809.98px){.hidden-12idv62{display:none!important}}</style><style data-framer-css-ssr-minified=\"\" data-framer-components=\"framer-lib-cursors-host framer-wZjfP\">/*fnj:src/styles/home.css*//*fnj:src/styles/custom.css*/</style><!-- Start of headEnd -->\n    \n    <!-- End of headEnd -->\n\t\n",
+      "afterHead": "\n",
+      "verbatim": [
+        "<!-- Start of bodyStart -->",
+        "<!-- End of bodyStart -->",
+        "<!-- -->",
+        "<script>(()=>{function u(){function n(t,e,i){let r=document.createElement(\"a\");r.href=t,r.target=i,r.rel=e,document.body.appendChild(r),r.click(),r.remove()}function o(t){if(this.dataset.hydrated){this.removeEventListener(\"click\",o);return}t.preventDefault(),t.stopPropagation();let e=this.getAttribute(\"href\");if(!e)return;if(/Mac|iPod|iPhone|iPad/u.test(navigator.userAgent)?t.metaKey:t.ctrlKey)return n(e,\"\",\"_blank\");let r=this.getAttribute(\"rel\")??\"\",c=this.getAttribute(\"target\")??\"\";n(e,r,c)}function a(t){if(this.dataset.hydrated){this.removeEventListener(\"auxclick\",o);return}t.preventDefault(),t.stopPropagation();let e=this.getAttribute(\"href\");e&&n(e,\"\",\"_blank\")}function s(t){if(this.dataset.hydrated){this.removeEventListener(\"keydown\",s);return}if(t.key!==\"Enter\")return;t.preventDefault(),t.stopPropagation();let e=this.getAttribute(\"href\");if(!e)return;let i=this.getAttribute(\"rel\")??\"\",r=this.getAttribute(\"target\")??\"\";n(e,i,r)}document.querySelectorAll(\"[data-nested-link]\").forEach(t=>{t instanceof HTMLElement&&(t.addEventListener(\"click\",o),t.addEventListener(\"auxclick\",a),t.addEventListener(\"keydown\",s))})}return u})()()</script>",
+        "<script>!function(){var w=\"framer_variant\";function u(a,r){let e=r.indexOf(\"#\"),t=e===-1?r:r.substring(0,e),o=e===-1?\"\":r.substring(e),n=t.indexOf(\"?\"),h=n===-1?t:t.substring(0,n),d=n===-1?\"\":t.substring(n),s=new URLSearchParams(d),m=new URLSearchParams(a);for(let[i,l]of m)s.has(i)||i!==w&&s.append(i,l);let c=s.toString();return c===\"\"?t+o:h+\"?\"+c+o}var g='div#main a[href^=\"#\"],div#main a[href^=\"/\"],div#main a[href^=\".\"]',f=\"div#main a[data-framer-preserve-params]\",S=document.currentScript?.hasAttribute(\"data-preserve-internal-params\");if(window.location.search&&!navigator.webdriver&&!/bot|-google|google-|yandex|ia_archiver|crawl|spider/iu.test(navigator.userAgent)){let a=document.querySelectorAll(S?`${g},${f}`:f);for(let r of a){let e=u(window.location.search,r.href);r.setAttribute(\"href\",e)}}\n}()</script>",
+        "<script data-framer-appear-animation=\"no-preference\"></script>",
+        "<script>typeof document<\"u\"&&(window.process={...window.process,env:{...window.process?.env,NODE_ENV:\"production\"}});</script>",
+        "<link rel=\"modulepreload\" fetchpriority=\"low\" href=\"/assets/framer/rolldown-runtime.Dh6celcD.mjs\"></link>",
+        "<link rel=\"modulepreload\" fetchpriority=\"low\" href=\"/assets/framer/react.D20wc1Tc.mjs\"></link>",
+        "<link rel=\"modulepreload\" fetchpriority=\"low\" href=\"/assets/framer/framer.CTj1vcom.mjs\"></link>",
+        "<link rel=\"modulepreload\" fetchpriority=\"low\" href=\"/assets/framer/motion.CM7YNm5Z.mjs\"></link>",
+        "<link rel=\"modulepreload\" fetchpriority=\"low\" href=\"/assets/framer/GI0CvAjmIdJacj2WJtkofW0yZ5t0nxtZW9uK6stbrXs.BYysLMHe.mjs\"></link>",
+        "<link rel=\"modulepreload\" fetchpriority=\"low\" href=\"/assets/framer/shared-lib.Ugtm6g9M.mjs\"></link>",
+        "<script type=\"module\" async=\"\" data-framer-bundle=\"main\" fetchpriority=\"low\" src=\"/assets/framer/script_main.Ch-WViZR.mjs\"></script>",
+        "<!-- Start of bodyEnd -->",
+        "<!-- End of bodyEnd -->"
+      ],
+      "currentLinks": []
+    },
+    {
+      "route": "/404",
+      "component": "Section404Page",
+      "file": "404.html",
+      "prologue": "<!DOCTYPE html>",
+      "htmlAttrs": " lang=\"en\"",
+      "head": "<link rel=\"preconnect\" href=\"https://framerusercontent.com\" crossorigin=\"\"><meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, minimum-scale=1.0, viewport-fit=cover\">\n  <title>Page Not Found | Framer</title>\n  <style>/*fnj:src/styles/404.css*//*fnj:src/styles/custom.css*/</style>\n\n  <meta property=\"og:title\" content=\"Page Not Found | Framer\"><meta property=\"og:type\" content=\"website\"><link rel=\"canonical\" href=\"/404\">",
+      "afterHead": "",
+      "verbatim": [],
+      "currentLinks": []
+    }
+  ]
+}

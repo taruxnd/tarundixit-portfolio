@@ -38,6 +38,7 @@
   "exclude": [
     "node_modules",
     "src/components/**/*-framer-website-optimized",
+    "src/components/**/*-framer-app-optimized",
     "src/components/newlamp",
     "src/components/altlamp",
     "src/newlamp"
