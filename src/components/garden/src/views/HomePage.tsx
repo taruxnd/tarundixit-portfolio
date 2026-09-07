@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import UltimateGardenScroll from "@/src/sections/home/UltimateGardenScroll";
+import UltimateGardenScroll from "../sections/home/UltimateGardenScroll";
 
 /** The "/" page, composed from its Framer sections.
  *
