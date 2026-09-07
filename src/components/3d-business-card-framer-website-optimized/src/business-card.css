@@ -1,0 +1,542 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+
+.card-mockup-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: visible;
+    background: transparent;
+    font-family: var(--font-family-body, 'Plus Jakarta Sans'), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+.card-3d-container {
+    position: relative;
+    width: min(calc(310px * var(--card-scale, 0.7)), 100%);
+    perspective: 1500px;
+    cursor: grab;
+    overflow: visible;
+    transition: filter 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card-3d-scale {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 310px;
+    height: 662px;
+    transform: translateX(-50%) scale(var(--card-scale, 0.7));
+    transform-origin: top center;
+}
+
+.card-mockup-wrapper.is-hovering .card-3d-container {
+    filter: drop-shadow(0 28px 48px rgba(0, 0, 0, 0.22))
+        drop-shadow(0 8px 16px rgba(0, 0, 0, 0.12));
+}
+
+.card-hang-sway {
+    will-change: transform;
+}
+
+.card-3d-container:active {
+    cursor: grabbing;
+}
+
+/* Lanyard — matte charcoal with woven texture */
+.lanyard-strap {
+    width: 42px;
+    border-radius: 3px 3px 0 0;
+    position: absolute;
+    top: 0;
+    left: calc(50% - 21px);
+    z-index: 5;
+    box-shadow:
+        inset -4px 0 8px rgba(0, 0, 0, 0.45),
+        inset 4px 0 6px rgba(255, 255, 255, 0.04),
+        0 4px 12px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+}
+
+.lanyard-strap::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 48px;
+    height: 4px;
+    border-radius: 2px 2px 0 0;
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.12) 0%,
+        rgba(0, 0, 0, 0.35) 100%
+    );
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+.lanyard-strap-texture {
+    position: absolute;
+    inset: 0;
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            rgba(255, 255, 255, 0.03) 0px,
+            rgba(255, 255, 255, 0.03) 1px,
+            transparent 1px,
+            transparent 3px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.15) 0px,
+            rgba(0, 0, 0, 0.15) 1px,
+            transparent 1px,
+            transparent 5px
+        );
+    pointer-events: none;
+}
+
+.lanyard-strap-text {
+    font-family: var(--font-family-title, 'Outfit'), sans-serif;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    white-space: nowrap;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    margin-bottom: 28px;
+    user-select: none;
+    pointer-events: none;
+    opacity: 0.85;
+}
+
+/* Card + protective acrylic casing — moves as one assembly with hang sway */
+.card-id-assembly {
+    width: fit-content;
+    filter:
+        drop-shadow(0 18px 32px rgba(0, 0, 0, 0.2))
+        drop-shadow(0 6px 14px rgba(0, 0, 0, 0.12));
+}
+
+.card-glass-casing {
+    position: relative;
+    padding: 6px;
+    border-radius: 32px;
+    background: rgba(255, 255, 255, 0.016);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.58),
+        inset 1px 0 0 rgba(255, 255, 255, 0.16),
+        inset -1px 0 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+        inset 0 5px 14px rgba(0, 0, 0, 0.11),
+        0 1px 0 rgba(255, 255, 255, 0.05);
+    isolation: isolate;
+}
+
+.card-glass-casing__glint {
+    position: absolute;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.card-glass-casing__glint--tl {
+    top: 0;
+    left: 0;
+    width: 44%;
+    height: 38%;
+    border-top-left-radius: 32px;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.42) 0%,
+        rgba(255, 255, 255, 0.14) 22%,
+        rgba(255, 255, 255, 0) 58%
+    );
+    opacity: 0.88;
+}
+
+.card-glass-casing__glint--br {
+    right: 0;
+    bottom: 0;
+    width: 40%;
+    height: 34%;
+    border-bottom-right-radius: 32px;
+    background: linear-gradient(
+        315deg,
+        rgba(255, 255, 255, 0.16) 0%,
+        rgba(255, 255, 255, 0.04) 28%,
+        rgba(255, 255, 255, 0) 56%
+    );
+    opacity: 0.62;
+}
+
+.card-glass-casing::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border-radius: 26px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.08);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.card-glass-casing::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 1;
+    background: linear-gradient(
+        118deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0.02) 18%,
+        rgba(255, 255, 255, 0) 42%,
+        rgba(255, 255, 255, 0) 68%,
+        rgba(255, 255, 255, 0.03) 86%,
+        rgba(255, 255, 255, 0.08) 100%
+    );
+    opacity: 0.75;
+}
+
+.card-mockup-wrapper.is-hovering .card-glass-casing {
+    border-color: rgba(255, 255, 255, 0.36);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.66),
+        inset 1px 0 0 rgba(255, 255, 255, 0.2),
+        inset -1px 0 0 rgba(255, 255, 255, 0.12),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.22),
+        inset 0 5px 14px rgba(0, 0, 0, 0.12),
+        0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.card-mockup-wrapper.is-hovering .card-glass-casing__glint--tl {
+    opacity: 0.95;
+}
+
+/* Front card body */
+.front-card-body {
+    position: relative;
+    width: min(310px, 100%);
+    aspect-ratio: 310 / 490;
+    height: auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 38px 32px 36px;
+    box-sizing: border-box;
+    z-index: 1;
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.14),
+        0 0 0 1px rgba(0, 0, 0, 0.05) inset;
+    transform-style: preserve-3d;
+    transition: box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card-mockup-wrapper.is-hovering .front-card-body {
+    box-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.16),
+        0 0 0 1px rgba(0, 0, 0, 0.06) inset;
+}
+
+.card-punch-hole {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #060606;
+    position: absolute;
+    top: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.95),
+        0 1px 1px rgba(255, 255, 255, 0.15),
+        0 -1px 1px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Typography */
+.card-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 18px;
+    gap: 12px;
+}
+
+.card-header-label {
+    font-family: var(--font-family-title, 'Outfit'), sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--card-text-muted);
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+}
+
+.card-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-family-body, 'Plus Jakarta Sans'), sans-serif;
+    font-size: 10.5px;
+    font-weight: 500;
+    color: var(--card-text-secondary);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+.card-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #6ee7a0;
+    box-shadow: 0 0 6px rgba(110, 231, 160, 0.45);
+    flex-shrink: 0;
+}
+
+.card-photo-frame {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    margin-top: 14px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 4px 14px rgba(0, 0, 0, 0.24),
+        0 0 0 1px rgba(0, 0, 0, 0.14);
+    background: rgba(0, 0, 0, 0.2);
+    aspect-ratio: 246 / 198;
+    flex-shrink: 0;
+}
+
+.card-photo-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 22%;
+    display: block;
+}
+
+.card-main-info {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+}
+
+.card-name-text {
+    font-family: var(--font-family-title, 'Outfit'), sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--card-text-color);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+}
+
+.card-divider-line {
+    height: 1px;
+    background: var(--card-divider-color);
+    margin: 18px 0 16px;
+    width: 100%;
+}
+
+.card-role-text {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--card-text-secondary);
+    letter-spacing: 0.01em;
+}
+
+.card-focus-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 24px;
+}
+
+.card-focus-text {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--card-text-secondary);
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+}
+
+.card-metadata-row {
+    display: flex;
+    gap: 36px;
+    margin-top: 24px;
+}
+
+.card-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.card-meta-label {
+    font-family: var(--font-family-title, 'Outfit'), sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--card-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.6px;
+}
+
+.card-meta-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--card-text-color);
+    letter-spacing: -0.01em;
+}
+
+.card-location-value {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Footer */
+.card-footer-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 28px;
+}
+
+.card-logo-container {
+    color: var(--card-text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: 1px solid var(--card-divider-color);
+    font-family: var(--font-family-title, 'Outfit'), sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    opacity: 0.85;
+}
+
+.card-brand-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.card-brand-name {
+    font-family: var(--font-family-title, 'Outfit'), sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--card-text-color);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+}
+
+.card-brand-subtext {
+    font-family: var(--font-family-title, 'Outfit'), sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--card-text-muted);
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+}
+
+/* Glare */
+.card-glare-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    mix-blend-mode: overlay;
+    background: radial-gradient(
+        circle at var(--glare-x, 50%) var(--glare-y, 50%),
+        rgba(255, 255, 255, 0.16) 0%,
+        rgba(255, 255, 255, 0) 50%
+    );
+}
+
+/* Email */
+.card-email-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    align-self: flex-start;
+    width: 100%;
+    margin-top: 22px;
+}
+
+.card-email-value-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #ffffff;
+}
+
+.card-email-value {
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.88);
+    transition: color 0.2s ease;
+}
+
+.card-email-container:hover .card-email-value {
+    color: #ffffff;
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.35);
+}
+
+.card-email-icon {
+    opacity: 0.35;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.card-email-container:hover .card-email-icon {
+    opacity: 0.7;
+    transform: scale(1.08);
+}
+
+.card-email-copied {
+    font-size: 11px;
+    font-weight: 700;
+    color: #6ee7a0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    animation: fadeIn 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card-hang-sway {
+        animation: none !important;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

@@ -1,0 +1,46 @@
+.hero-garden {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  /* Stay above the exhibition rail so flowers don't bleed into the ticker. */
+  bottom: var(--hero-rail-height, 3.75rem);
+  z-index: 0;
+  width: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to top,
+    #000 0%,
+    #000 28%,
+    rgba(0, 0, 0, 0.55) 52%,
+    rgba(0, 0, 0, 0.12) 78%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to top,
+    #000 0%,
+    #000 28%,
+    rgba(0, 0, 0, 0.55) 52%,
+    rgba(0, 0, 0, 0.12) 78%,
+    transparent 100%
+  );
+}
+
+.hero-garden__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-section > .hero-section__inner,
+.hero-section > .exhibition-rail {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-garden__canvas {
+    opacity: 0.85;
+  }
+}

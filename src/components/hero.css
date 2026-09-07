@@ -1,0 +1,315 @@
+.hero-scroll-boundary {
+  position: relative;
+}
+
+.hero-scroll-boundary .hero-section {
+  position: sticky;
+  top: 0;
+}
+
+.hero-section {
+  --hero-rail-height: 3.75rem;
+  display: flex;
+  flex-direction: column;
+  overflow-x: clip;
+  min-height: 88svh;
+}
+
+.hero-section > .exhibition-rail {
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.hero-live-time {
+  position: absolute;
+  top: max(1.25rem, env(safe-area-inset-top, 0px));
+  left: max(2rem, env(safe-area-inset-left, 0px));
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.65rem;
+  height: 3rem;
+  margin: 0;
+  pointer-events: none;
+  color: var(--text-muted);
+  font-family: var(--font-hero-instrument-sans), var(--font-inter), ui-sans-serif, system-ui,
+    sans-serif;
+}
+
+.hero-live-time__label {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.hero-live-time__value {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  color: var(--text-secondary);
+}
+
+.hero-live-time__zone {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+@media (min-width: 640px) {
+  .hero-section {
+    --hero-rail-height: 4rem;
+  }
+
+  .hero-live-time {
+    top: max(1.5rem, env(safe-area-inset-top, 0px));
+    left: max(3rem, env(safe-area-inset-left, 0px));
+  }
+
+  .hero-live-time__value {
+    font-size: 0.875rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-live-time {
+    left: max(4rem, env(safe-area-inset-left, 0px));
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-live-time {
+    left: max(6rem, env(safe-area-inset-left, 0px));
+  }
+}
+
+.hero-section__inner {
+  flex: 1 1 auto;
+  align-items: flex-start;
+  min-height: max(calc(88svh - var(--hero-rail-height)), 36rem);
+  padding-top: max(10rem, calc(6.35rem + env(safe-area-inset-top, 0px)));
+  padding-bottom: var(--hero-rail-gap);
+}
+
+@media (min-width: 640px) {
+  .hero-section__inner {
+    padding-top: 11.25rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-section__inner {
+    padding-top: 12.25rem;
+  }
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: 2.5rem;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 0.58fr) minmax(0, 0.42fr);
+    gap: 2.75rem;
+  }
+}
+
+.hero-video {
+  width: 100%;
+  max-width: 480px;
+  margin-inline: auto;
+}
+
+@media (min-width: 1024px) {
+  .hero-video {
+    max-width: none;
+    margin-inline: 0;
+    justify-self: end;
+    width: 100%;
+  }
+}
+
+.hero-video__glass {
+  --lg-blur: 32px;
+  --lg-saturate: 190%;
+  --lg-brightness: 1.04;
+  --lg-tint-top: rgba(255, 255, 255, 0.42);
+  --lg-tint-mid: rgba(255, 255, 255, 0.22);
+  --lg-tint-bot: rgba(255, 255, 255, 0.14);
+  --lg-rim: rgba(255, 255, 255, 0.62);
+  --lg-shadow: 0 8px 32px rgba(15, 23, 42, 0.08), 0 2px 8px rgba(99, 102, 241, 0.1);
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  box-shadow: var(--lg-shadow);
+}
+
+.hero-video__glass .liquid-glass__shimmer,
+.hero-video__glass .liquid-glass__noise {
+  display: none;
+}
+
+[data-theme="dark"] .hero-video__glass {
+  --lg-tint-top: rgba(30, 30, 30, 0.72);
+  --lg-tint-mid: rgba(20, 20, 20, 0.55);
+  --lg-tint-bot: rgba(12, 12, 12, 0.45);
+  --lg-rim: rgba(255, 255, 255, 0.1);
+  --lg-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.hero-video__frame {
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  min-height: 12rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+[data-theme="dark"] .hero-video__frame {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.hero-headline {
+  max-width: min(560px, 100%);
+  text-wrap: balance;
+}
+
+.hero-headline__desktop-only {
+  display: none;
+}
+
+.hero-headline__mobile-only {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .hero-headline__desktop-only {
+    display: block;
+  }
+
+  .hero-headline__mobile-only {
+    display: none;
+  }
+
+  .hero-headline__desktop-only + .hero-headline__desktop-only {
+    margin-top: -0.02em;
+  }
+}
+
+.hero-cta {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.hero-cta__button {
+  width: 100%;
+  min-height: 2.75rem;
+}
+
+@media (min-width: 640px) {
+  .hero-cta {
+    width: auto;
+    margin-top: 2.25rem;
+  }
+
+  .hero-cta__button {
+    width: auto;
+  }
+}
+
+/*
+ * Laptop / MacBook-class displays — full first fold, keep the familiar
+ * top-weighted placement (do not vertically center here).
+ */
+@media (min-width: 1024px) and (max-width: 1799px) {
+  .hero-section {
+    min-height: 100svh;
+  }
+
+  .hero-section__inner {
+    min-height: calc(100svh - var(--hero-rail-height));
+  }
+}
+
+/*
+ * Large external monitors (≈1920px+ wide) — vertically center the hero
+ * composition. Uses width, not height, so 1080p desktops still match.
+ */
+@media (min-width: 1800px) {
+  .hero-section {
+    min-height: 100svh;
+  }
+
+  .hero-section__inner {
+    min-height: calc(100svh - var(--hero-rail-height));
+    align-items: center;
+    justify-content: center;
+    padding-top: max(5.5rem, calc(4rem + env(safe-area-inset-top, 0px)));
+    padding-bottom: var(--hero-rail-gap);
+  }
+
+  .hero-grid {
+    width: 100%;
+    transform: none;
+  }
+}
+
+/* Extra-tall large desktops — slight optical lift above true center */
+@media (min-width: 1800px) and (min-height: 1200px) {
+  .hero-section__inner {
+    padding-top: max(5.25rem, calc(3.75rem + env(safe-area-inset-top, 0px)));
+    padding-bottom: var(--hero-rail-gap);
+  }
+}
+
+/* Short viewports — avoid excessive vertical centering gap */
+@media (max-height: 720px) {
+  .hero-section__inner {
+    min-height: auto;
+    padding-bottom: var(--hero-rail-gap);
+  }
+
+  .hero-grid {
+    transform: none;
+  }
+}
+
+/* Very narrow phones — keep the second line readable */
+@media (max-width: 380px) {
+  .hero-headline {
+    font-size: clamp(1.75rem, 8.8vw, 2.2rem);
+    letter-spacing: -0.025em;
+  }
+}
+
+/* Small phones in landscape */
+@media (max-height: 480px) and (orientation: landscape) {
+  .hero-section__inner {
+    padding-top: max(5rem, calc(3.5rem + env(safe-area-inset-top, 0px)));
+    padding-bottom: var(--hero-rail-gap);
+  }
+
+  .hero-headline {
+    font-size: clamp(1.65rem, 5vw, 2.2rem);
+  }
+
+  .hero-cta {
+    margin-top: 1.25rem;
+  }
+
+  .hero-grid {
+    transform: none;
+  }
+}

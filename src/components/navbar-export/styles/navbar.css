@@ -1,0 +1,46 @@
+.liquid-glass-navbar-root {
+  position: fixed;
+  top: var(--navbar-top, 24px);
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  height: min-content;
+  padding: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.liquid-glass-navbar-root > * {
+  pointer-events: auto;
+}
+
+.liquid-glass-navbar-desktop {
+  width: auto;
+  height: 59px;
+  position: relative;
+}
+
+.liquid-glass-navbar-mobile {
+  width: 275px;
+  height: 59px;
+  position: relative;
+}
+
+@keyframes nbg-link-in {
+  from {
+    transform: translateX(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.nbg-link-enter {
+  animation: nbg-link-in 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+}

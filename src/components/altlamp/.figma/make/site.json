@@ -1,0 +1,10 @@
+{
+  "description": "Showcases a premium industrial pendant lamp design with multiple realistic states, ideal for product designers and modern interior portfolios.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

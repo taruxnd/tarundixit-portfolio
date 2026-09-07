@@ -1,0 +1,359 @@
+/* Experience — chapter lead + hanging ID / glass composition
+   Do not restyle .card-* / BusinessCard3D internals from here. */
+
+.experience-section {
+  overflow: visible;
+  padding-top: 0;
+  padding-bottom: 5rem;
+}
+
+@media (min-width: 640px) {
+  .experience-section {
+    padding-bottom: 6rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .experience-section--with-card {
+    padding-bottom: 7rem;
+  }
+}
+
+/* ——— Chapter break: Projects → Experience ——— */
+
+.experience-section__lead {
+  padding-top: 0;
+  padding-bottom: clamp(2.75rem, 5vw, 4.25rem);
+}
+
+.experience-section__rule {
+  width: 100%;
+  height: 1px;
+  margin: 0 0 clamp(2.25rem, 4vw, 3.25rem);
+  border: 0;
+  background: color-mix(in srgb, var(--text-primary) 10%, transparent);
+}
+
+[data-theme="dark"] .experience-section__rule {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.02) 0%,
+    rgba(255, 255, 255, 0.14) 18%,
+    rgba(255, 255, 255, 0.14) 82%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+}
+
+.experience-section__intro {
+  max-width: none;
+}
+
+.experience-section__title {
+  margin: 0;
+  font-size: clamp(1.85rem, 3.2vw, 2.5rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--text-primary);
+}
+
+/* ——— Stage: hanging composition (strap clips into stage ceiling) ——— */
+
+.experience-section__stage {
+  position: relative;
+  overflow: visible;
+}
+
+@media (min-width: 1024px) {
+  .experience-section__stage--hang {
+    padding-top: 0;
+    /* Clip only the top so the strap disappears into the stage edge */
+    clip-path: inset(0 -100vw -100vw -100vw);
+  }
+}
+
+.experience-section__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+  gap: 2.5rem;
+}
+
+@media (min-width: 1024px) {
+  .experience-section--with-card .experience-section__grid {
+    grid-template-columns: minmax(0, 0.3fr) minmax(0, 0.7fr);
+    column-gap: clamp(4rem, 8vw, 7.25rem);
+    row-gap: 0;
+  }
+}
+
+.experience-section__grid--list-only {
+  grid-template-columns: 1fr;
+}
+
+.experience-section--list-only {
+  padding-top: 3.5rem;
+}
+
+.experience-section--list-only .experience-section__main {
+  max-width: 40rem;
+}
+
+/* ——— Left: ID card host only ——— */
+
+.experience-section__aside {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 280px;
+  overflow: visible;
+}
+
+@media (min-width: 1024px) {
+  .experience-section__aside {
+    justify-content: flex-start;
+  }
+}
+
+.experience-section__aside .card-mockup-wrapper {
+  width: 100%;
+  max-width: none;
+  height: auto;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+@media (min-width: 1024px) {
+  .experience-section__aside .card-mockup-wrapper {
+    /* Width follows proportional card scale (310 × --card-scale) */
+    width: fit-content;
+  }
+}
+
+/* ——— Right: glass editorial column ——— */
+
+.experience-section__main {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+  max-width: none;
+}
+
+@media (min-width: 1024px) {
+  .experience-section--with-card .experience-section__main {
+    /* Panel top aligns with strap start (stage ceiling / hang origin) */
+    padding-top: 0;
+    max-width: none;
+  }
+}
+
+.experience-glass {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 1.35rem;
+  min-height: 26rem;
+  box-sizing: border-box;
+  padding: 1.85rem 1.9rem 2rem;
+  border: 1px solid color-mix(in srgb, var(--text-primary) 9%, transparent);
+  background: color-mix(in srgb, var(--text-primary) 3.5%, transparent);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 1px 0 0 rgba(255, 255, 255, 0.06),
+    inset -1px 0 0 rgba(255, 255, 255, 0.03),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+    0 18px 40px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] .experience-glass {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.028);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 1px 0 0 rgba(255, 255, 255, 0.08),
+    inset -1px 0 0 rgba(255, 255, 255, 0.04),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.35),
+    0 22px 48px rgba(0, 0, 0, 0.28),
+    0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+.experience-glass__edge {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  z-index: 1;
+}
+
+[data-theme="dark"] .experience-glass__edge {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 0 48px rgba(255, 255, 255, 0.015);
+}
+
+.experience-glass__glint {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 52%;
+  height: 42%;
+  border-top-left-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.05) 28%,
+    rgba(255, 255, 255, 0) 62%
+  );
+  opacity: 0.55;
+  z-index: 0;
+}
+
+[data-theme="dark"] .experience-glass__glint {
+  opacity: 0.72;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.05) 26%,
+    rgba(255, 255, 255, 0) 58%
+  );
+}
+
+.experience-list {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.experience-entry {
+  position: relative;
+  padding: 1.35rem 0;
+  border-top: 1px solid color-mix(in srgb, var(--text-primary) 7%, transparent);
+}
+
+.experience-entry:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+.experience-entry--last {
+  padding-bottom: 0.15rem;
+}
+
+[data-theme="dark"] .experience-entry {
+  border-top-color: rgba(255, 255, 255, 0.07);
+}
+
+.experience-entry__content {
+  min-width: 0;
+}
+
+.experience-entry__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem 1.75rem;
+}
+
+.experience-entry__identity {
+  min-width: 0;
+}
+
+.experience-entry__company {
+  margin: 0;
+  font-family: var(--font-hero-instrument-sans), var(--font-inter), ui-sans-serif,
+    system-ui, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+.experience-entry__role {
+  margin: 0.3rem 0 0;
+  font-family: var(--font-hero-instrument-sans), var(--font-inter), ui-sans-serif,
+    system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--text-muted);
+}
+
+.experience-entry__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.22rem;
+  flex-shrink: 0;
+  text-align: right;
+  padding-top: 0.12rem;
+}
+
+.experience-entry__period,
+.experience-entry__location {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1.35;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.experience-entry__description {
+  margin: 0.95rem 0 0;
+  max-width: 28.5rem;
+  font-family: var(--font-hero-instrument-sans), var(--font-inter), ui-sans-serif,
+    system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: -0.012em;
+  line-height: 1.68;
+  color: var(--text-secondary);
+}
+
+@media (min-width: 640px) {
+  .experience-glass {
+    min-height: 28rem;
+    padding: 2.05rem 2.15rem 2.2rem;
+  }
+
+  .experience-entry {
+    padding: 1.55rem 0;
+  }
+
+  .experience-entry:first-child {
+    padding-top: 0;
+  }
+}
+
+@media (max-width: 639px) {
+  .experience-glass {
+    border-radius: 1.15rem;
+    padding: 1.2rem 1.15rem 1.3rem;
+  }
+
+  .experience-entry__header {
+    flex-wrap: wrap;
+    gap: 0.55rem 1rem;
+  }
+
+  .experience-entry__meta {
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.85rem;
+  }
+}

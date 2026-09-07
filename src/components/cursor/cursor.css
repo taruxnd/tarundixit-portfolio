@@ -1,0 +1,108 @@
+/* Custom cursors — pointer-events none, excluded from cursor:none in globals.css */
+
+.you-cursor,
+.figma-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  pointer-events: none;
+  will-change: transform;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.figma-cursor {
+  z-index: 9998;
+}
+
+.you-cursor {
+  transition: opacity 0.14s ease;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.you-cursor__arrow,
+.figma-cursor__arrow {
+  display: block;
+  transform-origin: top left;
+  transition: transform 0.14s ease-out;
+}
+
+.you-cursor__tag-wrap {
+  position: absolute;
+  top: 12px;
+  left: 10px;
+}
+
+/* Figma multiplayer collaborator cursor */
+.figma-cursor__tag-wrap {
+  position: absolute;
+  top: 12px;
+  left: 10px;
+}
+
+.figma-cursor__tag {
+  display: inline-block;
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: #fff;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14);
+  transition: transform 0.14s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .you-cursor__arrow,
+  .figma-cursor__tag,
+  .figma-cursor {
+    transition: none;
+  }
+}
+
+.figma-marquee {
+  position: fixed;
+  z-index: 9997;
+  pointer-events: none;
+  box-sizing: border-box;
+  border: 2px solid #18a0fb;
+  background: transparent;
+  transition: opacity 0.32s ease;
+}
+
+.figma-marquee__handle {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1.5px solid #18a0fb;
+}
+
+.figma-marquee__handle[data-corner="tl"] {
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+
+.figma-marquee__handle[data-corner="tr"] {
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+.figma-marquee__handle[data-corner="bl"] {
+  bottom: 0;
+  left: 0;
+  transform: translate(-50%, 50%);
+}
+
+.figma-marquee__handle[data-corner="br"] {
+  bottom: 0;
+  right: 0;
+  transform: translate(50%, 50%);
+}
