@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import "./navbar.css";
 
 interface LiquidGlassProps {
   children: ReactNode;

@@ -157,57 +157,6 @@ body {
   transform: rotate(var(--float-rotation, 0deg));
 }
 
-/* Comment bubble */
-@keyframes comment-bubble-in {
-  from {
-    opacity: 0;
-    transform: scale(0.94);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.comment-bubble {
-  animation: comment-bubble-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.8s both;
-}
-
-.comment-bubble-text {
-  max-width: 0;
-  opacity: 0;
-  padding-right: 0;
-  margin-left: 0;
-  transition:
-    max-width 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.25s ease,
-    margin-left 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-    padding-right 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.comment-bubble:hover .comment-bubble-text,
-.comment-bubble:focus-within .comment-bubble-text {
-  max-width: 280px;
-  opacity: 1;
-  margin-left: 10px;
-  padding-right: 4px;
-}
-
-.comment-bubble:hover .comment-bubble-shell,
-.comment-bubble:focus-within .comment-bubble-shell {
-  padding-right: 16px;
-}
-
-.comment-bubble-tail {
-  transform: scale(0.85);
-  transition: transform 0.25s ease;
-}
-
-.comment-bubble:hover .comment-bubble-tail,
-.comment-bubble:focus-within .comment-bubble-tail {
-  transform: scale(1);
-}
-
 /* Testimonial rack */
 .testimonial-rack-stage,
 .testimonial-rack-card {

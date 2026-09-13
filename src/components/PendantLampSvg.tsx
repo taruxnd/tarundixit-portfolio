@@ -38,8 +38,13 @@ export default function PendantLampSvg({
   onPullKeyToggle,
 }: PendantLampSvgProps) {
   const uid = useId().replace(/:/g, "");
-  const cableStroke = dark ? "#2a2a2c" : "#1c1c1e";
-  const cordStroke = dark ? "#6a5e52" : "#9a8878";
+  const cableStroke = dark ? "#7a7a86" : "#1c1c1e";
+  const cordStroke = dark ? "#b8a898" : "#9a8878";
+  const socketFill = dark ? "#3a3a46" : "#1a1a1c";
+  const socketHighlight = dark ? "#52525e" : "#2a2a2c";
+  const socketUnder = dark ? "#2c2c34" : "#161618";
+  const seam = dark ? "rgba(255,255,255,0.22)" : "#000";
+  const seamTop = dark ? "rgba(255,255,255,0.28)" : "#2a2a2c";
   /* Cord length is authored in SVG space — independent of CSS lamp scale */
   const handleTop = 318;
   const handleY = handleTop + cordPull;
@@ -100,9 +105,9 @@ export default function PendantLampSvg({
         </linearGradient>
 
         <radialGradient id={`${uid}-bulb`} cx="40%" cy="36%" r="58%">
-          <stop offset="0%" stopColor={on ? "#fffef6" : "#2a2a2c"} />
-          <stop offset="42%" stopColor={on ? "#fff4c8" : "#222224"} />
-          <stop offset="100%" stopColor={on ? "#e8b850" : "#1a1a1c"} stopOpacity={on ? 0.92 : 1} />
+          <stop offset="0%" stopColor={on ? "#fffef6" : dark ? "#6a6a74" : "#2a2a2c"} />
+          <stop offset="42%" stopColor={on ? "#fff4c8" : dark ? "#52525c" : "#222224"} />
+          <stop offset="100%" stopColor={on ? "#e8b850" : dark ? "#3e3e48" : "#1a1a1c"} stopOpacity={on ? 0.92 : 1} />
         </radialGradient>
 
         <radialGradient id={`${uid}-halo`} cx="50%" cy="50%" r="50%">
@@ -118,38 +123,38 @@ export default function PendantLampSvg({
         </radialGradient>
 
         <linearGradient id={`${uid}-face-left`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor={dark ? "#060608" : "#0a0a0c"} />
-          <stop offset="100%" stopColor={dark ? "#101012" : "#141416"} />
+          <stop offset="0%" stopColor={dark ? "#2a2a34" : "#0a0a0c"} />
+          <stop offset="100%" stopColor={dark ? "#3c3c48" : "#141416"} />
         </linearGradient>
 
         <linearGradient id={`${uid}-face-front`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={dark ? "#101012" : "#161618"} />
-          <stop offset="100%" stopColor={dark ? "#080808" : "#0e0e10"} />
+          <stop offset="0%" stopColor={dark ? "#484854" : "#161618"} />
+          <stop offset="100%" stopColor={dark ? "#32323c" : "#0e0e10"} />
         </linearGradient>
 
         <linearGradient id={`${uid}-face-right`} x1="1" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={dark ? "#141416" : "#1a1a1c"} />
-          <stop offset="100%" stopColor={dark ? "#0a0a0c" : "#101012"} />
+          <stop offset="0%" stopColor={dark ? "#5a5a68" : "#1a1a1c"} />
+          <stop offset="100%" stopColor={dark ? "#3e3e4a" : "#101012"} />
         </linearGradient>
 
         <linearGradient id={`${uid}-brass`} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#7a6030" />
-          <stop offset="25%" stopColor="#c8a858" />
-          <stop offset="50%" stopColor="#e8c878" />
-          <stop offset="75%" stopColor="#c8a858" />
-          <stop offset="100%" stopColor="#7a6030" />
+          <stop offset="0%" stopColor={dark ? "#8a7848" : "#7a6030"} />
+          <stop offset="25%" stopColor={dark ? "#d2bc78" : "#c8a858"} />
+          <stop offset="50%" stopColor={dark ? "#f0dc9a" : "#e8c878"} />
+          <stop offset="75%" stopColor={dark ? "#d2bc78" : "#c8a858"} />
+          <stop offset="100%" stopColor={dark ? "#8a7848" : "#7a6030"} />
         </linearGradient>
 
         <linearGradient id={`${uid}-walnut`} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#4a2f12" />
-          <stop offset="28%" stopColor="#7a5025" />
-          <stop offset="55%" stopColor="#8b5e2e" />
-          <stop offset="80%" stopColor="#6b4420" />
-          <stop offset="100%" stopColor="#4a2f12" />
+          <stop offset="0%" stopColor={dark ? "#6a4824" : "#4a2f12"} />
+          <stop offset="28%" stopColor={dark ? "#9a6a38" : "#7a5025"} />
+          <stop offset="55%" stopColor={dark ? "#b07a44" : "#8b5e2e"} />
+          <stop offset="80%" stopColor={dark ? "#8a5c30" : "#6b4420"} />
+          <stop offset="100%" stopColor={dark ? "#6a4824" : "#4a2f12"} />
         </linearGradient>
 
         <linearGradient id={`${uid}-cable`} x1={CX} y1="0" x2={CX} y2={CABLE_END} gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor={dark ? "#3a3a3c" : "#2a2a2c"} />
+          <stop offset="0%" stopColor={dark ? "#9a9aa6" : "#2a2a2c"} />
           <stop offset="100%" stopColor={cableStroke} />
         </linearGradient>
 
@@ -204,10 +209,10 @@ export default function PendantLampSvg({
         ) : null}
 
         {/* Socket — black cap + brass ring */}
-        <rect x={CX - 12} y="66" width="24" height="14" rx="2" fill={dark ? "#141416" : "#1a1a1c"} />
-        <rect x={CX - 12} y="66" width="24" height="4" rx="2" fill={dark ? "#222224" : "#2a2a2c"} />
+        <rect x={CX - 12} y="66" width="24" height="14" rx="2" fill={socketFill} />
+        <rect x={CX - 12} y="66" width="24" height="4" rx="2" fill={socketHighlight} />
         <rect x={CX - 16} y="80" width="32" height="5" rx="1.5" fill={`url(#${uid}-brass)`} />
-        <rect x={CX - 14} y="85" width="28" height="3" rx="1" fill={dark ? "#101012" : "#161618"} />
+        <rect x={CX - 14} y="85" width="28" height="3" rx="1" fill={socketUnder} />
 
         {/* Interior glow + gold lining */}
         <g clipPath={`url(#${uid}-shade-clip)`}>
@@ -245,12 +250,12 @@ export default function PendantLampSvg({
         <polygon points={frontFace} fill={`url(#${uid}-face-front)`} />
 
         {/* Facet seams */}
-        <line x1={tlBack.x} y1={tlBack.y} x2={blBack.x} y2={blBack.y} stroke="#000" strokeOpacity={0.45} strokeWidth="0.75" />
-        <line x1={trBack.x} y1={trBack.y} x2={brBack.x} y2={brBack.y} stroke="#000" strokeOpacity={0.45} strokeWidth="0.75" />
-        <line x1={tl.x} y1={tl.y} x2={bl.x} y2={bl.y} stroke="#000" strokeOpacity={0.5} strokeWidth="0.75" />
-        <line x1={tr.x} y1={tr.y} x2={br.x} y2={br.y} stroke="#000" strokeOpacity={0.5} strokeWidth="0.75" />
-        <line x1={tl.x} y1={tl.y} x2={tr.x} y2={tr.y} stroke="#2a2a2c" strokeOpacity={0.35} strokeWidth="0.5" />
-        <line x1={tlBack.x} y1={tlBack.y} x2={trBack.x} y2={trBack.y} stroke="#000" strokeOpacity={0.25} strokeWidth="0.5" />
+        <line x1={tlBack.x} y1={tlBack.y} x2={blBack.x} y2={blBack.y} stroke={seam} strokeOpacity={dark ? 0.7 : 0.45} strokeWidth="0.75" />
+        <line x1={trBack.x} y1={trBack.y} x2={brBack.x} y2={brBack.y} stroke={seam} strokeOpacity={dark ? 0.7 : 0.45} strokeWidth="0.75" />
+        <line x1={tl.x} y1={tl.y} x2={bl.x} y2={bl.y} stroke={seam} strokeOpacity={dark ? 0.8 : 0.5} strokeWidth="0.75" />
+        <line x1={tr.x} y1={tr.y} x2={br.x} y2={br.y} stroke={seam} strokeOpacity={dark ? 0.8 : 0.5} strokeWidth="0.75" />
+        <line x1={tl.x} y1={tl.y} x2={tr.x} y2={tr.y} stroke={seamTop} strokeOpacity={dark ? 0.85 : 0.35} strokeWidth="0.5" />
+        <line x1={tlBack.x} y1={tlBack.y} x2={trBack.x} y2={trBack.y} stroke={seam} strokeOpacity={dark ? 0.5 : 0.25} strokeWidth="0.5" />
 
         {/* Gold bottom rim */}
         <path d={rimGold} fill={`url(#${uid}-rim)`} />

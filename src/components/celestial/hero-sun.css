@@ -1,12 +1,12 @@
-/* Day sun — absolute inside hero, does not follow scroll past the fold */
+/* Day sun — left, vertically aligned with the navbar pill */
 
 .hero-sun {
   position: absolute;
-  top: max(5.5rem, 10vh);
-  left: clamp(3.5rem, 8vw, 7.5rem);
-  z-index: 1;
-  width: 7.5rem;
-  height: 7.5rem;
+  top: max(1.5rem, env(safe-area-inset-top, 0px));
+  left: clamp(1.5rem, 3.5vw, 2.75rem);
+  z-index: 0;
+  width: 3rem;
+  height: 3rem;
   pointer-events: none;
   -webkit-user-select: none;
   user-select: none;
@@ -14,7 +14,7 @@
 
 .hero-sun__rays {
   position: absolute;
-  inset: -45%;
+  inset: -90%;
   border-radius: 50%;
   pointer-events: none;
   -webkit-mask-image: radial-gradient(circle, black 10%, transparent 68%);
@@ -25,7 +25,7 @@
 
 .hero-sun__glare {
   position: absolute;
-  inset: -45%;
+  inset: -90%;
   pointer-events: none;
 }
 
@@ -33,8 +33,8 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
@@ -57,10 +57,7 @@
 
 @media (min-width: 1280px) {
   .hero-sun {
-    width: 8.5rem;
-    height: 8.5rem;
-    top: max(6rem, 11vh);
-    left: clamp(4rem, 8.5vw, 8rem);
+    left: clamp(2rem, 4vw, 3.25rem);
   }
 }
 
