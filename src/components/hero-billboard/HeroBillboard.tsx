@@ -10,6 +10,12 @@ export default function HeroBillboard() {
 
   return (
     <div className="hero-billboard" aria-hidden>
+      {/* Poles extend into the flower bed and fade out as they plant */}
+      <div className="hero-billboard__poles">
+        <span className="hero-billboard__pole" />
+        <span className="hero-billboard__pole" />
+      </div>
+
       <motion.div
         className="hero-billboard__entrance"
         initial={reducedMotion ? false : { opacity: 0, y: 18 }}
@@ -17,9 +23,15 @@ export default function HeroBillboard() {
         transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="hero-billboard__rig">
-          <div className="hero-billboard__posts">
-            <span className="hero-billboard__post hero-billboard__post--left" />
-            <span className="hero-billboard__post hero-billboard__post--right" />
+          <div className="hero-billboard__lights">
+            <span className="hero-billboard__light">
+              <span className="hero-billboard__light-arm" />
+              <span className="hero-billboard__light-head" />
+            </span>
+            <span className="hero-billboard__light">
+              <span className="hero-billboard__light-arm" />
+              <span className="hero-billboard__light-head" />
+            </span>
           </div>
 
           <div className="hero-billboard__board">
@@ -30,7 +42,7 @@ export default function HeroBillboard() {
                   alt=""
                   fill
                   priority
-                  sizes="(max-width: 1280px) 180px, 220px"
+                  sizes="(max-width: 1280px) 200px, 250px"
                   className="hero-billboard__photo"
                 />
                 <div className="hero-billboard__grade" />
@@ -39,7 +51,6 @@ export default function HeroBillboard() {
                 </div>
               </div>
             </div>
-            <div className="hero-billboard__ledge" />
           </div>
         </div>
       </motion.div>

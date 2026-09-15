@@ -1,0 +1,271 @@
+/* Xhulia sticky project stack — ~102vh panels that layer on scroll */
+
+.xhulia-work {
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.xhulia-work__stack {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.xhulia-panel {
+  --xhulia-panel-radius: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  height: 102vh;
+  height: 102dvh;
+  padding: 0 0 5rem;
+  overflow: clip;
+  background: var(--bg-page, #fff);
+  border-top-left-radius: var(--xhulia-panel-radius);
+  border-top-right-radius: var(--xhulia-panel-radius);
+  border-left: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
+  border-right: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
+  box-shadow:
+    0 -0.3px 0.3px -1.25px rgba(0, 0, 0, 0.18),
+    0 -1.15px 1.15px -2.5px rgba(0, 0, 0, 0.16),
+    0 -5px 5px -3.75px rgba(0, 0, 0, 0.06);
+  position: relative;
+  will-change: transform;
+}
+
+.xhulia-panel--sticky {
+  position: sticky;
+  top: 0;
+}
+
+[data-theme="dark"] .xhulia-panel {
+  background: var(--bg-page, #0a0a0a);
+  box-shadow:
+    0 -0.3px 0.3px -1.25px rgba(0, 0, 0, 0.45),
+    0 -1.15px 1.15px -2.5px rgba(0, 0, 0, 0.4),
+    0 -5px 5px -3.75px rgba(0, 0, 0, 0.28);
+}
+
+/* Top row: copy + CTA (Xhulia desktop = row) */
+.xhulia-panel__top {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1rem;
+  width: 100%;
+  padding: 4rem 4rem 2rem;
+  flex: none;
+}
+
+.xhulia-panel__copy {
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-width: 0;
+  width: 1px;
+  text-align: center;
+}
+
+.xhulia-panel__identity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  width: 100%;
+}
+
+.xhulia-panel__logo {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.xhulia-panel__label {
+  margin: 0;
+  color: var(--text-muted);
+  font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(0.9375rem, 0.2vw + 0.9rem, 1.125rem);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.xhulia-panel__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  width: 100%;
+  max-width: 44rem;
+}
+
+.xhulia-panel__title {
+  margin: 0;
+  width: 100%;
+  color: var(--text-primary);
+  font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.25rem, 1.1vw + 1rem, 1.75rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  text-align: left;
+  text-wrap: balance;
+}
+
+.xhulia-panel__outcomes {
+  margin: 0;
+  width: 100%;
+  color: var(--text-secondary);
+  font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.xhulia-panel__cta {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.15rem;
+  padding: 0.7rem 1.05rem;
+  border-radius: 999px;
+  text-decoration: none;
+  color: #fafafa;
+  background: var(--text-primary);
+  font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+
+[data-theme="dark"] .xhulia-panel__cta:not(.xhulia-panel__cta--disabled) {
+  color: #111;
+  background: #f5f5f5;
+}
+
+.xhulia-panel__cta--disabled {
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--surface-card) 88%, var(--text-primary));
+  cursor: default;
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .xhulia-panel__cta:not(.xhulia-panel__cta--disabled):hover {
+    opacity: 0.88;
+  }
+}
+
+/* Strip fills remaining panel height */
+.xhulia-panel__strip {
+  position: relative;
+  flex: 1 0 0;
+  width: 100%;
+  min-height: 0;
+  height: 1px;
+}
+
+.xhulia-strip__viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+  contain: layout paint style;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.xhulia-strip__viewport.is-dragging {
+  cursor: grabbing;
+}
+
+.xhulia-strip__track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.xhulia-strip__frame {
+  position: relative;
+  flex-shrink: 0;
+  width: min(86vw, 38.75rem);
+  height: 100%;
+  margin-right: 0.5rem;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  border: 2px solid color-mix(in srgb, var(--surface-elevated) 88%, var(--text-primary));
+  background: var(--surface-card);
+  box-sizing: border-box;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.xhulia-strip__frame img,
+.xhulia-strip__frame video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+@media (max-width: 809.98px) {
+  .xhulia-panel {
+    --xhulia-panel-radius: 32px;
+  }
+
+  .xhulia-panel__top {
+    flex-direction: column;
+    padding: 2rem;
+  }
+
+  .xhulia-panel__copy {
+    flex: none;
+    width: 100%;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .xhulia-panel__identity {
+    justify-content: flex-start;
+  }
+
+  .xhulia-panel__text {
+    align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xhulia-panel__cta {
+    transition: none;
+  }
+
+  .xhulia-strip__viewport {
+    cursor: default;
+  }
+}

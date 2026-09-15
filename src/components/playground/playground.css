@@ -1,0 +1,136 @@
+.playground {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  color: var(--text-primary);
+  background: var(--page-bg, #fafafa);
+}
+
+.playground__dots {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.22;
+  background-image: radial-gradient(
+    circle at center,
+    color-mix(in srgb, var(--text-primary) 55%, transparent) 1.1px,
+    transparent 1.2px
+  );
+  background-size: 10px 10px;
+}
+
+[data-theme="dark"] .playground {
+  --page-bg: #0c0c0c;
+}
+
+.playground__intro {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  width: min(100% - 2rem, 28rem);
+  text-align: center;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.playground__title {
+  margin: 0;
+  color: var(--text-primary);
+  font-family: var(--font-hero-instrument-serif), Georgia, serif;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.playground__lede {
+  margin: 0.15rem 0 0;
+  color: var(--text-muted);
+  font-family: var(--font-hero-instrument-sans), var(--font-inter), ui-sans-serif,
+    system-ui, sans-serif;
+  font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+}
+
+.playground__hint {
+  margin: 0.85rem 0 0;
+  color: var(--text-faint);
+  font-family: var(--font-hero-instrument-sans), var(--font-inter), ui-sans-serif,
+    system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.playground__viewport {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  cursor: grab;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.playground__viewport.is-dragging {
+  cursor: grabbing;
+}
+
+.playground__stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  will-change: transform;
+}
+
+.playground__card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
+  background: var(--surface-elevated, #fff);
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.12),
+    0 2px 6px rgba(15, 23, 42, 0.06);
+  pointer-events: none;
+}
+
+[data-theme="dark"] .playground__card {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: #161616;
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.45),
+    0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.playground__card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-user-drag: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+@media (max-width: 809px) {
+  .playground__card {
+    scale: 0.82;
+  }
+
+  .playground__hint {
+    display: none;
+  }
+}

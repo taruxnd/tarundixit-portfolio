@@ -16,6 +16,8 @@
   flex-direction: column;
   overflow-x: clip;
   min-height: 88svh;
+  /* Keep billboard posts (z-index: -1) behind flowers but inside the hero */
+  isolation: isolate;
 }
 
 .hero-comment {

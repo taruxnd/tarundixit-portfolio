@@ -1,4 +1,4 @@
-import { Instrument_Sans, Instrument_Serif } from "next/font/google";
+import { Geist, Instrument_Sans, Instrument_Serif } from "next/font/google";
 
 export const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
@@ -13,11 +13,20 @@ export const instrumentSans = Instrument_Sans({
   variable: "--font-hero-instrument-sans",
 });
 
+/** Xhulia project-card voice — Geist only (strip experiment) */
+export const geist = Geist({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-geist",
+});
+
 /** Editorial hero typography — Instrument Serif + Instrument Sans */
 export const heroFontClassName = [
   instrumentSerif.variable,
   instrumentSans.variable,
 ].join(" ");
+
+export const stripFontClassName = geist.variable;
 
 const sans =
   "var(--font-hero-instrument-sans), var(--font-inter), ui-sans-serif, system-ui, sans-serif";

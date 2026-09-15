@@ -6,7 +6,8 @@ export interface FeatureCard {
   title: string;
   description: string;
   status: string;
-  href: string;
+  caseStudyHref: string;
+  videoHref: string;
   size: "flagship" | "secondary";
 }
 
@@ -15,27 +16,33 @@ export const featureCards: FeatureCard[] = [
     id: "copilot",
     index: "01",
     title: "Social Media Copilot",
-    description: "From Brief to Campaign, Faster",
+    description:
+      "An AI workspace that turns a brief into a multi-day content plan — drafted, voiced, and ready to publish.",
     status: "Shipped",
-    href: "#work",
+    caseStudyHref: "/#work",
+    videoHref: "#watch-copilot",
     size: "flagship",
   },
   {
     id: "brand-hub",
     index: "02",
     title: "Brand Hub",
-    description: "One Brand, Every Creative Surface",
+    description:
+      "One living brand system for every surface — guidelines, assets, and approvals in a single place.",
     status: "Shipped",
-    href: "#work",
+    caseStudyHref: "/#work",
+    videoHref: "#watch-brand-hub",
     size: "secondary",
   },
   {
     id: "design-system",
     index: "03",
     title: "AI Design System",
-    description: "A System Built for AI",
+    description:
+      "Tokens, patterns, and code-connected components that help product teams ship with less debate.",
     status: "In use",
-    href: "/work/ai-design-system",
+    caseStudyHref: "/work/ai-design-system",
+    videoHref: "#watch-design-system",
     size: "secondary",
   },
 ];
