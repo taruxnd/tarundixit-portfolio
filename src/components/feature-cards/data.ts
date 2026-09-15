@@ -35,7 +35,7 @@ export const featureCards: FeatureCard[] = [
     title: "AI Design System",
     description: "A System Built for AI",
     status: "In use",
-    href: "#work",
+    href: "/work/ai-design-system",
     size: "secondary",
   },
 ];

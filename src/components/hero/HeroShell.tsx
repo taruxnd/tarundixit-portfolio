@@ -1,7 +1,6 @@
 "use client";
 
 import ExhibitionRail from "@/components/exhibition-rail/ExhibitionRail";
-import CommentBubble from "@/components/CommentBubble";
 import HeroBillboard from "@/components/hero-billboard/HeroBillboard";
 import HeroGarden from "@/components/hero-garden/HeroGarden";
 import { useHeroScrollBoundary } from "@/components/hero/useHeroScrollBoundary";
@@ -17,7 +16,7 @@ interface HeroShellProps {
   children: ReactNode;
 }
 
-/** Shared hero chrome — sky, garden, billboard, comment, rail. */
+/** Shared hero chrome — sky, garden, billboard, rail. */
 export default function HeroShell({ children }: HeroShellProps) {
   const boundaryRef = useRef<HTMLDivElement>(null);
   const { theme, reducedMotion } = useTheme();
@@ -31,14 +30,6 @@ export default function HeroShell({ children }: HeroShellProps) {
         ) : null}
         <HeroGarden />
         <HeroBillboard />
-        <CommentBubble
-          className="hero-comment"
-          text="currently working @ kumba.ai"
-          author="Tarun"
-          timestamp="Just now"
-          avatarSrc="/profile/life-lately-samvaad.jpg"
-          avatarInitials="TD"
-        />
         <div
           className={`hero-section__inner relative flex ${contentContainerClassName}`}
         >

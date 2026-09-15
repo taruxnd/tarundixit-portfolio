@@ -125,8 +125,9 @@
 
 @media (min-width: 1024px) {
   .experience-section__aside .card-mockup-wrapper {
-    /* Width follows proportional card scale (310 × --card-scale) */
-    width: fit-content;
+    /* Explicit width — fit-content + min(..., 100%) collapses to 0 and
+       shifts the scaled card half off the left edge via translateX(-50%). */
+    width: calc(310px * var(--card-scale, 0.7));
   }
 }
 
