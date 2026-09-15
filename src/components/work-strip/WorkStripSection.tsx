@@ -65,8 +65,9 @@ function ProjectPanel({ project }: { project: XhuliaProject }) {
 export default function WorkStripSection() {
   return (
     <section
+      id="work"
       className={`xhulia-work theme-transition ${stripFontClassName}`}
-      aria-label="Xhulia-style project cards"
+      aria-label="Selected work"
     >
       <div className="xhulia-work__list">
         {xhuliaProjects.map((project) => (
