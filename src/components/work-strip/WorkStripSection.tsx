@@ -1,21 +1,14 @@
 "use client";
 
 import { stripFontClassName } from "@/lib/heroFonts";
+import { contentContainerClassName } from "@/lib/sectionLayout";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import DragStrip from "./DragStrip";
 import { xhuliaProjects, type XhuliaProject } from "./xhuliaProjects";
 import "./work-strip.css";
 
-function ProjectPanel({
-  project,
-  index,
-  sticky,
-}: {
-  project: XhuliaProject;
-  index: number;
-  sticky: boolean;
-}) {
+function ProjectPanel({ project }: { project: XhuliaProject }) {
   const cta = (
     <>
       <span>{project.ctaLabel}</span>
@@ -26,29 +19,24 @@ function ProjectPanel({
   );
 
   return (
-    <article
-      className={`xhulia-panel${sticky ? " xhulia-panel--sticky" : ""}`}
-      style={{ zIndex: index + 1 }}
-    >
-      <div className="xhulia-panel__top">
-        <div className="xhulia-panel__copy">
-          <div className="xhulia-panel__identity">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              className="xhulia-panel__logo"
-              src={project.logo}
-              alt=""
-              width={24}
-              height={24}
-            />
-            <p className="xhulia-panel__label">{project.label}</p>
-          </div>
-
-          <div className="xhulia-panel__text">
-            <h3 className="xhulia-panel__title">{project.title}</h3>
-            <p className="xhulia-panel__outcomes">{project.outcomes}</p>
-          </div>
+    <article className="xhulia-panel">
+      <div className={`xhulia-panel__copy ${contentContainerClassName}`}>
+        <div className="xhulia-panel__identity">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="xhulia-panel__logo"
+            src={project.logo}
+            alt=""
+            width={24}
+            height={24}
+            loading="lazy"
+            decoding="async"
+          />
+          <p className="xhulia-panel__label">{project.label}</p>
         </div>
+
+        <h3 className="xhulia-panel__title">{project.title}</h3>
+        <p className="xhulia-panel__outcomes">{project.outcomes}</p>
 
         {project.ctaDisabled || !project.href ? (
           <span
@@ -68,33 +56,21 @@ function ProjectPanel({
         )}
       </div>
 
-      <div className="xhulia-panel__strip">
-        <DragStrip frames={project.frames} label={project.label} />
-      </div>
+      <DragStrip frames={project.frames} label={project.label} />
     </article>
   );
 }
 
-/**
- * Duplicate work section — Xhulia sticky project stack (102vh panels),
- * with a custom lightweight drag strip (not the laggy Framer swipe).
- */
+/** In-flow project strips — native swipe, no sticky stack, mobile-first. */
 export default function WorkStripSection() {
-  const lastIndex = xhuliaProjects.length - 1;
-
   return (
     <section
       className={`xhulia-work theme-transition ${stripFontClassName}`}
       aria-label="Xhulia-style project cards"
     >
-      <div className="xhulia-work__stack">
-        {xhuliaProjects.map((project, index) => (
-          <ProjectPanel
-            key={project.id}
-            project={project}
-            index={index}
-            sticky={index < lastIndex}
-          />
+      <div className="xhulia-work__list">
+        {xhuliaProjects.map((project) => (
+          <ProjectPanel key={project.id} project={project} />
         ))}
       </div>
     </section>
