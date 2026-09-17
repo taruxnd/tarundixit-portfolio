@@ -38,14 +38,18 @@ function ExperienceEntryRow({
 interface ExperienceSectionProps {
   id?: string;
   showIdCard?: boolean;
+  /** Chapter title (“Work history.”). Defaults to matching showIdCard. */
+  showLead?: boolean;
 }
 
 export default function ExperienceSection({
   id = "experience",
   showIdCard = true,
+  showLead,
 }: ExperienceSectionProps) {
   const headingId = `${id}-heading`;
   const stageId = `${id}-stage`;
+  const leadVisible = showLead ?? showIdCard;
 
   return (
     <section
@@ -57,7 +61,7 @@ export default function ExperienceSection({
       }`}
       aria-labelledby={headingId}
     >
-      {showIdCard ? (
+      {leadVisible ? (
         <div className={`${contentContainerClassName} experience-section__lead`}>
           <div className="experience-section__rule" aria-hidden />
 

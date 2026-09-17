@@ -26,7 +26,10 @@ export const heroFontClassName = [
   instrumentSans.variable,
 ].join(" ");
 
-export const stripFontClassName = geist.variable;
+export const stripFontClassName = [
+  geist.variable,
+  instrumentSerif.variable,
+].join(" ");
 
 const sans =
   "var(--font-hero-instrument-sans), var(--font-inter), ui-sans-serif, system-ui, sans-serif";

@@ -1,3 +1,4 @@
+import EditorialAbout from "@/components/EditorialAbout";
 import Experience from "@/components/Experience";
 import Hero from "@/components/Hero";
 import Testimonials from "@/components/Testimonials";
@@ -8,7 +9,8 @@ export default function Home() {
     <main>
       <Hero />
       <WorkStrip />
-      <Experience />
+      <EditorialAbout />
+      <Experience showIdCard={false} showLead />
       <Experience id="experience-alt" showIdCard={false} />
       <Testimonials />
     </main>
