@@ -12,16 +12,14 @@
   --car-peach: #e8b496;
   --road-height: 2.75rem;
   --deck-y: 2.35rem;
-  --office-h: clamp(8.5rem, 14vw, 11rem);
 
   position: relative;
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-  /* Keep below the About ID card — negative margin made tip look “on” the badge */
   margin-top: clamp(0.75rem, 2vw, 1.5rem);
   margin-bottom: clamp(1.25rem, 3vw, 2.25rem);
-  height: clamp(12.5rem, 19vw, 15.5rem);
+  height: clamp(7.5rem, 13vw, 10.5rem);
   pointer-events: none;
   -webkit-user-select: none;
   user-select: none;
@@ -51,6 +49,33 @@
   inset: 0 0 0.65rem;
 }
 
+/* Landmarks sit on the curb — CSS bg only (no <img> FOUC / white slabs) */
+.diorama-road__landmark--kumba {
+  position: absolute;
+  left: 16%;
+  bottom: calc(0.55rem + var(--road-height) - 0.06rem - 7px);
+  z-index: 3;
+  width: min(26vw, 10rem);
+  aspect-ratio: 640 / 426;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: transparent url("/about/kumba-office-sm.png") center bottom /
+    contain no-repeat;
+}
+
+.diorama-road__landmark--google {
+  position: absolute;
+  left: 62%;
+  bottom: calc(0.55rem + var(--road-height) - 0.06rem - 7px);
+  z-index: 1;
+  width: min(26vw, 10rem);
+  aspect-ratio: 640 / 426;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: transparent url("/about/google-office-sm.png") center bottom /
+    contain no-repeat;
+}
+
 /* Flat slab — true side elevation */
 .diorama-road__slab {
   position: absolute;
@@ -58,6 +83,7 @@
   right: -1%;
   bottom: 0.55rem;
   height: var(--road-height);
+  z-index: 2;
   filter: drop-shadow(0 8px 14px rgba(20, 24, 30, 0.1));
 }
 
@@ -131,108 +157,6 @@
   border-radius: 0 0 2px 2px;
 }
 
-/* ---------- Building (sits on road deck) ---------- */
-
-.diorama-road__building {
-  position: absolute;
-  bottom: calc(0.55rem + var(--road-height) - 0.08rem);
-  width: min(34vw, 17rem);
-  height: clamp(8.5rem, 15vw, 12.5rem);
-  z-index: 3;
-  pointer-events: none;
-  transform: translateX(-50%);
-  overflow: visible;
-}
-
-.diorama-road__building--start {
-  /* Nudge aside so the Google office reads as the centerpiece */
-  left: 14%;
-  opacity: 0.55;
-}
-
-.diorama-road__building--end {
-  left: 50%;
-  width: min(40vw, 18rem);
-  height: var(--office-h);
-  z-index: 5;
-}
-
-.diorama-road__building-canvas-wrap {
-  position: absolute;
-  inset: 0;
-}
-
-.diorama-road__building-canvas {
-  width: 100%;
-  height: 100%;
-  visibility: hidden;
-}
-
-.diorama-road__building-canvas[data-ready="true"] {
-  visibility: visible;
-}
-
-/* Sits just above the G inside the office canvas */
-.diorama-road__building--end .diorama-road__tip {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0.85rem;
-  z-index: 8;
-  width: max-content;
-  max-width: 9rem;
-  margin-inline: auto;
-  padding: 0.4rem 0.55rem 0.45rem;
-  border-radius: 0.55rem;
-  background: color-mix(in srgb, var(--bg-elevated, #fff) 92%, #fff);
-  color: var(--text-primary, #1a1a1a);
-  font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  line-height: 1.35;
-  text-align: center;
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.65) inset,
-    0 6px 18px rgba(20, 24, 30, 0.1),
-    0 1px 3px rgba(20, 24, 30, 0.06);
-  pointer-events: none;
-  -webkit-user-select: none;
-  user-select: none;
-  animation: diorama-tip-float 3.6s ease-in-out infinite;
-}
-
-.diorama-road__building--end .diorama-road__tip-arrow {
-  position: absolute;
-  left: 50%;
-  bottom: -0.3rem;
-  width: 0.55rem;
-  height: 0.55rem;
-  margin: 0;
-  background: inherit;
-  border-radius: 0.08rem;
-  box-shadow: 1px 1px 2px rgba(20, 24, 30, 0.06);
-  transform: translateX(-50%) rotate(45deg);
-}
-
-[data-theme="dark"] .diorama-road__building--end .diorama-road__tip {
-  background: color-mix(in srgb, var(--bg-elevated, #2a2a2c) 94%, #000);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.08) inset,
-    0 8px 22px rgba(0, 0, 0, 0.35),
-    0 1px 3px rgba(0, 0, 0, 0.25);
-}
-
-@keyframes diorama-tip-float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-3px);
-  }
-}
-
 /* ---------- Lights (shared flat coords with scene) ---------- */
 
 .diorama-road__lights {
@@ -242,6 +166,7 @@
   top: 0;
   bottom: 0.55rem;
   z-index: 2;
+  overflow: visible;
 }
 
 .diorama-road__lamp {
@@ -250,6 +175,7 @@
   bottom: var(--road-height);
   width: 0;
   height: 0;
+  overflow: visible;
 }
 
 .diorama-road__lamp-pole {
@@ -258,9 +184,10 @@
   bottom: 0;
   width: 2px;
   height: 2.55rem;
-  background: linear-gradient(180deg, #3d3d40, var(--lamp-pole));
+  background: linear-gradient(180deg, #4a4a4e 0%, #3d3d40 35%, var(--lamp-pole) 100%);
   border-radius: 1px;
   transform: translateX(-50%);
+  z-index: 2;
 }
 
 .diorama-road__lamp-arm {
@@ -269,63 +196,79 @@
   bottom: 2.45rem;
   width: 1rem;
   height: 2px;
-  background: var(--lamp-pole);
+  background: linear-gradient(
+    90deg,
+    #3a3a3c 0%,
+    #4e4e52 55%,
+    color-mix(in srgb, var(--lamp-glow) 28%, #3a3a3c) 100%
+  );
   border-radius: 1px;
   transform: translateX(-1px);
+  z-index: 2;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--lamp-glow) 22%, transparent);
 }
 
 .diorama-road__lamp-bulb {
   position: absolute;
   left: 0.78rem;
   bottom: 2.3rem;
-  width: 0.48rem;
-  height: 0.48rem;
+  width: 0.42rem;
+  height: 0.42rem;
   border-radius: 50%;
   background: radial-gradient(
-    circle at 35% 30%,
-    #fff8e0 0%,
-    var(--lamp-glow) 48%,
+    circle at 38% 32%,
+    #fffdf2 0%,
+    #fff0b8 28%,
+    var(--lamp-glow) 62%,
     #e8952a 100%
   );
   box-shadow:
-    0 0 8px 2px color-mix(in srgb, var(--lamp-glow) 75%, transparent),
-    0 0 20px 6px color-mix(in srgb, var(--lamp-glow) 35%, transparent);
+    0 0 3px 1px rgba(255, 248, 220, 0.95),
+    0 0 10px 3px color-mix(in srgb, var(--lamp-glow) 70%, transparent),
+    0 0 22px 8px color-mix(in srgb, var(--lamp-glow) 38%, transparent),
+    0 0 40px 14px color-mix(in srgb, var(--lamp-glow) 16%, transparent);
   transform: translateX(-50%);
+  z-index: 3;
 }
 
 .diorama-road__lamp-flare {
   position: absolute;
   left: 0.78rem;
-  bottom: 2.15rem;
-  width: 1.6rem;
-  height: 1.6rem;
+  bottom: 2.28rem;
+  width: 2.1rem;
+  height: 2.1rem;
   border-radius: 50%;
   background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--lamp-glow) 45%, transparent) 0%,
-    transparent 70%
+    circle at 50% 50%,
+    rgba(255, 250, 230, 0.55) 0%,
+    color-mix(in srgb, var(--lamp-glow) 32%, transparent) 32%,
+    color-mix(in srgb, var(--lamp-glow) 10%, transparent) 58%,
+    transparent 76%
   );
   transform: translate(-50%, 50%);
   pointer-events: none;
+  opacity: 0.9;
+  z-index: 1;
 }
 
-/* Soft cone / pool onto the asphalt face — easy to tune in side view */
+/* Soft pool onto the asphalt face */
 .diorama-road__lamp-pool {
   position: absolute;
-  left: 0.55rem;
-  bottom: 0.45rem;
-  width: 3.4rem;
-  height: calc(var(--road-height) - 0.55rem);
+  left: 0.7rem;
+  bottom: 0.35rem;
+  width: 4rem;
+  height: calc(var(--road-height) - 0.4rem);
   background: radial-gradient(
-    ellipse 70% 85% at 50% 0%,
-    color-mix(in srgb, var(--lamp-glow) 42%, transparent) 0%,
-    color-mix(in srgb, var(--lamp-glow) 14%, transparent) 42%,
-    transparent 72%
+    ellipse 72% 90% at 50% 8%,
+    color-mix(in srgb, var(--lamp-glow) 36%, transparent) 0%,
+    color-mix(in srgb, var(--lamp-glow) 14%, transparent) 38%,
+    color-mix(in srgb, var(--lamp-glow) 5%, transparent) 62%,
+    transparent 82%
   );
   transform: translateX(-50%);
   pointer-events: none;
-  mix-blend-mode: screen;
-  opacity: 0.9;
+  opacity: 0.85;
+  z-index: 1;
 }
 
 /* ---------- Traffic deck (cars sit on top edge) ---------- */
@@ -693,10 +636,6 @@
     animation: none;
   }
 
-  .diorama-road__tip {
-    animation: none;
-  }
-
   .diorama-road__car--sedan {
     left: 12%;
   }
@@ -713,26 +652,17 @@
 @media (max-width: 767px) {
   .diorama-road {
     --road-height: 2.25rem;
-    --office-h: 9rem;
-    height: 12rem;
+    height: 6.25rem;
   }
 
-  .diorama-road__building--start {
-    left: 12%;
-    width: min(40vw, 10rem);
-    height: 7.5rem;
+  .diorama-road__landmark--kumba {
+    left: 20%;
+    width: min(36vw, 7.75rem);
   }
 
-  .diorama-road__building--end {
-    left: 50%;
-    width: min(50vw, 12.5rem);
-  }
-
-  .diorama-road__building--end .diorama-road__tip {
-    top: 0.55rem;
-    max-width: 7.25rem;
-    font-size: 0.625rem;
-    padding: 0.35rem 0.45rem 0.4rem;
+  .diorama-road__landmark--google {
+    left: 62%;
+    width: min(36vw, 7.75rem);
   }
 
   .diorama-road__car--sedan {
@@ -763,6 +693,6 @@
   }
 
   .diorama-road__lamp-flare {
-    bottom: 1.6rem;
+    bottom: 1.72rem;
   }
 }

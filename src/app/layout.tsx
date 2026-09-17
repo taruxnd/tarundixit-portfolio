@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     "Product designer crafting AI products, scalable design systems, and thoughtful user experiences.",
 };
 
-const THEME_INIT = `(function(){try{var t=localStorage.getItem("portfolio-lamp-theme");if(t==="dark"){document.documentElement.dataset.theme="dark";document.documentElement.style.colorScheme="dark";}}catch(e){}})();`;
+const THEME_INIT = `(function(){try{var t=localStorage.getItem("portfolio-lamp-theme");var d=t==="dark";document.documentElement.dataset.theme=d?"dark":"light";document.documentElement.style.colorScheme=d?"dark":"light";document.documentElement.style.backgroundColor=d?"#0a0a0a":"#ffffff";if(document.body){document.body.style.backgroundColor=d?"#0a0a0a":"#ffffff";}}catch(e){}})();`;
 
 export default function RootLayout({
   children,

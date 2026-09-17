@@ -191,10 +191,16 @@ export default function ShootingStarsBackground({
       const w = wrap.clientWidth;
       const h = wrap.clientHeight;
       if (!w || !h) return;
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
+      // Cap DPR — ultrawide * retina allocates multi-megapixel canvases and
+      // can flash uncleared buffers white/black during resize.
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.fillStyle = "#0a0a0a";
+      ctx.fillRect(0, 0, w, h);
       state.width = w;
       state.height = h;
       spawnStars();

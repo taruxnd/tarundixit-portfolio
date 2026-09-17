@@ -15,7 +15,7 @@
 
 @media (min-width: 1024px) {
   .editorial-about__stage {
-    /* Clip strap into the stage ceiling like Experience */
+    /* Clip strap into the stage ceiling like Experience — home section only */
     clip-path: inset(0 -100vw -100vw -100vw);
   }
 }
@@ -31,6 +31,10 @@
   .editorial-about__grid {
     grid-template-columns: minmax(0, 1fr) minmax(14rem, 0.42fr);
     column-gap: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  .editorial-about--hero .editorial-about__grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -112,6 +116,15 @@
   cursor: default;
   vertical-align: baseline;
   transition: color 0.25s ease;
+}
+
+.about-word__cursor-icon {
+  display: inline-block;
+  width: 0.95em;
+  height: 0.95em;
+  margin-right: 0.28em;
+  vertical-align: -0.15em;
+  color: inherit;
 }
 
 .about-word--link {
@@ -227,6 +240,27 @@
     opacity: 1;
     animation-duration: 0.85s;
   }
+}
+
+/* Kumba — icon + name share the prose baseline with surrounding words */
+.about-kumba-link {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.about-kumba-link__icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.28em;
+  border-radius: 0.22em;
+  object-fit: cover;
+  /* Sit on the text baseline like a glyph, not above the line */
+  vertical-align: -0.2em;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 /* Kumba — plain for now; effect TBD */

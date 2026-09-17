@@ -15,7 +15,7 @@ export const portfolioNavbarConfig: Pick<
     dropdowns: [],
     navLinks: [
       { label: "Work", link: "#work" },
-      { label: "About", link: "#about" },
+      { label: "About", link: "/about" },
       { label: "Resume", link: "#resume" },
       { label: "Contact", link: "#contact" },
     ],

@@ -4,7 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
+  useLayoutEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -27,16 +27,26 @@ const STORAGE_KEY = "portfolio-lamp-theme";
 function applyTheme(theme: SiteTheme) {
   document.documentElement.dataset.theme = theme;
   document.documentElement.style.colorScheme = theme;
+  document.documentElement.style.backgroundColor =
+    theme === "dark" ? "#0a0a0a" : "#ffffff";
+}
+
+function readDomTheme(): SiteTheme {
+  if (typeof document === "undefined") return "light";
+  return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
 }
 
 export function ThemeController({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<SiteTheme>("light");
+  const [theme, setTheme] = useState<SiteTheme>(readDomTheme);
   const [hydrated, setHydrated] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
-    const initial: SiteTheme = stored === "dark" ? "dark" : "light";
+    const initial: SiteTheme =
+      stored === "dark" || document.documentElement.dataset.theme === "dark"
+        ? "dark"
+        : "light";
     setTheme(initial);
     applyTheme(initial);
 

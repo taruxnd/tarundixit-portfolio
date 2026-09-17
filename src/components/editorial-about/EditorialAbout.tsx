@@ -30,6 +30,18 @@ function Word({
 }) {
   const inner = (
     <>
+      {kind === "engineers" ? (
+        <svg
+          className="about-word__cursor-icon"
+          viewBox="0 0 24 24"
+          aria-hidden
+        >
+          <path
+            fill="currentColor"
+            d="M11.503.131 1.891 5.678a.84.84 0 0 0-.42.726v11.188c0 .3.162.575.42.724l9.609 5.55a1 1 0 0 0 .998 0l9.61-5.55a.84.84 0 0 0 .42-.724V6.404a.84.84 0 0 0-.42-.726L12.497.131a1.01 1.01 0 0 0-.996 0M2.657 6.338h18.55c.263 0 .43.287.297.515L12.23 22.918c-.062.107-.229.064-.229-.06V12.335a.59.59 0 0 0-.295-.51l-9.11-5.257c-.109-.063-.064-.23.061-.23"
+          />
+        </svg>
+      ) : null}
       <span className="about-word__label">{children}</span>
       <span className="about-word__aura" aria-hidden />
       {kind === "designer" ? (
@@ -91,10 +103,36 @@ function Word({
   );
 }
 
+function KumbaAiLink() {
+  return (
+    <Link
+      href="/#work"
+      data-cursor="interactive"
+      className="about-kumba-link"
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        className="about-kumba-link__icon"
+        src="/about/kumba-logo-icon.png"
+        alt=""
+        width={48}
+        height={48}
+        draggable={false}
+      />
+      Kumba AI
+    </Link>
+  );
+}
+
 /**
  * Editorial personal intro — typography left, ID card right.
+ * Used on the home page About section (not /about — that route has its own page).
  */
-export default function EditorialAbout() {
+export default function EditorialAbout({
+  moreHref = "/about",
+}: {
+  moreHref?: string;
+} = {}) {
   return (
     <section
       id="about"
@@ -114,19 +152,13 @@ export default function EditorialAbout() {
                 I&apos;m Tarun Dixit, a{" "}
                 <Word kind="designer">product designer</Word> who{" "}
                 <Word kind="engineers">engineers</Word>, currently working at{" "}
-                <Link
-                  href="/#work"
-                  data-cursor="interactive"
-                  className="about-word about-word--plain"
-                >
-                  Kumba AI
-                </Link>
-                .
+                <KumbaAiLink />.
               </p>
               <p>
                 I like looking beyond just the design. I want to understand the
                 user, the business, and what we are trying to achieve, then
-                figure out where I can bring value through design and technology.
+                figure out where I can bring value through design and
+                technology.
               </p>
               <p>
                 I believe UX comes first, but taste is what can make a product
@@ -143,7 +175,7 @@ export default function EditorialAbout() {
 
             <div className="editorial-about__cta">
               <Link
-                href="/#experience"
+                href={moreHref}
                 data-cursor="interactive"
                 className="editorial-about__more"
               >

@@ -1,0 +1,434 @@
+/* /about hero road — fresh, lean, no clip-path / ultrawide landmark hacks */
+
+.about-road {
+  --road-height: 2.75rem;
+  --lamp-glow: #ffc857;
+  --car-white: #f4f2ed;
+  --car-lilac: #b7a8c9;
+  --car-peach: #e8b496;
+
+  position: relative;
+  flex-shrink: 0;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  height: clamp(5.5rem, 10vw, 7.5rem);
+  pointer-events: none;
+  user-select: none;
+  overflow: visible;
+  z-index: 1;
+}
+
+.about-road__scene {
+  position: absolute;
+  inset: 0;
+}
+
+.about-road__slab {
+  position: absolute;
+  left: -1%;
+  right: -1%;
+  bottom: 0;
+  height: var(--road-height);
+  z-index: 2;
+}
+
+.about-road__asphalt {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0.28rem;
+  bottom: 0.55rem;
+  background: linear-gradient(
+    180deg,
+    #57575a 0%,
+    #4a4a4c 45%,
+    #3c3c3f 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.22);
+}
+
+.about-road__dashes {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 252, 245, 0.9) 0 0.5rem,
+    transparent 0.5rem 1.25rem
+  );
+  opacity: 0.88;
+}
+
+.about-road__curb {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0.28rem;
+  background: linear-gradient(180deg, #f2f0ea 0%, #e8e6e1 100%);
+}
+
+.about-road__curb--top {
+  top: 0;
+}
+
+.about-road__curb--bottom {
+  bottom: 0.28rem;
+}
+
+.about-road__thickness {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0.28rem;
+  background: linear-gradient(180deg, #e4e2dc 0%, #d8d6d0 100%);
+}
+
+/* Buildings — img fade-in; no filters / blend modes */
+.about-road__landmark {
+  position: absolute;
+  bottom: calc(var(--road-height) - 7px);
+  z-index: 1;
+  width: min(26vw, 10rem);
+  transform: translateX(-50%);
+  line-height: 0;
+}
+
+.about-road__landmark--kumba {
+  left: 16%;
+  z-index: 3;
+}
+
+.about-road__landmark--google {
+  left: 62%;
+  z-index: 1;
+}
+
+.about-road__landmark-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: bottom;
+  background: transparent;
+  transition: opacity 0.35s ease;
+}
+
+.about-road__lights {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  z-index: 4;
+}
+
+.about-road__lamp {
+  position: absolute;
+  bottom: 0;
+  width: 1.6rem;
+  height: 100%;
+  transform: translateX(-50%);
+}
+
+.about-road__lamp-pole {
+  position: absolute;
+  left: 0.7rem;
+  bottom: 0.55rem;
+  width: 0.16rem;
+  height: 2.35rem;
+  background: linear-gradient(
+    180deg,
+    #4a4a4e 0%,
+    #3d3d40 35%,
+    #2c2c2e 100%
+  );
+  border-radius: 1px;
+}
+
+.about-road__lamp-arm {
+  position: absolute;
+  left: 0.78rem;
+  bottom: 2.55rem;
+  width: 0.85rem;
+  height: 0.12rem;
+  background: #3a3a3e;
+  border-radius: 1px;
+  transform-origin: left center;
+  transform: rotate(-18deg);
+}
+
+.about-road__lamp-bulb {
+  position: absolute;
+  left: 0.78rem;
+  bottom: 2.4rem;
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 40% 35%,
+    #fffdf2 0%,
+    #fff0b8 28%,
+    var(--lamp-glow) 62%,
+    #e8952a 100%
+  );
+  box-shadow:
+    0 0 3px 1px rgba(255, 248, 220, 0.95),
+    0 0 10px 3px color-mix(in srgb, var(--lamp-glow) 70%, transparent),
+    0 0 22px 8px color-mix(in srgb, var(--lamp-glow) 38%, transparent);
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.about-road__lamp-flare {
+  position: absolute;
+  left: 0.78rem;
+  bottom: 2.28rem;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 250, 230, 0.55) 0%,
+    color-mix(in srgb, var(--lamp-glow) 32%, transparent) 32%,
+    color-mix(in srgb, var(--lamp-glow) 10%, transparent) 58%,
+    transparent 76%
+  );
+  transform: translate(-50%, 50%);
+  opacity: 0.9;
+  z-index: 1;
+}
+
+.about-road__lamp-pool {
+  position: absolute;
+  left: 0.7rem;
+  bottom: 0.35rem;
+  width: 4rem;
+  height: calc(var(--road-height) - 0.4rem);
+  background: radial-gradient(
+    ellipse 72% 90% at 50% 8%,
+    color-mix(in srgb, var(--lamp-glow) 36%, transparent) 0%,
+    color-mix(in srgb, var(--lamp-glow) 14%, transparent) 38%,
+    color-mix(in srgb, var(--lamp-glow) 5%, transparent) 62%,
+    transparent 82%
+  );
+  transform: translateX(-50%);
+  opacity: 0.85;
+  z-index: 1;
+}
+
+.about-road__traffic {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--road-height) - 0.12rem);
+  height: 1.4rem;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.about-road__car {
+  position: absolute;
+  bottom: 0;
+  width: 2.6rem;
+  height: 1.05rem;
+  animation: about-road-drive var(--car-duration, 28s) linear infinite;
+  animation-delay: var(--car-delay, 0s);
+}
+
+.about-road__car--sedan {
+  --body: var(--car-white);
+  width: 2.55rem;
+  height: 1rem;
+}
+
+.about-road__car--van {
+  --body: var(--car-lilac);
+  width: 2.8rem;
+  height: 1.25rem;
+  left: 35%;
+}
+
+.about-road__car--coupe {
+  --body: var(--car-peach);
+  width: 2.3rem;
+  height: 0.95rem;
+  left: 70%;
+}
+
+.about-road__car-shadow {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -0.08rem;
+  height: 0.28rem;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 50%;
+  filter: blur(2px);
+}
+
+.about-road__car-body {
+  position: absolute;
+  inset: 0.22rem 0 0.28rem;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--body) 92%, #fff) 0%,
+    var(--body) 55%,
+    color-mix(in srgb, var(--body) 80%, #222) 100%
+  );
+  border-radius: 0.2rem 0.35rem 0.12rem 0.12rem;
+}
+
+.about-road__car-cabin {
+  position: absolute;
+  left: 28%;
+  right: 22%;
+  top: -0.32rem;
+  height: 0.42rem;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--body) 88%, #fff),
+    color-mix(in srgb, var(--body) 70%, #222)
+  );
+  border-radius: 0.2rem 0.28rem 0 0;
+}
+
+.about-road__car-window {
+  position: absolute;
+  left: 32%;
+  top: -0.26rem;
+  width: 0.38rem;
+  height: 0.28rem;
+  background: linear-gradient(180deg, #9ec4d8, #6a8fa3);
+  border-radius: 0.06rem;
+  opacity: 0.85;
+}
+
+.about-road__car-window--rear {
+  left: auto;
+  right: 28%;
+}
+
+.about-road__car-detail {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 42%;
+  height: 1px;
+  background: color-mix(in srgb, var(--body) 55%, #222);
+  opacity: 0.35;
+}
+
+.about-road__car-headlight {
+  position: absolute;
+  right: 0.06rem;
+  top: 38%;
+  width: 0.18rem;
+  height: 0.18rem;
+  border-radius: 50%;
+  background: #fff8e8;
+  box-shadow: 0 0 4px 1px rgba(255, 248, 220, 0.7);
+}
+
+.about-road__car-taillight {
+  position: absolute;
+  left: 0.06rem;
+  top: 38%;
+  width: 0.16rem;
+  height: 0.16rem;
+  border-radius: 50%;
+  background: #ff5a4a;
+}
+
+.about-road__car-beam {
+  position: absolute;
+  left: 100%;
+  top: 30%;
+  width: 1.4rem;
+  height: 0.55rem;
+  background: radial-gradient(
+    ellipse at left center,
+    rgba(255, 248, 220, 0.45) 0%,
+    transparent 70%
+  );
+  opacity: 0.7;
+}
+
+.about-road__car-wheel {
+  position: absolute;
+  bottom: 0;
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #666 0%, #1a1a1a 70%);
+}
+
+.about-road__car-wheel--front {
+  right: 0.28rem;
+}
+
+.about-road__car-wheel--back {
+  left: 0.28rem;
+}
+
+@keyframes about-road-drive {
+  from {
+    transform: translateX(-120vw);
+  }
+  to {
+    transform: translateX(120vw);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-road__car {
+    animation: none;
+    left: 20%;
+  }
+
+  .about-road__car--van {
+    left: 48%;
+  }
+
+  .about-road__car--coupe {
+    left: 72%;
+  }
+}
+
+@media (max-width: 767px) {
+  .about-road {
+    --road-height: 2.25rem;
+    height: 5rem;
+  }
+
+  .about-road__landmark--kumba {
+    left: 20%;
+    width: min(36vw, 7.75rem);
+  }
+
+  .about-road__landmark--google {
+    left: 62%;
+    width: min(36vw, 7.75rem);
+  }
+
+  .about-road__lamp-pole {
+    height: 2rem;
+  }
+
+  .about-road__lamp-arm {
+    bottom: 1.9rem;
+  }
+
+  .about-road__lamp-bulb {
+    bottom: 1.75rem;
+  }
+
+  .about-road__lamp-flare {
+    bottom: 1.72rem;
+  }
+}

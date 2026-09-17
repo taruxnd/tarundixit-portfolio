@@ -18,14 +18,13 @@ const lightDotGrid = {
 } as const;
 
 export default function GridBackground() {
-  const { theme, reducedMotion } = useTheme();
+  const { theme, reducedMotion, hydrated } = useTheme();
   const isDark = theme === "dark";
   const [showDots, setShowDots] = useState(false);
 
   useEffect(() => {
     if (isDark) return;
     const update = () => {
-      // Hero stays clean white; reveal dots after leaving the first fold.
       setShowDots(window.scrollY > window.innerHeight * 0.7);
     };
     update();
@@ -37,11 +36,24 @@ export default function GridBackground() {
     };
   }, [isDark]);
 
+  // Until theme is confirmed client-side, paint only a solid page color —
+  // never mount the white LightSky (that was the reload flash).
+  if (!hydrated) {
+    return (
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-0"
+        style={{ backgroundColor: "var(--bg-page, #0a0a0a)" }}
+      />
+    );
+  }
+
   if (isDark) {
     return (
       <div
         aria-hidden
-        className="theme-transition pointer-events-none fixed inset-0 z-0"
+        className="pointer-events-none fixed inset-0 z-0"
+        style={{ backgroundColor: "#0a0a0a" }}
       >
         <ShootingStarsBackground
           shootingStars
@@ -59,7 +71,8 @@ export default function GridBackground() {
     <>
       <div
         aria-hidden
-        className="theme-transition pointer-events-none fixed inset-0 z-0"
+        className="pointer-events-none fixed inset-0 z-0"
+        style={{ backgroundColor: "#ffffff" }}
       >
         <LightSkyBackground
           skyColor="#ffffff"
@@ -70,7 +83,7 @@ export default function GridBackground() {
       </div>
       <div
         aria-hidden
-        className="theme-transition pointer-events-none fixed inset-0 z-0"
+        className="pointer-events-none fixed inset-0 z-0"
         style={{
           opacity: showDots ? 1 : 0,
           transition: "opacity 0.45s ease",

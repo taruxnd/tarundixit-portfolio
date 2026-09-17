@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  useEffect,
-  useRef,
-  useState,
-  type ComponentType,
-  type CSSProperties,
-} from "react";
+import type { CSSProperties } from "react";
 import "./about-diorama-road.css";
 
 const LAMPS = [18, 50, 82];
@@ -69,86 +63,28 @@ function ToyCar({
  * Pure side-elevation diorama road — orthographic, no tilt.
  */
 export default function AboutDioramaRoad() {
-  const rootRef = useRef<HTMLDivElement>(null);
-  const [loadProps, setLoadProps] = useState(false);
-  const [Building, setBuilding] = useState<ComponentType | null>(null);
-  const [Office, setOffice] = useState<ComponentType | null>(null);
-
-  useEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry?.isIntersecting) return;
-        setLoadProps(true);
-        io.disconnect();
-      },
-      { rootMargin: "200px 0px", threshold: 0.01 },
-    );
-    io.observe(root);
-    return () => io.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!loadProps) return;
-    let cancelled = false;
-    const run = () => {
-      void Promise.all([
-        import("./DioramaBuilding"),
-        import("./DioramaOffice"),
-      ]).then(([b, o]) => {
-        if (cancelled) return;
-        setBuilding(() => b.default);
-        setOffice(() => o.default);
-      });
-    };
-
-    let idleId: number | undefined;
-    let timeoutId: ReturnType<typeof setTimeout> | undefined;
-
-    if (typeof window.requestIdleCallback === "function") {
-      idleId = window.requestIdleCallback(run, { timeout: 900 });
-    } else {
-      timeoutId = setTimeout(run, 120);
-    }
-
-    return () => {
-      cancelled = true;
-      if (idleId !== undefined) window.cancelIdleCallback(idleId);
-      if (timeoutId !== undefined) clearTimeout(timeoutId);
-    };
-  }, [loadProps]);
-
   return (
-    <div
-      ref={rootRef}
-      className="diorama-road"
-      data-about-diorama-road
-    >
-      <div className="diorama-road__shadow" aria-hidden />
+    <div className="diorama-road" aria-hidden data-about-diorama-road>
+      <div className="diorama-road__shadow" />
 
       <div className="diorama-road__scene">
-        <div className="diorama-road__building diorama-road__building--start" aria-hidden>
-          {Building ? <Building /> : null}
-        </div>
+        {/* Landmarks — Kumba (start) · Google (further along) */}
+        <div
+          className="diorama-road__landmark diorama-road__landmark--kumba"
+          role="presentation"
+        />
+        <div
+          className="diorama-road__landmark diorama-road__landmark--google"
+          role="presentation"
+        />
 
-        <div className="diorama-road__building diorama-road__building--end">
-          <p className="diorama-road__tip">
-            This is where I wanna be one day
-            <span className="diorama-road__tip-arrow" aria-hidden />
-          </p>
-          <div className="diorama-road__building-canvas-wrap" aria-hidden>
-            {Office ? <Office /> : null}
-          </div>
-        </div>
-
-        <div className="diorama-road__lights" aria-hidden>
+        <div className="diorama-road__lights">
           {LAMPS.map((left) => (
             <StreetLamp key={left} left={left} />
           ))}
         </div>
 
-        <div className="diorama-road__traffic" aria-hidden>
+        <div className="diorama-road__traffic">
           {CARS.map((car) => (
             <ToyCar
               key={car.id}
@@ -159,7 +95,7 @@ export default function AboutDioramaRoad() {
           ))}
         </div>
 
-        <div className="diorama-road__slab" aria-hidden>
+        <div className="diorama-road__slab">
           <div className="diorama-road__curb diorama-road__curb--top" />
           <div className="diorama-road__asphalt">
             <div className="diorama-road__dashes" />

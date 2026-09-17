@@ -9,7 +9,7 @@ export default function Home() {
     <main>
       <Hero />
       <WorkStrip />
-      <EditorialAbout />
+      <EditorialAbout moreHref="/about" />
       <Experience showIdCard={false} showLead />
       <Experience id="experience-alt" showIdCard={false} />
       <Testimonials />
