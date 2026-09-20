@@ -15,6 +15,13 @@
   background: transparent;
 }
 
+/* Framer wash + clouds, clipped to the hero fold only */
+.light-sky--hero {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
 .light-sky__cloud {
   position: absolute;
   pointer-events: none;

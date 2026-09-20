@@ -30,7 +30,14 @@ export default function HeroShell({ children }: HeroShellProps) {
     <div ref={boundaryRef} className="hero-scroll-boundary">
       <section className={`hero-section relative ${heroFontClassName}`}>
         {showLightSky ? (
-          <LightSkyBackground cloudsOnly reducedMotion={reducedMotion} />
+          <LightSkyBackground
+            skyColor="rgb(186, 230, 253)"
+            horizonGlowColor="#e0f2fe"
+            horizonColor="rgb(125, 211, 252)"
+            showClouds
+            reducedMotion={reducedMotion}
+            className="light-sky--hero"
+          />
         ) : null}
         <HeroGarden />
         <HeroBillboard />

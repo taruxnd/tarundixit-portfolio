@@ -1,18 +1,24 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./about-page-road.css";
 
-const AboutPagePorsche = dynamic(() => import("./AboutPagePorsche"), {
+const AboutPageWagonR = dynamic(() => import("./AboutPageWagonR"), {
+  ssr: false,
+});
+const AboutPageErtiga = dynamic(() => import("./AboutPageErtiga"), {
+  ssr: false,
+});
+const AboutPageCarry = dynamic(() => import("./AboutPageCarry"), {
   ssr: false,
 });
 
-const LAMPS = [18, 50, 82] as const;
-
-const CARS = [
-  { id: "sedan", kind: "sedan", delay: "-2s", duration: "28s" },
-  { id: "van", kind: "van", delay: "-11s", duration: "34s" },
+const LAMPS = [
+  { id: "kumba-left", side: "right" },
+  { id: "kumba-right", side: "left" },
+  { id: "google-left", side: "right" },
+  { id: "google-right", side: "left" },
 ] as const;
 
 function Landmark({
@@ -49,49 +55,26 @@ function Landmark({
   );
 }
 
-function StreetLamp({ left }: { left: number }) {
-  return (
-    <div className="about-road__lamp" style={{ left: `${left}%` }}>
-      <span className="about-road__lamp-pole" />
-      <span className="about-road__lamp-arm" />
-      <span className="about-road__lamp-bulb" />
-      <span className="about-road__lamp-flare" />
-      <span className="about-road__lamp-pool" />
-    </div>
-  );
-}
-
-function ToyCar({
-  kind,
-  delay,
-  duration,
+function StreetLamp({
+  id,
+  side,
 }: {
-  kind: (typeof CARS)[number]["kind"];
-  delay: string;
-  duration: string;
+  id: (typeof LAMPS)[number]["id"];
+  side: (typeof LAMPS)[number]["side"];
 }) {
   return (
     <div
-      className={`about-road__car about-road__car--${kind}`}
-      style={
-        {
-          ["--car-delay"]: delay,
-          ["--car-duration"]: duration,
-        } as CSSProperties
-      }
+      className={`about-road__lamp about-road__lamp--${id} about-road__lamp--${side}`}
     >
-      <span className="about-road__car-shadow" />
-      <span className="about-road__car-body">
-        <span className="about-road__car-cabin" />
-        <span className="about-road__car-window" />
-        <span className="about-road__car-window about-road__car-window--rear" />
-        <span className="about-road__car-detail" />
-        <span className="about-road__car-headlight" />
-        <span className="about-road__car-taillight" />
-        <span className="about-road__car-beam" />
+      <span className="about-road__lamp-haze" />
+      <span className="about-road__lamp-pool" />
+      <span className="about-road__lamp-base" />
+      <span className="about-road__lamp-pole" />
+      <span className="about-road__lamp-arm">
+        <span className="about-road__lamp-fixture">
+          <span className="about-road__lamp-bulb" />
+        </span>
       </span>
-      <span className="about-road__car-wheel about-road__car-wheel--front" />
-      <span className="about-road__car-wheel about-road__car-wheel--back" />
     </div>
   );
 }
@@ -111,8 +94,8 @@ export default function AboutPageRoad() {
         />
 
         <div className="about-road__lights">
-          {LAMPS.map((left) => (
-            <StreetLamp key={left} left={left} />
+          {LAMPS.map((lamp) => (
+            <StreetLamp key={lamp.id} id={lamp.id} side={lamp.side} />
           ))}
         </div>
 
@@ -125,19 +108,10 @@ export default function AboutPageRoad() {
           <div className="about-road__thickness" />
         </div>
 
-        <div className="about-road__traffic">
-          {CARS.map((car) => (
-            <ToyCar
-              key={car.id}
-              kind={car.kind}
-              delay={car.delay}
-              duration={car.duration}
-            />
-          ))}
-        </div>
-
-        <div className="about-road__porsche-lane">
-          <AboutPagePorsche />
+        <div className="about-road__glb-lane">
+          <AboutPageWagonR />
+          <AboutPageErtiga />
+          <AboutPageCarry />
         </div>
       </div>
     </div>

@@ -4,8 +4,8 @@
   top: 0;
   right: 0;
   left: 0;
-  /* Stay above the exhibition rail so flowers don't bleed into the ticker. */
-  bottom: var(--hero-rail-height, 3.75rem);
+  /* Stay above the silver curb */
+  bottom: var(--hero-rail-height, 8px);
   z-index: 0;
   width: 100%;
   pointer-events: none;

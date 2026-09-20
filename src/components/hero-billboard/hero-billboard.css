@@ -3,7 +3,7 @@
 .hero-billboard {
   position: absolute;
   left: clamp(4.5rem, 8vw, 7.5rem);
-  bottom: calc(var(--hero-rail-height, 3.75rem) + 16vh);
+  bottom: calc(var(--hero-rail-height, 8px) + 16vh);
   width: clamp(7.4375rem, 10.625vw, 9.9875rem);
   /* No perspective/z-index here — poles must stack under the garden canvas */
   pointer-events: none;
@@ -263,7 +263,7 @@
 @media (min-width: 1280px) {
   .hero-billboard {
     left: clamp(5.5rem, 9vw, 9rem);
-    bottom: calc(var(--hero-rail-height, 3.75rem) + 18vh);
+    bottom: calc(var(--hero-rail-height, 8px) + 18vh);
     width: clamp(8.2875rem, 11.05vw, 10.8375rem);
   }
 
@@ -275,7 +275,7 @@
 @media (min-width: 1600px) {
   .hero-billboard {
     left: clamp(6.5rem, 10vw, 10.5rem);
-    bottom: calc(var(--hero-rail-height, 3.75rem) + 20vh);
+    bottom: calc(var(--hero-rail-height, 8px) + 20vh);
     width: 11.475rem;
   }
 

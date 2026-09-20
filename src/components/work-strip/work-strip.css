@@ -4,6 +4,12 @@
   position: relative;
   width: 100%;
   padding: clamp(2.5rem, 5vw, 4rem) 0 clamp(3rem, 6vw, 5rem);
+  background: var(--bg-page);
+}
+
+/* Homepage: Work sits directly above About — tighten the handoff */
+.xhulia-work:has(+ .about-page-hero--with-cta) {
+  padding-bottom: clamp(1.25rem, 2.5vw, 2rem);
 }
 
 .xhulia-work__header {

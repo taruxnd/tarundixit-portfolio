@@ -8,7 +8,7 @@
 }
 
 .hero-section {
-  --hero-rail-height: 3.75rem;
+  --hero-rail-height: 8px;
   /* Matches DotGridBackground spacing — used for optical nudges */
   --hero-dot-step: 36px;
   --hero-dot-nudge: calc(var(--hero-dot-step) * 2);
@@ -82,10 +82,6 @@
 }
 
 @media (min-width: 640px) {
-  .hero-section {
-    --hero-rail-height: 4rem;
-  }
-
   .hero-live-time {
     top: max(1.5rem, env(safe-area-inset-top, 0px));
     left: max(3rem, env(safe-area-inset-left, 0px));

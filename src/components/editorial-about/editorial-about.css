@@ -252,13 +252,13 @@
 
 .about-kumba-link__icon {
   display: inline-block;
-  width: 1em;
-  height: 1em;
+  width: 0.92em;
+  height: 0.92em;
   margin-right: 0.28em;
-  border-radius: 0.22em;
+  border-radius: 0.2em;
   object-fit: cover;
-  /* Sit on the text baseline like a glyph, not above the line */
-  vertical-align: -0.2em;
+  /* Optical center with cap height */
+  vertical-align: -0.08em;
   user-select: none;
   -webkit-user-drag: none;
 }
