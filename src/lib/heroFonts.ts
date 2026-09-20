@@ -1,11 +1,4 @@
-import { Geist, Instrument_Sans, Instrument_Serif } from "next/font/google";
-
-export const instrumentSerif = Instrument_Serif({
-  subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
-  variable: "--font-hero-instrument-serif",
-});
+import { Geist, Instrument_Sans } from "next/font/google";
 
 export const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
@@ -20,23 +13,22 @@ export const geist = Geist({
   variable: "--font-geist",
 });
 
-/** Editorial hero typography — Instrument Serif + Instrument Sans */
-export const heroFontClassName = [
-  instrumentSerif.variable,
-  instrumentSans.variable,
-].join(" ");
+/** Editorial display + Instrument Sans body */
+export const heroFontClassName = [geist.variable, instrumentSans.variable].join(
+  " ",
+);
 
-export const stripFontClassName = [
-  geist.variable,
-  instrumentSerif.variable,
-].join(" ");
+export const stripFontClassName = geist.variable;
+
+const editorial =
+  'var(--font-hero-instrument-serif), Georgia, "Times New Roman", serif';
 
 const sans =
   "var(--font-hero-instrument-sans), var(--font-inter), ui-sans-serif, system-ui, sans-serif";
 
 export const heroEditorialTypography = {
   headline: {
-    fontFamily: "var(--font-hero-instrument-serif), Georgia, serif",
+    fontFamily: editorial,
     fontWeight: 400,
     letterSpacing: "-0.02em",
     lineHeight: 1.08,

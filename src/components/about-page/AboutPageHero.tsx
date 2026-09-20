@@ -1,17 +1,27 @@
 "use client";
 
 import AboutPageRoad from "@/components/about-page/AboutPageRoad";
+import LiquidGlass from "@/components/navbar/LiquidGlass";
 import { stripFontClassName } from "@/lib/heroFonts";
 import { contentContainerClassName } from "@/lib/sectionLayout";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import "./about-page.css";
 
+type AboutWordKind =
+  | "name"
+  | "designer"
+  | "engineers"
+  | "ai"
+  | "ux"
+  | "craft"
+  | "technology";
+
 function Word({
   kind,
   children,
 }: {
-  kind: "designer" | "engineers" | "ai";
+  kind: AboutWordKind;
   children: ReactNode;
 }) {
   return (
@@ -37,8 +47,16 @@ function Word({
           <span />
         </span>
       ) : null}
-      {kind === "engineers" ? (
+      {kind === "engineers" || kind === "technology" ? (
         <span className="about-page-word__caret" aria-hidden />
+      ) : null}
+      {kind === "ux" ? (
+        <span className="about-page-word__ux-mark" aria-hidden>
+          ◦
+        </span>
+      ) : null}
+      {kind === "craft" ? (
+        <span className="about-page-word__craft-line" aria-hidden />
       ) : null}
       {kind === "ai" ? (
         <span className="about-page-word__spark" aria-hidden>
@@ -68,48 +86,87 @@ function KumbaAiLink() {
   );
 }
 
-/** First-fold /about hero — copy + road. Built from scratch for this route. */
-export default function AboutPageHero() {
+type AboutPageHeroProps = {
+  /** Anchor id for in-page nav (e.g. homepage `#about`). */
+  id?: string;
+  /** Optional CTA to the full about route (homepage only). */
+  moreHref?: string;
+};
+
+/** About hero — copy + road, no ID card. Shared by `/` and `/about`. */
+export default function AboutPageHero({
+  id,
+  moreHref,
+}: AboutPageHeroProps = {}) {
+  const HeadingTag = id ? "h2" : "h1";
+
   return (
     <section
-      className={`about-page-hero theme-transition ${stripFontClassName}`}
+      id={id}
+      className={`about-page-hero theme-transition ${stripFontClassName}${
+        moreHref ? " about-page-hero--with-cta" : ""
+      }`}
       aria-labelledby="about-page-heading"
     >
       <div className="about-page-hero__stage">
         <div className={`${contentContainerClassName} about-page-hero__inner`}>
           <p className="about-page-hero__eyebrow">About</p>
-          <h1 id="about-page-heading" className="sr-only">
+          <HeadingTag id="about-page-heading" className="sr-only">
             About
-          </h1>
+          </HeadingTag>
 
           <div className="about-page-hero__prose">
             <p>
-              I&apos;m Tarun Dixit, a <Word kind="designer">product designer</Word>{" "}
-              who <Word kind="engineers">engineers</Word>, currently working at{" "}
+              I&apos;m <Word kind="name">Tarun Dixit</Word>, a{" "}
+              <Word kind="designer">product designer</Word> who{" "}
+              <Word kind="engineers">engineers</Word>, currently working at{" "}
               <KumbaAiLink />.
             </p>
             <p>
-              I like looking beyond just the design. I want to understand the
-              user, the business, and what we are trying to achieve. Then I try
-              to figure out where I can bring value through design and
-              technology.
+              I like looking beyond just the <Word kind="craft">design</Word>. I
+              want to understand the user, the business, and what we are trying
+              to achieve. Then I try to figure out where I can bring value
+              through design and <Word kind="technology">technology</Word>.
             </p>
             <p>
-              I believe UX comes first. There is always a real person on the
-              other side of what we build, and understanding that person is
-              something you have to do yourself. <Word kind="ai">AI</Word> can
+              I believe <Word kind="ux">UX</Word> comes first. There is always a
+              real person on the other side of what we build, and understanding
+              that person is something you have to do yourself.{" "}
+              <Word kind="ai">AI</Word> can
               help us explore ideas, make things faster, and even build a lot of
               what we imagine. But I don&apos;t think AI will truly understand
               people the way people understand people.
             </p>
-            <p>
-              And then there is taste. You can use AI to make almost anything
-              today, but knowing what looks right, what feels right, what to
-              keep, what to remove, and what makes something worth remembering
-              is a different thing. I don&apos;t think AI will master that
-              anytime soon. Maybe not even in 100 years.
-            </p>
+            {!moreHref ? (
+              <p>
+                And then there is <Word kind="craft">taste</Word>. You can use AI
+                to make almost anything
+                today, but knowing what looks right, what feels right, what to
+                keep, what to remove, and what makes something worth remembering
+                is a different thing. I don&apos;t think AI will master that
+                anytime soon. Maybe not even in 100 years.
+              </p>
+            ) : null}
           </div>
+
+          {moreHref ? (
+            <div className="about-page-hero__cta">
+              <Link
+                href={moreHref}
+                data-cursor="interactive"
+                className="about-page-hero__more"
+              >
+                <LiquidGlass className="about-page-hero__more-glass">
+                  <span className="about-page-hero__more-label">
+                    There&apos;s more to me
+                    <span className="about-page-hero__arrow" aria-hidden>
+                      →
+                    </span>
+                  </span>
+                </LiquidGlass>
+              </Link>
+            </div>
+          ) : null}
         </div>
       </div>
 

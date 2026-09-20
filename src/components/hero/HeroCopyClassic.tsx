@@ -35,44 +35,49 @@ export default function HeroCopyClassic() {
         className="hero-intro theme-transition"
         style={{ fontFamily: typography.body.fontFamily }}
       >
-        <span className="hero-intro__text">Hello</span>
+        <span className="hero-intro__text" lang="hi">
+          नमस्ते
+        </span>
         <span className="hero-intro__avatar">
           <Image
-            src="/profile/tarun-dixit.jpg"
+            src="/profile/tarun-avatar.jpg"
             alt=""
-            fill
-            sizes="40px"
+            width={256}
+            height={256}
+            sizes="(max-width: 380px) 32px, (min-width: 1600px) 40px, 36px"
+            quality={95}
             className="hero-intro__avatar-img"
             priority
           />
         </span>
-        <span className="hero-intro__text">I&apos;m Tarun</span>
+        <span className="hero-intro__text">
+          I&apos;m <span className="hero-intro__name">Tarun Dixit</span>
+        </span>
       </motion.p>
 
       <motion.h1
         variants={fadeUp}
         custom={1}
         className="hero-headline theme-transition text-[var(--text-primary)]"
-        style={typography.headline}
       >
-        I design{" "}
-        <span data-hero-role>products</span> that{" "}
-        <em className="hero-headline__accent">feel</em>{" "}
-        <span className="hero-headline__emoji" aria-hidden>
+        I design products that make
+        <br />
+        <span className="hero-headline__sense">sense</span> and feel
+        <span className="hero-headline__feel-icon" aria-hidden>
           ✨
         </span>{" "}
-        simple, even when they&apos;re not.
+        right.
       </motion.h1>
 
       <motion.div
         variants={fadeUp}
         custom={2}
-        className="hero-cta flex flex-col gap-3 sm:flex-row sm:items-center"
+        className="hero-cta flex flex-col sm:flex-row sm:items-center"
       >
         <motion.a
           href="#work"
           data-cursor="interactive"
-          className="hero-cta__button theme-transition group inline-flex items-center justify-center gap-2 rounded-full bg-[var(--btn-primary-bg)] px-6 py-3 text-sm font-medium text-[var(--btn-primary-text)]"
+          className="hero-cta__button theme-transition group inline-flex items-center justify-center gap-2 rounded-full bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)]"
           style={{ fontFamily: typography.body.fontFamily }}
           whileHover={{
             y: -2,
@@ -83,8 +88,8 @@ export default function HeroCopyClassic() {
         >
           View my work
           <ArrowUpRight
-            size={16}
-            className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            aria-hidden
+            className="hero-cta__icon transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
           />
         </motion.a>
 

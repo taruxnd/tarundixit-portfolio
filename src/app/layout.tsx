@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Caveat, Inter } from "next/font/google";
 import SiteShell from "@/components/SiteShell";
+import ThemeInitScript from "@/components/ThemeInitScript";
 import "./globals.css";
 
 const inter = Inter({
@@ -20,8 +21,6 @@ export const metadata: Metadata = {
     "Product designer crafting AI products, scalable design systems, and thoughtful user experiences.",
 };
 
-const THEME_INIT = `(function(){try{var t=localStorage.getItem("portfolio-lamp-theme");var d=t==="dark";document.documentElement.dataset.theme=d?"dark":"light";document.documentElement.style.colorScheme=d?"dark":"light";document.documentElement.style.backgroundColor=d?"#0a0a0a":"#ffffff";if(document.body){document.body.style.backgroundColor=d?"#0a0a0a":"#ffffff";}}catch(e){}})();`;
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -29,13 +28,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <script
-          id="portfolio-theme-init"
-          dangerouslySetInnerHTML={{ __html: THEME_INIT }}
-        />
-      </head>
       <body className={`${inter.variable} ${caveat.variable} font-sans antialiased`}>
+        <ThemeInitScript />
         <SiteShell>{children}</SiteShell>
       </body>
     </html>

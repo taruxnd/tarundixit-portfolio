@@ -19,13 +19,17 @@ interface HeroShellProps {
 /** Shared hero chrome — sky, garden, billboard, rail. */
 export default function HeroShell({ children }: HeroShellProps) {
   const boundaryRef = useRef<HTMLDivElement>(null);
-  const { theme, reducedMotion } = useTheme();
+  const { theme, hydrated, reducedMotion } = useTheme();
   useHeroScrollBoundary(boundaryRef);
+
+  // Wait until hydrated so light-sky isn't in SSR HTML for dark users
+  // (theme is always "light" on the first paint to match the server).
+  const showLightSky = hydrated && theme === "light";
 
   return (
     <div ref={boundaryRef} className="hero-scroll-boundary">
       <section className={`hero-section relative ${heroFontClassName}`}>
-        {theme === "light" ? (
+        {showLightSky ? (
           <LightSkyBackground cloudsOnly reducedMotion={reducedMotion} />
         ) : null}
         <HeroGarden />

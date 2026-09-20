@@ -1,14 +1,18 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import "./about-page-road.css";
+
+const AboutPagePorsche = dynamic(() => import("./AboutPagePorsche"), {
+  ssr: false,
+});
 
 const LAMPS = [18, 50, 82] as const;
 
 const CARS = [
   { id: "sedan", kind: "sedan", delay: "-2s", duration: "28s" },
   { id: "van", kind: "van", delay: "-11s", duration: "34s" },
-  { id: "coupe", kind: "coupe", delay: "-19s", duration: "22s" },
 ] as const;
 
 function Landmark({
@@ -112,6 +116,15 @@ export default function AboutPageRoad() {
           ))}
         </div>
 
+        <div className="about-road__slab">
+          <div className="about-road__curb about-road__curb--top" />
+          <div className="about-road__asphalt">
+            <div className="about-road__dashes" />
+          </div>
+          <div className="about-road__curb about-road__curb--bottom" />
+          <div className="about-road__thickness" />
+        </div>
+
         <div className="about-road__traffic">
           {CARS.map((car) => (
             <ToyCar
@@ -123,13 +136,8 @@ export default function AboutPageRoad() {
           ))}
         </div>
 
-        <div className="about-road__slab">
-          <div className="about-road__curb about-road__curb--top" />
-          <div className="about-road__asphalt">
-            <div className="about-road__dashes" />
-          </div>
-          <div className="about-road__curb about-road__curb--bottom" />
-          <div className="about-road__thickness" />
+        <div className="about-road__porsche-lane">
+          <AboutPagePorsche />
         </div>
       </div>
     </div>

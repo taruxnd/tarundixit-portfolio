@@ -24,29 +24,25 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 const STORAGE_KEY = "portfolio-lamp-theme";
 
+/** Must match SSR default so the first client render hydrates cleanly. */
+const SSR_THEME: SiteTheme = "light";
+
 function applyTheme(theme: SiteTheme) {
   document.documentElement.dataset.theme = theme;
   document.documentElement.style.colorScheme = theme;
-  document.documentElement.style.backgroundColor =
-    theme === "dark" ? "#0a0a0a" : "#ffffff";
-}
-
-function readDomTheme(): SiteTheme {
-  if (typeof document === "undefined") return "light";
-  return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
 }
 
 export function ThemeController({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<SiteTheme>(readDomTheme);
+  // Same initial value on server + client — never read localStorage/DOM here.
+  const [theme, setTheme] = useState<SiteTheme>(SSR_THEME);
   const [hydrated, setHydrated] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useLayoutEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
+    const fromDom = document.documentElement.dataset.theme === "dark";
     const initial: SiteTheme =
-      stored === "dark" || document.documentElement.dataset.theme === "dark"
-        ? "dark"
-        : "light";
+      stored === "dark" || fromDom ? "dark" : "light";
     setTheme(initial);
     applyTheme(initial);
 

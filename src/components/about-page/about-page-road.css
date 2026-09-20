@@ -12,7 +12,8 @@
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-  height: clamp(5.5rem, 10vw, 7.5rem);
+  /* Grows with viewport so large-laptop landmark headroom is present from first paint */
+  height: clamp(5.5rem, 2.8rem + 3.5vw, 9.5rem);
   pointer-events: none;
   user-select: none;
   overflow: visible;
@@ -90,12 +91,15 @@
   background: linear-gradient(180deg, #e4e2dc 0%, #d8d6d0 100%);
 }
 
-/* Buildings — img fade-in; no filters / blend modes */
+/* Buildings — img fade-in; no filters / blend modes.
+ * Size ramps in CSS from first paint (no late @media snap on reload):
+ * ~10rem through laptop widths, +60% (16rem) by ~1920px / 17"+, then capped.
+ * REVERT large size: change the clamp max back to 10rem. */
 .about-road__landmark {
   position: absolute;
   bottom: calc(var(--road-height) - 7px);
   z-index: 1;
-  width: min(26vw, 10rem);
+  width: clamp(10rem, calc(10rem + (100vw - 1440px) * 0.0125), 16rem);
   transform: translateX(-50%);
   line-height: 0;
 }
@@ -230,6 +234,39 @@
   height: 1.4rem;
   z-index: 5;
   overflow: hidden;
+}
+
+/* Above asphalt + toy cars — not clipped by traffic overflow */
+.about-road__porsche-lane {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--road-height) - 0.35rem);
+  height: 2.35rem;
+  z-index: 12;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.about-road__porsche {
+  position: absolute;
+  bottom: 0;
+  left: var(--drive-x, 18%);
+  width: min(7.5rem, 26vw);
+  height: 2.1rem;
+  min-width: 4.5rem;
+  min-height: 1.5rem;
+  transform: translateX(-50%);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+  transition: opacity 0.35s ease;
+}
+
+.about-road__porsche[data-ready="true"],
+.about-road__porsche.is-ready {
+  opacity: 1;
 }
 
 .about-road__car {
@@ -386,6 +423,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .about-road__porsche {
+    left: 28%;
+    transform: translateX(-50%);
+  }
+
   .about-road__car {
     animation: none;
     left: 20%;
@@ -393,10 +435,6 @@
 
   .about-road__car--van {
     left: 48%;
-  }
-
-  .about-road__car--coupe {
-    left: 72%;
   }
 }
 

@@ -1,5 +1,42 @@
 @import "tailwindcss";
 
+/* Site editorial display face — PP Editorial New */
+@font-face {
+  font-family: "PP Editorial New";
+  src: url("/fonts/pp-editorial-new/PPEditorialNew-Ultralight.woff2")
+    format("woff2");
+  font-style: normal;
+  font-weight: 200 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PP Editorial New";
+  src: url("/fonts/pp-editorial-new/PPEditorialNew-Regular.woff2")
+    format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PP Editorial New";
+  src: url("/fonts/pp-editorial-new/PPEditorialNew-Italic.woff2")
+    format("woff2");
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PP Editorial New";
+  src: url("/fonts/pp-editorial-new/PPEditorialNew-UltralightItalic.woff2")
+    format("woff2");
+  font-style: italic;
+  font-weight: 200 300;
+  font-display: swap;
+}
+
 @theme {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
@@ -9,6 +46,8 @@
   --layout-content-max-wide: 1560px;
   --layout-reading-max: 720px;
   --hero-rail-gap: 2.5rem;
+  /* Alias kept so existing CSS vars resolve to the new face */
+  --font-hero-instrument-serif: "PP Editorial New";
   --bg-page: #ffffff;
   --text-primary: #0a0a0a;
   --text-secondary: #525252;
