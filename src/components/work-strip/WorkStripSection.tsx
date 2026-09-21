@@ -72,10 +72,15 @@ export default function WorkStripSection() {
     >
       <div className={contentContainerClassName}>
         <header className="xhulia-work__header">
-          <p className="xhulia-work__eyebrow">Projects · 2024–26</p>
           <h2 id="work-heading" className="xhulia-work__heading">
-            Selected work
+            Things that went into production
+            <span className="xhulia-work__heading-dot" aria-hidden>
+              .
+            </span>
           </h2>
+          <p className="xhulia-work__lede">
+            Real products. Real users. Real learnings.
+          </p>
         </header>
       </div>
 

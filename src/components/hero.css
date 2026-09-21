@@ -179,6 +179,24 @@
   backface-visibility: hidden;
 }
 
+.hero-intro__avatar-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 24%;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  pointer-events: none;
+}
+
+.hero-intro__avatar-video.is-ready {
+  opacity: 1;
+}
+
 .hero-headline {
   width: 100%;
   max-width: min(48rem, 100%);

@@ -1,10 +1,15 @@
 "use client";
 
 import LiquidGlass from "@/components/navbar/LiquidGlass";
+import { useTheme } from "@/components/ThemeController";
 import { heroEditorialTypography } from "@/lib/heroFonts";
 import { motion, type Variants } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+
+const AVATAR_IMAGE = "/profile/tarun-avatar.jpg";
+const AVATAR_VIDEO = "/profile/tarun-avatar.mov";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },
@@ -23,6 +28,27 @@ const typography = heroEditorialTypography;
 
 /** Greeting + editorial statement hero, inspired by a simple portrait intro. */
 export default function HeroCopyClassic() {
+  const { reducedMotion } = useTheme();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoReady, setVideoReady] = useState(false);
+  const [videoFailed, setVideoFailed] = useState(false);
+  const showVideo = !reducedMotion && !videoFailed;
+
+  useEffect(() => {
+    if (!showVideo) return;
+    const video = videoRef.current;
+    if (!video) return;
+
+    const tryPlay = () => {
+      const play = video.play();
+      if (play) play.catch(() => setVideoFailed(true));
+    };
+
+    tryPlay();
+    video.addEventListener("loadeddata", tryPlay);
+    return () => video.removeEventListener("loadeddata", tryPlay);
+  }, [showVideo]);
+
   return (
     <motion.div
       className="hero-grid__copy flex min-w-0 flex-col"
@@ -40,7 +66,7 @@ export default function HeroCopyClassic() {
         </span>
         <span className="hero-intro__avatar">
           <Image
-            src="/profile/tarun-avatar.jpg"
+            src={AVATAR_IMAGE}
             alt=""
             width={256}
             height={256}
@@ -49,6 +75,21 @@ export default function HeroCopyClassic() {
             className="hero-intro__avatar-img"
             priority
           />
+          {showVideo ? (
+            <video
+              ref={videoRef}
+              className={`hero-intro__avatar-video${videoReady ? " is-ready" : ""}`}
+              src={AVATAR_VIDEO}
+              muted
+              playsInline
+              autoPlay
+              loop
+              preload="auto"
+              aria-hidden
+              onPlaying={() => setVideoReady(true)}
+              onError={() => setVideoFailed(true)}
+            />
+          ) : null}
         </span>
         <span className="hero-intro__text">
           I&apos;m <span className="hero-intro__name">Tarun Dixit</span>
