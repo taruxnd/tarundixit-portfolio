@@ -59,7 +59,10 @@ export default function HeroCopyClassic() {
         variants={fadeUp}
         custom={0}
         className="hero-intro theme-transition"
-        style={{ fontFamily: typography.body.fontFamily }}
+        style={{
+          fontFamily:
+            "var(--font-geist), ui-sans-serif, system-ui, sans-serif",
+        }}
       >
         <span className="hero-intro__text" lang="hi">
           नमस्ते

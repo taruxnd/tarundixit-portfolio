@@ -10,7 +10,7 @@
 
 /** ~1360px default; expands on large external monitors (≥1800px) */
 export const contentContainerClassName =
-  "layout-content mx-auto w-full max-w-[1360px] min-[1800px]:max-w-[1560px] px-8 sm:px-12 lg:px-24 xl:px-32";
+  "layout-content mx-auto w-full max-w-[1360px] min-[1800px]:max-w-[1560px] px-5 sm:px-8 lg:px-12 xl:px-16";
 
 /**
  * ~720px reading measure. Place inside a content container (or equivalent

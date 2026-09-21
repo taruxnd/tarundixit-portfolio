@@ -2,11 +2,18 @@
 
 import AboutPageRoad from "@/components/about-page/AboutPageRoad";
 import LiquidGlass from "@/components/navbar/LiquidGlass";
+import { useTheme } from "@/components/ThemeController";
 import { stripFontClassName } from "@/lib/heroFonts";
 import { contentContainerClassName } from "@/lib/sectionLayout";
+import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
+import "../hero.css";
 import "./about-page.css";
+
+const AVATAR_IMAGE = "/profile/tarun-avatar.jpg";
+const AVATAR_VIDEO = "/profile/tarun-avatar.mov";
 
 type AboutWordKind =
   | "name"
@@ -86,6 +93,64 @@ function KumbaAiLink() {
   );
 }
 
+function AboutIntro() {
+  const { reducedMotion } = useTheme();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoReady, setVideoReady] = useState(false);
+  const [videoFailed, setVideoFailed] = useState(false);
+  const showVideo = !reducedMotion && !videoFailed;
+
+  useEffect(() => {
+    if (!showVideo) return;
+    const video = videoRef.current;
+    if (!video) return;
+    void video.play().catch(() => setVideoFailed(true));
+  }, [showVideo]);
+
+  return (
+    <p
+      className="hero-intro about-page-hero__intro theme-transition"
+      style={{
+        fontFamily: "var(--font-geist), ui-sans-serif, system-ui, sans-serif",
+      }}
+    >
+      <span className="hero-intro__text" lang="hi">
+        नमस्ते
+      </span>
+      <span className="hero-intro__avatar">
+        <Image
+          src={AVATAR_IMAGE}
+          alt=""
+          width={256}
+          height={256}
+          sizes="(max-width: 380px) 32px, (min-width: 1600px) 40px, 36px"
+          quality={95}
+          className="hero-intro__avatar-img"
+          priority
+        />
+        {showVideo ? (
+          <video
+            ref={videoRef}
+            className={`hero-intro__avatar-video${videoReady ? " is-ready" : ""}`}
+            src={AVATAR_VIDEO}
+            muted
+            playsInline
+            autoPlay
+            loop
+            preload="auto"
+            aria-hidden
+            onPlaying={() => setVideoReady(true)}
+            onError={() => setVideoFailed(true)}
+          />
+        ) : null}
+      </span>
+      <span className="hero-intro__text">
+        I&apos;m <span className="hero-intro__name">Tarun Dixit</span>
+      </span>
+    </p>
+  );
+}
+
 type AboutPageHeroProps = {
   /** Anchor id for in-page nav (e.g. homepage `#about`). */
   id?: string;
@@ -103,22 +168,19 @@ export default function AboutPageHero({
   return (
     <section
       id={id}
-      className={`about-page-hero theme-transition ${stripFontClassName}${
-        moreHref ? " about-page-hero--with-cta" : ""
-      }`}
+      className={`about-page-hero theme-transition ${stripFontClassName}`}
       aria-labelledby="about-page-heading"
     >
       <div className="about-page-hero__stage">
         <div className={`${contentContainerClassName} about-page-hero__inner`}>
-          <p className="about-page-hero__eyebrow">About</p>
+          <AboutIntro />
           <HeadingTag id="about-page-heading" className="sr-only">
-            About
+            About Tarun Dixit
           </HeadingTag>
 
           <div className="about-page-hero__prose">
             <p>
-              I&apos;m <Word kind="name">Tarun Dixit</Word>, a{" "}
-              <Word kind="designer">product designer</Word> who{" "}
+              A <Word kind="designer">product designer</Word> who{" "}
               <Word kind="engineers">engineers</Word>, currently working at{" "}
               <KumbaAiLink />.
             </p>

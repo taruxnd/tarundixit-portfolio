@@ -15,7 +15,15 @@
   display: flex;
   flex-direction: column;
   overflow-x: clip;
-  min-height: 88svh;
+  overflow-y: clip;
+  /* One fold on every viewport (svh fallback, dvh for mobile chrome) */
+  height: 100svh;
+  height: 100dvh;
+  min-height: 100svh;
+  min-height: 100dvh;
+  max-height: 100svh;
+  max-height: 100dvh;
+  box-sizing: border-box;
   /* Keep billboard posts (z-index: -1) behind flowers but inside the hero */
   isolation: isolate;
 }
@@ -108,7 +116,7 @@
   flex: 1 1 auto;
   align-items: center;
   justify-content: flex-start;
-  min-height: max(calc(88svh - var(--hero-rail-height)), 36rem);
+  min-height: 0;
   padding-top: max(5.5rem, calc(3.75rem + env(safe-area-inset-top, 0px)));
   /* Reserve garden band without pinning copy under the nav */
   padding-bottom: max(var(--hero-rail-gap), 32vh);
@@ -347,16 +355,13 @@
  * left-aligned copy + CTAs, original spacing (no glass panel).
  */
 @media (max-width: 1023px) {
-  .hero-section {
-    min-height: auto;
-  }
-
   .hero-section__inner {
     align-items: flex-start;
     justify-content: flex-start;
-    min-height: max(calc(88svh - var(--hero-rail-height)), 28rem);
-    padding-top: max(10rem, calc(6.35rem + env(safe-area-inset-top, 0px)));
-    padding-bottom: max(var(--hero-rail-gap), 22vh);
+    min-height: 0;
+    padding-top: max(5.75rem, calc(4.25rem + env(safe-area-inset-top, 0px)));
+    /* Garden is hidden below desktop — keep a light bottom breath only */
+    padding-bottom: max(var(--hero-rail-gap), 14vh);
   }
 
   .hero-grid {
@@ -395,8 +400,8 @@
 
 @media (min-width: 640px) and (max-width: 1023px) {
   .hero-section__inner {
-    padding-top: 11.25rem;
-    padding-bottom: max(var(--hero-rail-gap), 24vh);
+    padding-top: max(6.25rem, calc(4.75rem + env(safe-area-inset-top, 0px)));
+    padding-bottom: max(var(--hero-rail-gap), 16vh);
   }
 
   .hero-headline {
@@ -412,7 +417,9 @@
 
 @media (min-width: 768px) and (max-width: 1023px) {
   .hero-section__inner {
-    padding-top: 12.25rem;
+    padding-top: max(6.75rem, calc(5rem + env(safe-area-inset-top, 0px)));
+    /* Garden is on from tablet up — reserve a bit more bottom band */
+    padding-bottom: max(var(--hero-rail-gap), 22vh);
   }
 
   .hero-headline {
@@ -437,12 +444,7 @@
  * No aggressive lift (that was clipping the headline under the pill).
  */
 @media (min-width: 1024px) and (max-width: 1799px) {
-  .hero-section {
-    min-height: 100svh;
-  }
-
   .hero-section__inner {
-    min-height: calc(100svh - var(--hero-rail-height));
     justify-content: flex-start;
     padding-top: max(8rem, calc(5.75rem + env(safe-area-inset-top, 0px)));
     padding-bottom: max(var(--hero-rail-gap), 30vh);
@@ -509,12 +511,7 @@
 }
 
 @media (min-width: 1800px) {
-  .hero-section {
-    min-height: 100svh;
-  }
-
   .hero-section__inner {
-    min-height: calc(100svh - var(--hero-rail-height));
     align-items: center;
     justify-content: center;
     padding-top: max(6.5rem, calc(4.5rem + env(safe-area-inset-top, 0px)));
@@ -575,10 +572,10 @@
   }
 }
 
-/* Short phones only — do not override laptop / desktop placement */
+/* Short phones only — keep one fold; tighten vertical padding */
 @media (max-height: 720px) and (max-width: 1023px) {
   .hero-section__inner {
-    min-height: auto;
+    padding-top: max(4.75rem, calc(3.25rem + env(safe-area-inset-top, 0px)));
     padding-bottom: var(--hero-rail-gap);
   }
 
@@ -610,11 +607,10 @@
   }
 }
 
-/* Small phones in landscape */
+/* Small phones in landscape — still one fold */
 @media (max-height: 480px) and (orientation: landscape) and (max-width: 1023px) {
   .hero-section__inner {
-    min-height: auto;
-    padding-top: max(5rem, calc(3.5rem + env(safe-area-inset-top, 0px)));
+    padding-top: max(3.5rem, calc(2.5rem + env(safe-area-inset-top, 0px)));
     padding-bottom: var(--hero-rail-gap);
   }
 

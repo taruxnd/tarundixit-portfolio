@@ -197,7 +197,7 @@ export default function HeroGarden() {
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
-    const desktopQuery = window.matchMedia("(min-width: 1024px)");
+    const desktopQuery = window.matchMedia("(min-width: 768px)");
     const sync = () => setEnabled(desktopQuery.matches);
     sync();
     desktopQuery.addEventListener("change", sync);
