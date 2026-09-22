@@ -58,6 +58,9 @@ export default function AboutMusicShelf() {
           <h2 id="about-music-heading" className="about-music__heading">
             Some of the songs I keep close.
           </h2>
+          <p className="about-music__subline">
+            Hover or tap a cover to play.
+          </p>
         </header>
 
         <div className="about-music__grid">

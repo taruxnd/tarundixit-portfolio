@@ -23,7 +23,7 @@ type CoverCloseProps = {
   /** Square album art for the sleeve only — disc centre stays default. */
   coverSrc?: string;
   coverAlt?: string;
-  /** Optional preview clip — plays while hovered / focused. */
+  /** Optional preview clip — plays while hovered, focused, or tapped. */
   audioSrc?: string;
   /** Seek here (seconds) each time playback starts. */
   audioStartSeconds?: number;
@@ -44,10 +44,23 @@ export default function CoverClose({
   audioEndSeconds,
 }: CoverCloseProps = {}) {
   const reducedMotion = useReducedMotion();
-  const [open, setOpen] = useState(false);
+  /** Fine-pointer hover only — ignore sticky :hover on touch. */
+  const [canHover, setCanHover] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  /** Sticky open from tap / click / keyboard. */
+  const [tapped, setTapped] = useState(false);
+  const open = hovered || tapped;
   const active = open && !reducedMotion;
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const isCustomCover = coverSrc !== DEFAULT_COVER;
+
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const sync = () => setCanHover(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -84,23 +97,44 @@ export default function CoverClose({
     };
   }, [open, audioSrc, audioStartSeconds, audioEndSeconds]);
 
+  const toggleTapped = () => {
+    setTapped((prev) => {
+      const next = !prev;
+      // On touch, clear sticky hover so a second tap can stop playback.
+      if (!next && !canHover) setHovered(false);
+      return next;
+    });
+  };
+
   return (
     <div
       className="about-music-cover-slot"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-      onFocus={() => setOpen(true)}
-      onBlur={() => setOpen(false)}
+      data-cursor="interactive"
+      tabIndex={0}
+      role="button"
+      aria-pressed={open}
+      aria-label={audioSrc ? `Play preview: ${coverAlt}` : coverAlt}
+      onMouseEnter={() => {
+        if (canHover) setHovered(true);
+      }}
+      onMouseLeave={() => {
+        if (canHover) setHovered(false);
+      }}
+      onFocus={() => setHovered(true)}
+      onBlur={() => setHovered(false)}
+      onClick={toggleTapped}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggleTapped();
+        }
+      }}
     >
       {audioSrc ? (
         <audio ref={audioRef} src={audioSrc} preload="metadata" playsInline />
       ) : null}
       <div
         className={`about-music-cover${isCustomCover ? " about-music-cover--custom" : ""}`}
-        data-cursor="interactive"
-        tabIndex={0}
-        role="img"
-        aria-label={coverAlt}
       >
         <div
           className={`framer-z5dBK framer-1n23hte ${active ? "framer-v-1inx27t" : "framer-v-1n23hte"}`}

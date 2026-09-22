@@ -317,6 +317,10 @@
   animation-delay: -17s;
 }
 
+.about-road__glb-car.is-paused {
+  animation-play-state: paused;
+}
+
 .about-road__glb-car[data-ready="true"],
 .about-road__glb-car.is-ready {
   opacity: 1;

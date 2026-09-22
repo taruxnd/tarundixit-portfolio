@@ -45,11 +45,16 @@ function collectWagonRWheels(root: Object3D): Object3D[] {
 /** Side-view WagonR looping with the about-road traffic. */
 export default function AboutPageWagonR({
   lane = "a",
+  animate = true,
 }: {
   /** Stagger multiple WagonRs on the shared 24s loop. */
   lane?: "a" | "b";
+  /** When false, freeze WebGL + CSS drive (road off-screen). */
+  animate?: boolean;
 } = {}) {
   const hostRef = useRef<HTMLDivElement>(null);
+  const animateRef = useRef(animate);
+  animateRef.current = animate;
 
   useEffect(() => {
     const host = hostRef.current;
@@ -199,6 +204,11 @@ export default function AboutPageWagonR({
       if (disposed || !renderer) return;
       raf = requestAnimationFrame(tick);
 
+      if (!animateRef.current) {
+        lastFrameTime = null;
+        return;
+      }
+
       if (!reducedMotion) {
         if (lastFrameTime !== null) {
           const deltaSeconds = Math.min((now - lastFrameTime) / 1000, 0.1);
@@ -220,7 +230,7 @@ export default function AboutPageWagonR({
       ro.disconnect();
       motionQuery.removeEventListener("change", handleMotionPreference);
       delete host.dataset.ready;
-      host.classList.remove("is-ready", "is-reduced-motion");
+      host.classList.remove("is-ready", "is-reduced-motion", "is-paused");
       renderer?.dispose();
       dracoLoader.dispose();
       scene.environment = null;
@@ -235,10 +245,16 @@ export default function AboutPageWagonR({
     };
   }, []);
 
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
+    host.classList.toggle("is-paused", !animate);
+  }, [animate]);
+
   return (
     <div
       ref={hostRef}
-      className={`about-road__glb-car about-road__glb-car--wagonr about-road__glb-car--wagonr-${lane}`}
+      className={`about-road__glb-car about-road__glb-car--wagonr about-road__glb-car--wagonr-${lane}${animate ? "" : " is-paused"}`}
       aria-hidden
     />
   );

@@ -12,6 +12,9 @@ const AboutPageCarry = dynamic(() => import("./AboutPageCarry"), {
   ssr: false,
 });
 
+/** Start loading GLBs ~1 viewport before the road enters view. */
+const LOAD_ROOT_MARGIN = "100% 0px";
+
 const LAMPS = [
   { id: "kumba-left", side: "right" },
   { id: "kumba-right", side: "left" },
@@ -79,8 +82,31 @@ function StreetLamp({
 
 /** Side-elevation road for the /about hero — built fresh, no shared diorama CSS. */
 export default function AboutPageRoad() {
+  const roadRef = useRef<HTMLDivElement>(null);
+  /** Sticky: once near, keep GLB modules mounted (avoid re-downloading models). */
+  const [loadCars, setLoadCars] = useState(false);
+  /** Live visibility: pause WebGL + CSS drive when the road is off-screen. */
+  const [animateCars, setAnimateCars] = useState(false);
+
+  useEffect(() => {
+    const road = roadRef.current;
+    if (!road) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        const near = entry?.isIntersecting ?? false;
+        if (near) setLoadCars(true);
+        setAnimateCars(near);
+      },
+      { root: null, rootMargin: LOAD_ROOT_MARGIN, threshold: 0 },
+    );
+
+    io.observe(road);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <div className="about-road" aria-hidden>
+    <div ref={roadRef} className="about-road" aria-hidden>
       <div className="about-road__scene">
         <Landmark
           className="about-road__landmark about-road__landmark--kumba"
@@ -107,9 +133,13 @@ export default function AboutPageRoad() {
         </div>
 
         <div className="about-road__glb-lane">
-          <AboutPageWagonR lane="a" />
-          <AboutPageWagonR lane="b" />
-          <AboutPageCarry />
+          {loadCars ? (
+            <>
+              <AboutPageWagonR lane="a" animate={animateCars} />
+              <AboutPageWagonR lane="b" animate={animateCars} />
+              <AboutPageCarry animate={animateCars} />
+            </>
+          ) : null}
         </div>
       </div>
     </div>

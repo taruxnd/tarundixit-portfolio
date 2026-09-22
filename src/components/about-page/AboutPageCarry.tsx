@@ -236,8 +236,15 @@ function buildCarryWheelAssemblies(root: Object3D): Group[] {
 }
 
 /** Side-view Suzuki Carry blind van on the about-road. */
-export default function AboutPageCarry() {
+export default function AboutPageCarry({
+  animate = true,
+}: {
+  /** When false, freeze WebGL + CSS drive (road off-screen). */
+  animate?: boolean;
+} = {}) {
   const hostRef = useRef<HTMLDivElement>(null);
+  const animateRef = useRef(animate);
+  animateRef.current = animate;
 
   useEffect(() => {
     const host = hostRef.current;
@@ -390,6 +397,11 @@ export default function AboutPageCarry() {
       if (disposed || !renderer) return;
       raf = requestAnimationFrame(tick);
 
+      if (!animateRef.current) {
+        lastFrameTime = null;
+        return;
+      }
+
       if (!reducedMotion) {
         if (lastFrameTime !== null) {
           const deltaSeconds = Math.min((now - lastFrameTime) / 1000, 0.1);
@@ -411,7 +423,7 @@ export default function AboutPageCarry() {
       ro.disconnect();
       motionQuery.removeEventListener("change", handleMotionPreference);
       delete host.dataset.ready;
-      host.classList.remove("is-ready", "is-reduced-motion");
+      host.classList.remove("is-ready", "is-reduced-motion", "is-paused");
       scene.environment = null;
       envTex.dispose();
       renderer?.dispose();
@@ -426,10 +438,16 @@ export default function AboutPageCarry() {
     };
   }, []);
 
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
+    host.classList.toggle("is-paused", !animate);
+  }, [animate]);
+
   return (
     <div
       ref={hostRef}
-      className="about-road__glb-car about-road__glb-car--carry"
+      className={`about-road__glb-car about-road__glb-car--carry${animate ? "" : " is-paused"}`}
       aria-hidden
     />
   );
