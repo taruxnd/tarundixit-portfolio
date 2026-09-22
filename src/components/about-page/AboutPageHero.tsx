@@ -165,10 +165,19 @@ export default function AboutPageHero({
 }: AboutPageHeroProps = {}) {
   const HeadingTag = id ? "h2" : "h1";
 
+  // Soft-nav from a scrolled home page can leave window.scrollY past the
+  // one-fold /about height (blank). Always pin to top on the dedicated route.
+  useEffect(() => {
+    if (moreHref) return;
+    window.scrollTo(0, 0);
+  }, [moreHref]);
+
   return (
     <section
       id={id}
-      className={`about-page-hero theme-transition ${stripFontClassName}`}
+      className={`about-page-hero theme-transition ${stripFontClassName}${
+        moreHref ? " about-page-hero--with-cta" : ""
+      }`}
       aria-labelledby="about-page-heading"
     >
       <div className="about-page-hero__stage">
@@ -199,22 +208,21 @@ export default function AboutPageHero({
               what we imagine. But I don&apos;t think AI will truly understand
               people the way people understand people.
             </p>
-            {!moreHref ? (
-              <p>
-                And then there is <Word kind="craft">taste</Word>. You can use AI
-                to make almost anything
-                today, but knowing what looks right, what feels right, what to
-                keep, what to remove, and what makes something worth remembering
-                is a different thing. I don&apos;t think AI will master that
-                anytime soon. Maybe not even in 100 years.
-              </p>
-            ) : null}
+            <p>
+              And then there is <Word kind="craft">taste</Word>. You can use AI
+              to make almost anything today, but knowing what looks right, what
+              feels right, what to keep, what to remove, and what makes
+              something worth remembering is a different thing. I don&apos;t
+              think AI will master that anytime soon. Maybe not even in 100
+              years.
+            </p>
           </div>
 
           {moreHref ? (
             <div className="about-page-hero__cta">
               <Link
                 href={moreHref}
+                scroll
                 data-cursor="interactive"
                 className="about-page-hero__more"
               >

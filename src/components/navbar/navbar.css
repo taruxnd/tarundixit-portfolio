@@ -21,8 +21,8 @@
     calc(100vw - 1.5rem - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)),
     680px
   );
-  -webkit-transform: translateX(-50%) scale(1.08);
-  transform: translateX(-50%) scale(1.08);
+  -webkit-transform: translateX(-50%) scale(0.972);
+  transform: translateX(-50%) scale(0.972);
   transform-origin: top center;
   -webkit-tap-highlight-color: transparent;
 }

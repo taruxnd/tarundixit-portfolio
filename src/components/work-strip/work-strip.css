@@ -58,6 +58,13 @@
   line-height: 1.45;
 }
 
+/* Smartphones — jump straight into the projects */
+@media (max-width: 767px) {
+  .xhulia-work__header {
+    display: none;
+  }
+}
+
 .xhulia-work__list {
   display: flex;
   flex-direction: column;

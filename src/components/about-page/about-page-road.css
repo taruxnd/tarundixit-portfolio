@@ -11,7 +11,7 @@
   /* Kumba cluster: left lamp on content edge, office +span, right lamp +2span */
   --kumba-span: clamp(3.75rem, 8vw, 6.5rem);
 
-  --road-height: 3rem;
+  /* --road-height / --road-flow-h / --landmark-w inherited from .about-page-hero */
   --lamp-core: #fff7d6;
   --lamp-warm: #f6b84b;
   --road-top: #55565a;
@@ -25,7 +25,7 @@
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-  height: clamp(6.25rem, 3.3rem + 3.8vw, 10rem);
+  height: var(--road-flow-h, clamp(6.25rem, 3.3rem + 3.8vw, 10rem));
   pointer-events: none;
   user-select: none;
   overflow: visible;
@@ -120,7 +120,10 @@
   position: absolute;
   bottom: calc(var(--road-height) - 0.42rem);
   z-index: 1;
-  width: clamp(10rem, calc(10rem + (100vw - 1440px) * 0.0125), 16rem);
+  width: var(
+    --landmark-w,
+    clamp(10rem, calc(10rem + (100vw - 1440px) * 0.0125), 16rem)
+  );
   transform: translateX(-50%);
   line-height: 0;
 }
@@ -161,7 +164,8 @@
   bottom: 0;
   width: 0;
   height: 100%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) scale(0.7);
+  transform-origin: bottom center;
 }
 
 .about-road__lamp--kumba-left {

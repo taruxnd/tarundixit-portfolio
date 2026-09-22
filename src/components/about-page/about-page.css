@@ -8,51 +8,107 @@
   justify-content: flex-start;
   width: 100%;
   height: 100svh;
+  height: 100dvh;
   min-height: 100svh;
+  min-height: 100dvh;
   max-height: 100svh;
-  padding-top: clamp(5rem, 9vw, 6.5rem);
+  max-height: 100dvh;
+  /* Landmark art is a 640×426 PNG. Google's opaque pixels start near y=19, so
+   * its visible roof sits ~0.636 × rendered width above the image bottom.
+   * Re-derive --landmark-roof if artwork is swapped. */
+  --landmark-roof: 0.636;
+  --landmark-w: min(
+    clamp(10rem, calc(10rem + (100vw - 1440px) * 0.0125), 16rem),
+    calc(4rem + 13svh)
+  );
+  --road-height: 3rem;
+  --road-flow-h: min(
+    clamp(6.25rem, 3.3rem + 3.8vw, 10rem),
+    calc(2rem + 9.5svh)
+  );
+  /* How far the tallest roof rises above the road's flow box */
+  --city-overhang: max(
+    0px,
+    calc(
+      var(--landmark-w) * var(--landmark-roof) + var(--road-height) - 0.42rem -
+        var(--road-flow-h)
+    )
+  );
+  --city-gap: clamp(1.5rem, 2.5svh, 1.85rem);
+  padding-top: min(clamp(5rem, 9vw, 6.5rem), calc(2rem + 8svh));
   padding-bottom: 0;
   overflow: hidden;
   font-family: var(--font-geist), var(--font-inter), ui-sans-serif, system-ui,
     sans-serif;
 }
 
+/* Keep-out band between copy and road. Must be a flex ITEM (not stage
+ * padding): overflow:hidden clips at the padding box, so padding is
+ * consumable by overflowing copy and never actually protects the city. */
+.about-page-hero::after {
+  content: "";
+  flex: 0 0 auto;
+  order: 1;
+  height: calc(var(--city-overhang) + var(--city-gap));
+  pointer-events: none;
+}
+
 .about-page-hero__stage {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   min-height: 0;
   overflow: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .about-page-hero > .about-road {
   flex-shrink: 0;
-  margin-top: auto;
+  order: 2;
+  margin-top: 0;
 }
 
 .about-page-hero__inner {
-  transform: translateY(-24px);
+  /* Centers when there is room; collapses when tight so overflow only goes
+   * downward into the clip, never up under the navbar. */
+  margin-block: auto;
+  transform: translateY(calc(-1 * min(24px, 2.4svh)));
 }
 
 .about-page-hero__intro {
   justify-content: flex-start;
   gap: 0.7rem 0.9rem;
-  margin: 0 0 1.35rem;
+  margin: 0 0 clamp(0.9rem, 0.225rem + 2svh, 1.35rem);
   font-size: clamp(1.2rem, 0.55vw + 1.05rem, 1.55rem);
   letter-spacing: -0.02em;
 }
 
 .about-page-hero__intro .hero-intro__avatar {
-  width: clamp(2.75rem, 1.8vw + 2.2rem, 3.35rem);
-  height: clamp(2.75rem, 1.8vw + 2.2rem, 3.35rem);
-  border-radius: 0.45rem;
+  width: min(clamp(2.75rem, 1.8vw + 2.2rem, 3.35rem), calc(1.5rem + 3.5svh));
+  height: min(clamp(2.75rem, 1.8vw + 2.2rem, 3.35rem), calc(1.5rem + 3.5svh));
+  border-radius: 0.4rem;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* Match hero fill — source art is edge-to-edge, so bias framing upward */
+.about-page-hero__intro .hero-intro__avatar-img,
+.about-page-hero__intro .hero-intro__avatar-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+  transform: translateZ(0);
 }
 
 .about-page-hero__prose {
   display: flex;
   flex-direction: column;
-  gap: 1.35rem;
+  gap: clamp(0.85rem, 0.225rem + 2svh, 1.35rem);
   max-width: none;
   width: 100%;
   color: var(--text-primary);
@@ -60,7 +116,7 @@
 
 .about-page-hero__prose p {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: clamp(1rem, 0.6875rem + 1svh, 1.25rem);
   line-height: 1.65;
   letter-spacing: -0.012em;
   text-wrap: pretty;
@@ -490,6 +546,25 @@
   }
 }
 
+/* Below any realistic fullscreen height — unlock rather than clip copy */
+@media (min-width: 768px) and (max-height: 620px) {
+  .about-page-hero {
+    height: auto;
+    max-height: none;
+    min-height: 100svh;
+    overflow: visible;
+  }
+
+  .about-page-hero__stage {
+    overflow: visible;
+  }
+
+  .about-page-hero__inner {
+    margin-block: 0;
+    transform: none;
+  }
+}
+
 @media (max-width: 767px) {
   .about-page-hero {
     height: auto;
@@ -499,11 +574,16 @@
     padding-top: 4.75rem;
   }
 
+  .about-page-hero::after {
+    display: none;
+  }
+
   .about-page-hero__stage {
     overflow: visible;
   }
 
   .about-page-hero__inner {
+    margin-block: 0;
     transform: none;
     padding-bottom: 1.5rem;
   }

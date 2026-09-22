@@ -213,10 +213,14 @@ export default function HeroGarden() {
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
-    // Reload always starts at the decided idle depth (travel = 0).
+    // Pin idle depth to travel = 0 on first paint only. Restore scroll
+    // restoration immediately so App Router can still scroll to top on
+    // soft-nav (e.g. home → /about). Leaving it "manual" for the whole
+    // home visit left /about blank below the previous scroll offset.
     const previousScrollRestoration = window.history.scrollRestoration;
     window.history.scrollRestoration = "manual";
     window.scrollTo(0, 0);
+    window.history.scrollRestoration = previousScrollRestoration;
 
     const flowers: HTMLImageElement[] = [];
     const leaves: HTMLImageElement[] = [];
@@ -298,7 +302,6 @@ export default function HeroGarden() {
       cancelAnimationFrame(frame);
       observer.disconnect();
       window.removeEventListener("scroll", onScroll);
-      window.history.scrollRestoration = previousScrollRestoration;
     };
   }, [reducedMotion, enabled]);
 
