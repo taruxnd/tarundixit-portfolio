@@ -43,7 +43,12 @@ function collectWagonRWheels(root: Object3D): Object3D[] {
 }
 
 /** Side-view WagonR looping with the about-road traffic. */
-export default function AboutPageWagonR() {
+export default function AboutPageWagonR({
+  lane = "a",
+}: {
+  /** Stagger multiple WagonRs on the shared 24s loop. */
+  lane?: "a" | "b";
+} = {}) {
   const hostRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -233,7 +238,7 @@ export default function AboutPageWagonR() {
   return (
     <div
       ref={hostRef}
-      className="about-road__glb-car about-road__glb-car--wagonr"
+      className={`about-road__glb-car about-road__glb-car--wagonr about-road__glb-car--wagonr-${lane}`}
       aria-hidden
     />
   );

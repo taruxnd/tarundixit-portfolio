@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "@/components/ThemeController";
+import { assetUrl } from "@/lib/cdnAssets";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import "./hero-billboard.css";
@@ -38,7 +39,7 @@ export default function HeroBillboard() {
             <div className="hero-billboard__frame">
               <div className="hero-billboard__artwork">
                 <Image
-                  src="/profile/life-lately-samvaad.jpg"
+                  src={assetUrl("profile/life-lately-samvaad.jpg")}
                   alt=""
                   fill
                   priority

@@ -1,14 +1,23 @@
 "use client";
 
+import { assetUrl } from "@/lib/cdnAssets";
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 const spring = { type: "spring" as const, stiffness: 380, damping: 28, mass: 0.85 };
 
-const DEFAULT_COVER =
-  "/precious-channel/assets/img/b5f5356f32bfb4f5.webp";
-const DEFAULT_COVER_SRCSET =
-  "/precious-channel/assets/img/f925b42254b16db5.webp 512w, /precious-channel/assets/img/545880a8bdf50a38.webp 1024w, /precious-channel/assets/img/b5f5356f32bfb4f5.webp 1200w";
+const DEFAULT_COVER = assetUrl("precious-channel/assets/img/b5f5356f32bfb4f5.webp");
+const DEFAULT_COVER_SRCSET = [
+  `${assetUrl("precious-channel/assets/img/f925b42254b16db5.webp")} 512w`,
+  `${assetUrl("precious-channel/assets/img/545880a8bdf50a38.webp")} 1024w`,
+  `${assetUrl("precious-channel/assets/img/b5f5356f32bfb4f5.webp")} 1200w`,
+].join(", ");
+const DISC_ART = assetUrl("precious-channel/assets/img/badb7d17ffb20811.webp");
+const DISC_ART_SRCSET = [
+  `${assetUrl("precious-channel/assets/img/7e500d0abef6578b.webp")} 512w`,
+  `${assetUrl("precious-channel/assets/img/6e2f57f75aca3015.webp")} 1024w`,
+  `${assetUrl("precious-channel/assets/img/badb7d17ffb20811.webp")} 1125w`,
+].join(", ");
 
 type CoverCloseProps = {
   /** Square album art for the sleeve only — disc centre stays default. */
@@ -38,6 +47,7 @@ export default function CoverClose({
   const [open, setOpen] = useState(false);
   const active = open && !reducedMotion;
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const isCustomCover = coverSrc !== DEFAULT_COVER;
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -86,7 +96,7 @@ export default function CoverClose({
         <audio ref={audioRef} src={audioSrc} preload="metadata" playsInline />
       ) : null}
       <div
-        className="about-music-cover"
+        className={`about-music-cover${isCustomCover ? " about-music-cover--custom" : ""}`}
         data-cursor="interactive"
         tabIndex={0}
         role="img"
@@ -147,8 +157,8 @@ export default function CoverClose({
                   width="1125"
                   height="1122"
                   sizes="207.93px"
-                  srcSet="/precious-channel/assets/img/7e500d0abef6578b.webp 512w, /precious-channel/assets/img/6e2f57f75aca3015.webp 1024w, /precious-channel/assets/img/badb7d17ffb20811.webp 1125w"
-                  src="/precious-channel/assets/img/badb7d17ffb20811.webp"
+                  srcSet={DISC_ART_SRCSET}
+                  src={DISC_ART}
                   alt=""
                   style={{
                     display: "block",
@@ -246,9 +256,7 @@ export default function CoverClose({
                   width="1200"
                   height="1200"
                   sizes="218.29px"
-                  {...(coverSrc === DEFAULT_COVER
-                    ? { srcSet: DEFAULT_COVER_SRCSET }
-                    : {})}
+                  {...(isCustomCover ? {} : { srcSet: DEFAULT_COVER_SRCSET })}
                   src={coverSrc}
                   alt=""
                   style={{
@@ -257,7 +265,8 @@ export default function CoverClose({
                     height: "100%",
                     borderRadius: "inherit",
                     objectPosition: "center",
-                    objectFit: "cover",
+                    /* Custom posters need the full square; default art used cover+bleed */
+                    objectFit: isCustomCover ? "fill" : "cover",
                   }}
                   loading="eager"
                   fetchPriority="high"

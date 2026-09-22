@@ -1,13 +1,11 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { assetUrl } from "@/lib/cdnAssets";
 import { useEffect, useRef, useState } from "react";
 import "./about-page-road.css";
 
 const AboutPageWagonR = dynamic(() => import("./AboutPageWagonR"), {
-  ssr: false,
-});
-const AboutPageErtiga = dynamic(() => import("./AboutPageErtiga"), {
   ssr: false,
 });
 const AboutPageCarry = dynamic(() => import("./AboutPageCarry"), {
@@ -86,11 +84,11 @@ export default function AboutPageRoad() {
       <div className="about-road__scene">
         <Landmark
           className="about-road__landmark about-road__landmark--kumba"
-          src="/about/kumba-office-sm.png"
+          src={assetUrl("about/kumba-office-sm.png")}
         />
         <Landmark
           className="about-road__landmark about-road__landmark--google"
-          src="/about/google-office-sm.png"
+          src={assetUrl("about/google-office-sm.png")}
         />
 
         <div className="about-road__lights">
@@ -109,8 +107,8 @@ export default function AboutPageRoad() {
         </div>
 
         <div className="about-road__glb-lane">
-          <AboutPageWagonR />
-          <AboutPageErtiga />
+          <AboutPageWagonR lane="a" />
+          <AboutPageWagonR lane="b" />
           <AboutPageCarry />
         </div>
       </div>

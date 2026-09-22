@@ -1,11 +1,15 @@
 "use client";
 
 import { useTheme } from "@/components/ThemeController";
+import { assetUrl } from "@/lib/cdnAssets";
 import { useEffect, useRef, useState } from "react";
 import "./hero-garden.css";
 
-const FLOWER_URLS = ["/garden/flower-1.png", "/garden/flower-2.png"];
-const LEAF_URLS = ["/garden/leaves.png"];
+const FLOWER_URLS = [
+  assetUrl("garden/flower-1.png"),
+  assetUrl("garden/flower-2.png"),
+];
+const LEAF_URLS = [assetUrl("garden/leaves.png")];
 
 const FLOWER_COUNT = 5000;
 const LEAF_COUNT = 5000;

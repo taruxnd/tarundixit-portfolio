@@ -2,14 +2,15 @@
 
 import LiquidGlass from "@/components/navbar/LiquidGlass";
 import { useTheme } from "@/components/ThemeController";
+import { assetUrl } from "@/lib/cdnAssets";
 import { heroEditorialTypography } from "@/lib/heroFonts";
 import { motion, type Variants } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-const AVATAR_IMAGE = "/profile/tarun-avatar.jpg";
-const AVATAR_VIDEO = "/profile/tarun-avatar.mov";
+const AVATAR_IMAGE = assetUrl("profile/tarun-avatar.jpg");
+const AVATAR_VIDEO = assetUrl("profile/tarun-avatar.mov");
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },

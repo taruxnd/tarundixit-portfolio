@@ -34,3 +34,16 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local experiments / dumps (never ship)
+/exports/
+/.cursor/
+/tmp-*
+src/components/**/*.glb
+src/components/**/*.MOV
+src/components/**/*.mov
+src/components/image*.png
+src/components/*-framer-*-optimized/
+src/components/*-framer-app-optimized/
+src/components/www-*-optimized/
+src/components/liquid-metal-button/

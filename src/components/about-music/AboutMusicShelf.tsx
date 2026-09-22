@@ -1,5 +1,6 @@
 import { contentContainerClassName } from "@/lib/sectionLayout";
 import { stripFontClassName } from "@/lib/heroFonts";
+import { assetUrl } from "@/lib/cdnAssets";
 import CoverClose from "./CoverClose";
 import "./about-music.css";
 import "./cover-close.css";
@@ -18,18 +19,18 @@ const COVERS: {
     key: "a",
     title: "Ranjish Hi Sahi",
     artist: "Mehdi Hassan",
-    coverSrc: "/about-music/ranjish-hi-sahi.jpg",
+    coverSrc: assetUrl("about-music/ranjish-hi-sahi.jpg"),
     coverAlt: "Ranjish Hi Sahi — Mehdi Hassan",
-    audioSrc: "/about-music/ranjish-hi-sahi.mp3",
+    audioSrc: assetUrl("about-music/ranjish-hi-sahi.mp3"),
     audioStartSeconds: 4 * 60 + 52,
   },
   {
     key: "b",
     title: "Raabta",
     artist: "Arijit Singh & Shreya Ghoshal",
-    coverSrc: "/about-music/raabta.jpg",
+    coverSrc: assetUrl("about-music/raabta.jpg"),
     coverAlt: "Raabta — Arijit Singh & Shreya Ghoshal",
-    audioSrc: "/about-music/raabta.mp3",
+    audioSrc: assetUrl("about-music/raabta.mp3"),
     audioStartSeconds: 2 * 60,
     audioEndSeconds: 3 * 60,
   },
@@ -37,9 +38,9 @@ const COVERS: {
     key: "c",
     title: "Khat",
     artist: "Navjot Ahuja",
-    coverSrc: "/about-music/khat.jpg",
+    coverSrc: assetUrl("about-music/khat.jpg"),
     coverAlt: "Khat — Navjot Ahuja",
-    audioSrc: "/about-music/khat.mp3",
+    audioSrc: assetUrl("about-music/khat.mp3"),
     audioStartSeconds: 1 * 60 + 49,
     audioEndSeconds: 2 * 60 + 30,
   },

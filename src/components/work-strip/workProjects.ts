@@ -1,6 +1,6 @@
-export type StripMedia =
-  | { type: "image"; src: string; alt?: string }
-  | { type: "video"; src: string; alt?: string };
+import { assetUrl } from "@/lib/cdnAssets";
+
+export type StripMedia = { type: "image"; src: string; alt?: string };
 
 export type WorkProject = {
   id: string;
@@ -14,8 +14,8 @@ export type WorkProject = {
   frames: StripMedia[];
 };
 
-const xhulia = "/work/xhulia";
-const copilot = "/work/copilot-strip";
+const xhulia = assetUrl("work/xhulia");
+const copilot = assetUrl("work/copilot-strip");
 
 export const workProjects: WorkProject[] = [
   {
@@ -52,7 +52,6 @@ export const workProjects: WorkProject[] = [
     ctaLabel: "View case study",
     frames: [
       { type: "image", src: `${xhulia}/img/b4efd3bce9dd209a.webp`, alt: "mockup" },
-      { type: "video", src: `${xhulia}/media/e1ecafe451653dd0.mp4` },
       {
         type: "image",
         src: `${xhulia}/img/9bf115362d1241e7.webp`,

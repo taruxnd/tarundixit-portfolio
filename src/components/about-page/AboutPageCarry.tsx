@@ -25,7 +25,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 const DRACO_DECODER = "/draco/";
 const MODEL_URL = "/models/suzuki-carry.glb";
-/** Match WagonR / Ertiga / 24s road loop. */
+/** Match WagonR / 24s road loop. */
 const WHEEL_SPIN_RADIANS_PER_SECOND = Math.PI * 2.15;
 
 const RIM_MATERIAL_RE = /rim|watanabe|brakedisc|10831/i;

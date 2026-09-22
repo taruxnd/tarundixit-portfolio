@@ -4,7 +4,6 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState,
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import type { StripMedia } from "./workProjects";
@@ -33,22 +32,11 @@ export default function DragStrip({ frames, label }: DragStripProps) {
   const pausedUntilRef = useRef(0);
   const lastTsRef = useRef(0);
   const rafRef = useRef(0);
-  const [allowVideo, setAllowVideo] = useState(false);
 
-  useEffect(() => {
-    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
-    const sync = () => setAllowVideo(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
-
-  const visibleFrames = useMemo(() => {
-    const base = allowVideo
-      ? frames
-      : frames.filter((frame) => frame.type === "image");
-    return base.length > 1 ? [...base, ...base] : base;
-  }, [allowVideo, frames]);
+  const visibleFrames = useMemo(
+    () => (frames.length > 1 ? [...frames, ...frames] : frames),
+    [frames],
+  );
 
   const measure = () => {
     const track = trackRef.current;
@@ -194,26 +182,14 @@ export default function DragStrip({ frames, label }: DragStripProps) {
             key={`${frame.src}-${index}`}
             className="xhulia-strip__frame"
           >
-            {frame.type === "video" ? (
-              <video
-                src={frame.src}
-                muted
-                loop
-                playsInline
-                autoPlay
-                preload="metadata"
-                draggable={false}
-              />
-            ) : (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={frame.src}
-                alt={frame.alt ?? ""}
-                draggable={false}
-                loading="lazy"
-                decoding="async"
-              />
-            )}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={frame.src}
+              alt={frame.alt ?? ""}
+              draggable={false}
+              loading="lazy"
+              decoding="async"
+            />
           </figure>
         ))}
       </div>

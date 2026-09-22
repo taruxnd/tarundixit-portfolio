@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
-/* Site editorial display face — PP Editorial New */
+/* Site editorial display face — PP Editorial New (CDN) */
 @font-face {
   font-family: "PP Editorial New";
-  src: url("/fonts/pp-editorial-new/PPEditorialNew-Ultralight.woff2")
+  src: url("https://cdn.jsdelivr.net/gh/taruxnd/tarundixit-portfolio@main/public/fonts/pp-editorial-new/PPEditorialNew-Ultralight.woff2")
     format("woff2");
   font-style: normal;
   font-weight: 200 300;
@@ -12,7 +12,7 @@
 
 @font-face {
   font-family: "PP Editorial New";
-  src: url("/fonts/pp-editorial-new/PPEditorialNew-Regular.woff2")
+  src: url("https://cdn.jsdelivr.net/gh/taruxnd/tarundixit-portfolio@main/public/fonts/pp-editorial-new/PPEditorialNew-Regular.woff2")
     format("woff2");
   font-style: normal;
   font-weight: 400;
@@ -21,7 +21,7 @@
 
 @font-face {
   font-family: "PP Editorial New";
-  src: url("/fonts/pp-editorial-new/PPEditorialNew-Italic.woff2")
+  src: url("https://cdn.jsdelivr.net/gh/taruxnd/tarundixit-portfolio@main/public/fonts/pp-editorial-new/PPEditorialNew-Italic.woff2")
     format("woff2");
   font-style: italic;
   font-weight: 400;
@@ -30,7 +30,7 @@
 
 @font-face {
   font-family: "PP Editorial New";
-  src: url("/fonts/pp-editorial-new/PPEditorialNew-UltralightItalic.woff2")
+  src: url("https://cdn.jsdelivr.net/gh/taruxnd/tarundixit-portfolio@main/public/fonts/pp-editorial-new/PPEditorialNew-UltralightItalic.woff2")
     format("woff2");
   font-style: italic;
   font-weight: 200 300;
@@ -91,11 +91,6 @@
   --btn-secondary-bg: rgba(23, 23, 23, 0.85);
   --btn-secondary-text: #d4d4d4;
   color-scheme: dark;
-}
-
-.polaroid-caption {
-  font-family: var(--font-handwritten), "Segoe Print", cursive;
-  font-weight: 500;
 }
 
 .sr-only {

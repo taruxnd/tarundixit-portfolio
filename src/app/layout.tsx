@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Caveat, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import SiteShell from "@/components/SiteShell";
 import ThemeInitScript from "@/components/ThemeInitScript";
 import "./globals.css";
@@ -7,12 +7,6 @@ import "./globals.css";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-});
-
-const caveat = Caveat({
-  variable: "--font-handwritten",
-  subsets: ["latin"],
-  weight: ["500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -28,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
-      <body className={`${inter.variable} ${caveat.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} font-sans antialiased`}>
         <ThemeInitScript />
         <SiteShell>{children}</SiteShell>
       </body>

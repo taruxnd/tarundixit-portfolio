@@ -305,11 +305,11 @@
   transition: opacity 0.35s ease;
 }
 
-.about-road__glb-car--wagonr {
+.about-road__glb-car--wagonr-a {
   animation-delay: -11s;
 }
 
-.about-road__glb-car--ertiga {
+.about-road__glb-car--wagonr-b {
   animation-delay: -0.5s;
 }
 
@@ -327,11 +327,11 @@
   transform: translateX(-50%);
 }
 
-.about-road__glb-car--wagonr.is-reduced-motion {
+.about-road__glb-car--wagonr-a.is-reduced-motion {
   left: 22%;
 }
 
-.about-road__glb-car--ertiga.is-reduced-motion {
+.about-road__glb-car--wagonr-b.is-reduced-motion {
   left: 58%;
 }
 
@@ -658,11 +658,11 @@
     transform: translateX(-50%);
   }
 
-  .about-road__glb-car--wagonr {
+  .about-road__glb-car--wagonr-a {
     left: 22%;
   }
 
-  .about-road__glb-car--ertiga {
+  .about-road__glb-car--wagonr-b {
     left: 58%;
   }
 

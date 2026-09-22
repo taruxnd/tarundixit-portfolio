@@ -3,6 +3,7 @@
 import AboutPageRoad from "@/components/about-page/AboutPageRoad";
 import LiquidGlass from "@/components/navbar/LiquidGlass";
 import { useTheme } from "@/components/ThemeController";
+import { assetUrl } from "@/lib/cdnAssets";
 import { stripFontClassName } from "@/lib/heroFonts";
 import { contentContainerClassName } from "@/lib/sectionLayout";
 import Image from "next/image";
@@ -12,8 +13,8 @@ import { useEffect, useRef, useState } from "react";
 import "../hero.css";
 import "./about-page.css";
 
-const AVATAR_IMAGE = "/profile/tarun-avatar.jpg";
-const AVATAR_VIDEO = "/profile/tarun-avatar.mov";
+const AVATAR_IMAGE = assetUrl("profile/tarun-avatar.jpg");
+const AVATAR_VIDEO = assetUrl("profile/tarun-avatar.mov");
 
 type AboutWordKind =
   | "name"
@@ -82,7 +83,7 @@ function KumbaAiLink() {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         className="about-page-kumba__icon"
-        src="/about/kumba-logo-icon.png"
+        src={assetUrl("about/kumba-logo-icon.png")}
         alt=""
         width={48}
         height={48}
