@@ -12,6 +12,7 @@ const COVERS: {
   coverAlt: string;
   audioSrc?: string;
   audioStartSeconds?: number;
+  audioEndSeconds?: number;
 }[] = [
   {
     key: "a",
@@ -28,6 +29,9 @@ const COVERS: {
     artist: "Arijit Singh & Shreya Ghoshal",
     coverSrc: "/about-music/raabta.jpg",
     coverAlt: "Raabta — Arijit Singh & Shreya Ghoshal",
+    audioSrc: "/about-music/raabta.mp3",
+    audioStartSeconds: 2 * 60,
+    audioEndSeconds: 3 * 60,
   },
   {
     key: "c",
@@ -35,6 +39,9 @@ const COVERS: {
     artist: "Navjot Ahuja",
     coverSrc: "/about-music/khat.jpg",
     coverAlt: "Khat — Navjot Ahuja",
+    audioSrc: "/about-music/khat.mp3",
+    audioStartSeconds: 1 * 60 + 49,
+    audioEndSeconds: 2 * 60 + 30,
   },
 ];
 
@@ -62,6 +69,7 @@ export default function AboutMusicShelf() {
               coverAlt,
               audioSrc,
               audioStartSeconds,
+              audioEndSeconds,
             }) => (
               <div key={key} className="about-music__track">
                 <CoverClose
@@ -69,6 +77,7 @@ export default function AboutMusicShelf() {
                   coverAlt={coverAlt}
                   audioSrc={audioSrc}
                   audioStartSeconds={audioStartSeconds}
+                  audioEndSeconds={audioEndSeconds}
                 />
                 <div className="about-music__meta">
                   <p className="about-music__title">{title}</p>

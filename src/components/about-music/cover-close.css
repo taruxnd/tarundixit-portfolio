@@ -34,7 +34,7 @@
 .about-music-cover .framer-z5dBK .framer-oqb1nw {
   aspect-ratio: 1;
   height: auto;
-  overflow: var(--overflow-clip-fallback, clip);
+  overflow: clip;
   will-change: transform;
   flex: none;
   width: 202px;
@@ -58,7 +58,7 @@
 .about-music-cover .framer-z5dBK .framer-zrovny {
   aspect-ratio: 1;
   height: auto;
-  overflow: var(--overflow-clip-fallback, clip);
+  overflow: clip;
   flex: none;
   width: 76px;
   position: absolute;
@@ -69,7 +69,7 @@
 .about-music-cover .framer-z5dBK .framer-ej3vxg {
   aspect-ratio: 1;
   height: auto;
-  overflow: var(--overflow-clip-fallback, clip);
+  overflow: clip;
   flex: none;
   width: 13px;
   position: absolute;
@@ -89,7 +89,7 @@
 .about-music-cover .framer-z5dBK .framer-t5gqtq {
   aspect-ratio: 1;
   height: auto;
-  overflow: var(--overflow-clip-fallback, clip);
+  overflow: clip;
   will-change: transform;
   flex: none;
   width: 211px;
@@ -126,7 +126,7 @@
 .about-music-cover .framer-z5dBK .framer-kmm8a {
   aspect-ratio: 1;
   height: auto;
-  overflow: var(--overflow-clip-fallback, clip);
+  overflow: clip;
   flex: none;
   width: 28px;
   position: absolute;

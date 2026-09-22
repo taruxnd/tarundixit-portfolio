@@ -18,6 +18,8 @@ type CoverCloseProps = {
   audioSrc?: string;
   /** Seek here (seconds) each time playback starts. */
   audioStartSeconds?: number;
+  /** Pause (and stay ready) when playback reaches this time. */
+  audioEndSeconds?: number;
 };
 
 /**
@@ -30,6 +32,7 @@ export default function CoverClose({
   coverAlt = "Album cover",
   audioSrc,
   audioStartSeconds = 0,
+  audioEndSeconds,
 }: CoverCloseProps = {}) {
   const reducedMotion = useReducedMotion();
   const [open, setOpen] = useState(false);
@@ -39,6 +42,16 @@ export default function CoverClose({
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio || !audioSrc) return;
+
+    const onTimeUpdate = () => {
+      if (audioEndSeconds == null) return;
+      if (audio.currentTime >= audioEndSeconds) {
+        audio.pause();
+        audio.currentTime = audioStartSeconds;
+      }
+    };
+
+    audio.addEventListener("timeupdate", onTimeUpdate);
 
     if (open) {
       const start = () => {
@@ -56,9 +69,10 @@ export default function CoverClose({
     }
 
     return () => {
+      audio.removeEventListener("timeupdate", onTimeUpdate);
       audio.pause();
     };
-  }, [open, audioSrc, audioStartSeconds]);
+  }, [open, audioSrc, audioStartSeconds, audioEndSeconds]);
 
   return (
     <div
