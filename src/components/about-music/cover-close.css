@@ -1,0 +1,148 @@
+/* Cover_close — scaled slot + Framer layout rules; overflow visible for disc */
+
+.about-music-cover-slot {
+  --cover-scale: 0.72;
+  position: relative;
+  width: calc(318px * var(--cover-scale) + 2.75rem);
+  height: calc(308px * var(--cover-scale));
+  overflow: visible;
+}
+
+.about-music-cover {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 318px;
+  height: 308px;
+  transform: translateX(-50%) scale(var(--cover-scale));
+  transform-origin: top center;
+  overflow: visible;
+}
+
+.about-music-cover .framer-z5dBK.framer-1n23hte {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  position: relative;
+}
+
+.about-music-cover .framer-z5dBK.framer-1s4fwkh,
+.about-music-cover .framer-z5dBK .framer-1s4fwkh {
+  display: block;
+}
+
+.about-music-cover .framer-z5dBK .framer-oqb1nw {
+  aspect-ratio: 1;
+  height: auto;
+  overflow: var(--overflow-clip-fallback, clip);
+  will-change: transform;
+  flex: none;
+  width: 202px;
+  position: absolute;
+  bottom: 31px;
+  left: 34px;
+  z-index: 1;
+}
+
+.about-music-cover .framer-z5dBK .framer-z329vc {
+  aspect-ratio: 1;
+  flex: none;
+  height: auto;
+  position: absolute;
+  bottom: -3px;
+  left: -2px;
+  right: -3px;
+  overflow: visible;
+}
+
+.about-music-cover .framer-z5dBK .framer-zrovny {
+  aspect-ratio: 1;
+  height: auto;
+  overflow: var(--overflow-clip-fallback, clip);
+  flex: none;
+  width: 76px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.about-music-cover .framer-z5dBK .framer-ej3vxg {
+  aspect-ratio: 1;
+  height: auto;
+  overflow: var(--overflow-clip-fallback, clip);
+  flex: none;
+  width: 13px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.about-music-cover .framer-z5dBK .framer-3y739j {
+  aspect-ratio: 1.43931;
+  flex: none;
+  height: auto;
+  position: absolute;
+  overflow: visible;
+  z-index: 0;
+}
+
+.about-music-cover .framer-z5dBK .framer-t5gqtq {
+  aspect-ratio: 1;
+  height: auto;
+  overflow: var(--overflow-clip-fallback, clip);
+  will-change: transform;
+  flex: none;
+  width: 211px;
+  position: absolute;
+  bottom: 27px;
+  left: 0;
+  z-index: 2;
+}
+
+.about-music-cover .framer-z5dBK .framer-p786x8 {
+  aspect-ratio: 1;
+  flex: none;
+  height: auto;
+  position: absolute;
+  top: -6px;
+  left: -3px;
+  right: -4px;
+  overflow: visible;
+}
+
+.about-music-cover .framer-z5dBK .framer-1c6q1mh {
+  aspect-ratio: 4.12195;
+  white-space: pre-wrap;
+  word-break: break-word;
+  word-wrap: break-word;
+  flex: none;
+  width: 135px;
+  height: auto;
+  position: absolute;
+  top: 16px;
+  left: 15px;
+}
+
+.about-music-cover .framer-z5dBK .framer-kmm8a {
+  aspect-ratio: 1;
+  height: auto;
+  overflow: var(--overflow-clip-fallback, clip);
+  flex: none;
+  width: 28px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+@media (max-width: 900px) {
+  .about-music-cover-slot {
+    --cover-scale: 0.68;
+  }
+}
+
+@media (max-width: 639px) {
+  .about-music-cover-slot {
+    --cover-scale: 0.78;
+    width: calc(318px * var(--cover-scale) + 2rem);
+  }
+}
