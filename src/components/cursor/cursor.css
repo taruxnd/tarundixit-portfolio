@@ -64,14 +64,6 @@
   }
 }
 
-@media (max-width: 767px) {
-  .you-cursor,
-  .figma-cursor,
-  .figma-marquee {
-    display: none !important;
-  }
-}
-
 .figma-marquee {
   position: fixed;
   z-index: 9997;

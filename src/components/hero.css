@@ -350,13 +350,10 @@
   }
 }
 
-/*
- * Phone / small tablet — restore first-push layout:
- * left-aligned copy + CTAs, original spacing (no glass panel).
- */
+/* Phone / small tablet sizing; alignment stays centered at every width. */
 @media (max-width: 1023px) {
   .hero-section__inner {
-    align-items: flex-start;
+    align-items: center;
     justify-content: flex-start;
     min-height: 0;
     padding-top: max(5.75rem, calc(4.25rem + env(safe-area-inset-top, 0px)));
@@ -365,25 +362,26 @@
   }
 
   .hero-grid {
-    justify-items: stretch;
+    justify-items: center;
     align-items: start;
     gap: 2rem;
     transform: none;
   }
 
   .hero-grid__copy {
-    align-items: flex-start;
-    text-align: left;
+    align-items: center;
+    text-align: center;
     max-width: none;
+    margin-inline: auto;
   }
 
   .hero-intro {
-    justify-content: flex-start;
+    justify-content: center;
     margin-bottom: 0.95rem;
   }
 
   .hero-headline {
-    margin-inline: 0;
+    margin-inline: auto;
     max-width: 22rem;
     font-size: clamp(1.7rem, 5.2vw + 0.55rem, 2.45rem);
     line-height: 1.2;
@@ -393,8 +391,8 @@
   .hero-cta {
     width: 100%;
     margin-top: 1.65rem;
-    align-items: stretch;
-    justify-content: flex-start;
+    align-items: center;
+    justify-content: center;
   }
 }
 
@@ -417,13 +415,34 @@
 
 @media (min-width: 768px) and (max-width: 1023px) {
   .hero-section__inner {
+    align-items: center;
     padding-top: max(6.75rem, calc(5rem + env(safe-area-inset-top, 0px)));
     /* Garden is on from tablet up — reserve a bit more bottom band */
     padding-bottom: max(var(--hero-rail-gap), 22vh);
   }
 
+  .hero-grid {
+    justify-items: center;
+  }
+
+  .hero-grid__copy {
+    align-items: center;
+    text-align: center;
+    max-width: min(36rem, 100%);
+    margin-inline: auto;
+  }
+
+  .hero-intro {
+    justify-content: center;
+  }
+
   .hero-headline {
     max-width: 32rem;
+    margin-inline: auto;
+  }
+
+  .hero-cta {
+    justify-content: center;
   }
 }
 
@@ -634,6 +653,24 @@
   }
 }
 
+/* Compact mobile CTAs in both portrait and landscape. */
+@media (max-width: 767px) {
+  .hero-cta {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    max-width: 100%;
+    gap: 0.65rem;
+  }
+
+  .hero-cta__button,
+  .hero-cta__resume-glass.liquid-glass {
+    width: auto;
+  }
+}
+
 /*
  * Phone portrait art direction only.
  * Kept after the existing responsive rules so >= 768px remains untouched.
@@ -724,5 +761,12 @@
 
   .hero-cta {
     margin-top: 1rem;
+  }
+}
+
+/* Narrow desktop window: billboard is hidden, so optically lift the copy. */
+@media (max-width: 1023px) and (hover: hover) and (pointer: fine) {
+  .hero-grid {
+    transform: translateY(-2rem);
   }
 }
