@@ -117,6 +117,15 @@
 @media (max-width: 900px) {
   .about-music__track {
     --cover-scale: 0.68;
+    /* Layout width = sleeve only; disc overflows right */
+    width: var(--sleeve-w);
+    align-items: center;
+  }
+
+  .about-music__meta {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .about-music__grid {

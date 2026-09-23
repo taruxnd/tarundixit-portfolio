@@ -59,7 +59,7 @@ export default function AboutMusicShelf() {
             Some of the songs I keep close.
           </h2>
           <p className="about-music__subline">
-            Hover or tap a cover to play.
+            Tap a cover to play or pause.
           </p>
         </header>
 

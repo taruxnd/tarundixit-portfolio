@@ -23,7 +23,7 @@ type CoverCloseProps = {
   /** Square album art for the sleeve only — disc centre stays default. */
   coverSrc?: string;
   coverAlt?: string;
-  /** Optional preview clip — plays while hovered, focused, or tapped. */
+  /** Optional preview clip — plays / pauses on tap. */
   audioSrc?: string;
   /** Seek here (seconds) each time playback starts. */
   audioStartSeconds?: number;
@@ -44,23 +44,11 @@ export default function CoverClose({
   audioEndSeconds,
 }: CoverCloseProps = {}) {
   const reducedMotion = useReducedMotion();
-  /** Fine-pointer hover only — ignore sticky :hover on touch. */
-  const [canHover, setCanHover] = useState(false);
-  const [hovered, setHovered] = useState(false);
-  /** Sticky open from tap / click / keyboard. */
-  const [tapped, setTapped] = useState(false);
-  const open = hovered || tapped;
-  const active = open && !reducedMotion;
+  /** Tap / click / keyboard only — no hover play. */
+  const [playing, setPlaying] = useState(false);
+  const active = playing && !reducedMotion;
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const isCustomCover = coverSrc !== DEFAULT_COVER;
-
-  useEffect(() => {
-    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
-    const sync = () => setCanHover(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -71,12 +59,13 @@ export default function CoverClose({
       if (audio.currentTime >= audioEndSeconds) {
         audio.pause();
         audio.currentTime = audioStartSeconds;
+        setPlaying(false);
       }
     };
 
     audio.addEventListener("timeupdate", onTimeUpdate);
 
-    if (open) {
+    if (playing) {
       const start = () => {
         audio.currentTime = audioStartSeconds;
         void audio.play().catch(() => {});
@@ -95,16 +84,9 @@ export default function CoverClose({
       audio.removeEventListener("timeupdate", onTimeUpdate);
       audio.pause();
     };
-  }, [open, audioSrc, audioStartSeconds, audioEndSeconds]);
+  }, [playing, audioSrc, audioStartSeconds, audioEndSeconds]);
 
-  const toggleTapped = () => {
-    setTapped((prev) => {
-      const next = !prev;
-      // On touch, clear sticky hover so a second tap can stop playback.
-      if (!next && !canHover) setHovered(false);
-      return next;
-    });
-  };
+  const togglePlay = () => setPlaying((prev) => !prev);
 
   return (
     <div
@@ -112,21 +94,17 @@ export default function CoverClose({
       data-cursor="interactive"
       tabIndex={0}
       role="button"
-      aria-pressed={open}
-      aria-label={audioSrc ? `Play preview: ${coverAlt}` : coverAlt}
-      onMouseEnter={() => {
-        if (canHover) setHovered(true);
-      }}
-      onMouseLeave={() => {
-        if (canHover) setHovered(false);
-      }}
-      onFocus={() => setHovered(true)}
-      onBlur={() => setHovered(false)}
-      onClick={toggleTapped}
+      aria-pressed={playing}
+      aria-label={
+        audioSrc
+          ? `${playing ? "Pause" : "Play"} preview: ${coverAlt}`
+          : coverAlt
+      }
+      onClick={togglePlay}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          toggleTapped();
+          togglePlay();
         }
       }}
     >

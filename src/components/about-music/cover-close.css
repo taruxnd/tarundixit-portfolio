@@ -145,12 +145,20 @@
 @media (max-width: 900px) {
   .about-music-cover-slot {
     --cover-scale: 0.68;
+    /* Center the sleeve; let the CD spill past the layout box */
+    width: calc(211px * var(--cover-scale));
+  }
+
+  .about-music-cover {
+    left: 0;
+    transform: scale(var(--cover-scale));
+    transform-origin: top left;
   }
 }
 
 @media (max-width: 639px) {
   .about-music-cover-slot {
     --cover-scale: 0.78;
-    width: calc(318px * var(--cover-scale) + 2rem);
+    width: calc(211px * var(--cover-scale));
   }
 }

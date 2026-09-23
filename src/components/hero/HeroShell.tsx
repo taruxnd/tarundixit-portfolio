@@ -23,7 +23,7 @@ export default function HeroShell({ children }: HeroShellProps) {
   useHeroScrollBoundary(boundaryRef);
 
   // Wait until hydrated so light-sky isn't in SSR HTML for dark users
-  // (theme is always "light" on the first paint to match the server).
+  // (theme defaults to "dark" on first paint to match the server).
   const showLightSky = hydrated && theme === "light";
 
   return (

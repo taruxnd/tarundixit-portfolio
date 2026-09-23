@@ -57,8 +57,8 @@
   }
 
   .portfolio-navbar:not([data-menu-open="true"]) .portfolio-navbar__pill.liquid-glass {
-    width: 3rem;
-    height: 3rem;
+    width: 2.75rem;
+    height: 2.75rem;
     border-radius: 999px;
   }
 
@@ -67,8 +67,8 @@
   }
 
   .portfolio-navbar:not([data-menu-open="true"]) .portfolio-navbar__row {
-    width: 3rem;
-    height: 3rem;
+    width: 2.75rem;
+    height: 2.75rem;
     padding: 0;
   }
 
@@ -78,12 +78,6 @@
 
   .portfolio-navbar__menu-btn {
     touch-action: manipulation;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    border-radius: 999px;
-    background: transparent;
   }
 
   .portfolio-navbar__menu-line {
@@ -488,6 +482,94 @@
 @media (min-width: 768px) {
   .portfolio-navbar__menu-btn {
     display: none;
+  }
+}
+
+/* Closed circular control — must come after base menu-btn so it wins */
+@media (max-width: 767px) {
+  .portfolio-navbar:not([data-menu-open="true"]) .portfolio-navbar__glow {
+    display: none;
+  }
+
+  .portfolio-navbar:not([data-menu-open="true"])
+    .portfolio-navbar__pill.liquid-glass {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .portfolio-navbar:not([data-menu-open="true"])
+    .portfolio-navbar__pill.liquid-glass
+    .liquid-glass__shimmer,
+  .portfolio-navbar:not([data-menu-open="true"])
+    .portfolio-navbar__pill.liquid-glass
+    .liquid-glass__noise {
+    display: none;
+  }
+
+  /* Center against the circular glass face only — ignore drawer/glow bounds */
+  .portfolio-navbar:not([data-menu-open="true"])
+    .portfolio-navbar__pill
+    .liquid-glass__content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .portfolio-navbar:not([data-menu-open="true"]) .portfolio-navbar__row {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    gap: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .portfolio-navbar:not([data-menu-open="true"]) .portfolio-navbar__links {
+    display: none;
+  }
+
+  .portfolio-navbar:not([data-menu-open="true"]) .portfolio-navbar__end {
+    width: auto;
+    height: auto;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .portfolio-navbar:not([data-menu-open="true"]) .portfolio-navbar__menu-btn {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    background: transparent;
+    box-shadow: none;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .portfolio-navbar:not([data-menu-open="true"]) .portfolio-navbar__menu-line {
+    margin: 0;
+  }
+
+  .portfolio-navbar:not([data-menu-open="true"]) .portfolio-navbar__drawer {
+    position: absolute;
+    width: 0;
+    height: 0;
+    min-width: 0;
+    max-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  [data-theme="dark"] .portfolio-navbar__menu-line {
+    background: #f5f5f5;
   }
 }
 

@@ -25,7 +25,7 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 const STORAGE_KEY = "portfolio-lamp-theme";
 
 /** Must match SSR default so the first client render hydrates cleanly. */
-const SSR_THEME: SiteTheme = "light";
+const SSR_THEME: SiteTheme = "dark";
 
 function applyTheme(theme: SiteTheme) {
   document.documentElement.dataset.theme = theme;
@@ -40,9 +40,8 @@ export function ThemeController({ children }: { children: ReactNode }) {
 
   useLayoutEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
-    const fromDom = document.documentElement.dataset.theme === "dark";
     const initial: SiteTheme =
-      stored === "dark" || fromDom ? "dark" : "light";
+      stored === "light" || stored === "dark" ? stored : "dark";
     setTheme(initial);
     applyTheme(initial);
 
