@@ -212,17 +212,10 @@
   font-family: "PP Editorial New", Georgia, "Times New Roman", serif;
   font-size: clamp(1.7rem, 2.6vw + 0.95rem, 3.55rem);
   font-weight: 400;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.008em;
   line-height: 1.18;
   overflow-wrap: break-word;
   font-feature-settings: "blwf" 1, "cv09" 1, "cv03" 1, "cv04" 1, "cv11" 1;
-}
-
-.hero-headline__sense {
-  text-decoration: underline;
-  text-decoration-thickness: 0.045em;
-  text-underline-offset: 0.14em;
-  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
 }
 
 .hero-headline__feel-icon {
@@ -385,7 +378,7 @@
     max-width: 22rem;
     font-size: clamp(1.7rem, 5.2vw + 0.55rem, 2.45rem);
     line-height: 1.2;
-    letter-spacing: -0.022em;
+    letter-spacing: -0.01em;
   }
 
   .hero-cta {
@@ -617,7 +610,7 @@
   .hero-headline {
     max-width: 100%;
     font-size: clamp(1.55rem, 7.5vw, 1.95rem);
-    letter-spacing: -0.025em;
+    letter-spacing: -0.012em;
     line-height: 1.22;
   }
 

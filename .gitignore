@@ -39,6 +39,9 @@ next-env.d.ts
 /exports/
 /.cursor/
 /tmp-*
+# Salad trial — personal/non-commercial only; do not ship
+/fonts/salad-trial/
+/public/fonts/salad-trial
 src/components/**/*.glb
 src/components/**/*.MOV
 src/components/**/*.mov
