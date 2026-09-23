@@ -46,6 +46,9 @@
 /* ─── Mobile layout (< md) ─── */
 @media (max-width: 767px) {
   .portfolio-navbar:not([data-menu-open="true"]) {
+    left: max(1rem, env(safe-area-inset-left, 0px));
+    -webkit-transform: none;
+    transform: none;
     width: fit-content;
   }
 
@@ -54,7 +57,9 @@
   }
 
   .portfolio-navbar:not([data-menu-open="true"]) .portfolio-navbar__pill.liquid-glass {
-    width: fit-content;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 999px;
   }
 
   .portfolio-navbar__row {
@@ -62,7 +67,9 @@
   }
 
   .portfolio-navbar:not([data-menu-open="true"]) .portfolio-navbar__row {
-    padding: 0.5rem;
+    width: 3rem;
+    height: 3rem;
+    padding: 0;
   }
 
   .portfolio-navbar__end {
@@ -72,6 +79,11 @@
   .portfolio-navbar__menu-btn {
     touch-action: manipulation;
     align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 999px;
+    background: transparent;
   }
 
   .portfolio-navbar__menu-line {
@@ -95,6 +107,9 @@
 
   /* Full-width pill when drawer is open */
   .portfolio-navbar[data-menu-open="true"] {
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
     width: min(
       calc(100vw - 1.5rem - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)),
       680px

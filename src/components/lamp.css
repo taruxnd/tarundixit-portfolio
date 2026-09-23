@@ -111,13 +111,13 @@
 
 @media (max-width: 639px) {
   .hanging-lamp {
-    --lamp-right: 2.5rem;
-    --lamp-width: 8.42rem;
+    --lamp-right: max(0.5rem, env(safe-area-inset-right, 0px));
+    --lamp-width: 5.15rem;
   }
 
   .hanging-lamp__ambient {
-    width: 9.72rem;
-    height: 9.72rem;
+    width: 6.75rem;
+    height: 6.75rem;
   }
 }
 

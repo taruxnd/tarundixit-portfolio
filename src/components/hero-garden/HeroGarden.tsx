@@ -201,11 +201,7 @@ export default function HeroGarden() {
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
-    const desktopQuery = window.matchMedia("(min-width: 768px)");
-    const sync = () => setEnabled(desktopQuery.matches);
-    sync();
-    desktopQuery.addEventListener("change", sync);
-    return () => desktopQuery.removeEventListener("change", sync);
+    setEnabled(true);
   }, []);
 
   useEffect(() => {
@@ -310,7 +306,7 @@ export default function HeroGarden() {
   }, [reducedMotion, enabled]);
 
   // Always render the same markup on server + client to avoid hydration mismatch.
-  // Mobile hides via CSS; the canvas loop only runs when `enabled`.
+  // The canvas starts after hydration on every viewport.
   return (
     <div className="hero-garden" aria-hidden>
       <canvas ref={canvasRef} className="hero-garden__canvas" />
