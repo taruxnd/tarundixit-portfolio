@@ -13,9 +13,16 @@
 }
 
 @media (max-width: 767px) {
+  .hero-garden {
+    /* Keep Safari's collapsing browser chrome from repeatedly resizing and
+       clearing the canvas during a touch scroll. */
+    bottom: auto;
+    height: calc(100svh - var(--hero-rail-height, 8px));
+  }
+
   .hero-garden .hero-garden__canvas {
     /* Presentation-only crop: render a wider stage, then expose its center.
-       This preserves the garden's sprites, depth, wind, and scroll behavior. */
+       This preserves the garden's sprites, depth, and wind behavior. */
     position: absolute;
     bottom: 0;
     left: 50%;

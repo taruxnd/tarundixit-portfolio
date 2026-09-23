@@ -236,6 +236,7 @@ export default function HeroGarden() {
     let idleTravel = initialIdleTravel;
     let frame = 0;
     let running = true;
+    const desktopScrollQuery = window.matchMedia("(min-width: 768px)");
 
     const resize = () => {
       const nextWidth = canvas.offsetWidth;
@@ -264,7 +265,10 @@ export default function HeroGarden() {
         idleTravel = initialIdleTravel;
         time += 0.052;
       }
-      scrollSmoothed += (window.scrollY - scrollSmoothed) * 0.08;
+      // Touch scrolling should move the page, not scrub the mobile garden.
+      // Desktop keeps the existing scroll-linked depth behavior unchanged.
+      const scrollTarget = desktopScrollQuery.matches ? window.scrollY : 0;
+      scrollSmoothed += (scrollTarget - scrollSmoothed) * 0.08;
       travel = scrollSmoothed * SCROLL_SPEED + idleTravel;
       paintFrame(ctx, width, height, sprites, flowers, leaves, time, travel);
       if (!reducedMotion) {
@@ -274,7 +278,7 @@ export default function HeroGarden() {
 
     const onScroll = () => {
       if (reducedMotion) {
-        scrollSmoothed = window.scrollY;
+        scrollSmoothed = desktopScrollQuery.matches ? window.scrollY : 0;
         travel = scrollSmoothed * SCROLL_SPEED + idleTravel;
         paintFrame(ctx, width, height, sprites, flowers, leaves, time, travel);
       }
