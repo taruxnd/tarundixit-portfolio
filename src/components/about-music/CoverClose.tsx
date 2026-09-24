@@ -63,7 +63,13 @@ export default function CoverClose({
       }
     };
 
+    const onEnded = () => {
+      audio.currentTime = audioStartSeconds;
+      setPlaying(false);
+    };
+
     audio.addEventListener("timeupdate", onTimeUpdate);
+    audio.addEventListener("ended", onEnded);
 
     if (playing) {
       const start = () => {
@@ -82,6 +88,7 @@ export default function CoverClose({
 
     return () => {
       audio.removeEventListener("timeupdate", onTimeUpdate);
+      audio.removeEventListener("ended", onEnded);
       audio.pause();
     };
   }, [playing, audioSrc, audioStartSeconds, audioEndSeconds]);

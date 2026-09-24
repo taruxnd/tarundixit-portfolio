@@ -12,8 +12,6 @@ const COVERS: {
   coverSrc: string;
   coverAlt: string;
   audioSrc?: string;
-  audioStartSeconds?: number;
-  audioEndSeconds?: number;
 }[] = [
   {
     key: "a",
@@ -21,8 +19,8 @@ const COVERS: {
     artist: "Mehdi Hassan",
     coverSrc: assetUrl("about-music/ranjish-hi-sahi.jpg"),
     coverAlt: "Ranjish Hi Sahi — Mehdi Hassan",
+    // Trimmed to the former preview window (4:52 → end)
     audioSrc: assetUrl("about-music/ranjish-hi-sahi.mp3"),
-    audioStartSeconds: 4 * 60 + 52,
   },
   {
     key: "b",
@@ -30,9 +28,8 @@ const COVERS: {
     artist: "Arijit Singh & Shreya Ghoshal",
     coverSrc: assetUrl("about-music/raabta.jpg"),
     coverAlt: "Raabta — Arijit Singh & Shreya Ghoshal",
+    // Trimmed to the former preview window (2:00 → 3:00)
     audioSrc: assetUrl("about-music/raabta.mp3"),
-    audioStartSeconds: 2 * 60,
-    audioEndSeconds: 3 * 60,
   },
   {
     key: "c",
@@ -40,9 +37,16 @@ const COVERS: {
     artist: "Navjot Ahuja",
     coverSrc: assetUrl("about-music/khat.jpg"),
     coverAlt: "Khat — Navjot Ahuja",
+    // Trimmed to the former preview window (1:49 → 2:30)
     audioSrc: assetUrl("about-music/khat.mp3"),
-    audioStartSeconds: 1 * 60 + 49,
-    audioEndSeconds: 2 * 60 + 30,
+  },
+  {
+    key: "d",
+    title: "Khat",
+    artist: "Navjot Ahuja",
+    coverSrc: assetUrl("about-music/khat.jpg"),
+    coverAlt: "Khat — Navjot Ahuja",
+    audioSrc: assetUrl("about-music/khat.mp3"),
   },
 ];
 
@@ -64,32 +68,19 @@ export default function AboutMusicShelf() {
         </header>
 
         <div className="about-music__grid">
-          {COVERS.map(
-            ({
-              key,
-              title,
-              artist,
-              coverSrc,
-              coverAlt,
-              audioSrc,
-              audioStartSeconds,
-              audioEndSeconds,
-            }) => (
+          {COVERS.map(({ key, title, artist, coverSrc, coverAlt, audioSrc }) => (
               <div key={key} className="about-music__track">
                 <CoverClose
                   coverSrc={coverSrc}
                   coverAlt={coverAlt}
                   audioSrc={audioSrc}
-                  audioStartSeconds={audioStartSeconds}
-                  audioEndSeconds={audioEndSeconds}
                 />
                 <div className="about-music__meta">
                   <p className="about-music__title">{title}</p>
                   <p className="about-music__artist">{artist}</p>
                 </div>
               </div>
-            ),
-          )}
+            ))}
         </div>
       </div>
     </section>

@@ -142,9 +142,9 @@
   left: 50%;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 699px) {
   .about-music-cover-slot {
-    --cover-scale: 0.68;
+    --cover-scale: 0.78;
     /* Center the sleeve; let the CD spill past the layout box */
     width: calc(211px * var(--cover-scale));
   }
@@ -153,12 +153,5 @@
     left: 0;
     transform: scale(var(--cover-scale));
     transform-origin: top left;
-  }
-}
-
-@media (max-width: 639px) {
-  .about-music-cover-slot {
-    --cover-scale: 0.78;
-    width: calc(211px * var(--cover-scale));
   }
 }
