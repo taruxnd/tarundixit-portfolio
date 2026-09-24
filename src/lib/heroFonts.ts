@@ -1,4 +1,4 @@
-import { Geist, Instrument_Sans } from "next/font/google";
+import { Geist, Instrument_Sans, Playfair_Display } from "next/font/google";
 
 export const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
@@ -13,15 +13,25 @@ export const geist = Geist({
   variable: "--font-geist",
 });
 
+export const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-playfair",
+});
+
 /** Editorial display + Instrument Sans body */
-export const heroFontClassName = [geist.variable, instrumentSans.variable].join(
+export const heroFontClassName = [
+  geist.variable,
+  instrumentSans.variable,
+  playfairDisplay.variable,
+].join(" ");
+
+export const stripFontClassName = [geist.variable, playfairDisplay.variable].join(
   " ",
 );
 
-export const stripFontClassName = geist.variable;
-
 const editorial =
-  'var(--font-hero-instrument-serif), Georgia, "Times New Roman", serif';
+  'var(--font-playfair), Georgia, "Times New Roman", serif';
 
 const sans =
   "var(--font-hero-instrument-sans), var(--font-inter), ui-sans-serif, system-ui, sans-serif";

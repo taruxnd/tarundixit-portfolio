@@ -209,13 +209,12 @@
   width: 100%;
   max-width: min(48rem, 100%);
   margin-inline: auto;
-  font-family: "PP Editorial New", Georgia, "Times New Roman", serif;
+  font-family: var(--font-playfair), Georgia, "Times New Roman", serif;
   font-size: clamp(1.7rem, 2.6vw + 0.95rem, 3.55rem);
   font-weight: 400;
   letter-spacing: -0.008em;
   line-height: 1.18;
   overflow-wrap: break-word;
-  font-feature-settings: "blwf" 1, "cv09" 1, "cv03" 1, "cv04" 1, "cv11" 1;
 }
 
 .hero-headline__feel-icon {

@@ -1,6 +1,9 @@
+"use client";
+
 import { contentContainerClassName } from "@/lib/sectionLayout";
 import { stripFontClassName } from "@/lib/heroFonts";
 import { assetUrl } from "@/lib/cdnAssets";
+import { useState } from "react";
 import CoverClose from "./CoverClose";
 import "./about-music.css";
 import "./cover-close.css";
@@ -12,6 +15,8 @@ const COVERS: {
   coverSrc: string;
   coverAlt: string;
   audioSrc?: string;
+  discColor?: string;
+  darkModeDiscColor?: string;
 }[] = [
   {
     key: "a",
@@ -21,6 +26,7 @@ const COVERS: {
     coverAlt: "Ranjish Hi Sahi — Mehdi Hassan",
     // Trimmed to the former preview window (4:52 → end)
     audioSrc: assetUrl("about-music/ranjish-hi-sahi.mp3"),
+    discColor: "#25D366",
   },
   {
     key: "b",
@@ -39,6 +45,7 @@ const COVERS: {
     coverAlt: "Khat — Navjot Ahuja",
     // Trimmed to the former preview window (1:49 → 2:30)
     audioSrc: assetUrl("about-music/khat.mp3"),
+    discColor: "#2563EB",
   },
   {
     key: "d",
@@ -47,11 +54,15 @@ const COVERS: {
     coverSrc: assetUrl("about-music/khat.jpg"),
     coverAlt: "Khat — Navjot Ahuja",
     audioSrc: assetUrl("about-music/khat.mp3"),
+    discColor: "#111111",
+    darkModeDiscColor: "#C5C7C9",
   },
 ];
 
 /** Favorites shelf on /about — Framer Cover_close players. */
 export default function AboutMusicShelf() {
+  const [activeKey, setActiveKey] = useState<string | null>(null);
+
   return (
     <section
       className={`about-music theme-transition ${stripFontClassName}`}
@@ -68,19 +79,36 @@ export default function AboutMusicShelf() {
         </header>
 
         <div className="about-music__grid">
-          {COVERS.map(({ key, title, artist, coverSrc, coverAlt, audioSrc }) => (
+          {COVERS.map(
+            ({
+              key,
+              title,
+              artist,
+              coverSrc,
+              coverAlt,
+              audioSrc,
+              discColor,
+              darkModeDiscColor,
+            }) => (
               <div key={key} className="about-music__track">
                 <CoverClose
                   coverSrc={coverSrc}
                   coverAlt={coverAlt}
                   audioSrc={audioSrc}
+                  discColor={discColor}
+                  darkModeDiscColor={darkModeDiscColor}
+                  playing={activeKey === key}
+                  onPlayingChange={(next) =>
+                    setActiveKey(next ? key : null)
+                  }
                 />
                 <div className="about-music__meta">
                   <p className="about-music__title">{title}</p>
                   <p className="about-music__artist">{artist}</p>
                 </div>
               </div>
-            ))}
+            ),
+          )}
         </div>
       </div>
     </section>

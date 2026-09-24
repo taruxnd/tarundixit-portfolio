@@ -23,12 +23,19 @@ type CoverCloseProps = {
   /** Square album art for the sleeve only — disc centre stays default. */
   coverSrc?: string;
   coverAlt?: string;
+  /** Vinyl ring color (outer disc, not the yellow centre). */
+  discColor?: string;
+  /** Optional vinyl ring color used only in dark mode. */
+  darkModeDiscColor?: string;
   /** Optional preview clip — plays / pauses on tap. */
   audioSrc?: string;
   /** Seek here (seconds) each time playback starts. */
   audioStartSeconds?: number;
   /** Pause (and stay ready) when playback reaches this time. */
   audioEndSeconds?: number;
+  /** Controlled playback — when set, parent owns exclusive play state. */
+  playing?: boolean;
+  onPlayingChange?: (playing: boolean) => void;
 };
 
 /**
@@ -39,34 +46,44 @@ type CoverCloseProps = {
 export default function CoverClose({
   coverSrc = DEFAULT_COVER,
   coverAlt = "Album cover",
+  discColor = "rgb(92, 92, 92)",
+  darkModeDiscColor,
   audioSrc,
   audioStartSeconds = 0,
   audioEndSeconds,
+  playing: playingProp,
+  onPlayingChange,
 }: CoverCloseProps = {}) {
   const reducedMotion = useReducedMotion();
   /** Tap / click / keyboard only — no hover play. */
-  const [playing, setPlaying] = useState(false);
+  const [internalPlaying, setInternalPlaying] = useState(false);
+  const controlled = playingProp !== undefined;
+  const playing = controlled ? playingProp : internalPlaying;
+  const setPlaying = (next: boolean) => {
+    if (!controlled) setInternalPlaying(next);
+    onPlayingChange?.(next);
+  };
   const active = playing && !reducedMotion;
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const isCustomCover = coverSrc !== DEFAULT_COVER;
+  const discTinted = discColor !== "rgb(92, 92, 92)";
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio || !audioSrc) return;
 
-    const onTimeUpdate = () => {
-      if (audioEndSeconds == null) return;
-      if (audio.currentTime >= audioEndSeconds) {
-        audio.pause();
-        audio.currentTime = audioStartSeconds;
-        setPlaying(false);
-      }
-    };
-
-    const onEnded = () => {
+    const stop = () => {
+      audio.pause();
       audio.currentTime = audioStartSeconds;
       setPlaying(false);
     };
+
+    const onTimeUpdate = () => {
+      if (audioEndSeconds == null) return;
+      if (audio.currentTime >= audioEndSeconds) stop();
+    };
+
+    const onEnded = () => stop();
 
     audio.addEventListener("timeupdate", onTimeUpdate);
     audio.addEventListener("ended", onEnded);
@@ -91,14 +108,16 @@ export default function CoverClose({
       audio.removeEventListener("ended", onEnded);
       audio.pause();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- setPlaying is stable enough for stop callbacks
   }, [playing, audioSrc, audioStartSeconds, audioEndSeconds]);
 
-  const togglePlay = () => setPlaying((prev) => !prev);
+  const togglePlay = () => setPlaying(!playing);
 
   return (
     <div
       className="about-music-cover-slot"
       data-cursor="interactive"
+      data-playing={playing ? "true" : "false"}
       tabIndex={0}
       role="button"
       aria-pressed={playing}
@@ -116,7 +135,12 @@ export default function CoverClose({
       }}
     >
       {audioSrc ? (
-        <audio ref={audioRef} src={audioSrc} preload="metadata" playsInline />
+        <>
+          <span className="about-music-cover-tooltip" aria-hidden>
+            Play
+          </span>
+          <audio ref={audioRef} src={audioSrc} preload="metadata" playsInline />
+        </>
       ) : null}
       <div
         className={`about-music-cover${isCustomCover ? " about-music-cover--custom" : ""}`}
@@ -129,7 +153,7 @@ export default function CoverClose({
           style={{ height: "100%", width: "100%" }}
         >
           <motion.div
-            className="framer-oqb1nw"
+            className={`framer-oqb1nw${darkModeDiscColor ? " about-music-disc--theme" : ""}`}
             initial={false}
             animate={
               active
@@ -150,7 +174,8 @@ export default function CoverClose({
                 : { duration: 0.35, ease: "easeOut" },
             }}
             style={{
-              backgroundColor: "rgb(92, 92, 92)",
+              backgroundColor: discColor,
+              ["--music-disc-dark-color" as string]: darkModeDiscColor,
               borderBottomLeftRadius: "101.18px",
               borderBottomRightRadius: "101.18px",
               borderTopLeftRadius: "101.18px",
@@ -186,6 +211,12 @@ export default function CoverClose({
                     borderRadius: "inherit",
                     objectPosition: "center",
                     objectFit: "cover",
+                    ...(discTinted
+                      ? {
+                          mixBlendMode: "multiply" as const,
+                          opacity: 0.28,
+                        }
+                      : {}),
                   }}
                   loading="eager"
                 />

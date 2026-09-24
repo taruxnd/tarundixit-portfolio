@@ -1,0 +1,191 @@
+/* Side projects — simple project cards (image + meta pill) */
+
+.side-projects {
+  position: relative;
+  width: 100%;
+  padding: clamp(4.5rem, 12vh, 8rem) 0;
+  background: var(--bg-page);
+}
+
+[data-theme="dark"] .side-projects {
+  background: transparent;
+}
+
+.side-projects__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(2.5rem, 5vw, 3.75rem);
+}
+
+.side-projects__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-align: center;
+  width: 100%;
+}
+
+.side-projects__heading {
+  margin: 0;
+  max-width: min(48rem, 100%);
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.side-projects__make {
+  white-space: nowrap;
+}
+
+.side-projects__cursor-icon {
+  display: inline-block;
+  width: 0.95em;
+  height: 0.95em;
+  margin-right: 0.28em;
+  vertical-align: -0.15em;
+  color: inherit;
+}
+
+.side-projects__lede {
+  margin: 0;
+  max-width: min(36rem, 100%);
+  color: var(--text-secondary);
+  font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(0.9375rem, 0.3vw + 0.88rem, 1.0625rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+}
+
+.side-projects__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.25rem, 2.5vw, 1.75rem);
+  width: 100%;
+}
+
+.side-projects__item {
+  min-width: 0;
+}
+
+.side-projects__card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.side-projects__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 1.15rem;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+}
+
+.side-projects__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Same liquid-glass stack as the navbar pill */
+.side-projects__meta.liquid-glass {
+  --lg-blur: 32px;
+  --lg-saturate: 190%;
+  --lg-brightness: 1.04;
+  --lg-tint-top: rgba(255, 255, 255, 0.42);
+  --lg-tint-mid: rgba(255, 255, 255, 0.22);
+  --lg-tint-bot: rgba(255, 255, 255, 0.14);
+  --lg-rim: rgba(255, 255, 255, 0.62);
+  --lg-shadow: 0 8px 32px rgba(15, 23, 42, 0.08), 0 2px 8px rgba(99, 102, 241, 0.1);
+
+  position: relative;
+  width: 100%;
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow: var(--lg-shadow);
+}
+
+[data-theme="dark"] .side-projects__meta.liquid-glass {
+  --lg-tint-top: rgba(30, 30, 30, 0.72);
+  --lg-tint-mid: rgba(20, 20, 20, 0.55);
+  --lg-tint-bot: rgba(12, 12, 12, 0.45);
+  --lg-rim: rgba(255, 255, 255, 0.1);
+  --lg-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.side-projects__meta-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.85rem;
+  padding: 0.7rem 1.05rem;
+}
+
+.side-projects__meta-left {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0;
+  min-width: 0;
+  font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.25;
+}
+
+.side-projects__title {
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.side-projects__dot {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.side-projects__category {
+  font-weight: 450;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 1099px) {
+  .side-projects__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .side-projects__item:last-child {
+    grid-column: 1 / -1;
+    max-width: calc(50% - 0.625rem);
+    justify-self: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .side-projects__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .side-projects__item:last-child {
+    grid-column: auto;
+    max-width: none;
+    justify-self: stretch;
+  }
+
+  .side-projects__media {
+    aspect-ratio: 4 / 3;
+    border-radius: 1rem;
+  }
+}

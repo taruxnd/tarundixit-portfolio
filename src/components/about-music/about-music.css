@@ -28,8 +28,7 @@
 .about-music__heading {
   margin: 0;
   max-width: 22ch;
-  font-family: var(--font-hero-instrument-serif), "PP Editorial New", Georgia,
-    serif;
+  font-family: var(--font-playfair), Georgia, "Times New Roman", serif;
   font-size: clamp(1.85rem, 3.2vw + 0.7rem, 3rem);
   font-weight: 400;
   letter-spacing: -0.03em;

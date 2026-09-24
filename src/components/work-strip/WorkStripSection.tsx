@@ -73,8 +73,7 @@ export default function WorkStripSection() {
       <div className={contentContainerClassName}>
         <header className="xhulia-work__header">
           <h2 id="work-heading" className="xhulia-work__heading">
-            Some of the products I’ve{" "}
-            <span className="xhulia-work__emphasis">designed.</span>
+            Some of my recent work.
           </h2>
           <p className="xhulia-work__lede">
             The problems, decisions, and details behind the work.

@@ -6,6 +6,60 @@
   width: calc(318px * var(--cover-scale) + 2.75rem);
   height: calc(308px * var(--cover-scale));
   overflow: visible;
+  cursor: pointer;
+}
+
+.about-music-cover-tooltip {
+  position: absolute;
+  /* Centered on the sleeve (211px), not the full frame+disc */
+  top: calc((70px + 105.5px) * var(--cover-scale));
+  left: calc(50% - (53.5px * var(--cover-scale)));
+  z-index: 6;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(8, 8, 8, 0.9);
+  color: #fff;
+  font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.92);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.about-music-cover-slot:hover .about-music-cover-tooltip,
+.about-music-cover-slot:focus-visible .about-music-cover-tooltip {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.about-music-cover-slot[data-playing="true"] .about-music-cover-tooltip {
+  opacity: 0;
+}
+
+@media (max-width: 699px) {
+  .about-music-cover-tooltip {
+    /* Slot is sleeve-width on mobile; cover origin is top-left */
+    left: calc(105.5px * var(--cover-scale));
+  }
+}
+
+@media (hover: none) {
+  .about-music-cover-tooltip {
+    display: none;
+  }
 }
 
 .about-music-cover {
@@ -42,6 +96,10 @@
   bottom: 31px;
   left: 34px;
   z-index: 1;
+}
+
+[data-theme="dark"] .about-music-disc--theme {
+  background-color: var(--music-disc-dark-color) !important;
 }
 
 .about-music-cover .framer-z5dBK .framer-z329vc {
