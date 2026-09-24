@@ -647,6 +647,14 @@
 
 /* Compact mobile CTAs in both portrait and landscape. */
 @media (max-width: 767px) {
+  .hero-section {
+    /* Keep the rail attached to the svh-anchored garden when mobile browser
+       chrome collapses and the dynamic viewport grows during scrolling. */
+    height: 100svh;
+    min-height: 100svh;
+    max-height: 100svh;
+  }
+
   .hero-cta {
     flex-direction: row;
     flex-wrap: wrap;
