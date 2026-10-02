@@ -1,4 +1,5 @@
 import AboutPageHero from "@/components/about-page/AboutPageHero";
+import AboutBentoGrid from "@/components/about-bento/AboutBentoGrid";
 import AboutMusicShelf from "@/components/about-music/AboutMusicShelf";
 import type { Metadata } from "next";
 /* Critical for /about — load with the route so landmark sizes apply on first paint */
@@ -15,6 +16,7 @@ export default function AboutPage() {
   return (
     <main>
       <AboutPageHero />
+      <AboutBentoGrid />
       <AboutMusicShelf />
     </main>
   );
