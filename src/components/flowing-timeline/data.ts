@@ -13,6 +13,26 @@ export type TimelineMilestone = {
 /** Career stops — Framer card fields (title / tag / body). */
 export const timelineMilestones: TimelineMilestone[] = [
   {
+    id: "curiosity",
+    year: "2019",
+    tag: "Spark",
+    title: "First sketches",
+    description:
+      "Late nights with Figma, random UI experiments, and figuring out that design could be more than pixels on a screen.",
+    imageSrc: assetUrl("playground/55babfb47d091b9a.webp"),
+    imageAlt: "Early design experiments",
+  },
+  {
+    id: "foundations",
+    year: "2020",
+    tag: "Learn",
+    title: "Learning in public",
+    description:
+      "Building small products, shipping side projects, and learning how users actually move through an interface.",
+    imageSrc: assetUrl("playground/1f2ca155d2d1153f.webp"),
+    imageAlt: "Learning and early projects",
+  },
+  {
     id: "streamalive",
     year: "2021",
     tag: "Origin",
@@ -61,5 +81,25 @@ export const timelineMilestones: TimelineMilestone[] = [
       "Late-night experiments, sharper taste, and products that make sense and feel right.",
     imageSrc: assetUrl("about-bento/real-travel.jpg"),
     imageAlt: "Still shipping",
+  },
+  {
+    id: "next",
+    year: "2026",
+    tag: "Next",
+    title: "What comes next",
+    description:
+      "Sharper systems, braver experiments, and products that feel inevitable the moment you open them.",
+    imageSrc: assetUrl("playground/c8ce5635974f6777.webp"),
+    imageAlt: "Looking ahead",
+  },
+  {
+    id: "beyond",
+    year: "2027",
+    tag: "Beyond",
+    title: "Keep building",
+    description:
+      "More craft, more curiosity — still chasing the feeling when something finally clicks.",
+    imageSrc: assetUrl("about-bento/real-yapper.jpg"),
+    imageAlt: "Keep building",
   },
 ];

@@ -22,34 +22,27 @@ import "./flowing-timeline.css";
 /** Measured from the Framer demo */
 const SPACING = 190;
 const PAD_X = 48;
+const LINE_Y = 72;
 const DROP_PX = 90;
 const CARD_W = 420;
-
-/** Framer marker Y positions (5-stop wave). */
-const FRAMER_YS = [73.36, 129.38, 49.56, 115.46, 47.36];
 
 type Point = { x: number; y: number };
 
 function buildPoints(count: number): Point[] {
-  return Array.from({ length: count }, (_, i) => {
-    const y =
-      count === FRAMER_YS.length
-        ? FRAMER_YS[i]!
-        : 88 + Math.sin(i * (Math.PI / 2) * 0.95) * 40;
-    return { x: PAD_X + i * SPACING, y };
-  });
+  return Array.from({ length: count }, (_, i) => ({
+    x: PAD_X + i * SPACING,
+    y: LINE_Y,
+  }));
 }
 
 function buildWavePath(points: Point[]) {
   if (points.length === 0) return "";
-  let d = `M ${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)}`;
-  for (let i = 1; i < points.length; i++) {
-    const a = points[i - 1]!;
-    const b = points[i]!;
-    const cx = (a.x + b.x) / 2;
-    d += ` C ${cx.toFixed(1)} ${a.y.toFixed(1)}, ${cx.toFixed(1)} ${b.y.toFixed(1)}, ${b.x.toFixed(1)} ${b.y.toFixed(1)}`;
+  if (points.length === 1) {
+    return `M ${points[0]!.x.toFixed(1)} ${points[0]!.y.toFixed(1)}`;
   }
-  return d;
+  const first = points[0]!;
+  const last = points[points.length - 1]!;
+  return `M ${first.x.toFixed(1)} ${first.y.toFixed(1)} L ${last.x.toFixed(1)} ${last.y.toFixed(1)}`;
 }
 
 /** Sample the SVG path up to the active node for the progress stroke. */
@@ -161,14 +154,7 @@ export default function FlowingTimeline() {
     return () => window.removeEventListener("keydown", onKey);
   }, [active, goTo]);
 
-  // Per-stop card nudge: crest nodes need more air; trough nodes sit a bit high
-  const cardNudge =
-    milestone.year === "2023" || milestone.year === "2025"
-      ? 28
-      : milestone.year === "2024"
-        ? -24
-        : 0;
-  const cardTop = activePoint.y + DROP_PX + cardNudge;
+  const cardTop = activePoint.y + DROP_PX;
 
   return (
     <section
