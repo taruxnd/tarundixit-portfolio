@@ -42,12 +42,16 @@
     "src/components/**/*-framer-app-optimized",
     "src/components/www-xhulia-com-optimized",
     "src/components/my-framer-site 3",
+    "src/components/my-framer-site 2",
     "src/components/newlamp",
     "src/components/altlamp",
     "src/newlamp",
     "src/components/liquid-metal-button/src/app",
     "src/components/liquid-metal-button/src/components/FramerRuntimeIsland.tsx",
     "src/components/liquid-metal-button/src/lib",
-    "src/components/liquid-metal-button/next.config.ts"
+    "src/components/liquid-metal-button/next.config.ts",
+    "src/components/flowing-timeline/src",
+    "src/components/flowing-timeline/next.config.ts",
+    "src/components/flowing-timeline/next-env.d.ts"
   ]
 }

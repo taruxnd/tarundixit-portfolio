@@ -1,6 +1,7 @@
 import AboutPageHero from "@/components/about-page/AboutPageHero";
 import AboutBentoGrid from "@/components/about-bento/AboutBentoGrid";
 import AboutMusicShelf from "@/components/about-music/AboutMusicShelf";
+import FlowingTimeline from "@/components/flowing-timeline/FlowingTimeline";
 import type { Metadata } from "next";
 /* Critical for /about — load with the route so landmark sizes apply on first paint */
 import "@/components/about-page/about-page.css";
@@ -16,6 +17,7 @@ export default function AboutPage() {
   return (
     <main>
       <AboutPageHero />
+      <FlowingTimeline />
       <AboutBentoGrid />
       <AboutMusicShelf />
     </main>
