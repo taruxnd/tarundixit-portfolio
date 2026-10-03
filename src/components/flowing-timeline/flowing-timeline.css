@@ -7,7 +7,8 @@
   --ft-ink-14: rgba(20, 20, 24, 0.14);
   --ft-ink-12: rgba(20, 20, 24, 0.12);
   --ft-ink-08: rgba(20, 20, 24, 0.08);
-  --ft-accent: rgb(238, 106, 46);
+  --ft-accent: #f0c419;
+  --ft-accent-ink: rgb(20, 20, 24);
   --ft-card-bg: #ffffff;
   --ft-pin-bg: #ffffff;
   --ft-pin-ring: #ffffff;
@@ -33,7 +34,8 @@
   --ft-ink-14: rgba(255, 255, 255, 0.22);
   --ft-ink-12: rgba(255, 255, 255, 0.14);
   --ft-ink-08: rgba(255, 255, 255, 0.1);
-  --ft-accent: rgb(238, 106, 46);
+  --ft-accent: #f0c419;
+  --ft-accent-ink: rgb(20, 20, 24);
   --ft-card-bg: rgb(22, 22, 24);
   --ft-pin-bg: rgb(22, 22, 24);
   --ft-pin-ring: rgb(22, 22, 24);
@@ -435,7 +437,7 @@
 
 .flowing-timeline__nav:hover:not(:disabled) {
   background: var(--ft-accent) !important;
-  color: rgb(255, 255, 255) !important;
+  color: var(--ft-accent-ink) !important;
   border-color: var(--ft-accent) !important;
 }
 
