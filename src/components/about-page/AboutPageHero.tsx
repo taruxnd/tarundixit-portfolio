@@ -14,16 +14,9 @@ import "../hero.css";
 import "./about-page.css";
 
 const AVATAR_IMAGE = assetUrl("profile/tarun-avatar.jpg");
-const AVATAR_VIDEO = assetUrl("profile/tarun-avatar.mov");
+const AVATAR_VIDEO = "/profile/tarun-avatar.mov";
 
-type AboutWordKind =
-  | "name"
-  | "designer"
-  | "engineers"
-  | "ai"
-  | "ux"
-  | "craft"
-  | "technology";
+type AboutWordKind = "designer" | "engineers" | "craft";
 
 function Word({
   kind,
@@ -33,7 +26,10 @@ function Word({
   children: ReactNode;
 }) {
   return (
-    <span className={`about-page-word about-page-word--${kind}`} data-cursor="interactive">
+    <span
+      className={`about-page-word about-page-word--${kind}`}
+      data-cursor="interactive"
+    >
       {kind === "engineers" ? (
         <svg
           className="about-page-word__cursor-icon"
@@ -55,23 +51,11 @@ function Word({
           <span />
         </span>
       ) : null}
-      {kind === "engineers" || kind === "technology" ? (
+      {kind === "engineers" ? (
         <span className="about-page-word__caret" aria-hidden />
-      ) : null}
-      {kind === "ux" ? (
-        <span className="about-page-word__ux-mark" aria-hidden>
-          ◦
-        </span>
       ) : null}
       {kind === "craft" ? (
         <span className="about-page-word__craft-line" aria-hidden />
-      ) : null}
-      {kind === "ai" ? (
-        <span className="about-page-word__spark" aria-hidden>
-          <i />
-          <i />
-          <i />
-        </span>
       ) : null}
     </span>
   );
@@ -124,7 +108,7 @@ function AboutIntro() {
           alt=""
           width={256}
           height={256}
-          sizes="(max-width: 380px) 32px, (min-width: 1600px) 40px, 36px"
+          sizes="80px"
           quality={95}
           className="hero-intro__avatar-img"
           priority
@@ -134,6 +118,8 @@ function AboutIntro() {
             ref={videoRef}
             className={`hero-intro__avatar-video${videoReady ? " is-ready" : ""}`}
             src={AVATAR_VIDEO}
+            width={696}
+            height={720}
             muted
             playsInline
             autoPlay
@@ -198,16 +184,15 @@ export default function AboutPageHero({
               I like looking beyond just the <Word kind="craft">design</Word>. I
               want to understand the user, the business, and what we are trying
               to achieve. Then I try to figure out where I can bring value
-              through design and <Word kind="technology">technology</Word>.
+              through design and technology.
             </p>
             <p>
-              I believe <Word kind="ux">UX</Word> comes first. There is always a
-              real person on the other side of what we build, and understanding
-              that person is something you have to do yourself.{" "}
-              <Word kind="ai">AI</Word> can
-              help us explore ideas, make things faster, and even build a lot of
-              what we imagine. But I don&apos;t think AI will truly understand
-              people the way people understand people.
+              I believe UX comes first. There is always a real person on the
+              other side of what we build, and understanding that person is
+              something you have to do yourself. AI can help us explore ideas,
+              make things faster, and even build a lot of what we imagine. But I
+              don&apos;t think AI will truly understand people the way people
+              understand people.
             </p>
             <p>
               And then there is <Word kind="craft">taste</Word>. You can use AI

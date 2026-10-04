@@ -10,7 +10,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 const AVATAR_IMAGE = assetUrl("profile/tarun-avatar.jpg");
-const AVATAR_VIDEO = assetUrl("profile/tarun-avatar.mov");
+const AVATAR_VIDEO = "/profile/tarun-avatar.mov";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },
@@ -74,7 +74,7 @@ export default function HeroCopyClassic() {
             alt=""
             width={256}
             height={256}
-            sizes="(max-width: 380px) 32px, (min-width: 1600px) 40px, 36px"
+            sizes="72px"
             quality={95}
             className="hero-intro__avatar-img"
             priority
@@ -84,6 +84,8 @@ export default function HeroCopyClassic() {
               ref={videoRef}
               className={`hero-intro__avatar-video${videoReady ? " is-ready" : ""}`}
               src={AVATAR_VIDEO}
+              width={696}
+              height={720}
               muted
               playsInline
               autoPlay
