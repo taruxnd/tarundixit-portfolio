@@ -52,6 +52,10 @@
     "src/components/liquid-metal-button/next.config.ts",
     "src/components/flowing-timeline/src",
     "src/components/flowing-timeline/next.config.ts",
-    "src/components/flowing-timeline/next-env.d.ts"
+    "src/components/flowing-timeline/next-env.d.ts",
+    "src/components/polaroid-timeline/src/app/page.tsx",
+    "src/components/polaroid-timeline/src/app/layout.tsx",
+    "src/components/polaroid-timeline/next.config.ts",
+    "src/components/polaroid-timeline/next-env.d.ts"
   ]
 }
