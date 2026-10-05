@@ -280,6 +280,8 @@ export function FramerRuntimeIsland() {
     let detachHover: (() => void) | undefined;
     let detachFirstPhoto: (() => void) | undefined;
     let probeTimer: number | undefined;
+    let startId: number | undefined;
+    let io: IntersectionObserver | null = null;
 
     const mountParent = () =>
       document.getElementById(HOST_ID) ?? document.body;
@@ -371,14 +373,36 @@ export function FramerRuntimeIsland() {
       probeTimer = window.setTimeout(probe, 180);
     };
 
-    // Skip Strict Mode's discarded first effect pass.
-    const startId = window.setTimeout(() => {
-      void boot();
-    }, 0);
+    const scheduleBoot = () => {
+      // Skip Strict Mode's discarded first effect pass.
+      startId = window.setTimeout(() => {
+        void boot();
+      }, 0);
+    };
+
+    // Don't hydrate the 900px Framer timeline until it's near view — otherwise
+    // it expands Safari's layout viewport on first paint (flash to desktop).
+    const host = document.getElementById(HOST_ID);
+    if (host && typeof IntersectionObserver !== "undefined") {
+      io = new IntersectionObserver(
+        (entries) => {
+          if (cancelled) return;
+          if (!entries.some((e) => e.isIntersecting)) return;
+          io?.disconnect();
+          io = null;
+          scheduleBoot();
+        },
+        { root: null, rootMargin: "200% 0px", threshold: 0 },
+      );
+      io.observe(host);
+    } else {
+      scheduleBoot();
+    }
 
     return () => {
       cancelled = true;
-      window.clearTimeout(startId);
+      io?.disconnect();
+      if (startId !== undefined) window.clearTimeout(startId);
       if (probeTimer) window.clearTimeout(probeTimer);
       detachHover?.();
       detachFirstPhoto?.();

@@ -27,7 +27,6 @@
   box-sizing: border-box;
   /* Keep billboard posts (z-index: -1) behind flowers but inside the hero */
   isolation: isolate;
-  contain: paint;
 }
 
 .hero-comment {
