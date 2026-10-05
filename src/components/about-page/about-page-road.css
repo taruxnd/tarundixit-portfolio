@@ -24,25 +24,22 @@
   flex-shrink: 0;
   width: 100%;
   max-width: 100%;
-  /* Full-bleed without 100vw (100vw overflows on mobile and forces desktop zoom) */
   margin-left: 0;
   margin-right: 0;
   height: var(--road-flow-h, clamp(6.25rem, 3.3rem + 3.8vw, 10rem));
   pointer-events: none;
   user-select: none;
-  overflow-x: clip;
+  overflow-x: hidden;
   overflow-y: visible;
   z-index: 1;
 }
 
-/* Break out to the viewport edges from the padded hero.
- * Parent .about-page-hero always clips overflow-x so 100vw cannot
- * expand document width / trigger mobile desktop-zoom. */
+/* Full-bleed to section edges without 100vw (avoids mobile layout zoom). */
 .about-page-hero .about-road {
-  width: 100vw;
-  max-width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .about-road__scene {

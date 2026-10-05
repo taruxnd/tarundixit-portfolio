@@ -8,8 +8,10 @@
   bottom: var(--hero-rail-height, 8px);
   z-index: 0;
   width: 100%;
+  max-width: 100%;
   pointer-events: none;
   overflow: hidden;
+  contain: paint;
 }
 
 @media (max-width: 767px) {
@@ -18,17 +20,21 @@
        clearing the canvas during a touch scroll. */
     bottom: auto;
     height: calc(100svh - var(--hero-rail-height, 8px));
+    overflow: hidden;
+    contain: paint;
+    clip-path: inset(0);
   }
 
   .hero-garden .hero-garden__canvas {
-    /* Presentation-only crop: render a wider stage, then expose its center.
-       This preserves the garden's sprites, depth, and wind behavior. */
+    /* Stay viewport-wide on phones. A 900px layout box (even clipped) was
+       expanding Safari’s layout viewport after hydrate → desktop zoom flash. */
     position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 900px;
-    max-width: none;
-    transform: translateX(-50%);
+    inset: 0;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    margin: 0;
+    transform: none;
   }
 }
 

@@ -82,7 +82,9 @@ body {
   background-color: transparent !important;
   width: 100% !important;
   max-width: 100% !important;
+  min-width: 0 !important;
   padding: 48px 0 0 !important;
+  overflow-x: hidden !important;
 }
 
 @media (max-width: 767px) {
@@ -91,6 +93,13 @@ body {
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
+  }
+
+  .polaroid-timeline-embed,
+  .polaroid-timeline-embed__host,
+  #polaroid-timeline-host {
+    overflow-x: hidden !important;
+    max-width: 100% !important;
   }
 }
 

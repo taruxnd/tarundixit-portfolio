@@ -116,7 +116,9 @@ html {
   scroll-behavior: smooth;
   background-color: var(--bg-page);
   transition: background-color var(--theme-transition);
-  overflow-x: clip;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -124,8 +126,10 @@ body {
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: clip;
+  width: 100%;
   max-width: 100%;
+  overflow-x: hidden;
+  position: relative;
   transition:
     background-color var(--theme-transition),
     color var(--theme-transition);
