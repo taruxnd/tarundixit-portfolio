@@ -51,6 +51,9 @@ export default function AboutBentoGrid() {
           <h2 id="about-bento-heading" className="about-bento__heading">
             Me, minus the Figma file.
           </h2>
+          <p className="about-bento__subline">
+            Hover a tile to reveal the real photo.
+          </p>
         </header>
 
         <div className="about-bento__grid">

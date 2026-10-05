@@ -14,6 +14,10 @@
 }
 
 .about-bento__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
   width: 100%;
   text-align: center;
 }
@@ -27,6 +31,17 @@
   letter-spacing: -0.03em;
   line-height: 1.12;
   text-wrap: balance;
+}
+
+.about-bento__subline {
+  margin: 0;
+  max-width: min(36rem, 100%);
+  font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--text-secondary);
 }
 
 .about-bento__grid {
