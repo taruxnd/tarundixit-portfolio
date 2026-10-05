@@ -28,8 +28,18 @@
   height: var(--road-flow-h, clamp(6.25rem, 3.3rem + 3.8vw, 10rem));
   pointer-events: none;
   user-select: none;
-  overflow: visible;
+  overflow-x: hidden;
+  overflow-y: visible;
   z-index: 1;
+}
+
+@media (max-width: 767px) {
+  .about-road {
+    /* Avoid 100vw breakout on iOS — it widens layout viewport on scroll */
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
 
 .about-road__scene {
@@ -298,7 +308,7 @@
   min-width: 2.975rem;
   min-height: 1.05rem;
   /* Same path + speed as forward CSS traffic (fastback = 24s) */
-  will-change: transform;
+  will-change: left;
   animation: about-road-drive 24s linear infinite;
   pointer-events: none;
   opacity: 0;
@@ -349,7 +359,7 @@
   bottom: 0.04rem;
   width: 4.25rem;
   height: 1.52rem;
-  will-change: transform;
+  will-change: left;
   animation: about-road-drive var(--car-duration, 28s) linear infinite;
   animation-delay: var(--car-delay, 0s);
 }
@@ -609,19 +619,22 @@
 
 @keyframes about-road-drive {
   from {
-    transform: translateX(-8rem);
+    left: -8rem;
   }
   to {
-    transform: translateX(calc(100vw + 8rem));
+    /* % relative to .about-road__glb-lane — never 100vw */
+    left: calc(100% + 8rem);
   }
 }
 
 @keyframes about-road-drive-reverse {
   from {
-    transform: translateX(calc(100vw + 8rem)) scale(0.92);
+    left: calc(100% + 8rem);
+    transform: scale(0.92);
   }
   to {
-    transform: translateX(-8rem) scale(0.92);
+    left: -8rem;
+    transform: scale(0.92);
   }
 }
 

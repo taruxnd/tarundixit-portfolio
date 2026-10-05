@@ -83,17 +83,28 @@ body {
 }
 
 @media (max-width: 767px) {
-  .polaroid-timeline-embed__host,
-  #polaroid-timeline-host {
+  .polaroid-timeline-embed {
     overflow-x: hidden;
     max-width: 100%;
   }
 
-  /* Keep Framer’s 900px design; shrink layout so phones stay device-width */
+  .polaroid-timeline-embed__host,
+  #polaroid-timeline-host {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  /*
+   * Framer is authored at 900px. Keep that design width, but clip + zoom so
+   * Safari’s layout viewport never expands when the island hydrates on scroll.
+   */
   #polaroid-timeline-host #main,
   #polaroid-timeline-host .framer-UdSO0.framer-72rtr7 {
     width: 900px !important;
     max-width: none !important;
+    min-width: 0 !important;
+    padding: 24px 0 0 !important;
     zoom: calc(100vw / 900);
   }
 }
@@ -127,4 +138,3 @@ body {
 #polaroid-timeline-host div[style*="perspective"] {
   transition: opacity 0.25s ease;
 }
-

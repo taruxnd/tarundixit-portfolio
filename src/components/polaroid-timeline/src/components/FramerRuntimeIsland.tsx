@@ -32,6 +32,15 @@ function createMainElement(): HTMLDivElement {
     main.setAttribute(key, value);
   }
   main.innerHTML = prepareHydrateHtml(framerRuntime.mainInnerHtml);
+  // Lock mobile width BEFORE Framer paints — prevents Safari layout-viewport zoom
+  if (
+    typeof window !== "undefined" &&
+    window.matchMedia("(max-width: 767px)").matches
+  ) {
+    main.style.width = "900px";
+    main.style.maxWidth = "none";
+    main.style.zoom = `${window.innerWidth / 900}`;
+  }
   return main;
 }
 
@@ -392,7 +401,7 @@ export function FramerRuntimeIsland() {
           io = null;
           scheduleBoot();
         },
-        { root: null, rootMargin: "200% 0px", threshold: 0 },
+        { root: null, rootMargin: "80px 0px", threshold: 0 },
       );
       io.observe(host);
     } else {

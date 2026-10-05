@@ -12,8 +12,8 @@ const AboutPageCarry = dynamic(() => import("./AboutPageCarry"), {
   ssr: false,
 });
 
-/** Start loading GLBs ~1 viewport before the road enters view. */
-const LOAD_ROOT_MARGIN = "100% 0px";
+/** Start loading GLBs when the road is near — not a full viewport early. */
+const LOAD_ROOT_MARGIN = "25% 0px";
 
 const LAMPS = [
   { id: "kumba-left", side: "right" },
