@@ -57,12 +57,15 @@ body {
 .polaroid-timeline-embed__host {
   position: relative;
   width: 100%;
-  max-width: 900px;
+  max-width: min(900px, 100%);
   margin-inline: auto;
+  overflow-x: clip;
 }
 
 #polaroid-timeline-host {
   width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .polaroid-timeline-embed__host [aria-label="Framer runtime"]:not([aria-busy="true"]) {
@@ -78,8 +81,17 @@ body {
   background: transparent !important;
   background-color: transparent !important;
   width: 100% !important;
-  max-width: 900px;
+  max-width: 100% !important;
   padding: 48px 0 0 !important;
+}
+
+@media (max-width: 767px) {
+  #polaroid-timeline-host #main,
+  #polaroid-timeline-host .framer-UdSO0.framer-72rtr7 {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
 }
 
 /* Our heading replaces Framer's Instrument Serif scroll hint */

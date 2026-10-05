@@ -7,6 +7,7 @@
   flex-direction: column;
   justify-content: flex-start;
   width: 100%;
+  max-width: 100%;
   height: 100svh;
   height: 100dvh;
   min-height: 100svh;
@@ -37,7 +38,9 @@
   --city-gap: clamp(1.5rem, 2.5svh, 1.85rem);
   padding-top: min(clamp(5rem, 9vw, 6.5rem), calc(2rem + 8svh));
   padding-bottom: 0;
-  overflow: hidden;
+  /* Clip X always — road traffic must not widen the document (mobile zoom bug) */
+  overflow-x: clip;
+  overflow-y: hidden;
   font-family: var(--font-geist), var(--font-inter), ui-sans-serif, system-ui,
     sans-serif;
 }
@@ -472,11 +475,13 @@
     height: auto;
     max-height: none;
     min-height: 100svh;
-    overflow: visible;
+    overflow-x: clip;
+    overflow-y: visible;
   }
 
   .about-page-hero__stage {
-    overflow: visible;
+    overflow-x: clip;
+    overflow-y: visible;
   }
 
   .about-page-hero__inner {
@@ -490,7 +495,8 @@
     height: auto;
     max-height: none;
     min-height: 100svh;
-    overflow: visible;
+    overflow-x: clip;
+    overflow-y: visible;
     padding-top: 4.75rem;
   }
 
@@ -499,7 +505,8 @@
   }
 
   .about-page-hero__stage {
-    overflow: visible;
+    overflow-x: clip;
+    overflow-y: visible;
   }
 
   .about-page-hero__inner {
@@ -512,12 +519,14 @@
     height: auto;
     max-height: none;
     min-height: 100svh;
-    overflow: visible;
+    overflow-x: clip;
+    overflow-y: visible;
     padding-top: 4.35rem;
   }
 
   .about-page-hero--with-cta .about-page-hero__stage {
-    overflow: visible;
+    overflow-x: clip;
+    overflow-y: visible;
   }
 
   .about-page-hero--with-cta .about-page-hero__inner {
