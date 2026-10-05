@@ -46,13 +46,6 @@
   --layout-content-max-wide: 1560px;
   --layout-reading-max: 720px;
   --hero-rail-gap: 2.5rem;
-  /* Space from previous section end → next section title (matches hero → Work) */
-  --section-pad-before-title: clamp(5rem, 14vh, 9rem);
-  --section-pad-after-content: clamp(3rem, 6vw, 5rem);
-  /*
-   * Stacked sections: only padding-top (or margin-top on the About fold) uses
-   * --section-pad-before-title — no bottom pad on the section above.
-   */
   /* Alias kept so existing CSS vars resolve to the new face */
   --font-hero-instrument-serif: "PP Editorial New";
   --bg-page: #ffffff;
@@ -116,7 +109,7 @@ html {
   scroll-behavior: smooth;
   background-color: var(--bg-page);
   transition: background-color var(--theme-transition);
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
@@ -124,7 +117,6 @@ body {
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
   transition:
     background-color var(--theme-transition),
     color var(--theme-transition);

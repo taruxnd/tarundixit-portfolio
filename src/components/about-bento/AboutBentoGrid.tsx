@@ -1,49 +1,44 @@
 import { stripFontClassName } from "@/lib/heroFonts";
-import { assetUrl } from "@/lib/cdnAssets";
 import { contentContainerClassName } from "@/lib/sectionLayout";
 import AboutBentoTile from "./AboutBentoTile";
 import "./about-bento-grid.css";
 
 /**
  * Hover reveals real photos through a pixel dissolve.
- * Media paths go through jsDelivr (`assetUrl`) once pushed to main.
+ * Replace the `realSrc` paths with your actual life photos when ready.
  */
 const BENTO_IMAGES = [
   {
-    cartoonSrc: assetUrl("about-bento/shin-swim.jpg"),
-    realVideoSrc: assetUrl("about-bento/chlorine-swim.mp4"),
-    alt: "Shin-chan swimming race in the pool",
-    label: "Chlorine in my veins",
+    cartoonSrc: "/about-bento/shin-hands.jpg",
+    realSrc: "/about-bento/real-yapper.jpg",
+    alt: "Shin-chan holding hands under sparkles",
+    label: "Professional yapper",
   },
   {
-    cartoonSrc: assetUrl("about-bento/shin-run.jpg"),
-    realSrc: assetUrl("about-bento/real-travel.jpg"),
+    cartoonSrc: "/about-bento/shin-run.jpg",
+    realSrc: "/about-bento/real-travel.jpg",
     alt: "Shin-chan and Shiro running by a mossy bridge",
     label: "Love to travel",
   },
   {
-    cartoonSrc: assetUrl("about-bento/shin-aviation.jpg"),
-    realSrc: assetUrl("about-bento/real-aviation.jpg"),
-    alt: "Shin-chan as a pilot, and a MiG-21 on the runway",
-    label: "Aviation paglu",
-    realCoverFocus: { x: 0.5, y: 0.48 },
+    cartoonSrc: "/about-bento/shin-car.jpg",
+    realSrc: "/about-bento/real-car.jpg",
+    alt: "Shin-chan sitting cool in a yellow toy car",
+    label: "Petrolhead",
   },
   {
-    cartoonSrc: assetUrl("about-bento/shin-dogs.jpg"),
-    realSrc: assetUrl("about-bento/real-dogs.jpg"),
-    alt: "Holding a German Shepherd puppy outdoors",
-    label: "Soft for dogs",
-    // Portrait in a wide tile — keep puppy + face in frame
-    realCoverFocus: { x: 0.42, y: 0.38 },
+    cartoonSrc: "/about-bento/shin-swim.jpg",
+    realSrc: "/about-bento/real-swim.jpg",
+    alt: "Shin-chan swimming race in the pool",
+    label: "Chlorine in my veins",
   },
   {
-    cartoonSrc: assetUrl("about-bento/shin-cook.jpg"),
-    realSrc: assetUrl("about-bento/real-cook.jpg"),
-    alt: "A pot of creamy orange chicken curry on the stove",
+    cartoonSrc: "/about-bento/shin-cook.jpg",
+    realSrc: "/about-bento/real-cook.jpg",
+    alt: "Shin-chan cooking on a step stool",
     label: "Dangerously good cook",
-    realCoverFocus: { x: 0.5, y: 0.42 },
   },
-];
+] as const;
 
 export default function AboutBentoGrid() {
   return (
@@ -56,9 +51,6 @@ export default function AboutBentoGrid() {
           <h2 id="about-bento-heading" className="about-bento__heading">
             Me, minus the Figma file.
           </h2>
-          <p className="about-bento__subline">
-            Hover a tile to reveal the real moment.
-          </p>
         </header>
 
         <div className="about-bento__grid">
@@ -66,10 +58,7 @@ export default function AboutBentoGrid() {
             <AboutBentoTile
               key={image.cartoonSrc}
               cartoonSrc={image.cartoonSrc}
-              realSrc={"realSrc" in image ? image.realSrc : undefined}
-              realVideoSrc={
-                "realVideoSrc" in image ? image.realVideoSrc : undefined
-              }
+              realSrc={image.realSrc}
               alt={image.alt}
               label={image.label}
               index={index}
@@ -77,9 +66,6 @@ export default function AboutBentoGrid() {
                 index < 2
                   ? "(max-width: 767px) 50vw, 50vw"
                   : "(max-width: 767px) 50vw, 33vw"
-              }
-              realCoverFocus={
-                "realCoverFocus" in image ? image.realCoverFocus : undefined
               }
             />
           ))}

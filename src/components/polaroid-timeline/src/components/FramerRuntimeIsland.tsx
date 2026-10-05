@@ -32,15 +32,6 @@ function createMainElement(): HTMLDivElement {
     main.setAttribute(key, value);
   }
   main.innerHTML = prepareHydrateHtml(framerRuntime.mainInnerHtml);
-  // Lock mobile width BEFORE Framer paints — prevents Safari layout-viewport zoom
-  if (
-    typeof window !== "undefined" &&
-    window.matchMedia("(max-width: 767px)").matches
-  ) {
-    main.style.width = "900px";
-    main.style.maxWidth = "none";
-    main.style.zoom = `${window.innerWidth / 900}`;
-  }
   return main;
 }
 
@@ -86,68 +77,17 @@ function ensureProcessEnv() {
   };
 }
 
-/** CDN shared-lib → local patch with extra polaroid milestones. */
-const SHARED_LIB_CDN =
-  "https://framerusercontent.com/sites/71UJYhEgwM3TSL7NydVUEj/shared-lib.EBskc7qO.mjs";
-/** Bump when patching shared-lib so ESM does not reuse a stale module. */
-const SHARED_LIB_VERSION = "fs3";
-const SHARED_LIB_LOCAL = `/polaroid-framer/shared-lib.EBskc7qO.mjs?v=${SHARED_LIB_VERSION}`;
-
-/** First polaroid photo — applied after hydrate in case Framer keeps a stale image. */
-const FIRST_POLAROID_SRC =
-  "https://cdn.jsdelivr.net/gh/taruxnd/tarundixit-portfolio@main/public/polaroid/first-shoot.jpg";
-const FIRST_POLAROID_ALT = "First Shoot";
-
-function ensurePolaroidImportMap() {
-  if (document.getElementById("polaroid-framer-importmap")) return;
-  const map = document.createElement("script");
-  map.id = "polaroid-framer-importmap";
-  map.type = "importmap";
-  map.textContent = JSON.stringify({
-    imports: {
-      [SHARED_LIB_CDN]: SHARED_LIB_LOCAL,
-    },
-  });
-  // Import maps must be registered before any module that resolves them.
-  document.head.prepend(map);
-}
-
 function preloadModules() {
   for (const href of framerRuntime.modulePreloads) {
-    const resolved = href === SHARED_LIB_CDN ? SHARED_LIB_LOCAL : href;
-    if (
-      document.querySelector(`link[rel="modulepreload"][href="${resolved}"]`)
-    ) {
+    if (document.querySelector(`link[rel="modulepreload"][href="${href}"]`)) {
       continue;
     }
     const link = document.createElement("link");
     link.rel = "modulepreload";
-    link.href = resolved;
+    link.href = href;
     link.setAttribute("fetchpriority", "low");
     document.head.appendChild(link);
   }
-}
-
-function applyFirstPolaroidPhoto(root: ParentNode | null) {
-  if (!root) return;
-  root.querySelectorAll<HTMLImageElement>("img").forEach((img) => {
-    if (img.alt !== FIRST_POLAROID_ALT) return;
-    if (img.getAttribute("src") === FIRST_POLAROID_SRC) return;
-    img.src = FIRST_POLAROID_SRC;
-  });
-}
-
-/** Framer may re-render Unsplash into the first card — keep our photo pinned. */
-function watchFirstPolaroidPhoto(root: HTMLElement) {
-  applyFirstPolaroidPhoto(root);
-  const mo = new MutationObserver(() => applyFirstPolaroidPhoto(root));
-  mo.observe(root, {
-    subtree: true,
-    childList: true,
-    attributes: true,
-    attributeFilter: ["src"],
-  });
-  return () => mo.disconnect();
 }
 
 function removeFramerScript() {
@@ -161,7 +101,6 @@ function removeFramerScript() {
  * (ESM caches the bare URL after the first visit). Sibling imports still hit CDN cache.
  */
 function loadFramerScript(remount: boolean) {
-  ensurePolaroidImportMap();
   removeFramerScript();
   return new Promise<void>((resolve, reject) => {
     const script = document.createElement("script");
@@ -287,10 +226,7 @@ export function FramerRuntimeIsland() {
     let cancelled = false;
     let didMount = false;
     let detachHover: (() => void) | undefined;
-    let detachFirstPhoto: (() => void) | undefined;
     let probeTimer: number | undefined;
-    let startId: number | undefined;
-    let io: IntersectionObserver | null = null;
 
     const mountParent = () =>
       document.getElementById(HOST_ID) ?? document.body;
@@ -310,7 +246,6 @@ export function FramerRuntimeIsland() {
       ensureBadge();
       ensureSvgTemplates();
       ensureProcessEnv();
-      ensurePolaroidImportMap();
       preloadModules();
 
       const parent = mountParent();
@@ -336,9 +271,6 @@ export function FramerRuntimeIsland() {
       const host = (document.getElementById(HOST_ID) ?? parent) as HTMLElement;
       detachHover?.();
       detachHover = attachHoverUnlock(host);
-      detachFirstPhoto?.();
-      const mainRoot = document.getElementById(MAIN_ID);
-      if (mainRoot) detachFirstPhoto = watchFirstPolaroidPhoto(mainRoot);
 
       const started = performance.now();
       const probe = () => {
@@ -346,12 +278,10 @@ export function FramerRuntimeIsland() {
         const root = document.getElementById(MAIN_ID);
         const cardsOk = countCards(root) >= 1;
         const lineOk = stringLooksAlive(root);
-        applyFirstPolaroidPhoto(root);
 
         if (cardsOk && lineOk) {
           detachHover?.();
           detachHover = attachHoverUnlock(host);
-          applyFirstPolaroidPhoto(root);
           wakeFramerLayout();
           return;
         }
@@ -373,48 +303,22 @@ export function FramerRuntimeIsland() {
             wakeFramerLayout();
             detachHover?.();
             detachHover = attachHoverUnlock(host);
-            detachFirstPhoto?.();
-            const root = document.getElementById(MAIN_ID);
-            if (root) detachFirstPhoto = watchFirstPolaroidPhoto(root);
           });
         }
       };
       probeTimer = window.setTimeout(probe, 180);
     };
 
-    const scheduleBoot = () => {
-      // Skip Strict Mode's discarded first effect pass.
-      startId = window.setTimeout(() => {
-        void boot();
-      }, 0);
-    };
-
-    // Don't hydrate the 900px Framer timeline until it's near view — otherwise
-    // it expands Safari's layout viewport on first paint (flash to desktop).
-    const host = document.getElementById(HOST_ID);
-    if (host && typeof IntersectionObserver !== "undefined") {
-      io = new IntersectionObserver(
-        (entries) => {
-          if (cancelled) return;
-          if (!entries.some((e) => e.isIntersecting)) return;
-          io?.disconnect();
-          io = null;
-          scheduleBoot();
-        },
-        { root: null, rootMargin: "80px 0px", threshold: 0 },
-      );
-      io.observe(host);
-    } else {
-      scheduleBoot();
-    }
+    // Skip Strict Mode's discarded first effect pass.
+    const startId = window.setTimeout(() => {
+      void boot();
+    }, 0);
 
     return () => {
       cancelled = true;
-      io?.disconnect();
-      if (startId !== undefined) window.clearTimeout(startId);
+      window.clearTimeout(startId);
       if (probeTimer) window.clearTimeout(probeTimer);
       detachHover?.();
-      detachFirstPhoto?.();
       if (didMount) tearDownMain();
       window.__framerToNextBooted = true;
     };
@@ -424,7 +328,6 @@ export function FramerRuntimeIsland() {
     <div
       aria-busy={!ready}
       aria-label="Framer runtime"
-      className="polaroid-framer-runtime-spacer"
       style={{
         minHeight: ready ? 0 : "40vh",
         width: "100%",

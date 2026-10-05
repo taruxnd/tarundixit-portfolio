@@ -1,6 +1,7 @@
 "use client";
 
 import AboutPageRoad from "@/components/about-page/AboutPageRoad";
+import LiquidGlass from "@/components/navbar/LiquidGlass";
 import { assetUrl } from "@/lib/cdnAssets";
 import { stripFontClassName } from "@/lib/heroFonts";
 import { contentContainerClassName } from "@/lib/sectionLayout";
@@ -108,30 +109,29 @@ function AboutIntro() {
 type AboutPageHeroProps = {
   /** Anchor id for in-page nav (e.g. homepage `#about`). */
   id?: string;
-  /**
-   * When true, pin scroll to top on mount (legacy dedicated `/about` route).
-   * Embedded homepage section must stay false so hash nav and soft scroll work.
-   */
-  pinScrollOnMount?: boolean;
+  /** Optional CTA to the full about route (homepage only). */
+  moreHref?: string;
 };
 
-/** About hero — one-fold copy + road. */
+/** About hero — copy + road, no ID card. Shared by `/` and `/about`. */
 export default function AboutPageHero({
   id,
-  pinScrollOnMount = false,
+  moreHref,
 }: AboutPageHeroProps = {}) {
   const HeadingTag = id ? "h2" : "h1";
 
+  // Soft-nav from a scrolled home page can leave window.scrollY past the
+  // one-fold /about height (blank). Always pin to top on the dedicated route.
   useEffect(() => {
-    if (!pinScrollOnMount) return;
+    if (moreHref) return;
     window.scrollTo(0, 0);
-  }, [pinScrollOnMount]);
+  }, [moreHref]);
 
   return (
     <section
       id={id}
       className={`about-page-hero theme-transition ${stripFontClassName}${
-        id ? " about-page-hero--on-home" : ""
+        moreHref ? " about-page-hero--with-cta" : ""
       }`}
       aria-labelledby="about-page-heading"
     >
@@ -171,6 +171,26 @@ export default function AboutPageHero({
               years.
             </p>
           </div>
+
+          {moreHref ? (
+            <div className="about-page-hero__cta">
+              <Link
+                href={moreHref}
+                scroll
+                data-cursor="interactive"
+                className="about-page-hero__more"
+              >
+                <LiquidGlass className="about-page-hero__more-glass">
+                  <span className="about-page-hero__more-label">
+                    There&apos;s more to me
+                    <span className="about-page-hero__arrow" aria-hidden>
+                      →
+                    </span>
+                  </span>
+                </LiquidGlass>
+              </Link>
+            </div>
+          ) : null}
         </div>
       </div>
 

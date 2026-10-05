@@ -29,12 +29,9 @@ export default function PolaroidTimeline() {
           </p>
         </header>
 
-        {/* Island bootstraps #main into the host — keep inside host so flex gap
-            doesn't leave a dead band between the string and the next section */}
-        <div className="polaroid-timeline-embed__host">
-          <div id="polaroid-timeline-host" />
-          <FramerRuntimeIsland />
-        </div>
+        {/* FramerRuntimeIsland mounts #main here — same hydrate as the zip preview */}
+        <div id="polaroid-timeline-host" className="polaroid-timeline-embed__host" />
+        <FramerRuntimeIsland />
       </div>
     </section>
   );

@@ -42,17 +42,6 @@
     sans-serif;
 }
 
-/* Homepage `#about` — stack gap lives in padding-top only (same as Work title) */
-.about-page-hero.about-page-hero--on-home {
-  padding-top: var(--section-pad-before-title);
-  scroll-margin-top: max(4.5rem, calc(3.25rem + env(safe-area-inset-top, 0px)));
-}
-
-.about-page-hero.about-page-hero--on-home .about-page-hero__inner {
-  margin-block: 0;
-  transform: none;
-}
-
 /* Keep-out band between copy and road. Must be a flex ITEM (not stage
  * padding): overflow:hidden clips at the padding box, so padding is
  * consumable by overflowing copy and never actually protects the city. */
@@ -472,13 +461,11 @@
     height: auto;
     max-height: none;
     min-height: 100svh;
-    overflow-x: clip;
-    overflow-y: visible;
+    overflow: visible;
   }
 
   .about-page-hero__stage {
-    overflow-x: clip;
-    overflow-y: visible;
+    overflow: visible;
   }
 
   .about-page-hero__inner {
@@ -492,8 +479,7 @@
     height: auto;
     max-height: none;
     min-height: 100svh;
-    overflow-x: clip;
-    overflow-y: visible;
+    overflow: visible;
     padding-top: 4.75rem;
   }
 
@@ -502,8 +488,7 @@
   }
 
   .about-page-hero__stage {
-    overflow-x: clip;
-    overflow-y: visible;
+    overflow: visible;
   }
 
   .about-page-hero__inner {
@@ -516,14 +501,12 @@
     height: auto;
     max-height: none;
     min-height: 100svh;
-    overflow-x: clip;
-    overflow-y: visible;
+    overflow: visible;
     padding-top: 4.35rem;
   }
 
   .about-page-hero--with-cta .about-page-hero__stage {
-    overflow-x: clip;
-    overflow-y: visible;
+    overflow: visible;
   }
 
   .about-page-hero--with-cta .about-page-hero__inner {

@@ -3,7 +3,7 @@
 .side-projects {
   position: relative;
   width: 100%;
-  padding: var(--section-pad-before-title) 0 0;
+  padding: clamp(4.5rem, 12vh, 8rem) 0;
   background: var(--bg-page);
 }
 

@@ -28,18 +28,8 @@
   height: var(--road-flow-h, clamp(6.25rem, 3.3rem + 3.8vw, 10rem));
   pointer-events: none;
   user-select: none;
-  overflow-x: hidden;
-  overflow-y: visible;
+  overflow: visible;
   z-index: 1;
-}
-
-@media (max-width: 767px) {
-  .about-road {
-    /* Avoid 100vw breakout on iOS — it widens layout viewport on scroll */
-    width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-  }
 }
 
 .about-road__scene {
@@ -289,8 +279,7 @@
   height: 2.15rem;
   /* Above road slab + traffic so the full car sits in front */
   z-index: 20;
-  /* Clip drive animation so offscreen cars cannot widen the document */
-  overflow: hidden;
+  overflow: visible;
   pointer-events: none;
 }
 
@@ -308,7 +297,7 @@
   min-width: 2.975rem;
   min-height: 1.05rem;
   /* Same path + speed as forward CSS traffic (fastback = 24s) */
-  will-change: left;
+  will-change: transform;
   animation: about-road-drive 24s linear infinite;
   pointer-events: none;
   opacity: 0;
@@ -359,7 +348,7 @@
   bottom: 0.04rem;
   width: 4.25rem;
   height: 1.52rem;
-  will-change: left;
+  will-change: transform;
   animation: about-road-drive var(--car-duration, 28s) linear infinite;
   animation-delay: var(--car-delay, 0s);
 }
@@ -619,22 +608,19 @@
 
 @keyframes about-road-drive {
   from {
-    left: -8rem;
+    transform: translateX(-8rem);
   }
   to {
-    /* % relative to .about-road__glb-lane — never 100vw */
-    left: calc(100% + 8rem);
+    transform: translateX(calc(100vw + 8rem));
   }
 }
 
 @keyframes about-road-drive-reverse {
   from {
-    left: calc(100% + 8rem);
-    transform: scale(0.92);
+    transform: translateX(calc(100vw + 8rem)) scale(0.92);
   }
   to {
-    left: -8rem;
-    transform: scale(0.92);
+    transform: translateX(-8rem) scale(0.92);
   }
 }
 

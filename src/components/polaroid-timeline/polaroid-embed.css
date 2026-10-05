@@ -9,7 +9,7 @@ body {
 .polaroid-timeline-embed {
   position: relative;
   width: 100%;
-  padding: var(--section-pad-before-title) 0 0;
+  padding: clamp(3.5rem, 8vh, 6rem) 0 0;
   background: transparent;
   color: var(--text-primary);
 }
@@ -61,17 +61,6 @@ body {
   margin-inline: auto;
 }
 
-#polaroid-timeline-host {
-  width: 100%;
-}
-
-.polaroid-timeline-embed__host [aria-label="Framer runtime"]:not([aria-busy="true"]) {
-  display: block;
-  height: 0;
-  min-height: 0 !important;
-  overflow: hidden;
-}
-
 /* Use site bg — neutralize Framer page fill */
 #polaroid-timeline-host #main,
 #polaroid-timeline-host .framer-UdSO0.framer-72rtr7 {
@@ -79,34 +68,8 @@ body {
   background-color: transparent !important;
   width: 100% !important;
   max-width: 900px;
-  padding: 48px 0 0 !important;
-}
-
-@media (max-width: 767px) {
-  .polaroid-timeline-embed {
-    overflow-x: hidden;
-    max-width: 100%;
-  }
-
-  .polaroid-timeline-embed__host,
-  #polaroid-timeline-host {
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
-  }
-
-  /*
-   * Framer is authored at 900px. Keep that design width, but clip + zoom so
-   * Safari’s layout viewport never expands when the island hydrates on scroll.
-   */
-  #polaroid-timeline-host #main,
-  #polaroid-timeline-host .framer-UdSO0.framer-72rtr7 {
-    width: 900px !important;
-    max-width: none !important;
-    min-width: 0 !important;
-    padding: 24px 0 0 !important;
-    zoom: calc(100vw / 900);
-  }
+  /* Standalone used 300/500 — tighten bottom so bento title sits closer */
+  padding: 48px 0 16px !important;
 }
 
 /* Our heading replaces Framer's Instrument Serif scroll hint */
@@ -138,3 +101,4 @@ body {
 #polaroid-timeline-host div[style*="perspective"] {
   transition: opacity 0.25s ease;
 }
+
