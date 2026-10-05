@@ -121,11 +121,12 @@ export default function AboutPageHero({
   const HeadingTag = id ? "h2" : "h1";
 
   // Soft-nav from a scrolled home page can leave window.scrollY past the
-  // one-fold /about height (blank). Always pin to top on the dedicated route.
+  // one-fold /about height (blank). Only pin standalone use to the top;
+  // homepage sections must preserve scrolling and hash navigation.
   useEffect(() => {
-    if (moreHref) return;
+    if (id || moreHref) return;
     window.scrollTo(0, 0);
-  }, [moreHref]);
+  }, [id, moreHref]);
 
   return (
     <section

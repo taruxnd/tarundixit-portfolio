@@ -1,25 +1,6 @@
-import AboutPageHero from "@/components/about-page/AboutPageHero";
-import AboutBentoGrid from "@/components/about-bento/AboutBentoGrid";
-import AboutMusicShelf from "@/components/about-music/AboutMusicShelf";
-import PolaroidTimeline from "@/components/polaroid-timeline/PolaroidTimeline";
-import type { Metadata } from "next";
-/* Critical for /about — load with the route so landmark sizes apply on first paint */
-import "@/components/about-page/about-page.css";
-import "@/components/about-page/about-page-road.css";
+import { permanentRedirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "About — Tarun Dixit",
-  description:
-    "Product designer who engineers — currently at Kumba AI. About Tarun Dixit.",
-};
-
+/** Keep existing About links pointing to the consolidated homepage. */
 export default function AboutPage() {
-  return (
-    <main>
-      <AboutPageHero />
-      <PolaroidTimeline />
-      <AboutBentoGrid />
-      <AboutMusicShelf />
-    </main>
-  );
+  permanentRedirect("/#about");
 }
