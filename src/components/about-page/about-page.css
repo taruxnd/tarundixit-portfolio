@@ -474,7 +474,7 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 767px), (max-width: 1023px) and (hover: none) and (pointer: coarse) {
   .about-page-hero {
     height: auto;
     max-height: none;

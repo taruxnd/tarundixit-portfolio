@@ -626,7 +626,7 @@
 }
 
 /* Compact mobile CTAs in both portrait and landscape. */
-@media (max-width: 767px) {
+@media (max-width: 767px), (max-width: 1023px) and (hover: none) and (pointer: coarse) {
   .hero-section {
     /* Keep the rail attached to the svh-anchored garden when mobile browser
        chrome collapses and the dynamic viewport grows during scrolling. */
@@ -655,7 +655,7 @@
  * Phone portrait art direction only.
  * Kept after the existing responsive rules so >= 768px remains untouched.
  */
-@media (max-width: 767px) and (orientation: portrait) {
+@media (max-width: 767px) and (orientation: portrait), (max-width: 1023px) and (hover: none) and (pointer: coarse) and (orientation: portrait) {
   .hero-section__inner {
     align-items: flex-start;
     justify-content: flex-start;
@@ -725,7 +725,7 @@
   }
 }
 
-@media (max-width: 767px) and (orientation: portrait) and (max-height: 600px) {
+@media (max-width: 767px) and (orientation: portrait) and (max-height: 600px), (max-width: 1023px) and (hover: none) and (pointer: coarse) and (orientation: portrait) and (max-height: 600px) {
   .hero-section__inner {
     padding-top: max(7.5rem, calc(6rem + env(safe-area-inset-top, 0px)));
     padding-bottom: max(var(--hero-rail-gap), 33vh);

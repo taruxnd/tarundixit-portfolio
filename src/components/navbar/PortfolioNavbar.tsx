@@ -8,7 +8,7 @@ import LiquidGlass from "./LiquidGlass";
 import { useNavbarScroll } from "./useNavbarScroll";
 import "./navbar.css";
 
-const DESKTOP_NAV_MQ = "(min-width: 768px)";
+const DESKTOP_NAV_MQ = "(min-width: 1024px), (min-width: 768px) and (hover: hover) and (pointer: fine)";
 
 function FlipLink({
   href,

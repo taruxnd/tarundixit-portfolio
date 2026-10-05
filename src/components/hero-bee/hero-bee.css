@@ -19,6 +19,6 @@
 .hero-bee:disabled { pointer-events: none; }
 .hero-bee:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 4px; border-radius: 50%; }
 .hero-bee canvas { display: block; width: 100%; height: 100%; }
-@media (max-width: 767px) {
+@media (max-width: 767px), (max-width: 1023px) and (hover: none) and (pointer: coarse) {
   .hero-bee { width: 80px; height: 80px; }
 }

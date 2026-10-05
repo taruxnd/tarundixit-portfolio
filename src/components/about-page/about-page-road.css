@@ -699,7 +699,7 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 767px), (max-width: 1023px) and (hover: none) and (pointer: coarse) {
   .about-road {
     --road-height: 2.4rem;
     --kumba-span: clamp(2.75rem, 9vw, 4rem);

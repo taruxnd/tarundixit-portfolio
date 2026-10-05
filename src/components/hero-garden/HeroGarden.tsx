@@ -243,7 +243,7 @@ export default function HeroGarden({
     let frame = 0;
     let running = true;
     let inView = placement === "hero";
-    const desktopScrollQuery = window.matchMedia("(min-width: 768px)");
+    const desktopScrollQuery = window.matchMedia("(min-width: 1024px), (min-width: 768px) and (hover: hover) and (pointer: fine)");
 
     const resize = () => {
       const nextWidth = canvas.offsetWidth;

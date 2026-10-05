@@ -51,7 +51,7 @@
 }
 
 /* Smartphones — jump straight into the projects */
-@media (max-width: 767px) {
+@media (max-width: 767px), (max-width: 1023px) and (hover: none) and (pointer: coarse) {
   .xhulia-work__header {
     display: none;
   }

@@ -44,7 +44,7 @@
 }
 
 /* ─── Mobile layout (< md) ─── */
-@media (max-width: 767px) {
+@media (max-width: 767px), (max-width: 1023px) and (hover: none) and (pointer: coarse) {
   .portfolio-navbar:not([data-menu-open="true"]) {
     left: max(1rem, env(safe-area-inset-left, 0px));
     -webkit-transform: none;
@@ -293,7 +293,7 @@
   padding: 0;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px), (min-width: 768px) and (hover: hover) and (pointer: fine) {
   .portfolio-navbar__links {
     display: flex;
     flex-wrap: nowrap;
@@ -443,7 +443,7 @@
   overflow: hidden;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px), (min-width: 768px) and (hover: hover) and (pointer: fine) {
   .portfolio-navbar__cta {
     display: inline-flex;
   }
@@ -479,14 +479,14 @@
   cursor: pointer;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px), (min-width: 768px) and (hover: hover) and (pointer: fine) {
   .portfolio-navbar__menu-btn {
     display: none;
   }
 }
 
 /* Closed circular control — must come after base menu-btn so it wins */
-@media (max-width: 767px) {
+@media (max-width: 767px), (max-width: 1023px) and (hover: none) and (pointer: coarse) {
   .portfolio-navbar:not([data-menu-open="true"]) .portfolio-navbar__glow {
     display: none;
   }
@@ -630,7 +630,7 @@
   margin-top: 0.25rem;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px), (min-width: 768px) and (hover: hover) and (pointer: fine) {
   .portfolio-navbar__drawer {
     display: none;
   }

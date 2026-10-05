@@ -36,14 +36,13 @@ function createMainElement(): HTMLDivElement {
   return main;
 }
 
-/** The standalone Framer page sets viewport=width=900 during hydration.
+/** Guard against standalone Framer metadata changing the page viewport.
  * Keep the enclosing portfolio's viewport so phones retain their breakpoints.
  */
 function preservePortfolioViewport() {
   const selector = 'meta[name="viewport"]';
-  const content =
-    document.querySelector(selector)?.getAttribute("content") ??
-    "width=device-width, initial-scale=1";
+  // Never capture an already-overridden desktop viewport as the desired value.
+  const content = "width=device-width, initial-scale=1";
 
   const restore = () => {
     document.querySelectorAll(selector).forEach((meta) => {
@@ -53,6 +52,7 @@ function preservePortfolioViewport() {
     });
   };
 
+  restore();
   const observer = new MutationObserver(restore);
   observer.observe(document.head, {
     attributes: true,

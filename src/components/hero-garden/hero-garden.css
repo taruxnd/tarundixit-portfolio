@@ -12,7 +12,7 @@
   overflow: hidden;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 767px), (max-width: 1023px) and (hover: none) and (pointer: coarse) {
   .hero-garden {
     /* Keep Safari's collapsing browser chrome from repeatedly resizing and
        clearing the canvas during a touch scroll. */
