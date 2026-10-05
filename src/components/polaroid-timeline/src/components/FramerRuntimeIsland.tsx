@@ -10,10 +10,10 @@ declare global {
 }
 
 const HOST_ID = "polaroid-timeline-host";
-const STASH_ID = "polaroid-timeline-stash";
 const MAIN_ID = "main";
 const BADGE_ID = "__framer-badge-container";
 const CARD_SELECTOR = 'div[style*="perspective"]';
+const SCRIPT_ATTR = "data-framer-bundle";
 
 /** Strip Framer page chrome that fights the portfolio shell. */
 function prepareHydrateHtml(html: string) {
@@ -23,19 +23,6 @@ function prepareHydrateHtml(html: string) {
       "",
     )
     .replace(/html body \{ background: rgb\(20, 20, 20\); \}/g, "");
-}
-
-function ensureStash(): HTMLElement {
-  let stash = document.getElementById(STASH_ID);
-  if (!stash) {
-    stash = document.createElement("div");
-    stash.id = STASH_ID;
-    stash.setAttribute("hidden", "");
-    stash.style.cssText =
-      "position:absolute;width:0;height:0;overflow:hidden;pointer-events:none;";
-    document.body.appendChild(stash);
-  }
-  return stash;
 }
 
 function createMainElement(): HTMLDivElement {
@@ -94,25 +81,48 @@ function preloadModules() {
   }
 }
 
-function ensureFramerScript() {
-  if (
-    document.querySelector(
-      `script[data-framer-bundle="main"][src="${framerRuntime.scriptMainUrl}"]`,
-    )
-  ) {
-    return;
-  }
-  const script = document.createElement("script");
-  script.type = "module";
-  script.async = true;
-  script.src = framerRuntime.scriptMainUrl;
-  script.dataset.framerBundle = "main";
-  script.setAttribute("fetchpriority", "low");
-  document.body.appendChild(script);
+function removeFramerScript() {
+  document
+    .querySelectorAll(`script[${SCRIPT_ATTR}="main"]`)
+    .forEach((el) => el.remove());
+}
+
+/**
+ * Inject script_main. Cache-bust when remounting so top-level hydrate runs again
+ * (ESM caches the bare URL after the first visit). Sibling imports still hit CDN cache.
+ */
+function loadFramerScript(remount: boolean) {
+  removeFramerScript();
+  return new Promise<void>((resolve, reject) => {
+    const script = document.createElement("script");
+    script.type = "module";
+    script.async = true;
+    script.src = remount
+      ? `${framerRuntime.scriptMainUrl}?rm=${Date.now()}`
+      : framerRuntime.scriptMainUrl;
+    script.setAttribute(SCRIPT_ATTR, "main");
+    script.setAttribute("fetchpriority", "low");
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error("Framer script failed to load"));
+    document.body.appendChild(script);
+  });
 }
 
 function countCards(root: ParentNode | null) {
   return root?.querySelectorAll(CARD_SELECTOR).length ?? 0;
+}
+
+/** True when Framer has expanded the string past the flat SSR stub. */
+function stringLooksAlive(root: ParentNode | null) {
+  const path = root?.querySelector("svg path");
+  const d = path?.getAttribute("d") ?? "";
+  // SSR stub is flat at y≈40; live path has deep curves (e.g. 427, 815…)
+  return /,[1-9]\d{2,}/.test(d);
+}
+
+function wakeFramerLayout() {
+  window.dispatchEvent(new Event("resize"));
+  window.dispatchEvent(new Event("scroll"));
 }
 
 /**
@@ -195,8 +205,7 @@ function attachHoverUnlock(root: HTMLElement) {
 
 /**
  * Exact framer-to-next island from the zip.
- * Mounts into `#polaroid-timeline-host` when present (About embed),
- * otherwise `document.body` (standalone mini-app).
+ * Fresh hydrate on every About mount so the string + pins stay alive after soft nav.
  */
 export function FramerRuntimeIsland() {
   const [ready, setReady] = useState(false);
@@ -204,90 +213,88 @@ export function FramerRuntimeIsland() {
   useEffect(() => {
     let cancelled = false;
     let detachHover: (() => void) | undefined;
-    let retryTimer: number | undefined;
+    let probeTimer: number | undefined;
 
     const mountParent =
       document.getElementById(HOST_ID) ?? document.body;
 
-    const placeMain = (forceRecreate: boolean) => {
-      let main = document.getElementById(MAIN_ID);
-      const stash = document.getElementById(STASH_ID);
+    // Drop any leftover #main (e.g. previous visit) before a clean hydrate
+    document.getElementById(MAIN_ID)?.remove();
+    document.getElementById("polaroid-timeline-stash")?.remove();
 
-      if (!forceRecreate && main && stash?.contains(main)) {
-        mountParent.appendChild(main);
-        return main;
-      }
+    const remount = Boolean(window.__framerToNextBooted);
 
-      if (!forceRecreate && main && mountParent.contains(main)) {
-        return main;
-      }
-
-      if (!forceRecreate && main && !mountParent.contains(main)) {
-        mountParent.appendChild(main);
-        return main;
-      }
-
-      if (main) main.remove();
-      main = createMainElement();
-      mountParent.appendChild(main);
-      return main;
-    };
-
-    const boot = (forceRecreate: boolean) => {
+    const boot = async () => {
       ensureBadge();
       ensureSvgTemplates();
       ensureProcessEnv();
       preloadModules();
-      placeMain(forceRecreate);
-      ensureFramerScript();
+
+      const main = createMainElement();
+      mountParent.appendChild(main);
+
+      try {
+        await loadFramerScript(remount);
+      } catch {
+        // probe/retry below
+      }
 
       if (cancelled) return;
 
       window.__framerToNextBooted = true;
       setReady(true);
+      wakeFramerLayout();
 
       const host = (document.getElementById(HOST_ID) ??
         mountParent) as HTMLElement;
       detachHover?.();
       detachHover = attachHoverUnlock(host);
 
-      // If Framer wipes/rebuilds late, keep bindings fresh; if still empty, recreate once
       const started = performance.now();
       const probe = () => {
         if (cancelled) return;
-        const main = document.getElementById(MAIN_ID);
-        const n = countCards(main);
-        if (n >= 1) {
+        const root = document.getElementById(MAIN_ID);
+        const cardsOk = countCards(root) >= 1;
+        const lineOk = stringLooksAlive(root);
+
+        if (cardsOk && lineOk) {
           detachHover?.();
           detachHover = attachHoverUnlock(host);
+          wakeFramerLayout();
           return;
         }
-        if (performance.now() - started < 2800) {
-          retryTimer = window.setTimeout(probe, 120);
+
+        if (performance.now() - started < 3200) {
+          if (cardsOk && !lineOk) wakeFramerLayout();
+          probeTimer = window.setTimeout(probe, 140);
           return;
         }
-        if (!forceRecreate) {
-          // Static hydrate HTML should still have cards — recreate shell once
-          boot(true);
+
+        // Line still flat — one forced re-hydrate
+        if (!cancelled && !lineOk) {
+          document.getElementById(MAIN_ID)?.remove();
+          const fresh = createMainElement();
+          mountParent.appendChild(fresh);
+          void loadFramerScript(true).then(() => {
+            if (cancelled) return;
+            wakeFramerLayout();
+            detachHover?.();
+            detachHover = attachHoverUnlock(host);
+          });
         }
       };
-      retryTimer = window.setTimeout(probe, 200);
+      probeTimer = window.setTimeout(probe, 180);
     };
 
-    boot(false);
+    void boot();
 
     return () => {
       cancelled = true;
-      if (retryTimer) window.clearTimeout(retryTimer);
+      if (probeTimer) window.clearTimeout(probeTimer);
       detachHover?.();
-
-      const main = document.getElementById(MAIN_ID);
-      if (main) {
-        // Keep Framer tree alive across soft navigations
-        ensureStash().appendChild(main);
-      } else {
-        window.__framerToNextBooted = false;
-      }
+      document.getElementById(MAIN_ID)?.remove();
+      // Keep script tag so first-load modules stay cached; remount uses ?rm=
+      window.__framerToNextBooted = true;
     };
   }, []);
 
