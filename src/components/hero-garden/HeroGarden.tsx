@@ -195,7 +195,11 @@ function paintFrame(
   }
 }
 
-export default function HeroGarden() {
+export default function HeroGarden({
+  placement = "hero",
+}: {
+  placement?: "hero" | "footer";
+} = {}) {
   const { reducedMotion } = useTheme();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [enabled, setEnabled] = useState(false);
@@ -217,10 +221,12 @@ export default function HeroGarden() {
     // restoration immediately so App Router can still scroll to top on
     // soft-nav (e.g. home → /about). Leaving it "manual" for the whole
     // home visit left /about blank below the previous scroll offset.
-    const previousScrollRestoration = window.history.scrollRestoration;
-    window.history.scrollRestoration = "manual";
-    window.scrollTo(0, 0);
-    window.history.scrollRestoration = previousScrollRestoration;
+    if (placement === "hero") {
+      const previousScrollRestoration = window.history.scrollRestoration;
+      window.history.scrollRestoration = "manual";
+      window.scrollTo(0, 0);
+      window.history.scrollRestoration = previousScrollRestoration;
+    }
 
     const flowers: HTMLImageElement[] = [];
     const leaves: HTMLImageElement[] = [];
@@ -236,6 +242,7 @@ export default function HeroGarden() {
     let idleTravel = initialIdleTravel;
     let frame = 0;
     let running = true;
+    let inView = placement === "hero";
     const desktopScrollQuery = window.matchMedia("(min-width: 768px)");
 
     const resize = () => {
@@ -258,8 +265,15 @@ export default function HeroGarden() {
       }
     };
 
+    const scrollDepth = () => {
+      if (!desktopScrollQuery.matches) return 0;
+      return placement === "footer"
+        ? Math.max(0, window.innerHeight - canvas.getBoundingClientRect().top)
+        : window.scrollY;
+    };
+
     const render = () => {
-      if (!running) return;
+      if (!running || !inView) return;
       if (!reducedMotion) {
         // Keep idle pinned to the load-time depth; wind/sway keeps moving.
         idleTravel = initialIdleTravel;
@@ -267,7 +281,7 @@ export default function HeroGarden() {
       }
       // Touch scrolling should move the page, not scrub the mobile garden.
       // Desktop keeps the existing scroll-linked depth behavior unchanged.
-      const scrollTarget = desktopScrollQuery.matches ? window.scrollY : 0;
+      const scrollTarget = scrollDepth();
       scrollSmoothed += (scrollTarget - scrollSmoothed) * 0.08;
       travel = scrollSmoothed * SCROLL_SPEED + idleTravel;
       paintFrame(ctx, width, height, sprites, flowers, leaves, time, travel);
@@ -278,7 +292,7 @@ export default function HeroGarden() {
 
     const onScroll = () => {
       if (reducedMotion) {
-        scrollSmoothed = desktopScrollQuery.matches ? window.scrollY : 0;
+        scrollSmoothed = scrollDepth();
         travel = scrollSmoothed * SCROLL_SPEED + idleTravel;
         paintFrame(ctx, width, height, sprites, flowers, leaves, time, travel);
       }
@@ -294,6 +308,17 @@ export default function HeroGarden() {
     resize();
     render();
 
+    // The second garden sleeps until it enters the viewport.
+    const visibilityObserver = placement === "footer"
+      ? new IntersectionObserver(([entry]) => {
+          const wasVisible = inView;
+          inView = entry.isIntersecting;
+          if (inView && !wasVisible) render();
+          if (!inView) cancelAnimationFrame(frame);
+        })
+      : null;
+    visibilityObserver?.observe(canvas);
+
     const observer = new ResizeObserver(() => {
       resize();
       if (reducedMotion) render();
@@ -305,14 +330,15 @@ export default function HeroGarden() {
       running = false;
       cancelAnimationFrame(frame);
       observer.disconnect();
+      visibilityObserver?.disconnect();
       window.removeEventListener("scroll", onScroll);
     };
-  }, [reducedMotion, enabled]);
+  }, [reducedMotion, enabled, placement]);
 
   // Always render the same markup on server + client to avoid hydration mismatch.
   // The canvas starts after hydration on every viewport.
   return (
-    <div className="hero-garden" aria-hidden>
+    <div className={`hero-garden hero-garden--${placement}`} aria-hidden>
       <canvas ref={canvasRef} className="hero-garden__canvas" />
     </div>
   );

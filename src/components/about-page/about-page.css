@@ -481,10 +481,15 @@
     min-height: 100svh;
     overflow: visible;
     padding-top: 4.75rem;
+    /* Match the mobile road art when reserving space above its roofs. */
+    --landmark-w: min(36vw, 7.75rem);
+    --road-height: 2.4rem;
+    --road-flow-h: 5.5rem;
+    --city-gap: 2rem;
   }
 
   .about-page-hero::after {
-    display: none;
+    display: block;
   }
 
   .about-page-hero__stage {

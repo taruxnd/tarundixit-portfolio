@@ -1,0 +1,24 @@
+.hero-bee {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: clamp(85px, 8vw, 130px);
+  height: clamp(85px, 8vw, 130px);
+  z-index: 2;
+  opacity: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  will-change: transform;
+}
+.hero-bee[data-loaded="true"] { opacity: 1; }
+.hero-bee:disabled { pointer-events: none; }
+.hero-bee:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 4px; border-radius: 50%; }
+.hero-bee canvas { display: block; width: 100%; height: 100%; }
+@media (max-width: 767px) {
+  .hero-bee { width: 80px; height: 80px; }
+}

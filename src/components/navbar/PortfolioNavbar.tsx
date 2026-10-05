@@ -1,5 +1,6 @@
 "use client";
 
+import { launchResumePlane } from "@/components/resume/launchResumePlane";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { navLinks } from "./data";
@@ -21,7 +22,10 @@ function FlipLink({
   return (
     <Link
       href={href}
-      onClick={onClick}
+      onClick={(event) => {
+        if (label === "Resume") launchResumePlane(event);
+        onClick?.();
+      }}
       data-cursor="interactive"
       className="portfolio-navbar__link"
     >

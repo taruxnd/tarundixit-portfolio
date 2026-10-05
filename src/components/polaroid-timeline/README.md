@@ -42,3 +42,9 @@ npm run dev
 - [/] Contains Framer runtime islands — code components / 3D hydrate via Framer’s published JS (not fully editable JSX). Requires network access to framerusercontent.com.
 - [/] Output is real JSX components + global Framer CSS. Runtime-only Framer features (CMS, forms, some animations) still need manual work.
 - [/] Page depends on Framer script_main hydration (blank shell and/or scroll/hover timeline) — using FramerRuntimeIsland (network access to framerusercontent.com required).
+
+## Portfolio timeline content
+
+The portfolio loads `public/polaroid-timeline/main.mjs`, an adapted snapshot of the published entry. It renders the timeline with the eight cards in `public/polaroid-timeline/milestones.mjs` instead of hydrating the original five-card HTML. Edit that array to change titles, captions, dates, back text, or add an `image` URL. The last three cards currently contain placeholders and reuse the existing sample-photo rotation.
+
+`shared.mjs` and `page.mjs` retain the exported timeline implementation and animations; dependency imports still use the original Framer CDN. The viewport guard remains necessary because the exported page metadata requests a 900-pixel viewport.

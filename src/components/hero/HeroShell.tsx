@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import ExhibitionRail from "@/components/exhibition-rail/ExhibitionRail";
 import HeroBillboard from "@/components/hero-billboard/HeroBillboard";
 import HeroGarden from "@/components/hero-garden/HeroGarden";
@@ -11,6 +12,8 @@ import { contentContainerClassName } from "@/lib/sectionLayout";
 import type { ReactNode } from "react";
 import { useRef } from "react";
 import "../hero.css";
+
+const HeroBee = dynamic(() => import("@/components/hero-bee/HeroBee"), { ssr: false });
 
 interface HeroShellProps {
   children: ReactNode;
@@ -41,6 +44,7 @@ export default function HeroShell({ children }: HeroShellProps) {
         ) : null}
         <HeroGarden />
         <HeroBillboard />
+        <HeroBee />
         <div
           className={`hero-section__inner relative flex ${contentContainerClassName}`}
         >

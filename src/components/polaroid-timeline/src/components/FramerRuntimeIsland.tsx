@@ -14,6 +14,7 @@ const MAIN_ID = "main";
 const BADGE_ID = "__framer-badge-container";
 const CARD_SELECTOR = 'div[style*="perspective"]';
 const SCRIPT_ATTR = "data-framer-bundle";
+const SCRIPT_MAIN_URL = "/polaroid-timeline/main.mjs";
 
 /** Strip Framer page chrome that fights the portfolio shell. */
 function prepareHydrateHtml(html: string) {
@@ -138,8 +139,8 @@ function loadFramerScript(remount: boolean) {
     script.type = "module";
     script.async = true;
     script.src = remount
-      ? `${framerRuntime.scriptMainUrl}?rm=${Date.now()}`
-      : framerRuntime.scriptMainUrl;
+      ? `${SCRIPT_MAIN_URL}?rm=${Date.now()}`
+      : SCRIPT_MAIN_URL;
     script.setAttribute(SCRIPT_ATTR, "main");
     script.setAttribute("fetchpriority", "low");
     script.onload = () => resolve();
@@ -244,8 +245,8 @@ function attachHoverUnlock(root: HTMLElement) {
 }
 
 /**
- * Exact framer-to-next island from the zip.
- * Fresh hydrate on every About mount so the string + pins stay alive after soft nav.
+ * Framer island with locally configured milestone cards.
+ * Fresh render on every mount so the string + pins stay alive after soft nav.
  *
  * Boot is deferred one macrotask so React Strict Mode's mount→cleanup→mount
  * does not tear out #main while Framer's React is mid-hydrate (NotFoundError).

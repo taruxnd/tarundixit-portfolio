@@ -10,7 +10,7 @@ import WorkStrip from "@/components/WorkStrip";
 
 export default function Home() {
   return (
-    <main>
+    <main id="top">
       <Hero />
       <WorkStrip />
       <SideProjectsSection />

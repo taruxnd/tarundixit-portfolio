@@ -1,5 +1,6 @@
 "use client";
 
+import { launchResumePlane } from "@/components/resume/launchResumePlane";
 import LiquidGlass from "@/components/navbar/LiquidGlass";
 import { assetUrl } from "@/lib/cdnAssets";
 import { heroEditorialTypography } from "@/lib/heroFonts";
@@ -107,7 +108,9 @@ export default function HeroCopyClassic() {
         >
           <LiquidGlass className="hero-cta__resume-glass">
             <a
-              href="#resume"
+              href="/resume-sample.pdf"
+              download="Tarun-Dixit-Sample-Resume.pdf"
+              onClick={launchResumePlane}
               data-cursor="interactive"
               className="hero-cta__resume-link theme-transition"
               style={{ fontFamily: typography.body.fontFamily }}
