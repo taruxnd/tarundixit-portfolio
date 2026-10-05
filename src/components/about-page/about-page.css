@@ -42,6 +42,11 @@
     sans-serif;
 }
 
+/* Homepage `#about` — same one-fold shell; offset hash scroll for fixed nav */
+.about-page-hero--on-home {
+  scroll-margin-top: max(4.5rem, calc(3.25rem + env(safe-area-inset-top, 0px)));
+}
+
 /* Keep-out band between copy and road. Must be a flex ITEM (not stage
  * padding): overflow:hidden clips at the padding box, so padding is
  * consumable by overflowing copy and never actually protects the city. */

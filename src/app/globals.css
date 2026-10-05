@@ -46,6 +46,9 @@
   --layout-content-max-wide: 1560px;
   --layout-reading-max: 720px;
   --hero-rail-gap: 2.5rem;
+  /* Space from previous section end → next section title (matches hero → Work) */
+  --section-pad-before-title: clamp(5rem, 14vh, 9rem);
+  --section-pad-after-content: clamp(3rem, 6vw, 5rem);
   /* Alias kept so existing CSS vars resolve to the new face */
   --font-hero-instrument-serif: "PP Editorial New";
   --bg-page: #ffffff;

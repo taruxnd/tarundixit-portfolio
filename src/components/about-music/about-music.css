@@ -3,7 +3,7 @@
 .about-music {
   position: relative;
   width: 100%;
-  padding: clamp(4.5rem, 10vh, 7.5rem) 0 clamp(3.5rem, 7vh, 5.5rem);
+  padding: var(--section-pad-before-title) 0 var(--section-pad-after-content);
   /* Transparent so the fixed starry / sky GridBackground shows through */
   background: transparent;
   color: var(--text-primary);
