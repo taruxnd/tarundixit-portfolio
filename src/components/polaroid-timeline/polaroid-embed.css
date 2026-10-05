@@ -57,15 +57,12 @@ body {
 .polaroid-timeline-embed__host {
   position: relative;
   width: 100%;
-  max-width: min(900px, 100%);
+  max-width: 900px;
   margin-inline: auto;
-  overflow-x: hidden;
 }
 
 #polaroid-timeline-host {
   width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
 }
 
 .polaroid-timeline-embed__host [aria-label="Framer runtime"]:not([aria-busy="true"]) {
@@ -81,36 +78,23 @@ body {
   background: transparent !important;
   background-color: transparent !important;
   width: 100% !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
+  max-width: 900px;
   padding: 48px 0 0 !important;
-  overflow-x: hidden !important;
 }
 
 @media (max-width: 767px) {
-  .polaroid-timeline-embed,
   .polaroid-timeline-embed__host,
   #polaroid-timeline-host {
-    overflow-x: hidden !important;
-    max-width: 100% !important;
-    width: 100% !important;
+    overflow-x: hidden;
+    max-width: 100%;
   }
 
-  /*
-   * Framer’s timeline is authored at 900px. Forcing width:100% breaks pin math;
-   * instead keep the design width and shrink layout with zoom so Safari’s
-   * layout viewport stays device-width (no flash-to-desktop).
-   */
+  /* Keep Framer’s 900px design; shrink layout so phones stay device-width */
   #polaroid-timeline-host #main,
   #polaroid-timeline-host .framer-UdSO0.framer-72rtr7 {
     width: 900px !important;
     max-width: none !important;
-    min-width: 0 !important;
-    padding: 24px 0 0 !important;
-    overflow: visible !important;
     zoom: calc(100vw / 900);
-    margin-left: 50%;
-    translate: -50% 0;
   }
 }
 

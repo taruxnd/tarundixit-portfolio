@@ -237,19 +237,15 @@ export default function HeroGarden() {
     let frame = 0;
     let running = true;
     const desktopScrollQuery = window.matchMedia("(min-width: 768px)");
-    /** Same art-directed stage width the old CSS used on phones. */
-    const MOBILE_STAGE_WIDTH = 900;
 
     const resize = () => {
-      const cssWidth = canvas.offsetWidth;
-      const cssHeight = canvas.offsetHeight;
+      const nextWidth = canvas.offsetWidth;
+      const nextHeight = canvas.offsetHeight;
       // Skip dock-minimize / transient 0-size frames so we don't nuke the layout.
-      if (cssWidth < 2 || cssHeight < 2) return;
+      if (nextWidth < 2 || nextHeight < 2) return;
 
-      const mobile = !desktopScrollQuery.matches;
-      // Paint at 900px on phones (center-cropped via object-fit), layout stays 100%.
-      width = mobile ? MOBILE_STAGE_WIDTH : cssWidth;
-      height = cssHeight;
+      width = nextWidth;
+      height = nextHeight;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.max(1, Math.floor(width * dpr));
       canvas.height = Math.max(1, Math.floor(height * dpr));

@@ -8,7 +8,6 @@
   bottom: var(--hero-rail-height, 8px);
   z-index: 0;
   width: 100%;
-  max-width: 100%;
   pointer-events: none;
   overflow: hidden;
 }
@@ -19,19 +18,17 @@
        clearing the canvas during a touch scroll. */
     bottom: auto;
     height: calc(100svh - var(--hero-rail-height, 8px));
-    overflow: hidden;
   }
 
   .hero-garden .hero-garden__canvas {
-    /* Layout stays 100% wide (no 900px box → no mobile desktop-zoom).
-       JS renders a 900px buffer; object-fit crops to the center like before. */
+    /* Presentation-only crop: render a wider stage, then expose its center.
+       This preserves the garden's sprites, depth, and wind behavior. */
     position: absolute;
-    inset: 0;
-    width: 100%;
-    max-width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center bottom;
+    bottom: 0;
+    left: 50%;
+    width: 900px;
+    max-width: none;
+    transform: translateX(-50%);
   }
 }
 

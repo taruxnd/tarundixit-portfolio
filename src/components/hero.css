@@ -14,9 +14,8 @@
   --hero-dot-nudge: calc(var(--hero-dot-step) * 2);
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
+  overflow-x: clip;
   overflow-y: clip;
-  max-width: 100%;
   /* One fold on every viewport (svh fallback, dvh for mobile chrome) */
   height: 100svh;
   height: 100dvh;

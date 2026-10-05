@@ -22,31 +22,19 @@
 
   position: relative;
   flex-shrink: 0;
-  width: 100%;
-  max-width: 100%;
-  margin-left: 0;
-  margin-right: 0;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
   height: var(--road-flow-h, clamp(6.25rem, 3.3rem + 3.8vw, 10rem));
   pointer-events: none;
   user-select: none;
-  overflow-x: hidden;
-  overflow-y: visible;
+  overflow: visible;
   z-index: 1;
-}
-
-/* Full-bleed to section edges without 100vw (avoids mobile layout zoom). */
-.about-page-hero .about-road {
-  width: 100%;
-  max-width: 100%;
-  margin-left: 0;
-  margin-right: 0;
 }
 
 .about-road__scene {
   position: absolute;
   inset: 0;
-  overflow-x: clip;
-  overflow-y: visible;
 }
 
 .about-road__slab {
@@ -291,8 +279,7 @@
   height: 2.15rem;
   /* Above road slab + traffic so the full car sits in front */
   z-index: 20;
-  /* MUST clip — driving cars past the edge expands document width on mobile
-     and Safari/Chrome zoom the whole site to “desktop” scale. */
+  /* Clip drive animation so offscreen cars cannot widen the document */
   overflow: hidden;
   pointer-events: none;
 }
