@@ -102,3 +102,30 @@ body {
   transition: opacity 0.25s ease;
 }
 
+
+/* Field-journal trail: a quiet dotted path instead of the glowing cable. */
+#polaroid-timeline-host svg path[stroke-dasharray]{filter:none!important}
+#polaroid-timeline-host svg path[stroke-dasharray]:not([stroke-dasharray="8 8"]){stroke:#ead9b6!important;stroke-width:2!important}
+#polaroid-timeline-host svg path[stroke-dasharray]:not([stroke-dasharray="8 8"])[opacity="0.15"],
+#polaroid-timeline-host svg path[stroke-dasharray]:not([stroke-dasharray="8 8"])[opacity="0.5"]{opacity:0!important}
+#polaroid-timeline-host svg path[stroke-dasharray="8 8"]{opacity:.25!important;stroke:#d8c8a8!important;stroke-width:2!important;stroke-dasharray:2 10!important;stroke-linecap:round}
+#polaroid-timeline-host div[style*="backface-visibility"]{border-radius:3px!important;box-shadow:0 8px 18px #0003,inset 0 0 18px #a7874510!important}
+#polaroid-timeline-host div[style*="backface-visibility"]>div[style*="bottom"]{font-family:"Segoe Print","Bradley Hand",cursive!important;color:#574736!important}
+
+#polaroid-timeline-host div[style*="backface-visibility"],
+#polaroid-timeline-host div[style*="backface-visibility"] *,
+#polaroid-timeline-host div[style*="backface-visibility"]>div[style*="bottom"]{
+  font-family:var(--font-playfair),Georgia,"Times New Roman",serif!important;
+}
+
+#polaroid-timeline-host div[style*="backface-visibility"][style*="rotateY(180deg)"],
+#polaroid-timeline-host div[style*="backface-visibility"][style*="rotateY(180deg)"] *,
+#polaroid-timeline-host div[style*="backface-visibility"][style*="rotateY(180deg)"]>div[style*="bottom"]{
+  font-family:var(--font-geist),ui-sans-serif,system-ui,sans-serif!important;
+}
+
+#polaroid-timeline-host div[style*="backface-visibility"],
+#polaroid-timeline-host div[style*="backface-visibility"] *,
+#polaroid-timeline-host div[style*="backface-visibility"]>div[style*="bottom"]{
+  font-family:var(--font-geist),ui-sans-serif,system-ui,sans-serif!important;
+}

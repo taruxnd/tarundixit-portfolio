@@ -1,0 +1,45 @@
+.basketball-footer{position:relative;isolation:isolate;margin-top:60px;border-top:1px solid #ffffff16;color:#eeede7;overflow:hidden}
+.basketball-stage{position:relative;height:clamp(420px,38vw,540px);max-width:1440px;margin:auto}
+.basketball-tree,.basketball-court{position:absolute;inset:0}
+.basketball-tree{pointer-events:none;z-index:1}.basketball-tree canvas{display:block}
+.basketball-court{z-index:4}
+.basketball-copy{position:absolute;left:7%;top:15%;z-index:3;pointer-events:none}
+.basketball-copy a{pointer-events:auto;display:inline-block;margin-top:20px;color:inherit;text-decoration:none;border-bottom:1px solid #ffffff70;padding-bottom:4px}
+.basketball-eyebrow{font-size:11px!important;letter-spacing:.15em;text-transform:uppercase;margin-bottom:14px!important}
+.basketball-copy h2{font-family:Georgia,serif;font-weight:400;letter-spacing:-.04em;font-size:clamp(40px,5vw,68px);line-height:1.1;margin:0 0 14px}
+.basketball-copy p{font-size:14px;color:#aaa89f;margin:0}
+@media(max-width:767px){.basketball-footer{margin-top:32px}.basketball-stage{height:450px}.basketball-copy{top:26px;left:24px}.basketball-copy h2{font-size:36px;margin-bottom:8px}.basketball-copy a{margin-top:12px;font-size:13px}.basketball-eyebrow{margin-bottom:8px!important}.basketball-copy p{font-size:12px}}
+
+
+.basketball-contact{position:absolute;top:28%;left:7%;z-index:5;display:flex;flex-direction:column;gap:12px;max-width:75%}
+.basketball-glass{display:inline-flex;align-items:center;justify-content:center;gap:20px;padding:16px 20px;border:1px solid #ffffff30;border-radius:16px;background:linear-gradient(135deg,#ffffff15,#ffffff06);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:inset 0 1px 0 #ffffff18,0 8px 30px #0002;color:#eeeae1;font:inherit;font-size:14px;text-decoration:none;cursor:pointer;transition:background .2s,border-color .2s}
+.basketball-glass:hover{background:#ffffff18;border-color:#ffffff55}.basketball-glass:focus-visible{outline:2px solid #e8c890;outline-offset:4px}
+.basketball-email{justify-content:space-between;min-width:280px}.basketball-contact-links{display:flex;gap:12px}.basketball-linkedin{padding:16px;width:54px}.basketball-copy-status{font-size:12px;color:#b8b5ad;min-height:16px}
+@media(max-width:767px){.basketball-contact{top:26px;left:24px;max-width:calc(100% - 48px)}.basketball-glass{font-size:12px;padding:13px 16px;gap:14px}.basketball-email{min-width:0}.basketball-linkedin{width:46px;padding:13px}.basketball-contact-links{gap:10px}}
+
+
+.basketball-contact{top:12%;max-width:44%;gap:0}
+.basketball-heading{margin:0 0 16px;color:#f0ede5;line-height:1.06;letter-spacing:-.035em;font-size:clamp(32px,3.6vw,50px)}
+.basketball-heading span{display:block;font-weight:650;font-size:.87em;margin-bottom:6px}
+.basketball-heading em{font-family:Georgia,serif;font-weight:400}
+.basketball-invitation{max-width:350px;color:#aaa89f;font-size:13px;line-height:1.65;margin:0 0 20px}
+.basketball-contact-actions{display:flex;align-items:center;gap:12px}
+.basketball-copyright{color:#85837d;font-size:10px;line-height:1.6;margin:14px 0 0;max-width:360px}
+.basketball-copy-status{margin-top:5px}
+@media(max-width:767px){.basketball-stage{height:660px}.basketball-contact{top:24px;max-width:calc(100% - 48px)}.basketball-heading{font-size:36px;margin-bottom:12px}.basketball-invitation{font-size:12px;max-width:300px;margin-bottom:14px}.basketball-contact-actions{gap:10px}.basketball-copyright{font-size:9px;max-width:280px}}
+
+.basketball-heading{font-family:var(--font-playfair),Georgia,serif;font-weight:400;line-height:1.15;max-width:420px;margin-bottom:28px}
+
+.basketball-contact{top:50%;transform:translateY(-50%)}
+.basketball-heading{font-family:var(--font-playfair),Georgia,serif;margin-bottom:18px}
+@media(max-width:767px){.basketball-contact{top:24px;transform:none}}
+
+
+
+/* Keep artwork in its original centered composition; widen only the game canvas. */
+.basketball-court{left:calc((100% - 100vw)/2);right:calc((100% - 100vw)/2)}
+
+.basketball-raven{position:absolute;transform:translate(-50%,-100%);z-index:6;border:0;background:transparent;padding:0;cursor:pointer;touch-action:manipulation}
+.basketball-raven[hidden]{display:none}.basketball-raven:focus-visible{outline:1px dashed #d4c4a7;outline-offset:4px;border-radius:10px}
+.basketball-raven-comment{position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);width:max-content;max-width:190px;background:#e8ddc4;color:#3a3026;border-radius:12px 12px 12px 2px;padding:10px 14px;font:12px/1.45 var(--font-geist),sans-serif;box-shadow:0 5px 20px #0004;pointer-events:none}
+.basketball-raven-comment:empty{display:none}

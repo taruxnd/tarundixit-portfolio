@@ -8,13 +8,13 @@ import { contentContainerClassName } from "@/lib/sectionLayout";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "../hero.css";
 import "./about-page.css";
 
 const AVATAR_IMAGE = assetUrl("profile/tarun-avatar.jpg");
 
-type AboutWordKind = "designer" | "engineers" | "craft";
+type AboutWordKind = "designer" | "engineers" | "craft" | "years";
 
 function Word({
   kind,
@@ -23,10 +23,18 @@ function Word({
   kind: AboutWordKind;
   children: ReactNode;
 }) {
+  const [active,setActive]=useState(false);
+  const interactive=kind === "years";
   return (
     <span
       className={`about-page-word about-page-word--${kind}`}
       data-cursor="interactive"
+      role={interactive?"button":undefined}
+      tabIndex={interactive?0:undefined}
+      aria-pressed={interactive?active:undefined}
+      data-word-active={active?"true":undefined}
+      onClick={interactive?()=>setActive(value=>!value):undefined}
+      onKeyDown={interactive?event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();setActive(value=>!value);}}:undefined}
     >
       {kind === "engineers" ? (
         <svg
@@ -41,6 +49,8 @@ function Word({
         </svg>
       ) : null}
       <span className="about-page-word__label">{children}</span>
+      {kind === "years" && <svg className="about-word-hourglass" viewBox="0 0 24 28" aria-hidden="true"><path d="M5 3h14v4q0 4-7 7 7 3 7 7v4H5v-4q0-4 7-7-7-3-7-7Z" fill="#dab67c22" stroke="#c5ae84" strokeWidth="1.4"/><path d="m7 7 5 5 5-5Zm5 10-5 6h10Z" fill="#cfac70"/><path d="M3 3h18M3 25h18" stroke="#c5ae84" strokeWidth="2" strokeLinecap="round"/></svg>}
+
       {kind === "designer" ? (
         <span className="about-page-word__figma" aria-hidden>
           <span />
@@ -168,8 +178,7 @@ export default function AboutPageHero({
               to make almost anything today, but knowing what looks right, what
               feels right, what to keep, what to remove, and what makes
               something worth remembering is a different thing. I don&apos;t
-              think AI will master that anytime soon. Maybe not even in 100
-              years.
+              think AI will master that anytime soon. Maybe not even in <Word kind="years">100 years</Word>.
             </p>
           </div>
 

@@ -12,7 +12,7 @@ import "./hero-bee.css";
 
 /** Armabee by Quaternius, using the model's authored flying animation. */
 export default function HeroBee({ placement = "hero" }: {
-  placement?: "hero" | "footer";
+  placement?: "hero" | "footer" | "timeline";
 } = {}) {
   const hostRef = useRef<HTMLButtonElement>(null);
   const tapRef = useRef<() => void>(() => {});
@@ -71,6 +71,16 @@ export default function HeroBee({ placement = "hero" }: {
 
     const place = () => {
       const phase = elapsed * 0.36;
+      if(placement === "timeline") {
+        const rect=hero.getBoundingClientRect();
+        const progress=Math.max(0,Math.min(1,-rect.top/Math.max(1,heroHeight-window.innerHeight)));
+        const x=heroWidth*(.78+Math.sin(progress*Math.PI*6)*.09)-beeSize/2;
+        const y=Math.max(100,Math.min(heroHeight-beeSize-40,window.innerHeight*.48-rect.top));
+        host.style.transform=`translate3d(${Math.max(8,Math.min(heroWidth-beeSize-8,x))}px,${y}px,0)`;
+        bee.rotation.y=headbutting?0:-Math.PI/2+.12*Math.sin(phase);
+        bee.rotation.z=headbutting?0:Math.sin(phase)*.08;
+        return;
+      }
       const mobile = heroWidth < 768;
       const footer = placement === "footer";
       const centerX = heroWidth * (footer ? 0.6 : mobile ? 0.66 : 0.77);
@@ -177,7 +187,9 @@ export default function HeroBee({ placement = "hero" }: {
       host.style.display = "none";
     });
 
+    if(placement === "timeline" && reducedMotion)window.addEventListener("scroll",start,{passive:true});
     return () => {
+      window.removeEventListener("scroll",start);
       disposed = true;
       cancelAnimationFrame(frame);
       sizeObserver.disconnect();

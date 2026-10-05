@@ -292,8 +292,8 @@
    */
   bottom: 0.42rem;
   left: 0;
-  width: min(4.725rem, 16.8vw);
-  height: 1.925rem;
+  width: min(5.4rem, 19.2vw);
+  height: 2.2rem;
   min-width: 2.975rem;
   min-height: 1.05rem;
   /* Same path + speed as forward CSS traffic (fastback = 24s) */

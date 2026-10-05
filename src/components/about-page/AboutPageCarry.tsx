@@ -23,6 +23,8 @@ import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
+import {polishCarTextures} from "./polishCarTextures";
+
 const DRACO_DECODER = "/draco/";
 const MODEL_URL = "/models/suzuki-carry.glb";
 /** Match WagonR / 24s road loop. */
@@ -354,6 +356,7 @@ export default function AboutPageCarry({
         car = gltf.scene;
 
         tuneCarryMaterials(car);
+        if(renderer)polishCarTextures(car,renderer);
         wheelAssemblies.push(...buildCarryWheelAssemblies(car));
         if (wheelAssemblies.length !== 2) {
           console.warn(

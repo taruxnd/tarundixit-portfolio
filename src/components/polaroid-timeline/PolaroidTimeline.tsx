@@ -1,5 +1,8 @@
 "use client";
 
+import dynamic from "next/dynamic";
+const TimelineBee=dynamic(()=>import("@/components/hero-bee/HeroBee"),{ssr:false});
+
 import { contentContainerClassName } from "@/lib/sectionLayout";
 import { stripFontClassName } from "@/lib/heroFonts";
 import { FramerRuntimeIsland } from "./src/components/FramerRuntimeIsland";
@@ -16,6 +19,7 @@ export default function PolaroidTimeline() {
       className={`polaroid-timeline-embed theme-transition ${stripFontClassName}`}
       aria-labelledby="polaroid-timeline-heading"
     >
+      <TimelineBee placement="timeline" />
       <div className={`${contentContainerClassName} polaroid-timeline-embed__inner`}>
         <header className="polaroid-timeline-embed__header">
           <h2

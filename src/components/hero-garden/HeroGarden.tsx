@@ -110,9 +110,33 @@ function paintFrame(
   leaves: HTMLImageElement[],
   time: number,
   travel: number,
+  court = false,
 ) {
   ctx.clearRect(0, 0, width, height);
   if (width < 2 || height < 2) return;
+
+  if (court) {
+    // Reuse the hero sprites as individual plants, rooted at the court floor.
+    // Far plants are shorter; foreground leaves naturally cover resting balls.
+    const plants = sprites.filter((_, index) => index % 8 === 0)
+      .sort((a,b) => b.zOffset - a.zOffset);
+    const scale = width < 768 ? .75 : 1;
+    for (const plant of plants) {
+      const source = plant.type === 0 ? flowers : leaves;
+      const image = source[plant.imgIndex % Math.max(1,source.length)];
+      if (!image?.complete || !image.naturalWidth) continue;
+      const depth = 1 - plant.zOffset;
+      const plantWidth = (plant.type === 0 ? 52 : 85) * (0.55 + depth * .9) * plant.scaleOffset * scale;
+      const plantHeight = plantWidth * image.naturalHeight / image.naturalWidth;
+      const x = (plant.x + 1) * width / 2;
+      const base = height + (18 + depth * 24 - plant.zOffset * 28) * scale;
+      ctx.save();ctx.translate(x,base);
+      ctx.rotate(Math.sin(time * plant.swaySpeed + plant.swayPhase) * .025);
+      ctx.drawImage(image,-plantWidth/2,-plantHeight,plantWidth,plantHeight);
+      ctx.restore();
+    }
+    return;
+  }
 
   const centerX = width / 2;
   const pitch = Math.max(0.1, Math.cos((CAMERA_ANGLE * Math.PI) / 180));
@@ -198,7 +222,7 @@ function paintFrame(
 export default function HeroGarden({
   placement = "hero",
 }: {
-  placement?: "hero" | "footer";
+  placement?: "hero" | "footer" | "court";
 } = {}) {
   const { reducedMotion } = useTheme();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -216,17 +240,6 @@ export default function HeroGarden({
 
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
-
-    // Pin idle depth to travel = 0 on first paint only. Restore scroll
-    // restoration immediately so App Router can still scroll to top on
-    // soft-nav (e.g. home → /about). Leaving it "manual" for the whole
-    // home visit left /about blank below the previous scroll offset.
-    if (placement === "hero") {
-      const previousScrollRestoration = window.history.scrollRestoration;
-      window.history.scrollRestoration = "manual";
-      window.scrollTo(0, 0);
-      window.history.scrollRestoration = previousScrollRestoration;
-    }
 
     const flowers: HTMLImageElement[] = [];
     const leaves: HTMLImageElement[] = [];
@@ -266,7 +279,7 @@ export default function HeroGarden({
     };
 
     const scrollDepth = () => {
-      if (!desktopScrollQuery.matches) return 0;
+      if (placement === "court" || !desktopScrollQuery.matches) return 0;
       return placement === "footer"
         ? Math.max(0, window.innerHeight - canvas.getBoundingClientRect().top)
         : window.scrollY;
@@ -284,7 +297,7 @@ export default function HeroGarden({
       const scrollTarget = scrollDepth();
       scrollSmoothed += (scrollTarget - scrollSmoothed) * 0.08;
       travel = scrollSmoothed * SCROLL_SPEED + idleTravel;
-      paintFrame(ctx, width, height, sprites, flowers, leaves, time, travel);
+      paintFrame(ctx, width, height, sprites, flowers, leaves, time, travel, placement === "court");
       if (!reducedMotion) {
         frame = requestAnimationFrame(render);
       }
@@ -294,7 +307,7 @@ export default function HeroGarden({
       if (reducedMotion) {
         scrollSmoothed = scrollDepth();
         travel = scrollSmoothed * SCROLL_SPEED + idleTravel;
-        paintFrame(ctx, width, height, sprites, flowers, leaves, time, travel);
+        paintFrame(ctx, width, height, sprites, flowers, leaves, time, travel, placement === "court");
       }
     };
 
@@ -309,7 +322,7 @@ export default function HeroGarden({
     render();
 
     // The second garden sleeps until it enters the viewport.
-    const visibilityObserver = placement === "footer"
+    const visibilityObserver = placement !== "hero"
       ? new IntersectionObserver(([entry]) => {
           const wasVisible = inView;
           inView = entry.isIntersecting;

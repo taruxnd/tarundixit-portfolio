@@ -1,0 +1,44 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="sphereLight" cx="36%" cy="28%" r="68%">
+      <stop offset="0%" stop-color="#ff9d54" />
+      <stop offset="28%" stop-color="#d35400" />
+      <stop offset="70%" stop-color="#872e00" />
+      <stop offset="94%" stop-color="#4a1500" />
+      <stop offset="100%" stop-color="#180700" />
+    </radialGradient>
+    <pattern id="dimples" width="10" height="10" patternUnits="userSpaceOnUse">
+      <circle cx="2.5" cy="2.5" r="1.15" fill="#000000" opacity="0.22" />
+      <circle cx="2.5" cy="2.5" r="0.75" fill="#ffffff" opacity="0.14" />
+      <circle cx="7.5" cy="7.5" r="1.15" fill="#000000" opacity="0.22" />
+      <circle cx="7.5" cy="7.5" r="0.75" fill="#ffffff" opacity="0.14" />
+    </pattern>
+    <radialGradient id="specularGlow" cx="30%" cy="22%" r="35%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.48" />
+      <stop offset="35%" stop-color="#ffffff" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="rimOcclusion" cx="50%" cy="50%" r="50%">
+      <stop offset="80%" stop-color="#000000" stop-opacity="0" />
+      <stop offset="96%" stop-color="#000000" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.85" />
+    </radialGradient>
+    <clipPath id="ballClip">
+      <circle cx="256" cy="256" r="248" />
+    </clipPath>
+  </defs>
+  <g clip-path="url(#ballClip)">
+    <circle cx="256" cy="256" r="248" fill="url(#sphereLight)" />
+    <circle cx="256" cy="256" r="248" fill="url(#dimples)" mix-blend-mode="overlay" opacity="0.85" />
+    <g fill="none" stroke="#141416" stroke-linecap="round">
+      <path d="M 10 256 Q 256 282 502 256" stroke-width="11" />
+      <path d="M 256 10 Q 236 256 256 502" stroke-width="11" />
+      <path d="M 68 88 Q 334 256 68 424" stroke-width="10.5" />
+      <path d="M 444 88 Q 178 256 444 424" stroke-width="10.5" />
+    </g>
+    <circle cx="256" cy="256" r="248" fill="url(#specularGlow)" pointer-events="none" />
+    <circle cx="256" cy="256" r="248" fill="url(#rimOcclusion)" pointer-events="none" />
+  </g>
+  <circle cx="256" cy="256" r="248" fill="none" stroke="#141416" stroke-width="5" />
+</svg>

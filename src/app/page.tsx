@@ -1,3 +1,4 @@
+import BasketballFooter from "@/components/basketball-footer/BasketballFooter";
 import AboutPageHero from "@/components/about-page/AboutPageHero";
 import PolaroidTimeline from "@/components/polaroid-timeline/PolaroidTimeline";
 import AboutBentoGrid from "@/components/about-bento/AboutBentoGrid";
@@ -10,6 +11,7 @@ import WorkStrip from "@/components/WorkStrip";
 
 export default function Home() {
   return (
+    <>
     <main id="top">
       <Hero />
       <WorkStrip />
@@ -19,5 +21,7 @@ export default function Home() {
       <AboutBentoGrid />
       <AboutMusicShelf />
     </main>
+    <BasketballFooter />
+    </>
   );
 }

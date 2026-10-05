@@ -21,6 +21,8 @@ import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
+import {polishCarTextures,polishWagonPaint} from "./polishCarTextures";
+
 const DRACO_DECODER = "/draco/";
 const MODEL_URL = "/models/suzuki-wagonr.glb";
 /**
@@ -87,10 +89,10 @@ export default function AboutPageWagonR({
     cam.lookAt(0, 0, 0);
 
     scene.add(
-      new AmbientLight(0xffffff, 0.9),
-      new HemisphereLight(0xfff6ea, 0x444448, 0.55),
+      new AmbientLight(0xffffff, 0.35),
+      new HemisphereLight(0xfff6ea, 0x34343c, 0.75),
     );
-    const key = new DirectionalLight(0xffffff, 1.2);
+    const key = new DirectionalLight(0xffffff, 1.65);
     key.position.set(2.5, 3, 4);
     const fill = new DirectionalLight(0xffe2b0, 0.45);
     fill.position.set(-2, 1.5, 3);
@@ -159,6 +161,8 @@ export default function AboutPageWagonR({
       (gltf) => {
         if (disposed) return;
         car = gltf.scene;
+        if(renderer)polishCarTextures(car,renderer);
+        polishWagonPaint(car);
 
         wheelAssemblies.push(...collectWagonRWheels(car));
         if (wheelAssemblies.length !== 4) {

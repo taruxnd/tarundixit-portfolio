@@ -518,3 +518,9 @@
     padding-bottom: 2rem;
   }
 }
+
+.about-page-word--years{position:relative;cursor:pointer;white-space:nowrap}
+.about-word-hourglass{display:inline-block;width:.8em;height:.9em;vertical-align:-.12em;margin-left:.15em;transition:transform .35s ease}
+.about-page-word--years:is(:hover,[data-word-active="true"]) .about-word-hourglass{transform:rotate(180deg)}
+.about-page-word[role="button"]:focus-visible{outline:1px dashed #c6bba7;outline-offset:4px}
+@media(prefers-reduced-motion:reduce){.about-word-hourglass{transition:none}}
