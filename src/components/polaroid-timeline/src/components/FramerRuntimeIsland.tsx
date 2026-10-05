@@ -80,7 +80,14 @@ function ensureProcessEnv() {
 /** CDN shared-lib → local patch with extra polaroid milestones. */
 const SHARED_LIB_CDN =
   "https://framerusercontent.com/sites/71UJYhEgwM3TSL7NydVUEj/shared-lib.EBskc7qO.mjs";
-const SHARED_LIB_LOCAL = "/polaroid-framer/shared-lib.EBskc7qO.mjs";
+/** Bump when patching shared-lib so ESM does not reuse a stale module. */
+const SHARED_LIB_VERSION = "fs3";
+const SHARED_LIB_LOCAL = `/polaroid-framer/shared-lib.EBskc7qO.mjs?v=${SHARED_LIB_VERSION}`;
+
+/** First polaroid photo — applied after hydrate in case Framer keeps a stale image. */
+const FIRST_POLAROID_SRC =
+  "https://cdn.jsdelivr.net/gh/taruxnd/tarundixit-portfolio@main/public/polaroid/first-shoot.jpg";
+const FIRST_POLAROID_ALT = "First Shoot";
 
 function ensurePolaroidImportMap() {
   if (document.getElementById("polaroid-framer-importmap")) return;
@@ -110,6 +117,28 @@ function preloadModules() {
     link.setAttribute("fetchpriority", "low");
     document.head.appendChild(link);
   }
+}
+
+function applyFirstPolaroidPhoto(root: ParentNode | null) {
+  if (!root) return;
+  root.querySelectorAll<HTMLImageElement>("img").forEach((img) => {
+    if (img.alt !== FIRST_POLAROID_ALT) return;
+    if (img.getAttribute("src") === FIRST_POLAROID_SRC) return;
+    img.src = FIRST_POLAROID_SRC;
+  });
+}
+
+/** Framer may re-render Unsplash into the first card — keep our photo pinned. */
+function watchFirstPolaroidPhoto(root: HTMLElement) {
+  applyFirstPolaroidPhoto(root);
+  const mo = new MutationObserver(() => applyFirstPolaroidPhoto(root));
+  mo.observe(root, {
+    subtree: true,
+    childList: true,
+    attributes: true,
+    attributeFilter: ["src"],
+  });
+  return () => mo.disconnect();
 }
 
 function removeFramerScript() {
@@ -249,6 +278,7 @@ export function FramerRuntimeIsland() {
     let cancelled = false;
     let didMount = false;
     let detachHover: (() => void) | undefined;
+    let detachFirstPhoto: (() => void) | undefined;
     let probeTimer: number | undefined;
 
     const mountParent = () =>
@@ -295,6 +325,9 @@ export function FramerRuntimeIsland() {
       const host = (document.getElementById(HOST_ID) ?? parent) as HTMLElement;
       detachHover?.();
       detachHover = attachHoverUnlock(host);
+      detachFirstPhoto?.();
+      const mainRoot = document.getElementById(MAIN_ID);
+      if (mainRoot) detachFirstPhoto = watchFirstPolaroidPhoto(mainRoot);
 
       const started = performance.now();
       const probe = () => {
@@ -302,10 +335,12 @@ export function FramerRuntimeIsland() {
         const root = document.getElementById(MAIN_ID);
         const cardsOk = countCards(root) >= 1;
         const lineOk = stringLooksAlive(root);
+        applyFirstPolaroidPhoto(root);
 
         if (cardsOk && lineOk) {
           detachHover?.();
           detachHover = attachHoverUnlock(host);
+          applyFirstPolaroidPhoto(root);
           wakeFramerLayout();
           return;
         }
@@ -327,6 +362,9 @@ export function FramerRuntimeIsland() {
             wakeFramerLayout();
             detachHover?.();
             detachHover = attachHoverUnlock(host);
+            detachFirstPhoto?.();
+            const root = document.getElementById(MAIN_ID);
+            if (root) detachFirstPhoto = watchFirstPolaroidPhoto(root);
           });
         }
       };
@@ -343,6 +381,7 @@ export function FramerRuntimeIsland() {
       window.clearTimeout(startId);
       if (probeTimer) window.clearTimeout(probeTimer);
       detachHover?.();
+      detachFirstPhoto?.();
       if (didMount) tearDownMain();
       window.__framerToNextBooted = true;
     };
