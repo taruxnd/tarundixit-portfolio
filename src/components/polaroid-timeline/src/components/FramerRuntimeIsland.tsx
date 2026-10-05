@@ -35,6 +35,37 @@ function createMainElement(): HTMLDivElement {
   return main;
 }
 
+/** The standalone Framer page sets viewport=width=900 during hydration.
+ * Keep the enclosing portfolio's viewport so phones retain their breakpoints.
+ */
+function preservePortfolioViewport() {
+  const selector = 'meta[name="viewport"]';
+  const content =
+    document.querySelector(selector)?.getAttribute("content") ??
+    "width=device-width, initial-scale=1";
+
+  const restore = () => {
+    document.querySelectorAll(selector).forEach((meta) => {
+      if (meta.getAttribute("content") !== content) {
+        meta.setAttribute("content", content);
+      }
+    });
+  };
+
+  const observer = new MutationObserver(restore);
+  observer.observe(document.head, {
+    attributes: true,
+    attributeFilter: ["content", "name"],
+    childList: true,
+    subtree: true,
+  });
+
+  return () => {
+    observer.disconnect();
+    restore();
+  };
+}
+
 function safeRemove(el: Element | null) {
   if (!el) return;
   try {
@@ -223,6 +254,7 @@ export function FramerRuntimeIsland() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    const releaseViewport = preservePortfolioViewport();
     let cancelled = false;
     let didMount = false;
     let detachHover: (() => void) | undefined;
@@ -320,6 +352,7 @@ export function FramerRuntimeIsland() {
       if (probeTimer) window.clearTimeout(probeTimer);
       detachHover?.();
       if (didMount) tearDownMain();
+      releaseViewport();
       window.__framerToNextBooted = true;
     };
   }, []);
