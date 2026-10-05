@@ -1,7 +1,7 @@
 .about-bento {
   position: relative;
   width: 100%;
-  padding: clamp(4.5rem, 10vh, 7.5rem) 0;
+  padding: clamp(2.5rem, 5vh, 3.5rem) 0 clamp(4.5rem, 10vh, 7.5rem);
   background: transparent;
   color: var(--text-primary);
 }
@@ -161,7 +161,7 @@
 
 @media (max-width: 560px) {
   .about-bento {
-    padding-block: 4.5rem;
+    padding-block: 2.75rem 4.5rem;
   }
 
   .about-bento__inner {

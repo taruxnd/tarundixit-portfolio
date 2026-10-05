@@ -9,7 +9,7 @@ body {
 .polaroid-timeline-embed {
   position: relative;
   width: 100%;
-  padding: clamp(3.5rem, 8vh, 6rem) 0 clamp(2.5rem, 5vh, 4rem);
+  padding: clamp(3.5rem, 8vh, 6rem) 0 0;
   background: transparent;
   color: var(--text-primary);
 }
@@ -68,8 +68,8 @@ body {
   background-color: transparent !important;
   width: 100% !important;
   max-width: 900px;
-  /* Standalone used 300/500 — tighten for section embed */
-  padding: 48px 0 120px !important;
+  /* Standalone used 300/500 — tighten bottom so bento title sits closer */
+  padding: 48px 0 16px !important;
 }
 
 /* Our heading replaces Framer's Instrument Serif scroll hint */
@@ -80,3 +80,25 @@ body {
 #__framer-badge-container {
   display: none !important;
 }
+
+/*
+ * Hover unlock — full opacity + flip even before the scroll pin reaches the card.
+ * Framer sets inline opacity; we force lit + flip via data-polaroid-hover.
+ */
+#polaroid-timeline-host div[style*="perspective"][data-polaroid-hover="1"] {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  filter: none !important;
+}
+
+#polaroid-timeline-host
+  div[style*="perspective"][data-polaroid-hover="1"]
+  > div[style*="preserve-3d"] {
+  transform: rotateY(180deg) !important;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#polaroid-timeline-host div[style*="perspective"] {
+  transition: opacity 0.25s ease;
+}
+
