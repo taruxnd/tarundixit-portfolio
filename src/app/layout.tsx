@@ -21,7 +21,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
+    <html
+      lang="en"
+      data-theme="dark"
+      style={{ colorScheme: "dark" }}
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
+    >
       <body className={`${inter.variable} font-sans antialiased`}>
         <ThemeInitScript />
         <SiteShell>{children}</SiteShell>

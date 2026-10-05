@@ -167,7 +167,6 @@
 .hero-intro__avatar {
   position: relative;
   display: block;
-  /* Integer px avoids subpixel soft-scale on the video */
   width: 36px;
   height: 36px;
   flex-shrink: 0;
@@ -184,22 +183,6 @@
   height: 100%;
   object-fit: contain;
   object-position: center center;
-}
-
-.hero-intro__avatar-video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center center;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  pointer-events: none;
-}
-
-.hero-intro__avatar-video.is-ready {
-  opacity: 1;
 }
 
 .hero-headline {
@@ -599,8 +582,8 @@
   }
 
   .hero-intro__avatar {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
   }
 
   .hero-headline {

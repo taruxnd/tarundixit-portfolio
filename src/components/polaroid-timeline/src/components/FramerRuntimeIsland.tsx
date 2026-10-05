@@ -35,6 +35,15 @@ function createMainElement(): HTMLDivElement {
   return main;
 }
 
+function safeRemove(el: Element | null) {
+  if (!el) return;
+  try {
+    el.remove();
+  } catch {
+    /* Framer may have already detached the node */
+  }
+}
+
 function ensureBadge() {
   if (!framerRuntime.badgeInnerHtml || document.getElementById(BADGE_ID)) {
     return;
@@ -84,7 +93,7 @@ function preloadModules() {
 function removeFramerScript() {
   document
     .querySelectorAll(`script[${SCRIPT_ATTR}="main"]`)
-    .forEach((el) => el.remove());
+    .forEach((el) => safeRemove(el));
 }
 
 /**
@@ -206,32 +215,43 @@ function attachHoverUnlock(root: HTMLElement) {
 /**
  * Exact framer-to-next island from the zip.
  * Fresh hydrate on every About mount so the string + pins stay alive after soft nav.
+ *
+ * Boot is deferred one macrotask so React Strict Mode's mount→cleanup→mount
+ * does not tear out #main while Framer's React is mid-hydrate (NotFoundError).
  */
 export function FramerRuntimeIsland() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
+    let didMount = false;
     let detachHover: (() => void) | undefined;
     let probeTimer: number | undefined;
 
-    const mountParent =
+    const mountParent = () =>
       document.getElementById(HOST_ID) ?? document.body;
 
-    // Drop any leftover #main (e.g. previous visit) before a clean hydrate
-    document.getElementById(MAIN_ID)?.remove();
-    document.getElementById("polaroid-timeline-stash")?.remove();
-
-    const remount = Boolean(window.__framerToNextBooted);
+    const tearDownMain = () => {
+      removeFramerScript();
+      safeRemove(document.getElementById(MAIN_ID));
+      safeRemove(document.getElementById("polaroid-timeline-stash"));
+    };
 
     const boot = async () => {
+      if (cancelled) return;
+
+      tearDownMain();
+
+      const remount = Boolean(window.__framerToNextBooted);
       ensureBadge();
       ensureSvgTemplates();
       ensureProcessEnv();
       preloadModules();
 
+      const parent = mountParent();
       const main = createMainElement();
-      mountParent.appendChild(main);
+      parent.appendChild(main);
+      didMount = true;
 
       try {
         await loadFramerScript(remount);
@@ -239,14 +259,16 @@ export function FramerRuntimeIsland() {
         // probe/retry below
       }
 
-      if (cancelled) return;
+      if (cancelled) {
+        tearDownMain();
+        return;
+      }
 
       window.__framerToNextBooted = true;
       setReady(true);
       wakeFramerLayout();
 
-      const host = (document.getElementById(HOST_ID) ??
-        mountParent) as HTMLElement;
+      const host = (document.getElementById(HOST_ID) ?? parent) as HTMLElement;
       detachHover?.();
       detachHover = attachHoverUnlock(host);
 
@@ -270,11 +292,12 @@ export function FramerRuntimeIsland() {
           return;
         }
 
-        // Line still flat — one forced re-hydrate
+        // Line still flat — one forced re-hydrate (script out first so Framer
+        // isn't mid-commit when we replace #main).
         if (!cancelled && !lineOk) {
-          document.getElementById(MAIN_ID)?.remove();
+          tearDownMain();
           const fresh = createMainElement();
-          mountParent.appendChild(fresh);
+          mountParent().appendChild(fresh);
           void loadFramerScript(true).then(() => {
             if (cancelled) return;
             wakeFramerLayout();
@@ -286,14 +309,17 @@ export function FramerRuntimeIsland() {
       probeTimer = window.setTimeout(probe, 180);
     };
 
-    void boot();
+    // Skip Strict Mode's discarded first effect pass.
+    const startId = window.setTimeout(() => {
+      void boot();
+    }, 0);
 
     return () => {
       cancelled = true;
+      window.clearTimeout(startId);
       if (probeTimer) window.clearTimeout(probeTimer);
       detachHover?.();
-      document.getElementById(MAIN_ID)?.remove();
-      // Keep script tag so first-load modules stay cached; remount uses ?rm=
+      if (didMount) tearDownMain();
       window.__framerToNextBooted = true;
     };
   }, []);

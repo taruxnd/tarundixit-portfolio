@@ -2,19 +2,17 @@
 
 import AboutPageRoad from "@/components/about-page/AboutPageRoad";
 import LiquidGlass from "@/components/navbar/LiquidGlass";
-import { useTheme } from "@/components/ThemeController";
 import { assetUrl } from "@/lib/cdnAssets";
 import { stripFontClassName } from "@/lib/heroFonts";
 import { contentContainerClassName } from "@/lib/sectionLayout";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import "../hero.css";
 import "./about-page.css";
 
 const AVATAR_IMAGE = assetUrl("profile/tarun-avatar.jpg");
-const AVATAR_VIDEO = "/profile/tarun-avatar.mov";
 
 type AboutWordKind = "designer" | "engineers" | "craft";
 
@@ -79,19 +77,6 @@ function KumbaAiLink() {
 }
 
 function AboutIntro() {
-  const { reducedMotion } = useTheme();
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoReady, setVideoReady] = useState(false);
-  const [videoFailed, setVideoFailed] = useState(false);
-  const showVideo = !reducedMotion && !videoFailed;
-
-  useEffect(() => {
-    if (!showVideo) return;
-    const video = videoRef.current;
-    if (!video) return;
-    void video.play().catch(() => setVideoFailed(true));
-  }, [showVideo]);
-
   return (
     <p
       className="hero-intro about-page-hero__intro theme-transition"
@@ -109,27 +94,10 @@ function AboutIntro() {
           width={256}
           height={256}
           sizes="80px"
-          quality={95}
+          quality={75}
           className="hero-intro__avatar-img"
           priority
         />
-        {showVideo ? (
-          <video
-            ref={videoRef}
-            className={`hero-intro__avatar-video${videoReady ? " is-ready" : ""}`}
-            src={AVATAR_VIDEO}
-            width={696}
-            height={720}
-            muted
-            playsInline
-            autoPlay
-            loop
-            preload="auto"
-            aria-hidden
-            onPlaying={() => setVideoReady(true)}
-            onError={() => setVideoFailed(true)}
-          />
-        ) : null}
       </span>
       <span className="hero-intro__text">
         I&apos;m <span className="hero-intro__name">Tarun Dixit</span>

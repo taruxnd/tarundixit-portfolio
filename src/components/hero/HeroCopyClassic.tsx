@@ -1,16 +1,13 @@
 "use client";
 
 import LiquidGlass from "@/components/navbar/LiquidGlass";
-import { useTheme } from "@/components/ThemeController";
 import { assetUrl } from "@/lib/cdnAssets";
 import { heroEditorialTypography } from "@/lib/heroFonts";
 import { motion, type Variants } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
 
 const AVATAR_IMAGE = assetUrl("profile/tarun-avatar.jpg");
-const AVATAR_VIDEO = "/profile/tarun-avatar.mov";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },
@@ -29,27 +26,6 @@ const typography = heroEditorialTypography;
 
 /** Greeting + editorial statement hero, inspired by a simple portrait intro. */
 export default function HeroCopyClassic() {
-  const { reducedMotion } = useTheme();
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoReady, setVideoReady] = useState(false);
-  const [videoFailed, setVideoFailed] = useState(false);
-  const showVideo = !reducedMotion && !videoFailed;
-
-  useEffect(() => {
-    if (!showVideo) return;
-    const video = videoRef.current;
-    if (!video) return;
-
-    const tryPlay = () => {
-      const play = video.play();
-      if (play) play.catch(() => setVideoFailed(true));
-    };
-
-    tryPlay();
-    video.addEventListener("loadeddata", tryPlay);
-    return () => video.removeEventListener("loadeddata", tryPlay);
-  }, [showVideo]);
-
   return (
     <motion.div
       className="hero-grid__copy flex min-w-0 flex-col"
@@ -75,27 +51,10 @@ export default function HeroCopyClassic() {
             width={256}
             height={256}
             sizes="72px"
-            quality={95}
+            quality={75}
             className="hero-intro__avatar-img"
             priority
           />
-          {showVideo ? (
-            <video
-              ref={videoRef}
-              className={`hero-intro__avatar-video${videoReady ? " is-ready" : ""}`}
-              src={AVATAR_VIDEO}
-              width={696}
-              height={720}
-              muted
-              playsInline
-              autoPlay
-              loop
-              preload="auto"
-              aria-hidden
-              onPlaying={() => setVideoReady(true)}
-              onError={() => setVideoFailed(true)}
-            />
-          ) : null}
         </span>
         <span className="hero-intro__text">
           I&apos;m <span className="hero-intro__name">Tarun Dixit</span>

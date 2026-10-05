@@ -24,7 +24,7 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 const STORAGE_KEY = "portfolio-lamp-theme";
 
-/** Must match SSR default so the first client render hydrates cleanly. */
+/** Site is dark-only for now — keep SSR + client in sync. */
 const SSR_THEME: SiteTheme = "dark";
 
 function applyTheme(theme: SiteTheme) {
@@ -33,17 +33,17 @@ function applyTheme(theme: SiteTheme) {
 }
 
 export function ThemeController({ children }: { children: ReactNode }) {
-  // Same initial value on server + client — never read localStorage/DOM here.
-  const [theme, setTheme] = useState<SiteTheme>(SSR_THEME);
+  const [theme] = useState<SiteTheme>(SSR_THEME);
   const [hydrated, setHydrated] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useLayoutEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    const initial: SiteTheme =
-      stored === "light" || stored === "dark" ? stored : "dark";
-    setTheme(initial);
-    applyTheme(initial);
+    applyTheme("dark");
+    try {
+      localStorage.setItem(STORAGE_KEY, "dark");
+    } catch {
+      /* ignore quota / private mode */
+    }
 
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     setReducedMotion(motionQuery.matches);
@@ -58,19 +58,13 @@ export function ThemeController({ children }: { children: ReactNode }) {
     return () => motionQuery.removeEventListener("change", onMotionChange);
   }, []);
 
-  const toggleTheme = useCallback(() => {
-    setTheme((prev) => {
-      const next: SiteTheme = prev === "light" ? "dark" : "light";
-      localStorage.setItem(STORAGE_KEY, next);
-      applyTheme(next);
-      return next;
-    });
-  }, []);
+  // Dark-only: keep API so callers don't break; no-op for now.
+  const toggleTheme = useCallback(() => {}, []);
 
   const value = useMemo(
     () => ({
       theme,
-      isLampOn: theme === "light",
+      isLampOn: false,
       toggleTheme,
       reducedMotion,
       hydrated,
