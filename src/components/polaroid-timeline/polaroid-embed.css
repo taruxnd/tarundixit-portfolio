@@ -9,7 +9,7 @@ body {
 .polaroid-timeline-embed {
   position: relative;
   width: 100%;
-  padding: var(--section-pad-before-title) 0 var(--section-pad-after-content);
+  padding: var(--section-pad-before-title) 0 0;
   background: transparent;
   color: var(--text-primary);
 }
@@ -61,6 +61,17 @@ body {
   margin-inline: auto;
 }
 
+#polaroid-timeline-host {
+  width: 100%;
+}
+
+.polaroid-timeline-embed__host [aria-label="Framer runtime"]:not([aria-busy="true"]) {
+  display: block;
+  height: 0;
+  min-height: 0 !important;
+  overflow: hidden;
+}
+
 /* Use site bg — neutralize Framer page fill */
 #polaroid-timeline-host #main,
 #polaroid-timeline-host .framer-UdSO0.framer-72rtr7 {
@@ -68,8 +79,7 @@ body {
   background-color: transparent !important;
   width: 100% !important;
   max-width: 900px;
-  /* Standalone used 300/500 — tighten bottom so bento title sits closer */
-  padding: 48px 0 16px !important;
+  padding: 48px 0 0 !important;
 }
 
 /* Our heading replaces Framer's Instrument Serif scroll hint */

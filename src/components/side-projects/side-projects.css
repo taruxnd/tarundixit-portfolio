@@ -3,17 +3,12 @@
 .side-projects {
   position: relative;
   width: 100%;
-  padding: var(--section-pad-before-title) 0 var(--section-pad-after-content);
+  padding: var(--section-pad-before-title) 0 0;
   background: var(--bg-page);
 }
 
 [data-theme="dark"] .side-projects {
   background: transparent;
-}
-
-/* Full-viewport About fold follows — same breath as hero → Work title */
-.side-projects:has(+ .about-page-hero) {
-  padding-bottom: var(--section-pad-before-title);
 }
 
 .side-projects__inner {

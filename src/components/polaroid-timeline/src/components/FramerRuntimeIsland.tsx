@@ -77,14 +77,36 @@ function ensureProcessEnv() {
   };
 }
 
+/** CDN shared-lib → local patch with extra polaroid milestones. */
+const SHARED_LIB_CDN =
+  "https://framerusercontent.com/sites/71UJYhEgwM3TSL7NydVUEj/shared-lib.EBskc7qO.mjs";
+const SHARED_LIB_LOCAL = "/polaroid-framer/shared-lib.EBskc7qO.mjs";
+
+function ensurePolaroidImportMap() {
+  if (document.getElementById("polaroid-framer-importmap")) return;
+  const map = document.createElement("script");
+  map.id = "polaroid-framer-importmap";
+  map.type = "importmap";
+  map.textContent = JSON.stringify({
+    imports: {
+      [SHARED_LIB_CDN]: SHARED_LIB_LOCAL,
+    },
+  });
+  // Import maps must be registered before any module that resolves them.
+  document.head.prepend(map);
+}
+
 function preloadModules() {
   for (const href of framerRuntime.modulePreloads) {
-    if (document.querySelector(`link[rel="modulepreload"][href="${href}"]`)) {
+    const resolved = href === SHARED_LIB_CDN ? SHARED_LIB_LOCAL : href;
+    if (
+      document.querySelector(`link[rel="modulepreload"][href="${resolved}"]`)
+    ) {
       continue;
     }
     const link = document.createElement("link");
     link.rel = "modulepreload";
-    link.href = href;
+    link.href = resolved;
     link.setAttribute("fetchpriority", "low");
     document.head.appendChild(link);
   }
@@ -101,6 +123,7 @@ function removeFramerScript() {
  * (ESM caches the bare URL after the first visit). Sibling imports still hit CDN cache.
  */
 function loadFramerScript(remount: boolean) {
+  ensurePolaroidImportMap();
   removeFramerScript();
   return new Promise<void>((resolve, reject) => {
     const script = document.createElement("script");
@@ -246,6 +269,7 @@ export function FramerRuntimeIsland() {
       ensureBadge();
       ensureSvgTemplates();
       ensureProcessEnv();
+      ensurePolaroidImportMap();
       preloadModules();
 
       const parent = mountParent();
@@ -328,6 +352,7 @@ export function FramerRuntimeIsland() {
     <div
       aria-busy={!ready}
       aria-label="Framer runtime"
+      className="polaroid-framer-runtime-spacer"
       style={{
         minHeight: ready ? 0 : "40vh",
         width: "100%",

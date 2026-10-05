@@ -3,7 +3,7 @@
 .xhulia-work {
   position: relative;
   width: 100%;
-  padding: var(--section-pad-before-title) 0 var(--section-pad-after-content);
+  padding: var(--section-pad-before-title) 0 0;
   /* Light: solid page wash so the hero blue never leaks below the fold */
   background: var(--bg-page);
 }
