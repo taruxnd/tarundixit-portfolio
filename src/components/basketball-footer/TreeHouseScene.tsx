@@ -114,7 +114,11 @@ export default function TreeHouseScene() {
     const onBasket=(event:Event)=>{const score=(event as CustomEvent<{score:number}>).detail.score;
       speak(score===1?"Beginner’s luck.":score===3?"Suspiciously good for a Muggle.":score%3===0?"Ten points to your house.":"That one counts. I checked.");
     };
-    const onMiss=()=>speak("Even a wand wouldn’t save that.");
+    let missCount=0;
+    const onMiss=()=>{
+      const insults=["Even a wand wouldn’t save that.","The tree isn’t the basket, genius.","All that confidence. None of the aim.","I’ve seen better shots from a potato."];
+      speak(insults[missCount++%insults.length],true);
+    };
     const onClick=()=>speak("I’m supervising.",true);
     window.addEventListener('portfolio:raven-basket',onBasket);
     window.addEventListener('portfolio:raven-miss',onMiss);

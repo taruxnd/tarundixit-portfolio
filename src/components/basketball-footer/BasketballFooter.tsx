@@ -1,4 +1,5 @@
 "use client";
+import MoreAboutLink from "@/components/more-about/MoreAboutLink";
 import dynamic from 'next/dynamic';
 import {useEffect,useRef,useState} from 'react';
 import {playfairDisplay} from '@/lib/heroFonts';
@@ -27,6 +28,7 @@ export default function BasketballFooter(){
         </div>
         <span className="basketball-copy-status" role="status">{copied?'Email copied':copyError?'Could not copy email. Please try again.':''}</span>
       </div>
+      <MoreAboutLink placement="footer" />
       <TreeHouseScene/>
       <div className="basketball-court"><BasketballGame ballCount={2} ballSize={ballSize} courtColor="transparent" throwPower={1} /></div>
     </div>

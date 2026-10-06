@@ -524,3 +524,16 @@
 .about-page-word--years:is(:hover,[data-word-active="true"]) .about-word-hourglass{transform:rotate(180deg)}
 .about-page-word[role="button"]:focus-visible{outline:1px dashed #c6bba7;outline-offset:4px}
 @media(prefers-reduced-motion:reduce){.about-word-hourglass{transition:none}}
+
+.about-brand{display:inline-flex;align-items:center;gap:.2em;vertical-align:baseline;color:inherit;text-decoration:none;white-space:nowrap}
+.about-brand:hover{text-decoration:underline;text-underline-offset:4px}
+.about-brand__onecard{display:inline-block;width:.86em;height:1em;overflow:hidden;flex-shrink:0;vertical-align:middle}
+.about-brand__onecard img{height:100%;width:auto;max-width:none;display:block}
+.about-brand__nerolac{display:inline-block;width:4.3em;height:auto;vertical-align:middle}
+.about-brand__youtube{width:.95em;height:.7em;flex-shrink:0}
+.about-spaarks{white-space:nowrap}
+
+.about-brand{display:inline;white-space:nowrap;vertical-align:baseline}
+.about-brand__onecard{width:.8em;height:.95em;vertical-align:-.12em;margin-right:.2em}
+.about-brand__nerolac{width:.9em;height:.9em;vertical-align:-.1em;margin-right:.2em;object-fit:contain}
+.about-brand__youtube{display:inline-block;vertical-align:-.03em;margin-right:.2em}

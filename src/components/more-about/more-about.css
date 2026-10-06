@@ -1,0 +1,17 @@
+.more-about-link{display:inline-flex;align-items:center;gap:4px;color:var(--text-primary);font-family:var(--font-geist),var(--font-inter),sans-serif;font-size:13px;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px;transition:opacity .2s}
+.more-about-link:hover{opacity:.7}.more-about-link:focus-visible{outline:1px solid currentColor;outline-offset:6px}
+.more-about-link--top{position:fixed;right:32px;top:max(2rem,calc(env(safe-area-inset-top,0px) + .75rem));height:54px;z-index:51}
+.more-about-link--timeline{align-self:center;margin-top:24px;margin-bottom:8px}
+.more-about-link--footer{position:absolute;left:7%;bottom:24px;z-index:6}
+@media(max-width:1023px){.more-about-link--top{right:20px;top:max(2.25rem,calc(env(safe-area-inset-top,0px) + 1rem));height:44px;font-size:12px}}
+@media(max-width:767px){.more-about-link--footer{left:24px;bottom:22px}}
+.more-about-page{max-width:800px;margin:auto;padding:140px 28px 80px;color:var(--text-primary)}
+.more-about-page h1{font-family:var(--font-playfair),Georgia,serif;font-size:clamp(40px,6vw,64px);font-weight:400;line-height:1.1;margin:20px 0 40px}
+.more-about-page h2{font-size:20px;margin:40px 0 12px}.more-about-page p{font-size:17px;line-height:1.8;color:var(--text-secondary)}
+.more-about-page a{color:inherit}
+
+.more-about-story .about-page-hero{height:auto;max-height:none;min-height:100svh;overflow:visible;padding-bottom:64px}
+.more-about-story .about-page-hero__stage{overflow:visible}
+.more-about-story .about-page-hero__inner{margin-block:0;transform:none}
+.more-about-story .about-page-hero::after{display:none}
+.about-story-link{color:inherit;text-decoration:underline;text-underline-offset:4px}

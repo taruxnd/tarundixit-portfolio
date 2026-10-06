@@ -121,12 +121,14 @@ type AboutPageHeroProps = {
   id?: string;
   /** Optional CTA to the full about route (homepage only). */
   moreHref?: string;
+  story?: boolean;
 };
 
 /** About hero — copy + road, no ID card. Shared by `/` and `/about`. */
 export default function AboutPageHero({
   id,
   moreHref,
+  story = false,
 }: AboutPageHeroProps = {}) {
   const HeadingTag = id ? "h2" : "h1";
 
@@ -159,6 +161,22 @@ export default function AboutPageHero({
               <Word kind="engineers">engineers</Word>, currently working at{" "}
               <KumbaAiLink />.
             </p>
+            {story ? <>
+              <p>I have four years of design experience, including three in product design. Before that, I was a graphic designer. But my first design goes back to when I was 14: a banner for a marathon company. T-shirts and client projects followed, and I kept finding new things to make.</p>
+              <p>One moment that stayed with me was a Ganesh Chaturthi creative I made that <a className="about-story-link" href="https://www.socialsamosa.com/" target="_blank" rel="noopener noreferrer">Social Samosa</a> reposted. Seeing something I’d created reach people beyond my own circle gave me a reason to take design more seriously.</p>
+              <p>Along the way, I also worked as a WordPress developer for Fasbeam, developing CarAdvice.in. Moving between graphics, websites, and products made me curious about both how things look and how they work.</p>
+            </> : <>
+            <p>
+              Three years into product design, I still enjoy figuring out how
+              something can look better and work better. Before Kumba AI, I was
+              at <a className="about-brand" href="https://1cardsolution.com/" target="_blank" rel="noopener noreferrer"><span className="about-brand__onecard" aria-hidden="true"><img src="/about/brands/one-card.png" alt=""/></span>One Card Solution</a>, working on products for <a className="about-brand" href="https://www.nerolac.com/" target="_blank" rel="noopener noreferrer"><img className="about-brand__nerolac" src="/about/brands/nerolac-favicon.png" alt=""/>Nerolac</a>.
+              Before that, I worked with Osos Web on <span className="about-spaarks">Spaarks</span>.
+            </p>
+            <p>
+              My path into products started with building websites. As a
+              WordPress developer, I developed <a className="about-story-link" href="https://caradvice.in/" target="_blank" rel="noopener noreferrer">CarAdvice.in</a> for <a className="about-brand" href="https://www.fasbeam.com/" target="_blank" rel="noopener noreferrer"><svg className="about-brand__youtube" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="6" fill="#f04444"/><path d="m11 5 8 5-8 5Z" fill="white"/></svg>FasBeam</a>, automotive creator Faisal Khan.
+              Being a petrolhead, that was a pretty good place to start.
+            </p>
             <p>
               I like looking beyond just the <Word kind="craft">design</Word>. I
               want to understand the user, the business, and what we are trying
@@ -180,6 +198,7 @@ export default function AboutPageHero({
               something worth remembering is a different thing. I don&apos;t
               think AI will master that anytime soon. Maybe not even in <Word kind="years">100 years</Word>.
             </p>
+            </>}
           </div>
 
           {moreHref ? (
@@ -204,7 +223,7 @@ export default function AboutPageHero({
         </div>
       </div>
 
-      <AboutPageRoad />
+      {!story && <AboutPageRoad />}
     </section>
   );
 }

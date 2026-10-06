@@ -1,0 +1,30 @@
+/* One owner for each gap: the following section supplies its top spacing. */
+#top{--section-gap:96px}
+#top > .xhulia-work,
+#top > .side-projects,
+#top > .polaroid-timeline-embed,
+#top > .about-bento,
+#top > .about-music{
+  padding-top:var(--section-gap);
+  padding-bottom:0;
+  margin-top:0;
+  margin-bottom:0;
+}
+/* About is part of the homepage flow, rather than another centered viewport. */
+#top > #about.about-page-hero{
+  height:auto;
+  min-height:0;
+  max-height:none;
+  padding-top:var(--section-gap);
+  padding-bottom:0;
+  overflow:visible;
+}
+#top > #about .about-page-hero__stage{overflow:visible}
+#top > #about .about-page-hero__inner{margin-block:0;transform:none;padding-bottom:0}
+#top .polaroid-timeline-embed #polaroid-timeline-host #main,
+#top .polaroid-timeline-embed #polaroid-timeline-host .framer-UdSO0.framer-72rtr7{padding-bottom:0!important}
+#top + .basketball-footer{margin-top:96px}
+@media(max-width:767px),(max-width:1023px) and (hover:none) and (pointer:coarse){
+  #top{--section-gap:64px}
+  #top + .basketball-footer{margin-top:64px}
+}

@@ -6,8 +6,9 @@ import AboutMusicShelf from "@/components/about-music/AboutMusicShelf";
 import "@/components/about-page/about-page.css";
 import "@/components/about-page/about-page-road.css";
 import Hero from "@/components/Hero";
-import SideProjectsSection from "@/components/side-projects/SideProjectsSection";
 import WorkStrip from "@/components/WorkStrip";
+
+import "./home-spacing.css";
 
 export default function Home() {
   return (
@@ -15,7 +16,6 @@ export default function Home() {
     <main id="top">
       <Hero />
       <WorkStrip />
-      <SideProjectsSection />
       <AboutPageHero id="about" />
       <PolaroidTimeline />
       <AboutBentoGrid />

@@ -45,7 +45,7 @@ let t=ye(e.clientX,e.clientY);
 if(!t)return;
 let n=[...O.current].reverse().find(e=>{let n=t.x-e.body.x,r=t.y-e.body.y;
 return n*n+r*r<=e.body.radius*e.body.radius});
-n&&(unlockGameAudio(),e.preventDefault(),e.stopPropagation(),de.current=e.pointerId,S.current.setPointerCapture(e.pointerId),S.current.style.touchAction=`none`,k.current.body=n,k.current.points=[{...t,t:performance.now()}],k.current.anchor=t,d(`grabbing`))},xe=e=>{let t=ye(e.clientX,e.clientY);
+n&&(unlockGameAudio(),e.preventDefault(),e.stopPropagation(),de.current=e.pointerId,S.current.setPointerCapture(e.pointerId),S.current.style.touchAction=`none`,n.shot=false,n.enteredHoop=false,k.current.body=n,k.current.points=[{...t,t:performance.now()}],k.current.anchor=t,d(`grabbing`))},xe=e=>{let t=ye(e.clientX,e.clientY);
 if(k.current.body&&de.current===e.pointerId){if(!k.current.body||!t)return;
 d(`grabbing`);
 let e=performance.now();
@@ -64,7 +64,7 @@ e>=0&&r&&r.t-n[e].t<=100;
 e--)i=n[e];
 if(i&&r&&r.t>i.t){let e=r.t-i.t,n=(r.x-i.x)/e*16.67*m,a=(r.y-i.y)/e*16.67*m,o=Math.hypot(n,a);
 if(o>55){let e=55/o;
-n*=e,a*=e}t.shot=true,t.body.vx=n,t.body.vy=a,t.body.angularVelocity=M(n/260*m,-1.5,1.5)}k.current.body=null,k.current.points=[],k.current.anchor=null,de.current=null,S.current.style.touchAction=`none`;
+n*=e,a*=e}t.enteredHoop=false,t.shot=true,t.body.vx=n,t.body.vy=a,t.body.angularVelocity=M(n/260*m,-1.5,1.5)}k.current.body=null,k.current.points=[],k.current.anchor=null,de.current=null,S.current.style.touchAction=`none`;
 let a=ye(e.clientX,e.clientY);
 if(!a){d(null);
 return}let o=O.current.some(e=>{let t=a.x-e.body.x,n=a.y-e.body.y;
@@ -120,9 +120,24 @@ if(i.y+=i.vy*e,i.life-=e,i.life<=0){r.splice(t,1);
 continue}let a=1-i.life/i.maxLife;
 n.save(),n.globalAlpha=M(i.life/i.maxLife,0,1),n.fillStyle=`#ffffff`,n.strokeStyle=`rgba(0,0,0,0.5)`,n.lineWidth=3,n.font=`800 ${18+a*6}px sans-serif`,n.textAlign=`center`,n.strokeText(`+1`,i.x,i.y),n.fillText(`+1`,i.x,i.y),n.restore()}},Oe=()=>{let e=E.current;
 if(!g||!e)return;
-let t=Math.min(e.rimFrontX,e.rimBackX)+e.pegRadius*1.4,n=Math.max(e.rimFrontX,e.rimBackX)-e.pegRadius*1.4;
-n<=t||O.current.forEach(r=>{let{body:i}=r,a=i.y,o=i.x;
-r.prevY<e.rimY&&a>=e.rimY&&i.vy>.8&&o>t&&o<n&&(r.shot=false,playGameSound("basket"),D.current+=1,window.dispatchEvent(new CustomEvent("portfolio:raven-basket",{detail:{score:D.current}})),ae.current=performance.now(),Ee(o,e.rimY)),r.prevY=a})},L=e=>{if(i)return;
+const left=Math.min(e.rimFrontX,e.rimBackX)+e.pegRadius;
+const right=Math.max(e.rimFrontX,e.rimBackX)-e.pegRadius;
+O.current.forEach(r=>{
+const ball=r.body,radius=ball.radius;
+const clear=ball.x-radius>left && ball.x+radius<right;
+if(r.shot && k.current.body!==r && ball.vy>.8){
+  if(r.prevY+radius<e.rimY && ball.y+radius>=e.rimY)r.enteredHoop=clear;
+  if(r.enteredHoop && !clear)r.enteredHoop=false;
+  if(r.enteredHoop && r.prevY-radius<e.rimY && ball.y-radius>=e.rimY){
+    r.shot=false;r.enteredHoop=false;playGameSound("basket");D.current+=1;
+    window.dispatchEvent(new CustomEvent("portfolio:raven-basket",{detail:{score:D.current}}));
+    ae.current=performance.now();Ee(ball.x,e.rimY);
+  }else if(!r.enteredHoop && ball.y-radius>e.rimY+8){
+    r.shot=false;window.dispatchEvent(new CustomEvent("portfolio:raven-miss"));
+  }
+}
+r.prevY=ball.y;
+})},L=e=>{if(i)return;
 let{width:t,height:a}=le.current,o=ue.current?e-ue.current:16.67,s=Math.min(50,o);
 ue.current=e;
 // Small physics steps prevent fast shots skipping into rim collisions.
