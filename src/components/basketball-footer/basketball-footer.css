@@ -43,3 +43,24 @@
 .basketball-raven[hidden]{display:none}.basketball-raven:focus-visible{outline:1px dashed #d4c4a7;outline-offset:4px;border-radius:10px}
 .basketball-raven-comment{position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);width:max-content;max-width:190px;background:#e8ddc4;color:#3a3026;border-radius:12px 12px 12px 2px;padding:10px 14px;font:12px/1.45 var(--font-geist),sans-serif;box-shadow:0 5px 20px #0004;pointer-events:none}
 .basketball-raven-comment:empty{display:none}
+
+/* The original hero plants form a natural, full-width garden bed. */
+.basketball-garden{position:absolute;top:0;bottom:0;left:calc((100% - 100vw)/2);right:calc((100% - 100vw)/2);z-index:2;pointer-events:none}
+.basketball-garden .hero-garden{inset:0;height:100%;overflow:visible}
+.basketball-garden .hero-garden__canvas{position:static;width:100%;height:100%;max-width:none;transform:none}
+.basketball-garden-bee{position:absolute;inset:0;z-index:5;pointer-events:none}
+.basketball-garden-bee .hero-bee{pointer-events:auto;width:80px;height:80px}
+.basketball-footer .more-about-link--footer{bottom:100px}
+@media(max-width:767px){.basketball-garden-bee .hero-bee{width:64px;height:64px}.basketball-footer .more-about-link--footer{bottom:80px}}
+
+/* A small garden note, centered beside the hoop. */
+.basketball-contact .basketball-heading{font-size:clamp(32px,3.5vw,48px);margin-bottom:14px}
+.basketball-contact .basketball-invitation{max-width:310px;margin-bottom:22px;font-size:14px;line-height:1.6}
+.basketball-note-link{display:inline-flex;align-items:center;gap:10px;background:none;border:0;border-radius:0;box-shadow:none;color:#eeeae1;padding:7px 0;font:inherit;font-size:14px;cursor:pointer;text-decoration:none;min-width:0;width:auto}
+.basketball-note-link.basketball-email span{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px}
+.basketball-note-link:hover{color:#e8bd55}
+.basketball-note-link:focus-visible{outline:2px solid #e8bd55;outline-offset:5px}
+.basketball-contact-actions{gap:24px}
+@media(max-width:767px){.basketball-contact .basketball-heading{font-size:32px;margin-bottom:10px}.basketball-contact .basketball-invitation{font-size:13px;max-width:290px;margin-bottom:14px}.basketball-note-link{font-size:13px}}
+
+@media(min-width:768px){.basketball-contact{top:var(--tree-top,8%);transform:none}}

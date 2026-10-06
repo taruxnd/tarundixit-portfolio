@@ -2,6 +2,7 @@
 // Extracted solely from the supplied basketball-footer export. No Framer page runtime.
 import { createElement as p, useEffect as o, useRef as i, useMemo as n, useCallback as h, useState as c } from "react";
 import { getHoopLayout, drawHoop, drawHoopForeground, drawScoreDisplay } from "./courtGeometry";
+import {crossesHoopDownward} from "./basketDetection.mjs";
 import {unlockGameAudio,playGameSound} from "./gameAudio";
 const l = typeof window !== "undefined" ? window : undefined;
 const d = (callback) => callback();
@@ -39,7 +40,7 @@ ce.current=t.filter(e=>e!==null)},ve=()=>{let{width:e,height:t}=le.current,n=Mat
 for(let e=0;
 e<n;
 e++){let t=e%o,a=i[t]?.aspect||1,l=1+j(-.15,Mo),d=Math.max(20,s*l),f=d,p=d/Math.max(.6,Math.min(1.4,a)),m=(e+.5)/n*u,h=M(m+j(-u*.08,u*.08),f/2+4,Math.max(f/2+4,u)),g=p/2,_=g+8,v=Math.max(_,Math.min(c-g-8,c*.55)),ee=j(_,v),y=j(-Math.PI,Math.PI);
-r.push({body:{x:h,y:ee,vx:j(-.5,.5),vy:j(-.25,.25),angle:y,angularVelocity:j(-.05,.05),radius:d/2},imageIndex:t,width:f,height:p,squash:0,prevY:ee})}O.current=r},ye=(t,n)=>{let r=e.getBoundingClientRect();
+r.push({body:{x:h,y:ee,vx:j(-.5,.5),vy:j(-.25,.25),angle:y,angularVelocity:j(-.05,.05),radius:d/2},imageIndex:t,width:f,height:p,squash:0,prevX:h,prevY:ee})}O.current=r},ye=(t,n)=>{let r=e.getBoundingClientRect();
 return t>=r.left&&t<=r.right&&n>=r.top&&n<=r.bottom?{x:t-r.left,y:n-r.top}:null},be=e=>{if(de.current!==null||k.current.body)return;
 let t=ye(e.clientX,e.clientY);
 if(!t)return;
@@ -120,23 +121,18 @@ if(i.y+=i.vy*e,i.life-=e,i.life<=0){r.splice(t,1);
 continue}let a=1-i.life/i.maxLife;
 n.save(),n.globalAlpha=M(i.life/i.maxLife,0,1),n.fillStyle=`#ffffff`,n.strokeStyle=`rgba(0,0,0,0.5)`,n.lineWidth=3,n.font=`800 ${18+a*6}px sans-serif`,n.textAlign=`center`,n.strokeText(`+1`,i.x,i.y),n.fillText(`+1`,i.x,i.y),n.restore()}},Oe=()=>{let e=E.current;
 if(!g||!e)return;
-const left=Math.min(e.rimFrontX,e.rimBackX)+e.pegRadius;
-const right=Math.max(e.rimFrontX,e.rimBackX)-e.pegRadius;
 O.current.forEach(r=>{
-const ball=r.body,radius=ball.radius;
-const clear=ball.x-radius>left && ball.x+radius<right;
-if(r.shot && k.current.body!==r && ball.vy>.8){
-  if(r.prevY+radius<e.rimY && ball.y+radius>=e.rimY)r.enteredHoop=clear;
-  if(r.enteredHoop && !clear)r.enteredHoop=false;
-  if(r.enteredHoop && r.prevY-radius<e.rimY && ball.y-radius>=e.rimY){
+const ball=r.body;
+if(r.shot && k.current.body!==r){
+  if(crossesHoopDownward({x:r.prevX,y:r.prevY},ball,e)){
     r.shot=false;r.enteredHoop=false;playGameSound("basket");D.current+=1;
     window.dispatchEvent(new CustomEvent("portfolio:raven-basket",{detail:{score:D.current}}));
     ae.current=performance.now();Ee(ball.x,e.rimY);
-  }else if(!r.enteredHoop && ball.y-radius>e.rimY+8){
+  }else if(ball.vy>0 && ball.y-ball.radius>e.rimY+82){
     r.shot=false;window.dispatchEvent(new CustomEvent("portfolio:raven-miss"));
   }
 }
-r.prevY=ball.y;
+r.prevX=ball.x;r.prevY=ball.y;
 })},L=e=>{if(i)return;
 let{width:t,height:a}=le.current,o=ue.current?e-ue.current:16.67,s=Math.min(50,o);
 ue.current=e;

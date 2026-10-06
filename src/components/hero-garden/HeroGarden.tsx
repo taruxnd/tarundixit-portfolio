@@ -123,7 +123,11 @@ function paintFrame(
     const scale = width < 768 ? .75 : 1;
     for (const plant of plants) {
       const source = plant.type === 0 ? flowers : leaves;
-      const image = source[plant.imgIndex % Math.max(1,source.length)];
+      // Favor the white daisy clusters in the footer garden.
+      const daisies = flowers.find(image => image.src.includes("flower-2.png"));
+      const image = plant.type === 0 && plant.imgIndex % 5 !== 0 && daisies
+        ? daisies
+        : source[plant.imgIndex % Math.max(1,source.length)];
       if (!image?.complete || !image.naturalWidth) continue;
       const depth = 1 - plant.zOffset;
       const plantWidth = (plant.type === 0 ? 52 : 85) * (0.55 + depth * .9) * plant.scaleOffset * scale;
