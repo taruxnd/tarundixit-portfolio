@@ -96,13 +96,14 @@ export default function AboutPageRoad() {
       ([entry]) => {
         const near = entry?.isIntersecting ?? false;
         if (near) setLoadCars(true);
-        setAnimateCars(near);
       },
       { root: null, rootMargin: LOAD_ROOT_MARGIN, threshold: 0 },
     );
 
+    const visible = new IntersectionObserver(([entry]) => setAnimateCars(entry.isIntersecting));
     io.observe(road);
-    return () => io.disconnect();
+    visible.observe(road);
+    return () => { io.disconnect(); visible.disconnect(); };
   }, []);
 
   return (

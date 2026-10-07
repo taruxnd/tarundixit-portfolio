@@ -1,5 +1,7 @@
 "use client";
 
+// @refresh reset
+
 import { useTheme } from "@/components/ThemeController";
 import { assetUrl } from "@/lib/cdnAssets";
 import { useEffect, useRef, useState } from "react";
@@ -101,6 +103,9 @@ function spawnSprites(density: number): Sprite[] {
   return sprites;
 }
 
+const courtPlantCache = new WeakMap<Sprite[], Sprite[]>();
+const depthCache = new WeakMap<Sprite[], {travel:number;visible:Sprite[]}>();
+
 function paintFrame(
   ctx: CanvasRenderingContext2D,
   width: number,
@@ -118,13 +123,16 @@ function paintFrame(
   if (court) {
     // Reuse the hero sprites as individual plants, rooted at the court floor.
     // Far plants are shorter; foreground leaves naturally cover resting balls.
-    const plants = sprites.filter((_, index) => index % 8 === 0)
-      .sort((a,b) => b.zOffset - a.zOffset);
+    let plants = courtPlantCache.get(sprites);
+    if (!plants) {
+      plants = sprites.filter((_, index) => index % 8 === 0).sort((a,b) => b.zOffset - a.zOffset);
+      courtPlantCache.set(sprites, plants);
+    }
+    const daisies = flowers.find(image => image.src.includes("flower-2.png"));
     const scale = width < 768 ? .75 : 1;
     for (const plant of plants) {
       const source = plant.type === 0 ? flowers : leaves;
       // Favor the white daisy clusters in the footer garden.
-      const daisies = flowers.find(image => image.src.includes("flower-2.png"));
       const image = plant.type === 0 && plant.imgIndex % 5 !== 0 && daisies
         ? daisies
         : source[plant.imgIndex % Math.max(1,source.length)];
@@ -150,19 +158,19 @@ function paintFrame(
     height / LAYOUT_REF_HEIGHT,
   );
   const worldSpan = width * 2.5;
-  const visible: Sprite[] = [];
-
-  for (let i = 0; i < sprites.length; i++) {
-    const sprite = sprites[i];
-    sprite.relativeZ =
-      ((sprite.zOffset * SCENE_DEPTH - travel) % SCENE_DEPTH + SCENE_DEPTH) %
-      SCENE_DEPTH;
-    if (sprite.relativeZ > 10 && sprite.relativeZ < SCENE_DEPTH * 0.99) {
-      visible.push(sprite);
+  let cached = depthCache.get(sprites);
+  if (!cached || cached.travel !== travel) {
+    const visible = cached?.visible ?? [];
+    visible.length = 0;
+    for (const sprite of sprites) {
+      sprite.relativeZ = ((sprite.zOffset * SCENE_DEPTH - travel) % SCENE_DEPTH + SCENE_DEPTH) % SCENE_DEPTH;
+      if (sprite.relativeZ > 10 && sprite.relativeZ < SCENE_DEPTH * .99) visible.push(sprite);
     }
+    visible.sort((a,b) => b.relativeZ - a.relativeZ);
+    cached = {travel,visible};
+    depthCache.set(sprites,cached);
   }
-
-  visible.sort((a, b) => b.relativeZ - a.relativeZ);
+  const visible = cached.visible;
 
   // Soften only the extreme depth wrap — keep the visible bed fully opaque
   // so soft PNG edges don't read as white/black haze on the silhouette.
@@ -225,8 +233,10 @@ function paintFrame(
 
 export default function HeroGarden({
   placement = "hero",
+  flowerPalette = "mixed",
 }: {
   placement?: "hero" | "footer" | "court";
+  flowerPalette?: "mixed" | "white";
 } = {}) {
   const { reducedMotion } = useTheme();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -251,6 +261,7 @@ export default function HeroGarden({
     let width = 0;
     let height = 0;
     let spawnDensity = -1;
+    let currentDpr = 0;
     let time = 0;
     let travel = 0;
     let scrollSmoothed = 0;
@@ -268,9 +279,11 @@ export default function HeroGarden({
       // Skip dock-minimize / transient 0-size frames so we don't nuke the layout.
       if (nextWidth < 2 || nextHeight < 2) return;
 
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      if (width === nextWidth && height === nextHeight && currentDpr === dpr) return;
       width = nextWidth;
       height = nextHeight;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      currentDpr = dpr;
       canvas.width = Math.max(1, Math.floor(width * dpr));
       canvas.height = Math.max(1, Math.floor(height * dpr));
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -290,7 +303,7 @@ export default function HeroGarden({
     };
 
     const render = () => {
-      if (!running || !inView) return;
+      if (!running || !inView || document.hidden) return;
       if (!reducedMotion) {
         // Keep idle pinned to the load-time depth; wind/sway keeps moving.
         idleTravel = initialIdleTravel;
@@ -308,14 +321,14 @@ export default function HeroGarden({
     };
 
     const onScroll = () => {
-      if (reducedMotion) {
+      if (reducedMotion && inView && !document.hidden) {
         scrollSmoothed = scrollDepth();
         travel = scrollSmoothed * SCROLL_SPEED + idleTravel;
         paintFrame(ctx, width, height, sprites, flowers, leaves, time, travel, placement === "court");
       }
     };
 
-    loadImages(FLOWER_URLS, flowers, () => {
+    loadImages(flowerPalette === "white" ? [FLOWER_URLS[1]] : FLOWER_URLS, flowers, () => {
       if (reducedMotion) render();
     });
     loadImages(LEAF_URLS, leaves, () => {
@@ -325,16 +338,19 @@ export default function HeroGarden({
     resize();
     render();
 
-    // The second garden sleeps until it enters the viewport.
-    const visibilityObserver = placement !== "hero"
-      ? new IntersectionObserver(([entry]) => {
-          const wasVisible = inView;
-          inView = entry.isIntersecting;
-          if (inView && !wasVisible) render();
-          if (!inView) cancelAnimationFrame(frame);
-        })
-      : null;
-    visibilityObserver?.observe(canvas);
+    // All gardens sleep off-screen without changing their rendering settings.
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      const wasVisible = inView;
+      inView = entry.isIntersecting;
+      if (inView && !wasVisible) render();
+      if (!inView) cancelAnimationFrame(frame);
+    });
+    visibilityObserver.observe(canvas);
+    const onVisibility = () => {
+      cancelAnimationFrame(frame);
+      if (!document.hidden && inView) render();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
 
     const observer = new ResizeObserver(() => {
       resize();
@@ -347,10 +363,11 @@ export default function HeroGarden({
       running = false;
       cancelAnimationFrame(frame);
       observer.disconnect();
-      visibilityObserver?.disconnect();
+      visibilityObserver.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("scroll", onScroll);
     };
-  }, [reducedMotion, enabled, placement]);
+  }, [reducedMotion, enabled, placement, flowerPalette]);
 
   // Always render the same markup on server + client to avoid hydration mismatch.
   // The canvas starts after hydration on every viewport.
