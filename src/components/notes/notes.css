@@ -1,0 +1,233 @@
+/* Notes: a quiet reading column in the site's dark theme. */
+.notes-page {
+  --note-ink: var(--text-primary);
+  --note-soft: var(--text-secondary);
+  --note-faint: #6f6b62;
+  --note-rule: #ffffff14;
+  --note-accent: #e7cc99;
+  min-height: 100svh;
+  padding: 140px 20px 120px;
+  color: var(--note-ink);
+  font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+}
+.note-page { padding-bottom: 160px; }
+.notes-column { width: 100%; max-width: 640px; margin: 0 auto; }
+
+.notes-title {
+  margin: 0 0 22px;
+  font: 400 clamp(34px, 4vw, 46px)/1.1 var(--font-playfair), Georgia, serif;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.notes-intro {
+  margin: 0 0 14px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--note-soft);
+  text-wrap: pretty;
+}
+.notes-intro a {
+  color: var(--note-ink);
+  text-decoration: underline;
+  text-decoration-color: #ffffff40;
+  text-underline-offset: 4px;
+}
+.notes-intro a:hover { text-decoration-color: var(--note-accent); }
+.notes-section-title {
+  margin: 64px 0 18px;
+  font: 400 24px/1.2 var(--font-playfair), Georgia, serif;
+  letter-spacing: -0.02em;
+}
+
+/* ---------- The list ---------- */
+.note-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--note-rule); }
+.note-list li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--note-rule);
+}
+.note-list__title {
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--note-ink);
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size .35s cubic-bezier(.2, .75, .25, 1), color .2s;
+}
+.note-list__title:hover { color: var(--note-accent); background-size: 100% 1px; }
+.note-list__meta { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.note-list__count { font-size: 12px; color: var(--note-faint); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* Category tags: small, warm, garden-toned. Unknown categories get the default. */
+.note-tag {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #e7cc991a;
+  color: #e7cc99;
+  font: 500 10.5px/1.3 var(--font-geist), sans-serif;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.note-tag[data-category="design"] { background: #9fc0e01a; color: #a9c6e2; }
+.note-tag[data-category="craft"] { background: #c7a6e01a; color: #cdb2e6; }
+.note-tag[data-category="process"] { background: #a6d0981a; color: #b3d6a6; }
+.note-tag[data-category="product"] { background: #f0a9881a; color: #f1b59a; }
+.note-tag[data-category="life"] { background: #f2d17e1a; color: #f2d58c; }
+.note-tag[data-category="ai"] { background: #8fd6cf1a; color: #9fdcd5; }
+
+/* ---------- A note ---------- */
+.note-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 32px;
+  font-size: 13px;
+  color: var(--note-soft);
+  text-decoration: none;
+}
+.note-back:hover { color: var(--note-ink); }
+.note-header { margin-bottom: 36px; }
+.note-header .notes-title { margin-bottom: 14px; }
+.note-meta { display: flex; align-items: center; gap: 12px; margin: 0; font-size: 13px; color: var(--note-faint); }
+
+.note-body { font-size: 17px; line-height: 1.75; color: #d8d6cf; }
+.note-body > * { margin: 0 0 22px; }
+.note-body h2 {
+  margin: 48px 0 16px;
+  font: 400 26px/1.25 var(--font-playfair), Georgia, serif;
+  letter-spacing: -0.02em;
+  color: var(--note-ink);
+}
+.note-body h3 { margin: 36px 0 12px; font-size: 18px; font-weight: 600; color: var(--note-ink); }
+.note-body strong { font-weight: 600; color: var(--note-ink); }
+.note-body em { font-family: var(--font-playfair), Georgia, serif; font-size: 1.04em; }
+.note-body a { color: var(--note-ink); text-decoration: underline; text-decoration-color: #e7cc9980; text-underline-offset: 4px; }
+.note-body a:hover { text-decoration-color: var(--note-accent); }
+.note-body ul, .note-body ol { padding: 0; list-style: none; }
+.note-body li { position: relative; margin: 0 0 10px; padding-left: 30px; }
+.note-body ul > li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff0f;
+  color: var(--note-accent);
+  font-size: 11px;
+  line-height: 1;
+}
+.note-body ol { counter-reset: note-step; }
+.note-body ol > li { counter-increment: note-step; }
+.note-body ol > li::before {
+  content: counter(note-step);
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #e7cc991f;
+  color: var(--note-accent);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+}
+.note-body blockquote {
+  margin-left: 0;
+  padding-left: 20px;
+  border-left: 2px solid var(--note-accent);
+  font: italic 400 20px/1.6 var(--font-playfair), Georgia, serif;
+  color: var(--note-ink);
+}
+.note-body code { padding: 2px 6px; border-radius: 5px; background: #ffffff10; font-size: .88em; }
+.note-body pre { padding: 16px 18px; border-radius: 10px; background: #ffffff0a; overflow-x: auto; font-size: 14px; line-height: 1.6; }
+.note-body pre code { padding: 0; background: none; }
+.note-body img { max-width: 100%; height: auto; border-radius: 10px; }
+.note-body hr { border: 0; border-top: 1px solid var(--note-rule); margin: 40px 0; }
+
+.note-more { margin-top: 72px; }
+.note-more .notes-section-title { margin-top: 40px; }
+.note-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--note-faint);
+  font-size: 16px;
+}
+.note-divider::before, .note-divider::after { content: ""; flex: 1; height: 1px; background: var(--note-rule); }
+
+/* ---------- Floating reaction bar ---------- */
+.note-reactions {
+  position: fixed;
+  left: 50%;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  z-index: 40;
+  display: flex;
+  gap: 4px;
+  max-width: calc(100vw - 24px);
+  padding: 6px;
+  border: 1px solid #ffffff1c;
+  border-radius: 999px;
+  background: #161714f2;
+  box-shadow: 0 12px 40px #0008, inset 0 1px 0 #ffffff12;
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  transform: translateX(-50%);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.note-reactions::-webkit-scrollbar { display: none; }
+.note-reaction {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  height: 38px;
+  padding: 0 13px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: none;
+  color: var(--note-soft);
+  font: 500 12.5px var(--font-geist), sans-serif;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s;
+}
+.note-reaction:hover { background: #ffffff0d; color: var(--note-ink); }
+.note-reaction.is-active { border-color: #e7cc9955; background: #e7cc991a; color: var(--note-ink); }
+.note-reaction:focus-visible { outline: 2px solid var(--note-accent); outline-offset: 2px; }
+.note-reaction__emoji { font-size: 16px; line-height: 1; }
+.note-reaction.is-popped .note-reaction__emoji { animation: note-pop .5s cubic-bezier(.3, 1.6, .5, 1); }
+.note-reaction__count { color: var(--note-faint); font-variant-numeric: tabular-nums; }
+.note-reaction.is-active .note-reaction__count { color: var(--note-accent); }
+
+@keyframes note-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.5) rotate(-10deg); }
+  100% { transform: scale(1); }
+}
+
+@media (max-width: 767px) {
+  .notes-page { padding: 112px 20px 100px; }
+  .note-page { padding-bottom: 130px; }
+  .note-body { font-size: 16.5px; }
+  .note-list li { flex-direction: column; gap: 6px; }
+  /* Emoji-only on phones so all five fit; labels stay for screen readers. */
+  .note-reaction { padding: 0 12px; }
+  .note-reaction__label { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .note-reaction.is-popped .note-reaction__emoji { animation: none; }
+  .note-list__title { transition: none; }
+}
