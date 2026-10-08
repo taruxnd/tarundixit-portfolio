@@ -1,8 +1,8 @@
 "use client";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
-import { ArrowUpRight, Camera, Upload, X } from "lucide-react";
-import CameraCapture from "./CameraCapture";
+import { ArrowLeft, ArrowRight, X } from "lucide-react";
+import SlotCamera from "./SlotCamera";
 import { preparePhoto } from "./photo";
 
 export type Draft = { name: string; company: string; message: string; linkedin: string; photo: string; website: string };
@@ -12,22 +12,30 @@ type Props = {
   onPlant: (draft: Draft) => Promise<string | null>;
 };
 
+const PLANT_MS = 650;
+
 /**
- * The signing form, rendered in a native <dialog>. The parent opens it with
- * `ref.current?.showModal()`; it closes itself on submit, Escape, or backdrop click.
+ * Signing the guestbook: you fill in the polaroid itself. The front holds your
+ * photo (the camera opens right in the frame) and your name on the caption
+ * strip; flip it to write your hello on the back, then it's planted.
+ * Rendered in a native <dialog>; the parent opens it with `showModal()`.
  */
 const ComposeDialog = forwardRef<HTMLDialogElement, Props>(function ComposeDialog({ onPlant }, ref) {
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
-  const [website, setWebsite] = useState("");
-  const [planting, setPlanting] = useState(false);
   const [message, setMessage] = useState("");
   const [linkedin, setLinkedin] = useState("");
+  const [website, setWebsite] = useState("");
   const [photo, setPhoto] = useState("");
   const [camera, setCamera] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [preparing, setPreparing] = useState(false);
+  const [flipped, setFlipped] = useState(false);
+  const [planting, setPlanting] = useState(false);
+  const [planted, setPlanted] = useState(false);
   const [error, setError] = useState("");
   const input = useRef<HTMLInputElement>(null);
+  const nameField = useRef<HTMLInputElement>(null);
+  const messageField = useRef<HTMLTextAreaElement>(null);
   const uploadVersion = useRef(0);
   const inner = useRef<HTMLDialogElement | null>(null);
 
@@ -39,16 +47,37 @@ const ComposeDialog = forwardRef<HTMLDialogElement, Props>(function ComposeDialo
     else if (ref) ref.current = node;
   }
 
+  function reset() {
+    uploadVersion.current++;
+    setName("");
+    setCompany("");
+    setMessage("");
+    setLinkedin("");
+    setWebsite("");
+    setPhoto("");
+    setPreparing(false);
+    setFlipped(false);
+    setPlanted(false);
+  }
+
   function close() {
     setCamera(false);
     setError("");
     inner.current?.close();
   }
 
+  function flip(toBack: boolean) {
+    setError("");
+    setCamera(false);
+    setFlipped(toBack);
+    // Focus the first field on the side that's turning toward the visitor.
+    setTimeout(() => (toBack ? messageField.current : nameField.current)?.focus({ preventScroll: true }), 320);
+  }
+
   async function upload(file?: File) {
     if (!file) return;
     const version = ++uploadVersion.current;
-    setLoading(true);
+    setPreparing(true);
     setError("");
     try {
       const result = await preparePhoto(file);
@@ -56,7 +85,7 @@ const ComposeDialog = forwardRef<HTMLDialogElement, Props>(function ComposeDialo
     } catch (e) {
       if (version === uploadVersion.current) setError(e instanceof Error ? e.message : "Could not load that photo.");
     } finally {
-      if (version === uploadVersion.current) setLoading(false);
+      if (version === uploadVersion.current) setPreparing(false);
     }
   }
 
@@ -64,180 +93,237 @@ const ComposeDialog = forwardRef<HTMLDialogElement, Props>(function ComposeDialo
     event.preventDefault();
     if (planting) return;
     setError("");
-    if (!name.trim() || !message.trim()) {
-      setError("Add your name and a little hello first.");
+    if (!name.trim()) {
+      setError("Sign your name on the front first.");
+      if (flipped) flip(false);
+      else nameField.current?.focus();
+      return;
+    }
+    if (!message.trim()) {
+      setError("Write a little hello on the back.");
+      if (!flipped) flip(true);
+      else messageField.current?.focus();
       return;
     }
     let profile = "";
     if (linkedin.trim()) {
       try {
-        const url = new URL(linkedin.trim());
+        const raw = linkedin.trim();
+        const url = new URL(/^https?:\/\//i.test(raw) ? raw : `https://${raw}`);
         if (url.protocol !== "https:" || !/(^|\.)linkedin\.com$/i.test(url.hostname)) throw new Error();
         profile = url.href;
       } catch {
-        setError("Use a full LinkedIn link, starting with https://www.linkedin.com/.");
+        setError("That LinkedIn link doesn't look right. Try linkedin.com/in/yourname.");
         return;
       }
     }
     setPlanting(true);
     const failure = await onPlant({ name: name.trim(), company: company.trim(), message: message.trim(), linkedin: profile, photo, website });
-    setPlanting(false);
     if (failure) {
+      setPlanting(false);
       setError(failure);
       return;
     }
-    setName("");
-    setCompany("");
-    setMessage("");
-    setLinkedin("");
-    setPhoto("");
-    close();
+    // Let the card fly down into the bed before the dialog goes away.
+    setPlanted(true);
+    setTimeout(() => {
+      setPlanting(false);
+      close();
+      reset();
+    }, PLANT_MS);
   }
+
+  const busy = preparing || planting;
 
   return (
     <dialog
       ref={setRefs}
-      className="guest-dialog guest-compose"
-      aria-labelledby="guest-compose-title"
+      className="guest-dialog guest-sign"
+      aria-labelledby="guest-sign-title"
       onCancel={(event) => {
         event.preventDefault();
         if (camera) setCamera(false);
-        else close();
+        else if (!planting) close();
       }}
       onClick={(event) => {
-        if (event.target === event.currentTarget) close();
+        if (event.target === event.currentTarget && !planting) close();
       }}
     >
-      <section className="guest-dialog-panel">
-        <button className="guest-icon-button guest-dialog-close" type="button" onClick={close} aria-label="Close guestbook form">
-          <X size={20} />
-        </button>
-        <h2 id="guest-compose-title">Leave a hello.</h2>
-        <form onSubmit={submit}>
-          <div className="guest-photo-controls">
-            <div className="guest-photo-preview">
-              {photo ? <img src={photo} alt="Your photo preview" /> : <Camera size={34} strokeWidth={1.2} />}
+      <button className="guest-sign-close" type="button" onClick={close} aria-label="Close" disabled={planting}>
+        <X size={20} />
+      </button>
+
+      <form className={`guest-sign-form${planted ? " is-planted" : ""}`} onSubmit={submit} noValidate>
+        <header className="guest-sign-header">
+          <h2 id="guest-sign-title">Leave a hello</h2>
+          <p aria-live="polite">{flipped ? "Now write on the back." : "Snap a photo and sign the front."}</p>
+        </header>
+
+        <div className="guest-sign-stage">
+          <div className={`guest-sign-card${flipped ? " is-flipped" : ""}`}>
+            {/* ---------- Front: photo + caption ---------- */}
+            <div className="guest-sign-face guest-sign-front" inert={flipped}>
+              <span className="guest-sign-tape" aria-hidden="true" />
+              <div className={`guest-sign-photo${photo ? " has-photo" : ""}`}>
+                {camera ? (
+                  <SlotCamera
+                    onPhoto={(value) => {
+                      uploadVersion.current++;
+                      setPhoto(value);
+                      setCamera(false);
+                    }}
+                    onCancel={() => setCamera(false)}
+                  />
+                ) : photo ? (
+                  <>
+                    <img src={photo} alt="Your photo" />
+                    <div className="guest-sign-photo-actions">
+                      <button type="button" onClick={() => setCamera(true)} disabled={busy}>
+                        Retake
+                      </button>
+                      <button type="button" onClick={() => input.current?.click()} disabled={busy}>
+                        Upload
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          uploadVersion.current++;
+                          setPhoto("");
+                        }}
+                        disabled={busy}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      className="guest-sign-snap"
+                      onClick={() => {
+                        setError("");
+                        setCamera(true);
+                      }}
+                      disabled={busy}
+                    >
+                      <span className="guest-sign-lens" aria-hidden="true" />
+                      <span>{preparing ? "Developing…" : "Tap to take your photo"}</span>
+                    </button>
+                    <button type="button" className="guest-slot-link guest-sign-upload" onClick={() => input.current?.click()} disabled={busy}>
+                      or upload one
+                    </button>
+                  </>
+                )}
+              </div>
+              <div className="guest-sign-caption">
+                <input
+                  ref={nameField}
+                  id="guest-name"
+                  name="name"
+                  autoComplete="name"
+                  placeholder="Your name"
+                  aria-label="Your name"
+                  maxLength={60}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+                <span aria-hidden="true">·</span>
+                <input
+                  id="guest-company"
+                  name="company"
+                  autoComplete="organization"
+                  placeholder="where you work"
+                  aria-label="Where you work (optional)"
+                  maxLength={60}
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                />
+              </div>
             </div>
-            <div className="guest-photo-buttons">
-              <span className="guest-photo-label">Start with a photo.</span>
-              <span className="guest-photo-hint">Put a face to your hello.</span>
-              <button
-                type="button"
-                className="guest-photo-primary"
-                onClick={() => {
-                  setError("");
-                  setCamera(true);
-                }}
-                disabled={loading}
-              >
-                <Camera size={16} />
-                {photo ? "Retake photo" : "Take a photo"}
-              </button>
-              <button type="button" onClick={() => input.current?.click()} disabled={loading}>
-                <Upload size={16} />
-                {loading ? "Preparing…" : "Upload"}
-              </button>
-              <button
-                type="button"
-                className="guest-photo-remove"
-                onClick={() => {
-                  uploadVersion.current++;
-                  setPhoto("");
-                  setLoading(false);
-                  document.getElementById("guest-name")?.focus();
-                }}
-              >
-                {photo ? "Remove photo" : "Skip for now"}
-              </button>
+
+            {/* ---------- Back: the note ---------- */}
+            <div className="guest-sign-face guest-sign-back" inert={!flipped}>
+              <textarea
+                ref={messageField}
+                id="guest-message"
+                name="message"
+                placeholder="Say something nice…"
+                aria-label="Your hello"
+                maxLength={300}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              />
+              <footer>
+                <span className="guest-sign-signature">— {name.trim() || "you"}</span>
+                <span className="guest-sign-count" aria-hidden="true">
+                  {message.length}/300
+                </span>
+              </footer>
+              <label className="guest-sign-linkedin">
+                <span aria-hidden="true">in</span>
+                <input
+                  id="guest-linkedin"
+                  name="linkedin"
+                  inputMode="url"
+                  autoComplete="url"
+                  placeholder="linkedin.com/in/you (optional)"
+                  aria-label="LinkedIn profile (optional)"
+                  maxLength={300}
+                  value={linkedin}
+                  onChange={(e) => setLinkedin(e.target.value)}
+                />
+              </label>
             </div>
           </div>
-          <input
-            className="guest-file-input"
-            ref={input}
-            type="file"
-            accept="image/*"
-            aria-label="Upload a photo"
-            onChange={(e) => {
-              upload(e.target.files?.[0]);
-              e.target.value = "";
-            }}
-          />
-          <div className="guest-fields">
-            <label htmlFor="guest-name">Name</label>
-            <input
-              id="guest-name"
-              name="name"
-              autoComplete="name"
-              placeholder="Your name"
-              maxLength={60}
-              required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <label htmlFor="guest-company">
-              Company <span>· optional</span>
-            </label>
-            <input
-              id="guest-company"
-              name="company"
-              autoComplete="organization"
-              placeholder="Where you work"
-              maxLength={60}
-              value={company}
-              onChange={(e) => setCompany(e.target.value)}
-            />
-            <div className="guest-message-label">
-              <label htmlFor="guest-message">Message</label>
-              <span>{message.length}/300</span>
-            </div>
-            <textarea
-              id="guest-message"
-              name="message"
-              placeholder="A little hello…"
-              maxLength={300}
-              required
-              rows={3}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
-            <label htmlFor="guest-linkedin">
-              LinkedIn <span>· optional</span>
-            </label>
-            <input
-              id="guest-linkedin"
-              name="linkedin"
-              type="url"
-              placeholder="https://linkedin.com/in/yourname"
-              value={linkedin}
-              maxLength={300}
-              onChange={(e) => setLinkedin(e.target.value)}
-            />
-            {/* Honeypot: invisible to people, irresistible to bots. */}
-            <input
-              className="guest-honeypot"
-              name="website"
-              tabIndex={-1}
-              autoComplete="off"
-              aria-hidden="true"
-              value={website}
-              onChange={(e) => setWebsite(e.target.value)}
-            />
-          </div>
-          {error && (
-            <p className="guest-error" role="alert">
-              {error}
-            </p>
-          )}
-          <div className="guest-compose-footer">
-            <p className="guest-compose-note">Your photo and hello will be public on this page.</p>
-            <button type="submit" className="guest-submit" disabled={loading || planting}>
-              {planting ? "Planting…" : "Plant my hello"}
-              <ArrowUpRight size={16} />
+        </div>
+
+        {/* Honeypot: invisible to people, irresistible to bots. */}
+        <input
+          className="guest-honeypot"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          value={website}
+          onChange={(e) => setWebsite(e.target.value)}
+        />
+        <input
+          ref={input}
+          className="guest-file-input"
+          type="file"
+          accept="image/*"
+          aria-label="Upload a photo"
+          onChange={(e) => {
+            upload(e.target.files?.[0]);
+            e.target.value = "";
+          }}
+        />
+
+        <p className="guest-sign-error" role="alert">
+          {error}
+        </p>
+
+        <div className="guest-sign-actions">
+          {flipped ? (
+            <>
+              <button type="button" className="guest-sign-ghost" onClick={() => flip(false)} disabled={planting}>
+                <ArrowLeft size={15} />
+                Front
+              </button>
+              <button type="submit" className="guest-sign-primary" disabled={busy}>
+                {planting ? "Planting…" : "Plant my hello"}
+              </button>
+            </>
+          ) : (
+            <button type="button" className="guest-sign-primary" onClick={() => flip(true)} disabled={camera}>
+              Write on the back
+              <ArrowRight size={15} />
             </button>
-          </div>
-        </form>
-      </section>
-      {camera && <CameraCapture onPhoto={setPhoto} onClose={() => setCamera(false)} />}
+          )}
+        </div>
+        <p className="guest-sign-note">Your photo and hello will be public on this page.</p>
+      </form>
     </dialog>
   );
 });

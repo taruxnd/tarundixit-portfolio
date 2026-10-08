@@ -8,7 +8,6 @@ import { geist, playfairDisplay } from "@/lib/heroFonts";
 import ComposeDialog from "./ComposeDialog";
 import type { Draft } from "./ComposeDialog";
 import PlantedEntry, { PlantedInvite } from "./PlantedEntry";
-import type { Depth } from "./PlantedEntry";
 import type { Entry } from "./types";
 import { plantHello } from "@/app/guestbook/actions";
 import "./guestbook.css";
@@ -39,9 +38,6 @@ const DEMO_ENTRIES: Entry[] = [
   createdAt: new Date(Date.UTC(2026, 9, 7) - seed.daysAgo * 86_400_000).toISOString(),
 }));
 
-/** Front / mid / back rows, repeating so neighbours never share a plane. */
-const DEPTHS: Depth[] = [0, 2, 1, 0, 1, 2];
-
 /** `initialEntries` is null when storage isn't configured: show the demo wall and keep hellos local. */
 export default function Guestbook({ initialEntries }: { initialEntries: Entry[] | null }) {
   const live = initialEntries !== null;
@@ -50,6 +46,21 @@ export default function Guestbook({ initialEntries }: { initialEntries: Entry[] 
   const [newest, setNewest] = useState<string | null>(null);
   const [status, setStatus] = useState("");
   const dialog = useRef<HTMLDialogElement>(null);
+  const opener = useRef<HTMLElement | null>(null);
+
+  // Open the signing card, remembering what opened it. Safari doesn't focus
+  // buttons on click, so without this the dialog hands focus back to the bed.
+  function openCompose(trigger: HTMLElement) {
+    opener.current = trigger;
+    dialog.current?.showModal();
+  }
+  useEffect(() => {
+    const element = dialog.current;
+    if (!element) return;
+    const restore = () => opener.current?.focus({ preventScroll: true, focusVisible: false } as FocusOptions);
+    element.addEventListener("close", restore);
+    return () => element.removeEventListener("close", restore);
+  }, []);
   const bed = useRef<HTMLDivElement>(null);
 
   // Close an open note when clicking anywhere else.
@@ -151,7 +162,7 @@ export default function Guestbook({ initialEntries }: { initialEntries: Entry[] 
           {entries.length === 0
             ? "No hellos yet. Be the first to "
             : `${entries.length} ${entries.length === 1 ? "hello" : "hellos"} planted so far. Hover a face to read theirs, or `}
-          <button type="button" className="guestbook-inline-sign" onClick={() => dialog.current?.showModal()}>
+          <button type="button" className="guestbook-inline-sign" onClick={(event) => openCompose(event.currentTarget)}>
             plant your own
             <ArrowUpRight size={13} />
           </button>
@@ -180,12 +191,11 @@ export default function Guestbook({ initialEntries }: { initialEntries: Entry[] 
         }}
       >
         <ol className="guestbook-row">
-          <PlantedInvite onOpen={() => dialog.current?.showModal()} />
-          {entries.map((entry, i) => (
+          <PlantedInvite onOpen={openCompose} />
+          {entries.map((entry) => (
             <PlantedEntry
               key={entry.id}
               entry={entry}
-              depth={DEPTHS[i % DEPTHS.length]}
               open={open === entry.id}
               isNew={newest === entry.id}
               onToggle={() => setOpen((value) => (value === entry.id ? null : entry.id))}

@@ -13,9 +13,8 @@
   --card-w: 149px;
   --card-h: 180px;
   --photo-h: 132px;
-  --rise-front: 120px;
-  --rise-mid: 200px;
-  --rise-back: 270px;
+  /* How high every card stands above the ground: one line, same height. */
+  --rise: 150px;
   position: relative;
   isolation: isolate;
   height: 100svh;
@@ -34,7 +33,6 @@
   right: 0;
   z-index: 4;
   padding: 92px 5.5% 0;
-  max-width: 520px;
   pointer-events: none;
 }
 .guestbook-header > * { pointer-events: auto; }
@@ -58,7 +56,8 @@
   line-height: 1.6;
   color: var(--muted);
   margin: 0;
-  max-width: 400px;
+  /* One line wherever it fits; only wraps when the screen is too narrow. */
+  text-wrap: pretty;
 }
 .guestbook-inline-sign {
   display: inline-flex;
@@ -94,14 +93,13 @@
 }
 .guestbook-bed::-webkit-scrollbar { display: none; }
 .guestbook-bed.is-dragging { cursor: grabbing; user-select: none; }
-.guestbook-bed:focus-visible { box-shadow: inset 0 0 0 1px #e7cc9966; }
 .guestbook-row {
   list-style: none;
   margin: 0;
   padding: 0 14% 0 7%;
   display: flex;
   align-items: flex-end;
-  gap: 16px;
+  gap: 56px;
   height: 100%;
   width: max-content;
   min-width: 100%;
@@ -118,9 +116,7 @@
 /* Only the card itself reacts to the pointer, not the empty column above it or the stake. */
 .guest-entry { pointer-events: none; }
 .guest-card-slot { pointer-events: auto; }
-.guest-entry[data-depth="0"] { --scale: 1;   --rise: var(--rise-front); z-index: 3; }
-.guest-entry[data-depth="1"] { --scale: 1;   --rise: var(--rise-mid);   z-index: 2; }
-.guest-entry[data-depth="2"] { --scale: 1;   --rise: var(--rise-back);  z-index: 1; }
+.guest-entry { --scale: 1; z-index: 1; }
 .guest-entry:hover,
 .guest-entry.is-open,
 .guest-entry:focus-within { z-index: 20; filter: none; }
@@ -331,231 +327,17 @@
 }
 
 /* ---------- Shared bits ---------- */
-.guest-icon-button {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border: 0;
-  border-radius: 50%;
-  background: none;
-  color: var(--cream);
-  cursor: pointer;
-}
-.guest-icon-button:hover { background: #ffffff10; }
-.guest-submit {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  min-height: 42px;
-  padding: 11px 16px;
-  border: 1px solid #eef5e080;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #d5e1c6ed, #b5c6a3ed);
-  box-shadow: inset 0 1px 0 #ffffff90, 0 3px 12px #0002;
-  color: #172019;
-  font: 500 13px var(--font-geist), sans-serif;
-  white-space: nowrap;
-  cursor: pointer;
-}
-.guest-submit:hover { background: #d5e1c6; }
 .guestbook-page button:disabled, .guest-dialog button:disabled { opacity: .5; cursor: wait; }
 .guestbook-page a:focus-visible,
 .guestbook-page button:focus-visible,
 .guest-dialog button:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 .guest-file-input { display: none; }
 
-/* ---------- Compose dialog (frosted glass) ---------- */
-.guest-dialog {
-  position: fixed;
-  inset: 0;
-  width: min(820px, calc(100vw - 48px));
-  max-width: none;
-  max-height: 90svh;
-  margin: auto;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--cream);
-  overflow: visible;
-  font-family: var(--font-geist), sans-serif;
-}
-.guest-dialog::backdrop { background: #04070475; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
-.guest-dialog-panel {
-  position: relative;
-  isolation: isolate;
-  max-height: 90svh;
-  overflow-y: auto;
-  padding: 28px 32px 24px;
-  border: 1px solid #ffffff35;
-  border-radius: 24px;
-  background: linear-gradient(135deg, #ffffff12, #ffffff03 45%, #ffffff09), #182018b8;
-  backdrop-filter: blur(32px) saturate(145%);
-  -webkit-backdrop-filter: blur(32px) saturate(145%);
-  box-shadow: inset 0 1px 0 #ffffff30, inset 0 -1px 0 #ffffff10, 0 24px 80px #0005;
-  scrollbar-width: thin;
-  scrollbar-color: #716957 transparent;
-}
-.guest-dialog-panel::before {
-  content: '';
-  position: absolute;
-  inset: 1px;
-  z-index: -1;
-  pointer-events: none;
-  border-radius: 23px;
-  background: radial-gradient(ellipse at 10% 0%, #ffffff13, transparent 52%);
-}
-.guest-dialog-panel > h2 {
-  font: 400 32px/1.2 var(--font-playfair), Georgia, serif;
-  letter-spacing: -.02em;
-  margin: 0 0 25px;
-  padding-right: 24px;
-  color: #f5f5ed;
-}
-.guest-dialog-close { position: absolute; top: 14px; right: 14px; z-index: 2; color: #b8bdb1; }
-.guest-dialog-close:hover { color: #f1f0e8; }
-
-.guest-compose form {
-  display: grid;
-  grid-template-columns: 190px minmax(0, 1fr);
-  column-gap: 30px;
-}
-.guest-photo-controls {
-  grid-column: 1;
-  grid-row: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  padding: 6px 20px 0 0;
-  border-right: 1px solid #ffffff21;
-}
-.guest-photo-preview {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 132px;
-  aspect-ratio: 132 / 152;
-  padding: 7px 7px 24px;
-  background: var(--paper);
-  border-radius: 1px;
-  transform: rotate(-4deg);
-  box-shadow: 1px 4px 10px #0004;
-  color: #6b705d;
-  overflow: hidden;
-}
-.guest-photo-preview::after {
-  content: '';
-  position: absolute;
-  top: -6px;
-  left: 43px;
-  width: 38px;
-  height: 12px;
-  background: #d7c297b3;
-  transform: rotate(10deg);
-}
-.guest-photo-preview img { width: 100%; height: 100%; object-fit: cover; }
-.guest-photo-buttons { display: flex; flex-direction: column; align-items: center; gap: 5px; width: 100%; text-align: center; }
-.guest-photo-label { display: block; font-size: 15px; font-weight: 500; color: #f1f0e8; margin-bottom: 2px; }
-.guest-photo-hint { font-size: 11px; color: #bdc4b6; margin-bottom: 8px; line-height: 1.5; }
-.guest-photo-buttons button {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 34px;
-  padding: 5px 0;
-  border: 0;
-  border-radius: 4px;
-  background: none;
-  color: #e5e8de;
-  font: 12px var(--font-geist), sans-serif;
-  cursor: pointer;
-}
-.guest-photo-buttons button:hover { color: #c2cfaf; text-decoration: underline; text-underline-offset: 4px; }
-.guest-photo-buttons .guest-photo-primary {
-  padding: 8px 11px;
-  border: 1px solid #ffffff25;
-  border-radius: 7px;
-  background: #ffffff10;
-  white-space: nowrap;
-}
-.guest-photo-buttons .guest-photo-primary:hover { background: #ffffff1b; text-decoration: none; }
-.guest-photo-buttons .guest-photo-remove { font-size: 11px; color: #a6ad9d; }
-
-.guest-fields { grid-column: 2; grid-row: 1; min-width: 0; }
-.guest-fields label { display: block; font-size: 12px; font-weight: 500; color: #e1e5dc; }
-.guest-fields label span { font-weight: 400; color: #a6ad9d; }
-.guest-fields input, .guest-fields textarea {
-  display: block;
-  width: 100%;
-  margin: 0 0 18px;
-  padding: 11px 0;
-  border: 0;
-  border-bottom: 1px solid #ffffff38;
-  border-radius: 0;
-  background: transparent;
-  color: #f1f0e8;
-  font: 14px/1.5 var(--font-geist), sans-serif;
-  outline: none;
-}
-.guest-fields input:last-child { margin-bottom: 0; }
-.guest-fields textarea { min-height: 92px; max-height: 150px; resize: vertical; line-height: 1.65; }
-.guest-fields input::placeholder, .guest-fields textarea::placeholder { color: #b5bcaf; }
-.guest-fields input:focus, .guest-fields textarea:focus { border-bottom-color: #c2cfaf; box-shadow: 0 1px 0 #c2cfaf; }
-.guest-message-label { display: flex; justify-content: space-between; }
-.guest-message-label > span { font-size: 10px; color: #a6ad9d; font-variant-numeric: tabular-nums; }
-.guest-error { grid-column: 1 / -1; margin: 14px 0 0; font-size: 12px; line-height: 1.5; color: #f1b5a5; }
-.guest-compose-footer {
-  grid-column: 1 / -1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  margin-top: 22px;
-  padding-top: 18px;
-  border-top: 1px solid #ffffff21;
-}
-.guest-compose-note { margin: 0; font-size: 10.5px; line-height: 1.5; color: #a6ad9d; }
-.guest-compose .guest-submit { min-width: 155px; }
-
-/* ---------- Camera capture (inside the dialog) ---------- */
-.guest-camera-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: grid;
-  place-items: center;
-  padding: 20px;
-  background: #000c;
-  backdrop-filter: blur(8px);
-}
-.guest-camera {
-  position: relative;
-  width: min(100%, 430px);
-  max-height: 90svh;
-  overflow: auto;
-  padding: 28px;
-  border: 1px solid #e0cfab45;
-  border-radius: 20px;
-  background: #1b1e18;
-}
-.guest-camera h2 { font: 400 27px var(--font-playfair), Georgia, serif; margin: 12px 0 20px; }
-.guest-camera video { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 10px; background: #080b08; transform: scaleX(-1); }
-.guest-camera p { font-size: 13px; line-height: 1.5; color: #bdb9ad; }
-.guest-camera .guest-submit { width: 100%; }
-.guest-camera-close { position: absolute; top: 10px; right: 10px; }
-
 /* ---------- Short desktop windows ---------- */
 @media (min-width: 768px) and (max-height: 700px) {
-  .guestbook-page { --rise-front: 90px; --rise-mid: 150px; --rise-back: 200px; }
+  .guestbook-page { --rise: 110px; }
   .guestbook-header { padding-top: 76px; }
   .guestbook-bed { height: calc(100% - 150px); }
-  .guest-dialog-panel { padding: 22px 28px 18px; }
-  .guest-dialog-panel > h2 { font-size: 28px; margin-bottom: 18px; }
-  .guest-fields input, .guest-fields textarea { margin-bottom: 12px; padding: 7px 0; }
-  .guest-fields textarea { min-height: 66px; max-height: 90px; }
-  .guest-photo-preview { width: 110px; }
 }
 
 /* ---------- Phones ---------- */
@@ -564,38 +346,16 @@
     --card-w: 120px;
     --card-h: 146px;
     --photo-h: 104px;
-    --rise-front: 110px;
-    --rise-mid: 180px;
-    --rise-back: 240px;
+    --rise: 140px;
   }
-  .guestbook-header { padding: 96px 24px 0; max-width: none; }
+  .guestbook-header { padding: 96px 24px 0; }
   .guestbook-header h1 { font-size: 30px; }
-  .guestbook-header p { font-size: 12.5px; max-width: 320px; }
+  .guestbook-header p { font-size: 12.5px; }
   .guestbook-bed { height: min(560px, calc(100% - 210px)); cursor: default; mask-image: none; -webkit-mask-image: none; }
-  .guestbook-row { gap: 10px; padding: 0 24% 0 24px; }
+  .guestbook-row { gap: 32px; padding: 0 24% 0 24px; }
   .guest-note { width: 170px; }
   .guest-note p { font-size: 11px; max-height: 140px; }
   .guest-caption { font-size: 10.5px; }
-  .guest-dialog { inset: auto 0 0; width: 100%; margin: 0; }
-  .guest-dialog-panel { border-radius: 24px 24px 0 0; padding: 30px 24px max(24px, env(safe-area-inset-bottom)); }
-  .guest-dialog-panel::before { border-radius: 23px 23px 0 0; }
-  .guest-dialog-panel > h2 { font-size: 28px; margin-bottom: 22px; }
-  .guest-compose form { display: block; }
-  .guest-photo-controls {
-    flex-direction: row;
-    align-items: center;
-    gap: 20px;
-    padding: 0 0 22px;
-    margin-bottom: 22px;
-    border-right: 0;
-    border-bottom: 1px solid #ffffff21;
-  }
-  .guest-photo-preview { width: 104px; flex-shrink: 0; }
-  .guest-photo-preview::after { left: 32px; }
-  .guest-photo-buttons { align-items: flex-start; text-align: left; }
-  .guest-photo-buttons button { min-height: 36px; }
-  .guest-fields input, .guest-fields textarea { font-size: 16px; }
-  .guest-compose-footer { margin-top: 20px; }
 }
 
 /* ---------- Touch-first mid sizes: the canvas crop HeroGarden expects ---------- */
@@ -619,11 +379,7 @@
   .guest-polaroid--invite .guest-photo { animation: none; }
   .guestbook-bed { scroll-behavior: auto; }
 }
-@supports not (backdrop-filter: blur(1px)) {
-  .guest-dialog-panel { background: #1c241b; }
-}
 @media (prefers-reduced-transparency: reduce) {
-  .guest-dialog-panel { background: #1c241b; backdrop-filter: none; -webkit-backdrop-filter: none; }
   .guest-dialog::backdrop { background: #040704c9; backdrop-filter: none; -webkit-backdrop-filter: none; }
 }
 
@@ -645,3 +401,356 @@
 .guestbook-inline-sign{border-bottom:0;text-decoration:none}
 @media(prefers-reduced-motion:reduce){.guest-card-flipper{transition:none}}
 .guest-honeypot{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+
+/* ==================================================================
+   Signing: you fill in the polaroid itself.
+   Front = photo (camera opens in the frame) + caption strip.
+   Back  = lined note. Planting flies the card down into the bed.
+   ================================================================== */
+.guest-sign {
+  /* Fit the viewport, but never smaller than a usable card; very short screens scroll. */
+  --sign-w: min(340px, 84vw, max(250px, calc((100svh - 250px) * .82)));
+  --sign-ink: #342e24;
+  --sign-ink-soft: #746c5b;
+  --sign-faint: #a39a86;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--cream, #eee8d9);
+  overflow-y: auto;
+  font-family: var(--font-geist), sans-serif;
+}
+.guest-sign[open] { display: grid; justify-items: center; align-items: safe center; }
+.guest-sign::backdrop { background: #050805eb; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+
+.guest-sign-close {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ffffff22;
+  border-radius: 50%;
+  background: #ffffff10;
+  color: #eee8d9;
+  cursor: pointer;
+  transition: background .2s;
+}
+.guest-sign-close:hover { background: #ffffff1f; }
+
+.guest-sign-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 16px max(24px, env(safe-area-inset-bottom));
+}
+.guest-sign-header { text-align: center; transition: opacity .3s; }
+.guest-sign-header h2 {
+  margin: 0;
+  font: 400 26px/1.15 var(--font-playfair), Georgia, serif;
+  letter-spacing: -.02em;
+  color: #f5f1e6;
+}
+.guest-sign-header p { margin: 6px 0 0; font-size: 13px; color: #b9b5a8; }
+
+/* ---------- The card ---------- */
+.guest-sign-stage { margin: 26px 0 8px; perspective: 1600px; }
+.guest-sign-card {
+  position: relative;
+  width: var(--sign-w);
+  height: calc(var(--sign-w) * 1.22);
+  transform-style: preserve-3d;
+  transform: rotate(-2deg);
+  transition: transform .7s cubic-bezier(.2, .75, .25, 1);
+}
+.guest-sign-card.is-flipped { transform: rotate(1.5deg) rotateY(180deg); }
+
+.guest-sign-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 3px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: 0 30px 60px #0009, 0 4px 12px #0005;
+}
+.guest-sign-front {
+  padding: calc(var(--sign-w) * .055) calc(var(--sign-w) * .055) 0;
+  background:
+    radial-gradient(120% 80% at 25% 0%, #fff9 0, transparent 55%),
+    var(--paper, #eee8d8);
+}
+.guest-sign-tape {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  z-index: 2;
+  width: 96px;
+  height: 24px;
+  background: #d7c297b8;
+  box-shadow: 0 1px 3px #0002;
+  transform: translateX(-50%) rotate(-3deg);
+  clip-path: polygon(0 10%, 5% 0, 10% 12%, 15% 0, 85% 6%, 90% 0, 95% 10%, 100% 3%, 100% 92%, 95% 100%, 90% 88%, 85% 100%, 15% 94%, 10% 100%, 5% 90%, 0 100%);
+}
+
+/* Photo square: unexposed film until there's a picture. */
+.guest-sign-photo {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background:
+    radial-gradient(90% 70% at 30% 20%, #4a4337 0, transparent 70%),
+    linear-gradient(160deg, #39342b, #1d1a15);
+  box-shadow: inset 0 0 0 1px #0003, inset 0 0 24px #0006;
+}
+.guest-sign-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.guest-sign-snap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  border: 0;
+  background: none;
+  color: #eee8d9;
+  font: 500 14px var(--font-geist), sans-serif;
+  cursor: pointer;
+}
+.guest-sign-lens {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 2px solid #eee8d9cc;
+  background: radial-gradient(circle, #eee8d9 0 22%, transparent 24%), radial-gradient(circle, #ffffff14 0 60%, transparent 62%);
+  transition: transform .3s cubic-bezier(.2, .75, .25, 1);
+}
+.guest-sign-snap:hover .guest-sign-lens { transform: scale(1.08); }
+.guest-sign-snap:focus-visible { outline: 2px solid var(--accent, #e7cc99); outline-offset: -6px; }
+.guest-sign-upload { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); }
+.guest-sign-photo-actions {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity .2s;
+}
+.guest-sign-photo:hover .guest-sign-photo-actions,
+.guest-sign-photo:focus-within .guest-sign-photo-actions { opacity: 1; }
+@media (hover: none) { .guest-sign-photo-actions { opacity: 1; } }
+.guest-sign-photo-actions button {
+  padding: 6px 11px;
+  border: 0;
+  border-radius: 999px;
+  background: #1d1a15c4;
+  color: #f3eee2;
+  font: 500 12px var(--font-geist), sans-serif;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.guest-sign-photo-actions button:hover { background: #1d1a15ee; }
+
+/* Caption strip: you write your name where it will be printed. */
+.guest-sign-caption {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 0 2px;
+  color: var(--sign-faint);
+  font: 500 calc(var(--sign-w) * .052) var(--font-geist), sans-serif;
+}
+.guest-sign-caption input {
+  min-width: 0;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  color: var(--sign-ink);
+  font: inherit;
+  outline: none;
+}
+.guest-sign-caption input:first-child { flex: 1 1 55%; }
+.guest-sign-caption input:last-child { flex: 1 1 45%; color: var(--sign-ink-soft); font-weight: 400; }
+.guest-sign-caption input::placeholder { color: var(--sign-faint); }
+.guest-sign-caption input:focus { box-shadow: inset 0 -1.5px 0 #342e2455; }
+
+/* Back: the note. Text sits on the ruled lines. */
+.guest-sign-back {
+  padding: 24px 24px 16px;
+  background:
+    repeating-linear-gradient(transparent 0 29px, #b4a98d59 29px 30px) 0 24px / 100% calc(100% - 96px) no-repeat,
+    #f3eee2;
+  color: var(--sign-ink);
+  transform: rotateY(180deg);
+}
+.guest-sign-back textarea {
+  flex: 1;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--sign-ink);
+  font: 16px/30px var(--font-geist), sans-serif;
+  resize: none;
+  outline: none;
+}
+.guest-sign-back textarea::placeholder { color: var(--sign-faint); }
+.guest-sign-back footer { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-top: 6px; }
+.guest-sign-signature {
+  overflow: hidden;
+  font: italic 400 16px/1.2 var(--font-playfair), Georgia, serif;
+  color: var(--sign-ink-soft);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.guest-sign-count { font-size: 11px; color: var(--sign-faint); font-variant-numeric: tabular-nums; }
+.guest-sign-linkedin {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed #b4a98d99;
+}
+.guest-sign-linkedin span {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  background: #2c4a5e;
+  color: #fff;
+  font: 700 10px/1 var(--font-geist), sans-serif;
+}
+.guest-sign-linkedin input {
+  flex: 1;
+  min-width: 0;
+  padding: 3px 0;
+  border: 0;
+  background: none;
+  color: #2c4a5e;
+  font: 13px var(--font-geist), sans-serif;
+  outline: none;
+}
+.guest-sign-linkedin input::placeholder { color: var(--sign-faint); }
+
+/* ---------- In-frame camera ---------- */
+.guest-slot-camera { position: absolute; inset: 0; }
+.guest-slot-camera video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); background: #11100d; }
+.guest-slot-status {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 24px;
+  color: #eee8d9;
+  font-size: 13px;
+  text-align: center;
+}
+.guest-slot-flash { position: absolute; inset: 0; background: #fff; animation: guest-flash .35s ease-out forwards; }
+.guest-slot-controls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+.guest-shutter {
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0 60%, transparent 62%);
+  box-shadow: 0 4px 14px #0007;
+  cursor: pointer;
+  transition: transform .15s;
+}
+.guest-shutter:active { transform: scale(.9); }
+.guest-slot-link {
+  padding: 4px 2px;
+  border: 0;
+  background: none;
+  color: #f3eee2d9;
+  font: 500 12.5px var(--font-geist), sans-serif;
+  text-decoration: underline;
+  text-decoration-color: #f3eee266;
+  text-underline-offset: 4px;
+  text-shadow: 0 1px 3px #0009;
+  cursor: pointer;
+}
+.guest-slot-link:hover { color: #fff; text-decoration-color: #fff; }
+
+/* ---------- Under the card ---------- */
+.guest-sign-error {
+  min-height: 20px;
+  max-width: var(--sign-w);
+  margin: 10px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #f1b5a5;
+  text-align: center;
+}
+.guest-sign-actions { display: flex; gap: 10px; margin-top: 4px; transition: opacity .3s; }
+.guest-sign-primary,
+.guest-sign-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 22px;
+  border-radius: 999px;
+  font: 500 14px var(--font-geist), sans-serif;
+  cursor: pointer;
+  transition: background .2s, transform .2s;
+}
+.guest-sign-primary { border: 0; background: #eee8d8; color: #2a251d; box-shadow: 0 6px 20px #0005; }
+.guest-sign-primary:hover { background: #fff8e8; transform: translateY(-1px); }
+.guest-sign-ghost { border: 1px solid #ffffff2e; background: transparent; color: #eee8d9; }
+.guest-sign-ghost:hover { background: #ffffff10; }
+.guest-sign-note { margin: 14px 0 0; font-size: 11.5px; color: #8f8b7f; transition: opacity .3s; }
+
+/* ---------- Planting ---------- */
+.guest-sign-form.is-planted .guest-sign-card { animation: guest-sign-plant .65s cubic-bezier(.5, 0, .75, .4) forwards; }
+.guest-sign-form.is-planted .guest-sign-header,
+.guest-sign-form.is-planted .guest-sign-actions,
+.guest-sign-form.is-planted .guest-sign-note,
+.guest-sign-form.is-planted .guest-sign-error { opacity: 0; }
+@keyframes guest-sign-plant {
+  to { transform: translateY(75vh) rotate(-8deg) scale(.35); opacity: 0; }
+}
+@keyframes guest-flash { from { opacity: .9; } to { opacity: 0; } }
+
+@media (max-width: 767px) {
+  .guest-sign-close { top: 12px; right: 12px; }
+  .guest-sign-header h2 { font-size: 24px; }
+  .guest-sign-caption { font-size: 16px; }
+  .guest-sign-linkedin input { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .guest-sign-card, .guest-sign-lens, .guest-sign-primary { transition: none; }
+  .guest-sign-form.is-planted .guest-sign-card { animation: none; opacity: 0; }
+}

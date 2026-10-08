@@ -4,18 +4,14 @@ import type { CSSProperties } from "react";
 import type { Entry } from "./types";
 import { formatPlanted, seededLook } from "./types";
 
-export type Depth = 0 | 1 | 2;
-
 /** A polaroid on a wooden stake, with a vine, and a note tucked behind it. */
 export default function PlantedEntry({
   entry,
-  depth,
   open,
   isNew,
   onToggle,
 }: {
   entry: Entry;
-  depth: Depth;
   open: boolean;
   isNew: boolean;
   onToggle: () => void;
@@ -33,7 +29,6 @@ export default function PlantedEntry({
   return (
     <li
       className={`guest-entry${open ? " is-open" : ""}${isNew ? " is-new" : ""}`}
-      data-depth={depth}
       style={style}
     >
       <div className="guest-stake" aria-hidden="true">
@@ -97,12 +92,12 @@ function Vine({ seed }: { seed: string }) {
 }
 
 /** The empty frame at the front of the bed that invites a visitor to sign. */
-export function PlantedInvite({ onOpen }: { onOpen: () => void }) {
+export function PlantedInvite({ onOpen }: { onOpen: (trigger: HTMLElement) => void }) {
   return (
-    <li className="guest-entry guest-entry--invite" data-depth={0}>
+    <li className="guest-entry guest-entry--invite">
       <div className="guest-stake" aria-hidden="true" />
       <div className="guest-card-slot">
-        <button type="button" className="guest-polaroid guest-polaroid--invite" onClick={onOpen}>
+        <button type="button" className="guest-polaroid guest-polaroid--invite" onClick={(event) => onOpen(event.currentTarget)}>
           <span className="guest-photo">
             <span className="guest-invite-plus" aria-hidden="true">
               +
