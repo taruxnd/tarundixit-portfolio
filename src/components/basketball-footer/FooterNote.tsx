@@ -28,6 +28,7 @@ export default function FooterNote(){
       <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn<Arrow/></a>
     </div>
     <Link className="footer-note-about" href="/more-about-me">More about me<Arrow/></Link>
+    <Link className="footer-note-guestbook" href="/guestbook">Leave a little hello<Arrow/></Link>
     <span className="footer-note-status" role="status">{status}</span>
   </div>;
 }

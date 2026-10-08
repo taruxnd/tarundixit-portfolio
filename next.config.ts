@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    // Guestbook photos arrive as base64 JPEGs (≤1 MB of image, ~1.4 MB encoded).
+    serverActions: { bodySizeLimit: "2mb" },
+  },
   images: {
     remotePatterns: [
       {

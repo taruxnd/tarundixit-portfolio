@@ -31,3 +31,6 @@
 .footer-note-portrait{flex-shrink:0}
 
 @media(max-width:767px){.footer-note-email button{width:44px;height:44px;margin:-7px -10px}.footer-note-identity{gap:clamp(10px,3.8vw,15px)}}
+
+.footer-note .footer-note-guestbook{display:flex;width:max-content;margin-top:16px;font-size:13px}
+@media(max-width:767px){.footer-note .footer-note-guestbook{margin-top:12px;font-size:12px}}

@@ -138,7 +138,7 @@ body {
       .portfolio-navbar *
     ):not(.hanging-lamp):not(.hanging-lamp *):not(.you-cursor):not(
       .you-cursor *
-    ):not(.figma-cursor):not(.figma-cursor *) {
+    ):not(.figma-cursor):not(.figma-cursor *):not(dialog):not(dialog *) {
     cursor: none !important;
   }
 }
@@ -233,4 +233,12 @@ body {
   .theme-transition {
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Native modal dialogs sit in the top layer, above the custom cursor. */
+@media(pointer:fine){
+ body.custom-cursor-active dialog,body.custom-cursor-active dialog *{cursor:default!important}
+ body.custom-cursor-active dialog button,body.custom-cursor-active dialog button *,body.custom-cursor-active dialog a,body.custom-cursor-active dialog a *{cursor:pointer!important}
+ body.custom-cursor-active dialog input,body.custom-cursor-active dialog textarea{cursor:text!important}
+ body.custom-cursor-active dialog::backdrop{cursor:default}
 }
