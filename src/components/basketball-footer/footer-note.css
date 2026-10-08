@@ -9,11 +9,12 @@
 .footer-note a{display:inline-flex;align-items:center;gap:4px;color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px;pointer-events:auto;transition:color .2s}
 .footer-note a:hover,.footer-note button:hover{color:#e8c98a}
 .footer-note-email{display:inline-flex;align-items:center;gap:4px}
+.footer-note-links a{text-decoration:none;gap:6px}
 .footer-note-email button{display:grid;place-items:center;width:24px;height:30px;padding:0;border:0;background:none;color:#e3cf9d;cursor:pointer;pointer-events:auto}
 .footer-note a:focus-visible,.footer-note button:focus-visible{outline:2px solid #e3cf9d;outline-offset:5px;border-radius:2px}
-.footer-note .footer-note-about{margin-top:22px;font-size:13px}
+.footer-note-more{display:flex;flex-wrap:wrap;gap:12px 28px;margin-top:22px;font-size:14px}
 .footer-note-status{display:block;min-height:16px;font-size:11px;margin-top:8px;color:#d6cba8}
-@media(max-width:767px){.footer-note{top:24px;left:24px;width:calc(100% - 48px)}.footer-note-identity{gap:16px;font-size:13px;margin-bottom:16px}.footer-note-portrait{width:52px;height:60px}.footer-note h2{font-size:32px}.footer-note p{max-width:300px;font-size:12px}.footer-note-links{margin-top:18px;gap:18px;font-size:12px}.footer-note .footer-note-about{margin-top:16px;font-size:12px}}
+@media(max-width:767px){.footer-note{top:24px;left:24px;width:calc(100% - 48px)}.footer-note-identity{gap:16px;font-size:13px;margin-bottom:16px}.footer-note-portrait{width:52px;height:60px}.footer-note h2{font-size:32px}.footer-note p{max-width:300px;font-size:12px}.footer-note-links{margin-top:18px;gap:18px;font-size:12px}.footer-note-more{margin-top:16px;gap:10px 18px;font-size:12px}}
 @media(prefers-reduced-motion:reduce){.footer-note a{transition:none}}
 
 .footer-note-identity{gap:18px;padding-left:5px}
@@ -32,5 +33,3 @@
 
 @media(max-width:767px){.footer-note-email button{width:44px;height:44px;margin:-7px -10px}.footer-note-identity{gap:clamp(10px,3.8vw,15px)}}
 
-.footer-note .footer-note-guestbook{display:flex;width:max-content;margin-top:16px;font-size:13px}
-@media(max-width:767px){.footer-note .footer-note-guestbook{margin-top:12px;font-size:12px}}

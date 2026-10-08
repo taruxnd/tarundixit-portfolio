@@ -103,7 +103,7 @@ export function PlantedInvite({ onOpen }: { onOpen: (trigger: HTMLElement) => vo
               +
             </span>
           </span>
-          <span className="guest-caption">Your face here</span>
+          <span className="guest-caption">Your message here</span>
         </button>
       </div>
     </li>

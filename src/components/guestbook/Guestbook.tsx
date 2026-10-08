@@ -15,7 +15,7 @@ import "./guestbook.css";
 /** Demo visitors, shown only when storage isn't configured (local dev). Newest first. */
 const DEMO_ENTRIES: Entry[] = [
   { name: "Aisha", message: "Stayed for the garden. Such a lovely little corner of the internet, I didn't want to leave.", photo: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop", linkedin: "https://www.linkedin.com/", daysAgo: 1 },
-  { name: "Kabir", message: "Came for the design. Stayed for a shot.", photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop", linkedin: "", daysAgo: 2 },
+  { name: "Kabir", message: "Missed every shot in your footer. Rude. Signing anyway.", photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop", linkedin: "", daysAgo: 2 },
   { name: "Maya", message: "That raven has opinions. Keep making things!", photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop", linkedin: "https://www.linkedin.com/", daysAgo: 4 },
   { name: "Arjun", message: "A little hello from my corner of the internet.", photo: "https://i.pravatar.cc/160?img=11", linkedin: "", daysAgo: 6 },
   { name: "Zoe", message: "The garden made me smile on a grey Tuesday.", photo: "https://i.pravatar.cc/160?img=47", linkedin: "", daysAgo: 9 },
@@ -90,8 +90,8 @@ export default function Guestbook({ initialEntries }: { initialEntries: Entry[] 
     setOpen(null);
     setStatus(
       live
-        ? `${entry.name}, your hello is planted at the front of the bed. Thanks for stopping by.`
-        : `${entry.name}, your hello is planted at the front of the bed. It lives in this tab until you reload.`,
+        ? `Thanks, ${entry.name}. Your message is up.`
+        : `Thanks, ${entry.name}. Your message is up until you reload this tab.`,
     );
     requestAnimationFrame(() => {
       bed.current?.scrollTo({
@@ -157,13 +157,13 @@ export default function Guestbook({ initialEntries }: { initialEntries: Entry[] 
           <ArrowLeft size={15} />
           Back to garden
         </Link>
-        <h1>Guestbook</h1>
+        <h1>Messages</h1>
         <p>
           {entries.length === 0
-            ? "No hellos yet. Be the first to "
-            : `${entries.length} ${entries.length === 1 ? "hello" : "hellos"} planted so far. Hover a face to read theirs, or `}
+            ? "Thoughts on my work, honest feedback, or just a quick \"I was here\". No messages yet, so be the first to "
+            : `Thoughts on my work, honest feedback, or just a quick "I was here". ${entries.length} ${entries.length === 1 ? "message" : "messages"} so far. Hover a face to read one, or `}
           <button type="button" className="guestbook-inline-sign" onClick={(event) => openCompose(event.currentTarget)}>
-            plant your own
+            leave yours
             <ArrowUpRight size={13} />
           </button>
         </p>
@@ -176,7 +176,7 @@ export default function Guestbook({ initialEntries }: { initialEntries: Entry[] 
         className="guestbook-bed"
         ref={bed}
         tabIndex={0}
-        aria-label="Visitor garden. Scroll sideways for more faces."
+        aria-label="Visitor messages. Scroll sideways for more faces."
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}

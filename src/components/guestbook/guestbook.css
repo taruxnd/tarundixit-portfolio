@@ -530,11 +530,7 @@
   cursor: pointer;
 }
 .guest-sign-lens {
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  border: 2px solid #eee8d9cc;
-  background: radial-gradient(circle, #eee8d9 0 22%, transparent 24%), radial-gradient(circle, #ffffff14 0 60%, transparent 62%);
+  color: #eee8d9;
   transition: transform .3s cubic-bezier(.2, .75, .25, 1);
 }
 .guest-sign-snap:hover .guest-sign-lens { transform: scale(1.08); }
@@ -754,3 +750,8 @@
   .guest-sign-card, .guest-sign-lens, .guest-sign-primary { transition: none; }
   .guest-sign-form.is-planted .guest-sign-card { animation: none; opacity: 0; }
 }
+
+/* ---------- Loading state (app/guestbook/loading.tsx) ---------- */
+.guestbook-loading-line { animation: guestbook-loading-pulse 1.4s ease-in-out infinite; }
+@keyframes guestbook-loading-pulse { 50% { opacity: 0.45; } }
+@media (prefers-reduced-motion: reduce) { .guestbook-loading-line { animation: none; } }

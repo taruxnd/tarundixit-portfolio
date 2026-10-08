@@ -1,7 +1,7 @@
 "use client";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
-import { ArrowLeft, ArrowRight, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Camera, X } from "lucide-react";
 import SlotCamera from "./SlotCamera";
 import { preparePhoto } from "./photo";
 
@@ -94,13 +94,13 @@ const ComposeDialog = forwardRef<HTMLDialogElement, Props>(function ComposeDialo
     if (planting) return;
     setError("");
     if (!name.trim()) {
-      setError("Sign your name on the front first.");
+      setError("Add your name on the front first.");
       if (flipped) flip(false);
       else nameField.current?.focus();
       return;
     }
     if (!message.trim()) {
-      setError("Write a little hello on the back.");
+      setError("Write your message on the back.");
       if (!flipped) flip(true);
       else messageField.current?.focus();
       return;
@@ -155,8 +155,8 @@ const ComposeDialog = forwardRef<HTMLDialogElement, Props>(function ComposeDialo
 
       <form className={`guest-sign-form${planted ? " is-planted" : ""}`} onSubmit={submit} noValidate>
         <header className="guest-sign-header">
-          <h2 id="guest-sign-title">Leave a hello</h2>
-          <p aria-live="polite">{flipped ? "Now write on the back." : "Snap a photo and sign the front."}</p>
+          <h2 id="guest-sign-title">Leave a message</h2>
+          <p aria-live="polite">{flipped ? "What did you think of my work? Or just say hi." : "Add a photo and your name."}</p>
         </header>
 
         <div className="guest-sign-stage">
@@ -207,7 +207,7 @@ const ComposeDialog = forwardRef<HTMLDialogElement, Props>(function ComposeDialo
                       }}
                       disabled={busy}
                     >
-                      <span className="guest-sign-lens" aria-hidden="true" />
+                      <Camera className="guest-sign-lens" size={40} strokeWidth={1.4} aria-hidden="true" />
                       <span>{preparing ? "Developing…" : "Tap to take your photo"}</span>
                     </button>
                     <button type="button" className="guest-slot-link guest-sign-upload" onClick={() => input.current?.click()} disabled={busy}>
@@ -248,8 +248,8 @@ const ComposeDialog = forwardRef<HTMLDialogElement, Props>(function ComposeDialo
                 ref={messageField}
                 id="guest-message"
                 name="message"
-                placeholder="Say something nice…"
-                aria-label="Your hello"
+                placeholder="Feedback, a kind word, or just hi…"
+                aria-label="Your message"
                 maxLength={300}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
@@ -312,7 +312,7 @@ const ComposeDialog = forwardRef<HTMLDialogElement, Props>(function ComposeDialo
                 Front
               </button>
               <button type="submit" className="guest-sign-primary" disabled={busy}>
-                {planting ? "Planting…" : "Plant my hello"}
+                {planting ? "Sending…" : "Send message"}
               </button>
             </>
           ) : (
@@ -322,7 +322,7 @@ const ComposeDialog = forwardRef<HTMLDialogElement, Props>(function ComposeDialo
             </button>
           )}
         </div>
-        <p className="guest-sign-note">Your photo and hello will be public on this page.</p>
+        <p className="guest-sign-note">Your photo and message will be public on this page.</p>
       </form>
     </dialog>
   );
