@@ -1,30 +1,34 @@
 "use client";
 
 import { launchResumePlane } from "@/components/resume/launchResumePlane";
+import { FileText, House, Mail, NotebookPen, UserRound, type LucideIcon } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { navLinks } from "./data";
 import LiquidGlass from "./LiquidGlass";
 import { useNavbarScroll } from "./useNavbarScroll";
 import "./navbar.css";
 
-const DESKTOP_NAV_MQ = "(min-width: 1024px), (min-width: 768px) and (hover: hover) and (pointer: fine)";
+const DOCK_ICONS: Record<(typeof navLinks)[number]["label"], LucideIcon> = {
+  Home: House,
+  About: UserRound,
+  Resume: FileText,
+  Contact: Mail,
+  Notes: NotebookPen,
+};
 
-function FlipLink({
-  href,
-  label,
-  onClick,
-}: {
-  href: string;
-  label: string;
-  onClick?: () => void;
-}) {
+function isCurrent(href: string, pathname: string) {
+  if (href === "/") return pathname === "/";
+  if (href.startsWith("/#")) return false;
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+function FlipLink({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
       onClick={(event) => {
         if (label === "Resume") launchResumePlane(event);
-        onClick?.();
       }}
       data-cursor="interactive"
       className="portfolio-navbar__link"
@@ -42,114 +46,58 @@ function FlipLink({
 }
 
 export default function PortfolioNavbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const scrolled = useNavbarScroll();
-  const navRef = useRef<HTMLElement>(null);
-  const closeMenu = () => setMenuOpen(false);
-
-  /* Close drawer when crossing desktop breakpoint */
-  useEffect(() => {
-    const mq = window.matchMedia(DESKTOP_NAV_MQ);
-    const onChange = () => {
-      if (mq.matches) setMenuOpen(false);
-    };
-
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
-
-  /* Escape + click-outside dismiss */
-  useEffect(() => {
-    if (!menuOpen) return;
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closeMenu();
-    };
-
-    const onPointerDown = (event: PointerEvent) => {
-      if (navRef.current?.contains(event.target as Node)) return;
-      closeMenu();
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-    document.addEventListener("pointerdown", onPointerDown);
-
-    return () => {
-      window.removeEventListener("keydown", onKeyDown);
-      document.removeEventListener("pointerdown", onPointerDown);
-    };
-  }, [menuOpen]);
-
-  /* Prevent background scroll while mobile drawer is open */
-  useEffect(() => {
-    if (!menuOpen) return;
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [menuOpen]);
+  const pathname = usePathname();
 
   return (
-    <header
-      className="portfolio-navbar"
-      data-scrolled={scrolled ? "true" : undefined}
-      data-menu-open={menuOpen ? "true" : undefined}
-    >
-      <nav
-        ref={navRef}
-        aria-label="Main navigation"
-        className="portfolio-navbar__shell"
-      >
-        <div className="portfolio-navbar__glow" aria-hidden>
-          <div className="portfolio-navbar__glow-beam" />
-          <div className="portfolio-navbar__glow-floor" />
-        </div>
-
-        <LiquidGlass className="portfolio-navbar__pill">
-          <div className="portfolio-navbar__row">
-            <div className="portfolio-navbar__links">
-              {navLinks.map((link) => (
-                <FlipLink key={link.href} href={link.href} label={link.label} />
-              ))}
-            </div>
-
-            <div className="portfolio-navbar__end">
-              <button
-                type="button"
-                className="portfolio-navbar__menu-btn"
-                aria-label={menuOpen ? "Close menu" : "Open menu"}
-                aria-expanded={menuOpen}
-                data-cursor="interactive"
-                onClick={() => setMenuOpen((open) => !open)}
-              >
-                <span className="portfolio-navbar__menu-line portfolio-navbar__menu-line-top" />
-                <span className="portfolio-navbar__menu-line portfolio-navbar__menu-line-bottom" />
-              </button>
-            </div>
+    <>
+      <header className="portfolio-navbar" data-scrolled={scrolled ? "true" : undefined}>
+        <nav aria-label="Main navigation" className="portfolio-navbar__shell">
+          <div className="portfolio-navbar__glow" aria-hidden>
+            <div className="portfolio-navbar__glow-beam" />
+            <div className="portfolio-navbar__glow-floor" />
           </div>
 
-          <div
-            className={`portfolio-navbar__drawer ${menuOpen ? "is-open" : ""}`}
-            aria-hidden={!menuOpen}
-          >
-            <div className="portfolio-navbar__drawer-inner" inert={menuOpen ? undefined : true}>
-              <div className="portfolio-navbar__drawer-content">
+          <LiquidGlass className="portfolio-navbar__pill">
+            <div className="portfolio-navbar__row">
+              <div className="portfolio-navbar__links">
                 {navLinks.map((link) => (
-                  <FlipLink
-                    key={link.href}
-                    href={link.href}
-                    label={link.label}
-                    onClick={closeMenu}
-                  />
+                  <FlipLink key={link.href} href={link.href} label={link.label} />
                 ))}
               </div>
             </div>
+          </LiquidGlass>
+        </nav>
+      </header>
+
+      {/* Mobile: always-open icon dock, bottom-right */}
+      <nav
+        aria-label="Main navigation"
+        className="portfolio-dock"
+        data-scrolled={scrolled ? "true" : undefined}
+      >
+        <LiquidGlass className="portfolio-navbar__pill">
+          <div className="portfolio-dock__row">
+            {navLinks.map((link) => {
+              const Icon = DOCK_ICONS[link.label];
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="portfolio-dock__item"
+                  aria-current={isCurrent(link.href, pathname) ? "page" : undefined}
+                  onClick={(event) => {
+                    if (link.label === "Resume") launchResumePlane(event);
+                  }}
+                >
+                  <Icon size={19} strokeWidth={1.7} aria-hidden />
+                  <span className="portfolio-dock__label">{link.label}</span>
+                </Link>
+              );
+            })}
           </div>
         </LiquidGlass>
       </nav>
-    </header>
+    </>
   );
 }

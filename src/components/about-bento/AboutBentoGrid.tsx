@@ -3,38 +3,29 @@ import { contentContainerClassName } from "@/lib/sectionLayout";
 import AboutBentoTile from "./AboutBentoTile";
 import "./about-bento-grid.css";
 
-/**
- * Hover reveals real photos through a pixel dissolve.
- * Replace the `realSrc` paths with your actual life photos when ready.
- */
 const BENTO_IMAGES = [
   {
     cartoonSrc: "/about-bento/shin-hands.jpg",
-    realSrc: "/about-bento/real-yapper.jpg",
     alt: "Shin-chan holding hands under sparkles",
     label: "Professional yapper",
   },
   {
     cartoonSrc: "/about-bento/shin-run.jpg",
-    realSrc: "/about-bento/real-travel.jpg",
     alt: "Shin-chan and Shiro running by a mossy bridge",
     label: "Love to travel",
   },
   {
     cartoonSrc: "/about-bento/shin-car.jpg",
-    realSrc: "/about-bento/real-car.jpg",
     alt: "Shin-chan sitting cool in a yellow toy car",
     label: "Petrolhead",
   },
   {
     cartoonSrc: "/about-bento/shin-swim.jpg",
-    realSrc: "/about-bento/real-swim.jpg",
     alt: "Shin-chan swimming race in the pool",
     label: "Chlorine in my veins",
   },
   {
     cartoonSrc: "/about-bento/shin-cook.jpg",
-    realSrc: "/about-bento/real-cook.jpg",
     alt: "Shin-chan cooking on a step stool",
     label: "Dangerously good cook",
   },
@@ -58,7 +49,6 @@ export default function AboutBentoGrid() {
             <AboutBentoTile
               key={image.cartoonSrc}
               cartoonSrc={image.cartoonSrc}
-              realSrc={image.realSrc}
               alt={image.alt}
               label={image.label}
               index={index}
