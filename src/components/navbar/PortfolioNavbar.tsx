@@ -70,7 +70,7 @@ export default function PortfolioNavbar() {
         </nav>
       </header>
 
-      {/* Mobile: always-open icon dock, bottom-right */}
+      {/* Mobile: always-open icon dock; only the current page shows its name */}
       <nav
         aria-label="Main navigation"
         className="portfolio-dock"
@@ -80,18 +80,20 @@ export default function PortfolioNavbar() {
           <div className="portfolio-dock__row">
             {navLinks.map((link) => {
               const Icon = DOCK_ICONS[link.label];
+              const current = isCurrent(link.href, pathname);
               return (
                 <Link
                   key={link.href}
                   href={link.href}
                   className="portfolio-dock__item"
-                  aria-current={isCurrent(link.href, pathname) ? "page" : undefined}
+                  aria-current={current ? "page" : undefined}
+                  aria-label={current ? undefined : link.label}
                   onClick={(event) => {
                     if (link.label === "Resume") launchResumePlane(event);
                   }}
                 >
                   <Icon size={19} strokeWidth={1.7} aria-hidden />
-                  <span className="portfolio-dock__label">{link.label}</span>
+                  {current && <span className="portfolio-dock__label">{link.label}</span>}
                 </Link>
               );
             })}
