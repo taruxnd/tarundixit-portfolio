@@ -53,20 +53,21 @@
 }
 
 .hero-monsoon__cloud {
+  position: relative;
   display: block;
-  width: clamp(6.5rem, 9vw, 9rem);
+  width: clamp(8rem, 12vw, 12rem);
   padding: 0;
   border: 0;
   background: none;
   cursor: pointer;
-  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.45));
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), filter 0.6s ease;
-  animation: hero-monsoon-bob 6s ease-in-out infinite;
+  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.55));
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s ease;
+  animation: hero-monsoon-bob 7s ease-in-out infinite;
 }
 
 @keyframes hero-monsoon-bob {
   50% {
-    translate: 0 -5px;
+    translate: 0 -6px;
   }
 }
 
@@ -77,36 +78,80 @@
   overflow: visible;
 }
 
-.hero-monsoon__cloud-body {
-  fill: #2b313c;
-  transition: fill 1.2s ease;
+.hero-monsoon__cloud-haze {
+  opacity: 0.55;
+  transition: opacity 1.2s ease;
 }
 
+.hero-monsoon__cloud-lobes,
+.hero-monsoon__cloud-belly,
 .hero-monsoon__cloud-rim {
-  fill: none;
-  stroke: rgba(220, 228, 245, 0.45);
-  stroke-width: 1.5;
-  stroke-linecap: round;
+  transition: opacity 1.2s ease, filter 1.2s ease;
+}
+
+.hero-monsoon__cloud-belly {
+  opacity: 0.6;
 }
 
 .hero-monsoon__cloud:hover {
-  transform: scale(1.06);
-  filter: drop-shadow(0 6px 22px rgba(150, 175, 230, 0.35));
+  transform: scale(1.05);
+  filter: drop-shadow(0 10px 28px rgba(150, 175, 230, 0.3));
 }
 
 .hero-monsoon__cloud:focus-visible {
   outline: 2px solid #e3cf9d;
-  outline-offset: 6px;
-  border-radius: 12px;
+  outline-offset: 8px;
+  border-radius: 999px;
 }
 
-/* Storm: the cloud swells and darkens. */
+/* Label under the cloud: shows on hover / keyboard focus. */
+.hero-monsoon__hint {
+  position: absolute;
+  left: 50%;
+  top: calc(100% - 0.35rem);
+  padding: 0.38rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(10, 12, 18, 0.82);
+  color: #eee8d9;
+  font: 500 0.78rem/1 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 8px 20px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transform: translate(-50%, 4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+
+.hero-monsoon__cloud:hover .hero-monsoon__hint,
+.hero-monsoon__cloud:focus-visible .hero-monsoon__hint {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* Storm: the cloud swells, the haze thickens, the belly goes black. */
 .hero-section[data-monsoon="on"] .hero-monsoon__cloud {
-  transform: scale(1.18);
+  transform: scale(1.16);
 }
 
-.hero-section[data-monsoon="on"] .hero-monsoon__cloud-body {
-  fill: #1d222b;
+.hero-section[data-monsoon="on"] .hero-monsoon__cloud:hover {
+  transform: scale(1.2);
+}
+
+.hero-section[data-monsoon="on"] .hero-monsoon__cloud-haze {
+  opacity: 0.85;
+}
+
+.hero-section[data-monsoon="on"] .hero-monsoon__cloud-lobes {
+  filter: url(#monsoon-soft) brightness(0.72);
+}
+
+.hero-section[data-monsoon="on"] .hero-monsoon__cloud-belly {
+  opacity: 1;
+}
+
+.hero-section[data-monsoon="on"] .hero-monsoon__cloud-rim {
+  opacity: 0.55;
 }
 
 /* Billboard lamps flicker in the storm. */

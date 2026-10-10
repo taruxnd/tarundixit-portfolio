@@ -201,20 +201,61 @@ export default function HeroMonsoon({
           className="hero-monsoon__cloud"
           onClick={onToggle}
           aria-pressed={raining}
-          aria-label={raining ? "Stop the rain" : "Make it rain"}
-          title={raining ? "Stop the rain" : "Make it rain"}
           data-cursor="interactive"
         >
-          <svg viewBox="0 0 160 80" aria-hidden>
-            <path
-              className="hero-monsoon__cloud-body"
-              d="M30 70h104a24 24 0 0 0 2-47.9A34 34 0 0 0 72.6 12 26 26 0 0 0 30 30.5 20 20 0 0 0 30 70Z"
-            />
-            <path
-              className="hero-monsoon__cloud-rim"
-              d="M30.5 30.5A26 26 0 0 1 72.6 12a34 34 0 0 1 63.4 10.1"
-            />
+          <svg viewBox="0 0 220 120" aria-hidden>
+            <defs>
+              {/* Moonlight from the top-left; belly falls into shadow. */}
+              <radialGradient id="monsoon-lobe" cx="38%" cy="22%" r="80%">
+                <stop offset="0" stopColor="#6b7486" />
+                <stop offset="0.45" stopColor="#3b414d" />
+                <stop offset="1" stopColor="#1b1f27" />
+              </radialGradient>
+              <radialGradient id="monsoon-belly" cx="50%" cy="100%" r="70%">
+                <stop offset="0" stopColor="#0d1015" stopOpacity="0.9" />
+                <stop offset="1" stopColor="#0d1015" stopOpacity="0" />
+              </radialGradient>
+              <linearGradient id="monsoon-rim" x1="0" y1="0" x2="0.4" y2="1">
+                <stop offset="0" stopColor="#dfe7f7" stopOpacity="0.75" />
+                <stop offset="0.5" stopColor="#dfe7f7" stopOpacity="0.08" />
+                <stop offset="1" stopColor="#dfe7f7" stopOpacity="0" />
+              </linearGradient>
+              {/* Soft, vapoury outer edge behind the crisp lobes. */}
+              <filter id="monsoon-haze" x="-20%" y="-30%" width="140%" height="160%">
+                <feGaussianBlur stdDeviation="6" />
+              </filter>
+              <filter id="monsoon-soft" x="-10%" y="-10%" width="120%" height="120%">
+                <feGaussianBlur stdDeviation="0.9" />
+              </filter>
+            </defs>
+
+            <g className="hero-monsoon__cloud-haze" filter="url(#monsoon-haze)" fill="#2a303b">
+              <ellipse cx="110" cy="84" rx="98" ry="26" />
+              <circle cx="74" cy="58" r="34" />
+              <circle cx="118" cy="44" r="42" />
+              <circle cx="160" cy="62" r="32" />
+            </g>
+
+            <g className="hero-monsoon__cloud-lobes" filter="url(#monsoon-soft)" fill="url(#monsoon-lobe)">
+              <ellipse cx="112" cy="86" rx="92" ry="22" />
+              <circle cx="48" cy="72" r="24" />
+              <circle cx="76" cy="58" r="33" />
+              <circle cx="118" cy="46" r="41" />
+              <circle cx="158" cy="60" r="31" />
+              <circle cx="186" cy="78" r="20" />
+            </g>
+
+            {/* Shadowed underside, pooling toward the belly. */}
+            <ellipse className="hero-monsoon__cloud-belly" cx="112" cy="92" rx="94" ry="20" fill="url(#monsoon-belly)" />
+
+            {/* Thin moonlit edge along the top of each billow. */}
+            <g className="hero-monsoon__cloud-rim" fill="none" stroke="url(#monsoon-rim)" strokeWidth="2" strokeLinecap="round">
+              <path d="M55 52a33 33 0 0 1 44-20" />
+              <path d="M84 24a41 41 0 0 1 64 4" />
+              <path d="M140 36a31 31 0 0 1 43 12" />
+            </g>
           </svg>
+          <span className="hero-monsoon__hint">{raining ? "Stop the rain" : "Make it rain"}</span>
         </button>
       </div>
     </>
