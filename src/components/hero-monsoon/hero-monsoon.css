@@ -37,19 +37,12 @@
   opacity: 0;
 }
 
-/* The cloud wanders slowly along the top of the sky. */
+/* The cloud sits in the top-right of the sky. */
 .hero-monsoon__drift {
   position: absolute;
   top: clamp(5.5rem, 14vh, 8.5rem);
-  left: 58%;
+  right: clamp(1.5rem, 7vw, 7rem);
   z-index: 4;
-  animation: hero-monsoon-drift 70s ease-in-out infinite alternate;
-}
-
-@keyframes hero-monsoon-drift {
-  to {
-    transform: translateX(min(22vw, 18rem));
-  }
 }
 
 .hero-monsoon__cloud {
@@ -202,10 +195,8 @@
 @media (max-width: 767px), (max-width: 1023px) and (hover: none) and (pointer: coarse) {
   /* Not enough room beside the cloud: hang the comment underneath it. */
   .hero-monsoon__comment {
-    right: auto;
-    left: 50%;
+    right: 0.25rem;
     top: calc(100% - 0.6rem);
-    translate: -50% 0;
   }
 
   .hero-monsoon__comment-pin {
@@ -219,13 +210,7 @@
 
   .hero-monsoon__drift {
     top: clamp(4.5rem, 10vh, 6rem);
-    left: 40%;
-  }
-
-  @keyframes hero-monsoon-drift {
-    to {
-      transform: translateX(14vw);
-    }
+    right: 1rem;
   }
 }
 
@@ -235,7 +220,6 @@
     transition: none;
   }
 
-  .hero-monsoon__drift,
   .hero-monsoon__cloud,
   .hero-section[data-monsoon="on"] .hero-billboard__light-head {
     animation: none;
