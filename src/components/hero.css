@@ -803,3 +803,40 @@
     padding-top: max(6.5rem, calc(5rem + env(safe-area-inset-top, 0px)));
   }
 }
+
+/*
+ * Below 1024px the copy was pinned to the top with a fixed padding, which
+ * left a wide empty band of sky above the garden on short, wide windows
+ * (a resized browser, a landscape phone). Center the copy in the sky
+ * instead; `safe` keeps it from clipping under the nav when space is tight.
+ */
+@media (max-width: 1023px) {
+  .hero-section__inner {
+    /* The inner is a column on landscape and a row on phone portrait, so
+       set both axes; the grid is full-width, so the cross axis is harmless. */
+    justify-content: safe center;
+    align-items: safe center;
+  }
+}
+
+/*
+ * Wide portrait windows (560–767px: a resized desktop browser, a small
+ * tablet upright). The headline is two lines here, so the phone's tall top
+ * padding and 40vh garden reserve left the copy floating high above the
+ * flowers. Shorter padding and a 32vh reserve (where the flowers start)
+ * let the centering above pull the copy down into the sky.
+ */
+@media (min-width: 560px) and (max-width: 767px) and (orientation: portrait) {
+  .hero-section__inner {
+    padding-top: max(7rem, calc(5.5rem + env(safe-area-inset-top, 0px)));
+    padding-bottom: max(var(--hero-rail-gap), 32vh);
+  }
+}
+
+/* Same band in landscape: the phone's 22rem cap shrank the two-line
+   headline to ~23px. Let it use the width it has. */
+@media (min-width: 560px) and (max-width: 639px) and (orientation: landscape) {
+  .hero-headline {
+    max-width: min(34rem, 100%);
+  }
+}
