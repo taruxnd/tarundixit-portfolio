@@ -776,3 +776,20 @@
     transform: translateY(-2rem);
   }
 }
+
+/*
+ * Wide-but-portrait windows (narrow desktop windows, tablets held upright):
+ * there's room for the desktop's two lines at full size, so use them.
+ * Real phones (< 560px) keep the balanced three-line version.
+ */
+@media (min-width: 560px) and (max-width: 767px) and (orientation: portrait), (min-width: 560px) and (max-width: 1023px) and (hover: none) and (pointer: coarse) and (orientation: portrait) {
+  .hero-headline {
+    max-width: min(36rem, 100%);
+  }
+
+  .hero-headline__line {
+    display: block;
+    white-space: nowrap;
+    font-size: min(1em, 7.9cqi);
+  }
+}
