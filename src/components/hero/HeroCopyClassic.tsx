@@ -68,13 +68,23 @@ export default function HeroCopyClassic() {
         custom={1}
         className="hero-headline theme-transition text-[var(--text-primary)]"
       >
-        <span className="hero-headline__line">I design products that make</span>{" "}
+        <span className="hero-headline__line">I untangle problems into products.</span>{" "}
         <span className="hero-headline__line">
-          <span className="hero-headline__sense">sense</span> and feel
-          <span className="hero-headline__feel-icon" aria-hidden>
-            ✨
+          The{" "}
+          {/* The code keycap stands in for the word, drawn as a selected Figma frame. */}
+          <span className="hero-headline__sticker figma-frame is-selected">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/stickers/code-keycap.svg" alt="code" draggable={false} />
+            <span className="figma-frame__name" aria-hidden>
+              Code
+            </span>
+            <span className="figma-frame__box" aria-hidden />
+            <span className="figma-frame__handle figma-frame__handle--nw" aria-hidden />
+            <span className="figma-frame__handle figma-frame__handle--ne" aria-hidden />
+            <span className="figma-frame__handle figma-frame__handle--sw" aria-hidden />
+            <span className="figma-frame__handle figma-frame__handle--se" aria-hidden />
           </span>{" "}
-          right.
+          is just fun.
         </span>
       </motion.h1>
 

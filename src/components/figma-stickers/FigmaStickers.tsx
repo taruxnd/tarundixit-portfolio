@@ -5,7 +5,6 @@ import "./figma-stickers.css";
 
 const STICKERS = [
   { id: "figma", name: "Figma", src: "/stickers/figma.svg", width: 52, aspect: 384 / 256, minWidth: 28, maxWidth: 140 },
-  { id: "code", name: "Code", src: "/stickers/code-keycap.svg", width: 68, aspect: 96 / 112, minWidth: 40, maxWidth: 160 },
 ] as const;
 
 /** Figma-style stickers beside the hero headline: select, drag and resize. */

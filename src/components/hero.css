@@ -201,23 +201,13 @@
 
 /*
  * Two fixed lines on wider screens. Each line never wraps; instead the text
- * shrinks just enough to fit (line one is ≈12.3em wide), so resizing can't
- * strand "make" on a line of its own.
+ * shrinks just enough to fit (line one is ≈15.4em wide), so resizing can't
+ * strand a single word on a line of its own.
  */
 .hero-headline__line {
   display: block;
   white-space: nowrap;
-  font-size: min(1em, 7.9cqi);
-}
-
-.hero-headline__feel-icon {
-  display: inline-block;
-  margin-left: calc(0.2em - 1px);
-  margin-right: calc(0.12em - 2px);
-  font-style: normal;
-  font-size: 0.85em;
-  line-height: 1;
-  vertical-align: 0.02em;
+  font-size: min(1em, 6.4cqi);
 }
 
 .hero-headline__emoji {
@@ -790,9 +780,38 @@
   .hero-headline__line {
     display: block;
     white-space: nowrap;
-    font-size: min(1em, 7.9cqi);
+    font-size: min(1em, 6.4cqi);
   }
 }
 
 /* The stickers are an independent ornament: the hero copy keeps its center and width. */
 .hero-grid__copy--stickers { position: relative; }
+
+/* Inline Code keycap in the headline, drawn as a selected Figma frame. It's
+   decoration in the line, not a draggable sticker. */
+.hero-headline__sticker.figma-frame {
+  display: inline-block;
+  width: 1.1em;
+  margin: 0 0.06em;
+  vertical-align: -0.16em;
+  rotate: -6deg;
+  cursor: default;
+  touch-action: auto;
+}
+
+.hero-headline__sticker img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.hero-headline__sticker .figma-frame__handle {
+  pointer-events: none;
+}
+
+@media (pointer: fine) {
+  body.custom-cursor-active .hero-headline .hero-headline__sticker,
+  body.custom-cursor-active .hero-headline .hero-headline__sticker * {
+    cursor: none !important;
+  }
+}
