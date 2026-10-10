@@ -57,7 +57,7 @@
   align-items: center;
   gap: 0.45rem;
   height: 3rem;
-  padding: 0 1.15rem 0 1rem;
+  padding: 0 1rem 0 1.15rem;
   color: var(--nav-text);
   font: 500 0.8125rem/1 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   letter-spacing: -0.005em;

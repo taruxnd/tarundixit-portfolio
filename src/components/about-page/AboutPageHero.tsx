@@ -171,12 +171,12 @@ export default function AboutPageHero({
             <p>
               Three years into product design, I still enjoy figuring out how
               something can look better and work better. Before Kumba AI, I was
-              at <a className="about-brand" href="https://1cardsolution.com/" target="_blank" rel="noopener noreferrer"><span className="about-brand__onecard" aria-hidden="true"><img src="/about/brands/one-card.png" alt=""/></span>One Card Solution</a>, working on products for <span data-guest="nerolac"><a className="about-brand" href="https://www.nerolac.com/" target="_blank" rel="noopener noreferrer"><img className="about-brand__nerolac" src="/about/brands/nerolac-favicon.png" alt=""/>Nerolac</a></span>.
+              at <a className="about-brand" href="https://1cardsolution.com/" target="_blank" rel="noopener noreferrer"><span className="about-brand__onecard" aria-hidden="true"><img src="/about/brands/one-card.png" alt=""/></span>One Card Solution</a>, working on products for <a className="about-brand" href="https://www.nerolac.com/" target="_blank" rel="noopener noreferrer"><img className="about-brand__nerolac" src="/about/brands/nerolac-favicon.png" alt=""/>Nerolac</a>.
               Before that, I worked with Osos Web on <span className="about-spaarks">Spaarks</span>.
             </p>
             <p>
               My path into products started with building websites. As a
-              WordPress developer, I developed <a className="about-story-link" href="https://caradvice.in/" target="_blank" rel="noopener noreferrer">CarAdvice.in</a> for <a className="about-brand" href="https://www.fasbeam.com/" target="_blank" rel="noopener noreferrer"><svg className="about-brand__youtube" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="6" fill="#f04444"/><path d="m11 5 8 5-8 5Z" fill="white"/></svg>FasBeam</a>, automotive creator <span data-guest="faisal">Faisal Khan</span>.
+              WordPress developer, I developed <a className="about-story-link" href="https://caradvice.in/" target="_blank" rel="noopener noreferrer">CarAdvice.in</a> for <a className="about-brand" href="https://www.fasbeam.com/" target="_blank" rel="noopener noreferrer"><svg className="about-brand__youtube" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="6" fill="#f04444"/><path d="m11 5 8 5-8 5Z" fill="white"/></svg>FasBeam</a>, automotive creator Faisal Khan.
               Being a petrolhead, that was a pretty good place to start.
             </p>
             <p>

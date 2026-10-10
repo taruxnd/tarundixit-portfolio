@@ -2,7 +2,6 @@
 
 import LiquidGlass from "@/components/navbar/LiquidGlass";
 import { useTheme } from "@/components/ThemeController";
-import { CloudRain, CloudSun } from "lucide-react";
 import { useEffect, useRef } from "react";
 import "./hero-monsoon.css";
 
@@ -206,8 +205,8 @@ export default function HeroMonsoon({
       >
         <LiquidGlass className="portfolio-navbar__pill">
           <span className="hero-monsoon__cta-label">
-            {raining ? <CloudSun size={15} strokeWidth={1.7} aria-hidden /> : <CloudRain size={15} strokeWidth={1.7} aria-hidden />}
             {raining ? "Stop the rain" : "Make it rain"}
+            <span aria-hidden>{raining ? "☀️" : "🌧️"}</span>
           </span>
         </LiquidGlass>
       </button>

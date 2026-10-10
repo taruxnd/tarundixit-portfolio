@@ -12,8 +12,6 @@ import "./about-guests.css";
  */
 const GUESTS = [
   { id: "kumba", name: "Kumba AI", color: "#7c5cff" },
-  { id: "nerolac", name: "Nerolac", color: "#e0312e" },
-  { id: "faisal", name: "Faisal Khan", color: "#f24e1e" },
 ] as const;
 
 type Guest = (typeof GUESTS)[number];
