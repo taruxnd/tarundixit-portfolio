@@ -1,7 +1,8 @@
 /* ------------------------------------------------------------------
-   Hero monsoon — a storm cloud you can tap, rain, lightning.
-   Layers: storm sky (z0, behind the garden) · rain + flash (z3, over the
-   scene, no pointer events) · cloud button (z4).
+   Hero monsoon — a "Make it rain" button, a cloud bank that rolls in,
+   rain and lightning.
+   Layers: storm sky + clouds (z0, behind the copy) · rain + flash (z3,
+   over the scene, no pointer events) · button (z4).
    ------------------------------------------------------------------ */
 
 .hero-monsoon__sky {
@@ -37,31 +38,23 @@
   opacity: 0;
 }
 
-/* The cloud sits in the top-right of the sky. */
-.hero-monsoon__drift {
+/* Clouds wait off-screen and roll in from both sides when it rains. */
+.hero-monsoon__clouds {
   position: absolute;
-  top: clamp(5.5rem, 14vh, 8.5rem);
-  right: clamp(1.5rem, 7vw, 7rem);
-  z-index: 4;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
 .hero-monsoon__cloud {
-  position: relative;
-  display: block;
-  width: clamp(8rem, 12vw, 12rem);
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), filter 0.6s ease;
-  animation: hero-monsoon-bob 6s ease-in-out infinite;
-}
-
-@keyframes hero-monsoon-bob {
-  50% {
-    translate: 0 -5px;
-  }
+  position: absolute;
+  opacity: 0;
+  transform: translateX(var(--from));
+  /* Leaving: quicker, and all together. */
+  transition:
+    transform 1.4s cubic-bezier(0.55, 0, 0.75, 0.3),
+    opacity 1.2s ease;
 }
 
 .hero-monsoon__cloud svg {
@@ -71,136 +64,52 @@
   overflow: visible;
 }
 
+.hero-section[data-monsoon="on"] .hero-monsoon__cloud {
+  opacity: var(--cloud-opacity, 1);
+  transform: none;
+  transition:
+    transform 2.2s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s),
+    opacity 1.6s ease var(--delay, 0s);
+}
+
+/* Storm clouds are darker than a fair-weather cloud. */
 .hero-monsoon__cloud-body {
-  transition: filter 1.2s ease;
+  filter: brightness(0.62) saturate(0.8);
 }
 
-.hero-monsoon__cloud:hover {
-  transform: scale(1.025);
-}
-
-.hero-monsoon__cloud:focus-visible {
-  outline: 2px solid #e3cf9d;
-  outline-offset: 6px;
-  border-radius: 12px;
-}
-
-/* Label under the cloud: shows on hover / keyboard focus. */
-.hero-monsoon__hint {
+/* The button: a quiet glass pill, top-right. */
+.hero-monsoon__cta {
   position: absolute;
-  left: 50%;
-  top: calc(100% + 0.5rem);
-  padding: 0.38rem 0.8rem;
+  top: max(2.5rem, calc(env(safe-area-inset-top, 0px) + 1.25rem));
+  right: clamp(1.25rem, 3vw, 2.5rem);
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.85rem 0.5rem 0.75rem;
+  border: 0;
   border-radius: 999px;
-  background: rgba(10, 12, 18, 0.82);
-  color: #eee8d9;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(238, 232, 217, 0.72);
   font: 500 0.78rem/1 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   letter-spacing: 0.01em;
   white-space: nowrap;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 8px 20px rgba(0, 0, 0, 0.4);
-  opacity: 0;
-  transform: translate(-50%, 4px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  pointer-events: none;
-}
-
-.hero-monsoon__cloud:hover .hero-monsoon__hint,
-.hero-monsoon__cloud:focus-visible .hero-monsoon__hint {
-  opacity: 1;
-  transform: translate(-50%, 0);
-}
-
-/* Figma comment pinned to the left of the cloud. */
-.hero-monsoon__comment {
-  position: absolute;
-  right: calc(100% + 0.25rem);
-  top: 38%;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  animation: hero-monsoon-comment-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) 2.2s both;
-}
-
-.hero-monsoon__comment.is-hidden {
-  opacity: 0;
-  transform: translateY(-4px);
-  pointer-events: none;
-}
-
-@keyframes hero-monsoon-comment-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px) scale(0.96);
-  }
-}
-
-.hero-monsoon__comment-pin {
-  order: 2;
-  flex-shrink: 0;
-  padding: 0;
-  border: 0;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   cursor: pointer;
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-  width: 1.3rem;
-  height: 1.3rem;
-  overflow: hidden;
-  /* Figma's comment teardrop, pointing at the cloud. */
-  border-radius: 50% 50% 0 50%;
-  background: #fbf8f0;
-  box-shadow: 0 0 0 2px #fbf8f0, 0 4px 12px rgba(0, 0, 0, 0.45);
+  transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.hero-monsoon__comment-pin img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.hero-monsoon__cta:hover {
+  color: #eee8d9;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
 }
 
-.hero-monsoon__comment-card {
-  padding: 0.35rem 0.6rem;
-  border-radius: 0.6rem 0.2rem 0.6rem 0.6rem;
-  background: #fbf8f0;
-  color: #2b2822;
-  font: 400 0.74rem/1.35 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
-  white-space: nowrap;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.08);
-}
-
-/* Closed by default: only the pin shows until it's hovered or tapped. */
-.hero-monsoon__comment-card {
-  opacity: 0;
-  transform: translateX(6px) scale(0.96);
-  transform-origin: right center;
-  transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-  pointer-events: none;
-}
-
-.hero-monsoon__comment:hover .hero-monsoon__comment-card,
-.hero-monsoon__comment.is-open .hero-monsoon__comment-card,
-.hero-monsoon__comment-pin:focus-visible + .hero-monsoon__comment-card {
-  opacity: 1;
-  transform: none;
-}
-
-.hero-monsoon__comment-pin:hover,
-.hero-monsoon__comment.is-open .hero-monsoon__comment-pin {
-  transform: scale(1.12);
-}
-
-.hero-monsoon__comment-pin:focus-visible {
+.hero-monsoon__cta:focus-visible {
   outline: 2px solid #e3cf9d;
   outline-offset: 3px;
-}
-
-/* Storm: the cloud swells and darkens. */
-.hero-section[data-monsoon="on"] .hero-monsoon__cloud {
-  transform: scale(1.06);
-}
-
-.hero-section[data-monsoon="on"] .hero-monsoon__cloud-body {
-  filter: brightness(0.58) saturate(0.8);
 }
 
 /* Billboard lamps flicker in the storm. */
@@ -223,34 +132,28 @@
 }
 
 @media (max-width: 767px), (max-width: 1023px) and (hover: none) and (pointer: coarse) {
-  /* Not enough room beside the cloud: hang the comment underneath it. */
-  .hero-monsoon__comment {
-    right: 0.25rem;
-    top: calc(100% - 0.6rem);
-  }
-
-  /* Pin stays right under the cloud; the card opens to its left. */
-  .hero-monsoon__comment-pin {
-    border-radius: 50% 0 50% 50%;
-  }
-
-  .hero-monsoon__comment-card {
-    border-radius: 0.6rem 0.2rem 0.6rem 0.6rem;
-  }
-
-  .hero-monsoon__drift {
-    top: clamp(4.5rem, 10vh, 6rem);
+  .hero-monsoon__cta {
+    top: max(1rem, calc(env(safe-area-inset-top, 0px) + 0.75rem));
     right: 1rem;
+  }
+
+  /* Fewer, bigger clouds on a narrow sky. */
+  .hero-monsoon__cloud {
+    width: 70vw !important;
+  }
+
+  .hero-monsoon__cloud:nth-child(n + 4) {
+    display: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-monsoon__comment {
-    animation: none;
-    transition: none;
+  .hero-monsoon__cloud,
+  .hero-section[data-monsoon="on"] .hero-monsoon__cloud {
+    transform: none;
+    transition: opacity 0.4s ease;
   }
 
-  .hero-monsoon__cloud,
   .hero-section[data-monsoon="on"] .hero-billboard__light-head {
     animation: none;
   }
