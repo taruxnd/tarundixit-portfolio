@@ -304,3 +304,22 @@
     transform: none;
   }
 }
+
+/* Short desktop windows: keep the billboard down in the flowers, clear of
+   the headline; on very short ones it sits this out. */
+@media (min-width: 1024px) and (max-height: 640px) {
+  .hero-billboard {
+    bottom: calc(var(--hero-rail-height, 8px) + 5vh);
+    width: 7rem;
+  }
+
+  .hero-billboard__poles {
+    bottom: -8vh;
+  }
+}
+
+@media (min-width: 1024px) and (max-height: 520px) {
+  .hero-billboard {
+    display: none;
+  }
+}

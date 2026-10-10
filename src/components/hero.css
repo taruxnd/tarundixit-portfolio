@@ -792,3 +792,14 @@
   margin: 0 0.06em;
   vertical-align: -0.16em;
 }
+
+/*
+ * Short windows between 768–1023px with a mouse (small laptops, tablets
+ * with a trackpad, phone landscape in a desktop browser): the top nav is
+ * shown there, so the copy must start below it (nav bottom ≈ 86px).
+ */
+@media (min-width: 768px) and (max-width: 1023px) and (max-height: 720px) and (hover: hover) and (pointer: fine) {
+  .hero-section__inner {
+    padding-top: max(6.5rem, calc(5rem + env(safe-area-inset-top, 0px)));
+  }
+}
