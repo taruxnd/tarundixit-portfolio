@@ -200,11 +200,12 @@ export default function HeroMonsoon({
         className="hero-monsoon__cta"
         onClick={onToggle}
         aria-pressed={raining}
+        aria-label={raining ? "Stop the rain" : "Make it rain"}
+        title={raining ? "Stop the rain" : "Make it rain"}
         data-cursor="interactive"
       >
-        <span className="hero-monsoon__cta-label">
-          {raining ? "Stop the rain" : "Make it rain"}
-          <span aria-hidden>{raining ? "☀️" : "🌧️"}</span>
+        <span className="hero-monsoon__cta-label" aria-hidden>
+          {raining ? "☀️" : "🌧️"}
         </span>
       </button>
     </>
