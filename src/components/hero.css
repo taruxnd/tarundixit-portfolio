@@ -195,6 +195,19 @@
   letter-spacing: -0.008em;
   line-height: 1.18;
   overflow-wrap: break-word;
+  /* Lets the lines below size themselves against the headline's width. */
+  container-type: inline-size;
+}
+
+/*
+ * Two fixed lines on wider screens. Each line never wraps; instead the text
+ * shrinks just enough to fit (line one is ≈12.3em wide), so resizing can't
+ * strand "make" on a line of its own.
+ */
+.hero-headline__line {
+  display: block;
+  white-space: nowrap;
+  font-size: min(1em, 7.9cqi);
 }
 
 .hero-headline__feel-icon {
@@ -425,7 +438,6 @@
 
   .hero-headline {
     max-width: min(40rem, 100%);
-    font-size: clamp(2.05rem, 1.8vw + 1.1rem, 2.85rem);
     line-height: 1.16;
   }
 }
@@ -470,7 +482,6 @@
 
   .hero-headline {
     max-width: min(50rem, 100%);
-    font-size: clamp(2.35rem, 2.4vw + 1rem, 3.85rem);
     line-height: 1.14;
   }
 
@@ -520,7 +531,6 @@
 
   .hero-headline {
     max-width: min(54rem, 100%);
-    font-size: clamp(2.65rem, 2.75vw + 1.05rem, 4.35rem);
     line-height: 1.12;
   }
 
@@ -560,6 +570,17 @@
 
   .hero-grid {
     transform: translateY(calc(-3vh + var(--hero-dot-nudge)));
+  }
+}
+
+/*
+ * Desktop headline size: one fluid curve from 1024px up, so it grows
+ * steadily instead of jumping (or shrinking) at 1280 / 1600 / 1800.
+ * Starts where the tablet size ends (≈42px) and caps at ≈70px.
+ */
+@media (min-width: 1024px) {
+  .hero-headline {
+    font-size: clamp(2.65rem, 3vw + 0.75rem, 4.35rem);
   }
 }
 
@@ -685,10 +706,15 @@
     max-width: min(22rem, 100%);
     font-size: clamp(1.75rem, 6.7vw + 0.35rem, 2.45rem);
     line-height: 1.16;
+    /* Even line lengths: no lone "right." on the last line. */
+    text-wrap: balance;
   }
 
-  .hero-headline__desktop-break {
-    display: none;
+  /* Phones: one flowing, balanced sentence instead of two fixed lines. */
+  .hero-headline__line {
+    display: inline;
+    white-space: normal;
+    font-size: inherit;
   }
 
   .hero-cta {

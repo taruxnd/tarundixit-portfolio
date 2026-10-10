@@ -67,13 +67,14 @@ export default function HeroCopyClassic() {
         custom={1}
         className="hero-headline theme-transition text-[var(--text-primary)]"
       >
-        I design products that make
-        <br className="hero-headline__desktop-break" />{" "}
-        <span className="hero-headline__sense">sense</span> and feel
-        <span className="hero-headline__feel-icon" aria-hidden>
-          ✨
-        </span>{" "}
-        right.
+        <span className="hero-headline__line">I design products that make</span>{" "}
+        <span className="hero-headline__line">
+          <span className="hero-headline__sense">sense</span> and feel
+          <span className="hero-headline__feel-icon" aria-hidden>
+            ✨
+          </span>{" "}
+          right.
+        </span>
       </motion.h1>
 
       <motion.div
