@@ -4,6 +4,7 @@ import { launchResumePlane } from "@/components/resume/launchResumePlane";
 import { FileText, House, Mail, NotebookPen, UserRound, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { navLinks } from "./data";
 import LiquidGlass from "./LiquidGlass";
 import { useNavbarScroll } from "./useNavbarScroll";
@@ -17,9 +18,54 @@ const DOCK_ICONS: Record<(typeof navLinks)[number]["label"], LucideIcon> = {
   Notes: NotebookPen,
 };
 
-function isCurrent(href: string, pathname: string) {
-  if (href === "/") return pathname === "/";
-  if (href.startsWith("/#")) return false;
+/** Home-page sections the dock can point at, in page order. */
+const HOME_SECTIONS = ["about", "contact"] as const;
+
+/**
+ * On the home page, which section is on screen: the last one whose top has
+ * passed 40% of the viewport (or the last section once the page bottoms
+ * out), or "" while still in the hero / work.
+ */
+function useHomeSection(pathname: string) {
+  const [section, setSection] = useState("");
+
+  useEffect(() => {
+    if (pathname !== "/") return;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const line = window.innerHeight * 0.4;
+      let active = "";
+      for (const id of HOME_SECTIONS) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= line) active = id;
+      }
+      // The footer is shorter than a screen, so it never reaches the line:
+      // at the very bottom of the page, the last section wins.
+      const atBottom =
+        window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
+      if (atBottom) active = HOME_SECTIONS[HOME_SECTIONS.length - 1];
+      setSection(active);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [pathname]);
+
+  return pathname === "/" ? section : "";
+}
+
+function isCurrent(href: string, pathname: string, section: string) {
+  if (href === "/") return pathname === "/" && section === "";
+  if (href.startsWith("/#")) return pathname === "/" && href.slice(2) === section;
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
@@ -48,6 +94,7 @@ function FlipLink({ href, label }: { href: string; label: string }) {
 export default function PortfolioNavbar() {
   const scrolled = useNavbarScroll();
   const pathname = usePathname();
+  const section = useHomeSection(pathname);
 
   return (
     <>
@@ -80,7 +127,7 @@ export default function PortfolioNavbar() {
           <div className="portfolio-dock__row">
             {navLinks.map((link) => {
               const Icon = DOCK_ICONS[link.label];
-              const current = isCurrent(link.href, pathname);
+              const current = isCurrent(link.href, pathname, section);
               return (
                 <Link
                   key={link.href}
