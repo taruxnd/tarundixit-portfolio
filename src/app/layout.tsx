@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import SiteShell from "@/components/SiteShell";
-import ThemeInitScript from "@/components/ThemeInitScript";
 import "./globals.css";
 
 const inter = Inter({
@@ -34,7 +33,6 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
     >
       <body className={`${inter.variable} font-sans antialiased`}>
-        <ThemeInitScript />
         <SiteShell>{children}</SiteShell>
       </body>
     </html>

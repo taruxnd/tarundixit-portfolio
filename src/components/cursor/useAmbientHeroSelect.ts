@@ -92,7 +92,7 @@ function pointInHero(x: number, y: number) {
 function siteBusy() {
   return Boolean(
     document.querySelector(
-      ".hanging-lamp__pull-hit:active, .hanging-lamp__pull-btn:active, .card-mockup-wrapper.is-hovering, .card-3d-container:active",
+      ".card-mockup-wrapper.is-hovering, .card-3d-container:active",
     ),
   );
 }
@@ -289,16 +289,16 @@ export function useAmbientHeroSelect(
 
     const onPointerDown = (event: PointerEvent) => {
       const target = event.target;
-      const lampOrCard =
+      const onCard =
         target instanceof Element &&
         Boolean(
           target.closest(
-            ".hanging-lamp, .card-3d-container, .card-mockup-wrapper",
+            ".card-3d-container, .card-mockup-wrapper",
           ),
         );
       const inHero = pointInHero(event.clientX, event.clientY);
 
-      if (inHero || lampOrCard) {
+      if (inHero || onCard) {
         lastMoveRef.current = performance.now();
         if (runningRef.current) abort.abort();
       }

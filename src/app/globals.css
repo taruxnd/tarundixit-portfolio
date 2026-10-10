@@ -136,7 +136,7 @@ body {
   body.custom-cursor-active
     *:not(.testimonial-rack):not(.testimonial-rack *):not(.portfolio-navbar):not(
       .portfolio-navbar *
-    ):not(.hanging-lamp):not(.hanging-lamp *):not(.you-cursor):not(
+    ):not(.you-cursor):not(
       .you-cursor *
     ):not(.figma-cursor):not(.figma-cursor *):not(dialog):not(dialog *) {
     cursor: none !important;
