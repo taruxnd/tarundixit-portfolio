@@ -1,7 +1,8 @@
 "use client";
 
 import { useTheme } from "@/components/ThemeController";
-import { useEffect, useRef } from "react";
+import { assetUrl } from "@/lib/cdnAssets";
+import { useEffect, useId, useRef } from "react";
 import "./hero-monsoon.css";
 
 /** Indian monsoon months (June–September): the storm rolls in on its own. */
@@ -29,6 +30,7 @@ export default function HeroMonsoon({
   onToggle: () => void;
 }) {
   const { reducedMotion } = useTheme();
+  const cloudId = useId();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const flashRef = useRef<HTMLDivElement>(null);
   const rainingRef = useRef(raining);
@@ -203,18 +205,50 @@ export default function HeroMonsoon({
           aria-pressed={raining}
           data-cursor="interactive"
         >
-          <svg viewBox="0 0 160 80" aria-hidden>
-            <path
-              className="hero-monsoon__cloud-body"
-              d="M30 70h104a24 24 0 0 0 2-47.9A34 34 0 0 0 72.6 12 26 26 0 0 0 30 30.5 20 20 0 0 0 30 70Z"
-            />
-            <path
-              className="hero-monsoon__cloud-rim"
-              d="M30.5 30.5A26 26 0 0 1 72.6 12a34 34 0 0 1 63.4 10.1"
-            />
+          <svg viewBox="0 0 240 120" aria-hidden>
+            <defs>
+              <radialGradient id={`${cloudId}-mist`}>
+                <stop offset="0" stopColor="#d5d9dc" stopOpacity="0.6" />
+                <stop offset="0.45" stopColor="#c4cbd1" stopOpacity="0.4" />
+                <stop offset="0.78" stopColor="#aab5c0" stopOpacity="0.16" />
+                <stop offset="1" stopColor="#aab5c0" stopOpacity="0" />
+              </radialGradient>
+              <filter id={`${cloudId}-soft`} x="-20%" y="-35%" width="140%" height="170%" colorInterpolationFilters="sRGB">
+                <feTurbulence type="fractalNoise" baseFrequency="0.035 0.055" numOctaves="3" seed="12" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="15" xChannelSelector="R" yChannelSelector="G" />
+                <feGaussianBlur stdDeviation="1.2" />
+              </filter>
+            </defs>
+            <g className="hero-monsoon__cloud-body">
+              <g fill={`url(#${cloudId}-mist)`} filter={`url(#${cloudId}-soft)`}>
+                <ellipse cx="119" cy="75" rx="104" ry="22" opacity="0.65" />
+                <ellipse cx="68" cy="65" rx="42" ry="26" />
+                <ellipse cx="103" cy="50" rx="39" ry="35" />
+                <ellipse cx="139" cy="59" rx="43" ry="29" />
+                <ellipse cx="174" cy="70" rx="36" ry="20" opacity="0.8" />
+                <ellipse cx="101" cy="72" rx="61" ry="21" opacity="0.65" />
+                <ellipse cx="202" cy="78" rx="25" ry="10" opacity="0.35" />
+                <ellipse cx="36" cy="80" rx="25" ry="9" opacity="0.3" />
+              </g>
+            </g>
           </svg>
           <span className="hero-monsoon__hint">{raining ? "Stop the rain" : "Make it rain"}</span>
         </button>
+
+        {/* Figma-style comment pinned to the cloud; clears once it rains. */}
+        <div className={`hero-monsoon__comment${raining ? " is-hidden" : ""}`} aria-hidden>
+          <span className="hero-monsoon__comment-pin">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={assetUrl("profile/tarun-avatar.jpg")} alt="" width={40} height={40} draggable={false} />
+          </span>
+          <span className="hero-monsoon__comment-card">
+            <span className="hero-monsoon__comment-meta">
+              <span className="hero-monsoon__comment-name">Tarun Dixit</span>
+              <span className="hero-monsoon__comment-time">just now</span>
+            </span>
+            Tap the cloud to make it rain
+          </span>
+        </div>
       </div>
     </>
   );

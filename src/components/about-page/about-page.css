@@ -539,30 +539,8 @@
 .about-brand__youtube{display:inline-block;vertical-align:-.03em;margin-right:.2em}
 
 /* ------------------------------------------------------------------
-   About — quiet inline touches: journey line, avatar peek, one accent.
+   About — quiet inline touches: avatar peek, one accent.
    ------------------------------------------------------------------ */
-
-/* Journey line: done steps struck through, current step bold. */
-.about-journey {
-  margin: 0 0 0.25rem;
-  color: var(--text-muted, #a3a3a3);
-  font-size: clamp(0.9rem, 0.6rem + 0.9svh, 1.05rem) !important;
-  line-height: 1.9 !important;
-}
-.about-journey__step { white-space: nowrap; }
-.about-journey__arrow { margin: 0 0.45em; opacity: 0.6; }
-.about-journey__done {
-  text-decoration: line-through;
-  text-decoration-thickness: 1.5px;
-  opacity: 0.8;
-}
-.about-journey__now { color: var(--text-primary); font-weight: 600; }
-.about-journey__emoji {
-  display: inline-block;
-  margin-left: 0.3em;
-  font-size: 0.95em;
-  transform: rotate(-6deg);
-}
 
 /* "a real person": the avatar peeks out above the words on hover. */
 .about-person {

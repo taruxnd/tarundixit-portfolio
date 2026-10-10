@@ -2,7 +2,6 @@
 
 import AboutPageRoad from "@/components/about-page/AboutPageRoad";
 import AboutGuests from "@/components/about-page/AboutGuests";
-import { AboutPin } from "@/components/about-page/AboutPins";
 import LiquidGlass from "@/components/navbar/LiquidGlass";
 import { assetUrl } from "@/lib/cdnAssets";
 import { stripFontClassName } from "@/lib/heroFonts";
@@ -88,26 +87,6 @@ function KumbaAiLink() {
   );
 }
 
-/** Where the road below is headed, in one line. */
-function Journey() {
-  const steps = [
-    { label: "Graphic design", emoji: "🎨", done: true },
-    { label: "WordPress", emoji: "🌐", done: true },
-    { label: "Product design", emoji: "💼", done: false },
-  ];
-  return (
-    <p className="about-journey" aria-label="Career path: graphic design, then WordPress, now product design">
-      {steps.map((step, index) => (
-        <span key={step.label} className="about-journey__step">
-          {index > 0 && <span className="about-journey__arrow" aria-hidden>→</span>}
-          <span className={step.done ? "about-journey__done" : "about-journey__now"}>{step.label}</span>
-          <span className="about-journey__emoji" aria-hidden>{step.emoji}</span>
-        </span>
-      ))}
-    </p>
-  );
-}
-
 function AboutIntro() {
   return (
     <p
@@ -178,7 +157,6 @@ export default function AboutPageHero({
           </HeadingTag>
 
           <div className="about-page-hero__prose">
-            {!story && <Journey />}
             {!story && <AboutGuests />}
             <p>
               A <Word kind="designer">product designer</Word> who{" "}
@@ -191,7 +169,7 @@ export default function AboutPageHero({
               <p>Along the way, I also worked as a WordPress developer for Fasbeam, developing CarAdvice.in. Moving between graphics, websites, and products made me curious about both how things look and how they work.</p>
             </> : <>
             <p>
-              Three years<AboutPin id="years" note="Felt like ten." /> into product design, I still enjoy figuring out how
+              Three years into product design, I still enjoy figuring out how
               something can look better and work better. Before Kumba AI, I was
               at <a className="about-brand" href="https://1cardsolution.com/" target="_blank" rel="noopener noreferrer"><span className="about-brand__onecard" aria-hidden="true"><img src="/about/brands/one-card.png" alt=""/></span>One Card Solution</a>, working on products for <span data-guest="nerolac"><a className="about-brand" href="https://www.nerolac.com/" target="_blank" rel="noopener noreferrer"><img className="about-brand__nerolac" src="/about/brands/nerolac-favicon.png" alt=""/>Nerolac</a></span>.
               Before that, I worked with Osos Web on <span className="about-spaarks">Spaarks</span>.
@@ -199,7 +177,7 @@ export default function AboutPageHero({
             <p>
               My path into products started with building websites. As a
               WordPress developer, I developed <a className="about-story-link" href="https://caradvice.in/" target="_blank" rel="noopener noreferrer">CarAdvice.in</a> for <a className="about-brand" href="https://www.fasbeam.com/" target="_blank" rel="noopener noreferrer"><svg className="about-brand__youtube" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="6" fill="#f04444"/><path d="m11 5 8 5-8 5Z" fill="white"/></svg>FasBeam</a>, automotive creator <span data-guest="faisal">Faisal Khan</span>.
-              Being a petrolhead<AboutPin id="petrol" note="Still am." />, that was a pretty good place to start.
+              Being a petrolhead, that was a pretty good place to start.
             </p>
             <p>
               I like looking beyond just the <Word kind="craft">design</Word>. I
@@ -208,7 +186,7 @@ export default function AboutPageHero({
               through design and technology.
             </p>
             <p>
-              I believe UX comes first. There is always <span className="about-person" data-cursor="interactive">a real person<span className="about-person__bubble" aria-hidden><Image src={AVATAR_IMAGE} alt="" width={64} height={64} /></span></span><AboutPin id="person" note="That's you, by the way." /> on the
+              I believe UX comes first. There is always <span className="about-person" data-cursor="interactive">a real person<span className="about-person__bubble" aria-hidden><Image src={AVATAR_IMAGE} alt="" width={64} height={64} /></span></span> on the
               other side of what we build, and understanding that person is
               something you have to do yourself. AI can help us explore ideas,
               make things faster, and even build a lot of what we imagine. But I
@@ -220,7 +198,7 @@ export default function AboutPageHero({
               to make almost anything today, but knowing what looks right, what
               feels right, what to keep, what to remove, and what makes
               something worth remembering is a different thing. I don&apos;t
-              think AI will master that anytime soon. Maybe not even in <Word kind="years">100 years</Word><AboutPin id="century" note="I'll check back then." />.
+              think AI will master that anytime soon. Maybe not even in <Word kind="years">100 years</Word>.
             </p>
             </>}
           </div>
