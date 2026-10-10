@@ -202,28 +202,14 @@ export default function HeroMonsoon({
         aria-pressed={raining}
         data-cursor="interactive"
       >
-        {/* Puffy cloud drawn behind the label; stretches with the text. */}
-        <svg className="hero-monsoon__cta-cloud" viewBox="0 0 200 64" preserveAspectRatio="none" aria-hidden>
-          <defs>
-            <linearGradient id="cta-storm" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor="#d9e4ff" />
-              <stop offset="0.55" stopColor="#c3c9ff" />
-              <stop offset="1" stopColor="#e7c8ff" />
-            </linearGradient>
-            <linearGradient id="cta-sun" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor="#fff1b8" />
-              <stop offset="0.55" stopColor="#ffd27a" />
-              <stop offset="1" stopColor="#ffb28a" />
-            </linearGradient>
-          </defs>
-          <path
-            fill={raining ? "url(#cta-sun)" : "url(#cta-storm)"}
-            d="M22 62C10 62 2 54 2 44c0-9 6-16 15-18 0-13 10-22 23-22 8 0 15 4 19 10 4-8 13-13 23-13 12 0 22 8 25 19 3-2 7-3 11-3 9 0 16 5 19 12 3-5 9-8 16-8 12 0 21 9 21 20 0 1 0 2-1 3 7 2 12 8 12 15 0 9-7 16-16 16Z"
-          />
-        </svg>
+        {/* The cloud: a pill body plus three round puffs, all one fill. */}
+        <span className="hero-monsoon__cta-puff hero-monsoon__cta-puff--a" aria-hidden />
+        <span className="hero-monsoon__cta-puff hero-monsoon__cta-puff--b" aria-hidden />
+        <span className="hero-monsoon__cta-puff hero-monsoon__cta-puff--c" aria-hidden />
+        <span className="hero-monsoon__cta-body" aria-hidden />
         <span className="hero-monsoon__cta-text">
           <span className="hero-monsoon__cta-emoji" aria-hidden>
-            {raining ? "☀️" : "⛈️"}
+            {raining ? "☀️" : "⚡"}
           </span>
           {raining ? "Let it shine" : "Call Indradev"}
         </span>
