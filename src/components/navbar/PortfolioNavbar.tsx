@@ -1,7 +1,7 @@
 "use client";
 
 import { launchResumePlane } from "@/components/resume/launchResumePlane";
-import { FileText, House, Mail, NotebookPen, UserRound, type LucideIcon } from "lucide-react";
+import { House, Mail, NotebookPen, UserRound, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -10,10 +10,15 @@ import LiquidGlass from "./LiquidGlass";
 import { useNavbarScroll } from "./useNavbarScroll";
 import "./navbar.css";
 
-const DOCK_ICONS: Record<(typeof navLinks)[number]["label"], LucideIcon> = {
+type NavLink = (typeof navLinks)[number];
+type DockLink = Exclude<NavLink, { label: "Resume" }>;
+
+/** The hero already has a Resume button, so the dock skips it. */
+const DOCK_LINKS = navLinks.filter((link): link is DockLink => link.label !== "Resume");
+
+const DOCK_ICONS: Record<DockLink["label"], LucideIcon> = {
   Home: House,
   About: UserRound,
-  Resume: FileText,
   Contact: Mail,
   Notes: NotebookPen,
 };
@@ -125,7 +130,7 @@ export default function PortfolioNavbar() {
       >
         <LiquidGlass className="portfolio-navbar__pill">
           <div className="portfolio-dock__row">
-            {navLinks.map((link) => {
+            {DOCK_LINKS.map((link) => {
               const Icon = DOCK_ICONS[link.label];
               const current = isCurrent(link.href, pathname, section);
               return (
@@ -135,9 +140,6 @@ export default function PortfolioNavbar() {
                   className="portfolio-dock__item"
                   aria-current={current ? "page" : undefined}
                   aria-label={current ? undefined : link.label}
-                  onClick={(event) => {
-                    if (link.label === "Resume") launchResumePlane(event);
-                  }}
                 >
                   <Icon size={19} strokeWidth={1.7} aria-hidden />
                   {current && <span className="portfolio-dock__label">{link.label}</span>}
