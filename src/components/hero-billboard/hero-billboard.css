@@ -2,7 +2,7 @@
 
 .hero-billboard {
   position: absolute;
-  right: clamp(4.5rem, 8vw, 7.5rem);
+  left: clamp(4.5rem, 8vw, 7.5rem);
   bottom: calc(var(--hero-rail-height, 8px) + 16vh);
   width: clamp(7.4375rem, 10.625vw, 9.9875rem);
   /* No perspective/z-index here — poles must stack under the garden canvas */
@@ -68,7 +68,7 @@
 .hero-billboard__rig {
   position: relative;
   transform-style: preserve-3d;
-  transform: rotateY(-5deg) rotateX(1.5deg);
+  transform: rotateY(5deg) rotateX(1.5deg);
   transform-origin: 50% 100%;
   filter: drop-shadow(0 16px 26px rgba(20, 28, 36, 0.24));
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
@@ -76,7 +76,7 @@
 }
 
 .hero-billboard__entrance:hover .hero-billboard__rig {
-  transform: rotateY(-7deg) rotateX(0.5deg) translateY(-2px);
+  transform: rotateY(7deg) rotateX(0.5deg) translateY(-2px);
 }
 
 .hero-billboard__lights {
@@ -262,7 +262,7 @@
 
 @media (min-width: 1280px) {
   .hero-billboard {
-    right: clamp(5.5rem, 9vw, 9rem);
+    left: clamp(5.5rem, 9vw, 9rem);
     bottom: calc(var(--hero-rail-height, 8px) + 18vh);
     width: clamp(8.2875rem, 11.05vw, 10.8375rem);
   }
@@ -274,7 +274,7 @@
 
 @media (min-width: 1600px) {
   .hero-billboard {
-    right: clamp(6.5rem, 10vw, 10.5rem);
+    left: clamp(6.5rem, 10vw, 10.5rem);
     bottom: calc(var(--hero-rail-height, 8px) + 20vh);
     width: 11.475rem;
   }
