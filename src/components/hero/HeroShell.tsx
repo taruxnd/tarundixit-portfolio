@@ -5,6 +5,7 @@ import ExhibitionRail from "@/components/exhibition-rail/ExhibitionRail";
 import HeroBillboard from "@/components/hero-billboard/HeroBillboard";
 import HeroGarden from "@/components/hero-garden/HeroGarden";
 import HeroMonsoon, { isMonsoonSeason } from "@/components/hero-monsoon/HeroMonsoon";
+import HeroMoon from "@/components/hero-moon/HeroMoon";
 import { useHeroScrollBoundary } from "@/components/hero/useHeroScrollBoundary";
 import { heroFontClassName } from "@/lib/heroFonts";
 import { contentContainerClassName } from "@/lib/sectionLayout";
@@ -41,6 +42,7 @@ export default function HeroShell({ children }: HeroShellProps) {
         <HeroGarden storm={raining} />
         <HeroBillboard />
         <HeroBee />
+        <HeroMoon />
         <div
           className={`hero-section__inner relative flex ${contentContainerClassName}`}
         >
