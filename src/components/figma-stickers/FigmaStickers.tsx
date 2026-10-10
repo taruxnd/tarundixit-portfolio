@@ -4,7 +4,7 @@ import { InteractiveFrame } from "./InteractiveFrame";
 import "./figma-stickers.css";
 
 const STICKERS = [
-  { id: "figma", name: "Figma", src: "/stickers/figma.svg", width: 52, aspect: 384 / 256, minWidth: 28, maxWidth: 140 },
+  { id: "figma", name: "Figma", src: "/stickers/figma.svg", width: 61, aspect: 384 / 256, minWidth: 28, maxWidth: 140 },
 ] as const;
 
 /** Figma-style stickers beside the hero headline: select, drag and resize. */

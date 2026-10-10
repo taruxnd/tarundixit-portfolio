@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import ExhibitionRail from "@/components/exhibition-rail/ExhibitionRail";
 import HeroBillboard from "@/components/hero-billboard/HeroBillboard";
 import HeroGarden from "@/components/hero-garden/HeroGarden";
+import FigmaStickers from "@/components/figma-stickers/FigmaStickers";
 import HeroMonsoon, { isMonsoonSeason } from "@/components/hero-monsoon/HeroMonsoon";
 import { useHeroScrollBoundary } from "@/components/hero/useHeroScrollBoundary";
 import { heroFontClassName } from "@/lib/heroFonts";
@@ -41,6 +42,7 @@ export default function HeroShell({ children }: HeroShellProps) {
         <HeroGarden storm={raining} />
         <HeroBillboard />
         <HeroBee />
+        <FigmaStickers />
         <div
           className={`hero-section__inner relative flex ${contentContainerClassName}`}
         >

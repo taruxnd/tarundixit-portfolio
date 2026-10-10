@@ -784,9 +784,6 @@
   }
 }
 
-/* The stickers are an independent ornament: the hero copy keeps its center and width. */
-.hero-grid__copy--stickers { position: relative; }
-
 /* Inline Code keycap in the headline, standing in for the word. */
 .hero-headline__sticker {
   display: inline-block;
