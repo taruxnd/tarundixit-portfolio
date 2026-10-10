@@ -37,41 +37,42 @@
   opacity: 0;
 }
 
-/* ---------- The button: a neumorphic sky-blue rounded square ----------
-   Soft-extruded: light from the top-left, a deeper shadow bottom-right,
-   and a thin inner highlight along the top edge. Pressed in while it rains. */
+/* ---------- The button: a chunky 3D key in the top-left ----------
+   A sky-blue top face sitting on a visible darker side face (a solid,
+   unblurred shadow), like a key you can press. Hover lifts it, pressing
+   pushes it down onto its base; it stays pressed while it rains. Never
+   taller than the nav pill (which is ~50px). */
 .hero-monsoon__cta {
-  --sky: #7cc4f4;
-  --sky-light: #a9dcff;
-  --sky-dark: #4c93c9;
+  --face: #8dd0ff;
+  --face-light: #c4e8ff;
+  --side: #3f8ac4;
+  --edge: #16324a;
+  --lift: 5px;
   position: absolute;
+  /* Top edge on the nav's line, side face included in the height. */
   top: max(2.25rem, calc(env(safe-area-inset-top, 0px) + 1rem));
   left: clamp(1.25rem, 3vw, 2.5rem);
   z-index: 4;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  height: 3.1rem;
-  padding: 0 1.2rem 0 1.05rem;
-  border: 0;
-  border-radius: 1rem;
-  background: linear-gradient(145deg, var(--sky-light) 0%, var(--sky) 55%, #6ab6ec 100%);
-  color: #0e2a44;
+  height: calc(2.75rem - var(--lift));
+  padding: 0 1.1rem 0 0.95rem;
+  border: 2px solid var(--edge);
+  border-radius: 0.8rem;
+  background: linear-gradient(180deg, var(--face-light) 0%, var(--face) 38%, var(--face) 100%);
+  color: var(--edge);
   font: 700 0.875rem/1 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   letter-spacing: -0.01em;
   white-space: nowrap;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  /* The side face: solid colour, then the dark outline around it. */
   box-shadow:
-    -6px -6px 14px rgba(170, 220, 255, 0.16),
-    8px 8px 18px rgba(0, 0, 0, 0.55),
-    inset 1px 1px 0 rgba(255, 255, 255, 0.55),
-    inset -2px -2px 6px rgba(30, 80, 130, 0.35);
-  transition:
-    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.25s ease,
-    background 0.25s ease,
-    color 0.25s ease;
+    0 var(--lift) 0 0 var(--side),
+    0 var(--lift) 0 2px var(--edge),
+    0 calc(var(--lift) + 10px) 22px rgba(0, 0, 0, 0.45);
+  transition: transform 0.12s ease-out, box-shadow 0.12s ease-out, background 0.2s ease;
 }
 
 .hero-monsoon__cta svg {
@@ -81,21 +82,24 @@
 .hero-monsoon__cta:hover {
   transform: translateY(-1px);
   box-shadow:
-    -7px -7px 16px rgba(170, 220, 255, 0.2),
-    10px 10px 22px rgba(0, 0, 0, 0.6),
-    inset 1px 1px 0 rgba(255, 255, 255, 0.6),
-    inset -2px -2px 6px rgba(30, 80, 130, 0.35);
+    0 calc(var(--lift) + 1px) 0 0 var(--side),
+    0 calc(var(--lift) + 1px) 0 2px var(--edge),
+    0 calc(var(--lift) + 12px) 24px rgba(0, 0, 0, 0.5);
 }
 
+/* Pressed down onto its base: the side face disappears. */
 .hero-monsoon__cta:active,
 .hero-monsoon__cta[aria-pressed="true"] {
-  transform: translateY(0);
-  background: linear-gradient(145deg, #6ab6ec 0%, var(--sky) 50%, var(--sky-light) 100%);
+  transform: translateY(var(--lift));
+  background: linear-gradient(180deg, var(--face) 0%, #79c2f5 100%);
   box-shadow:
-    -2px -2px 6px rgba(170, 220, 255, 0.08),
-    3px 3px 8px rgba(0, 0, 0, 0.35),
-    inset 4px 4px 10px rgba(30, 80, 130, 0.45),
-    inset -3px -3px 8px rgba(190, 230, 255, 0.35);
+    0 0 0 0 var(--side),
+    0 0 0 2px var(--edge),
+    0 4px 10px rgba(0, 0, 0, 0.35);
+}
+
+.hero-monsoon__cta[aria-pressed="true"]:hover {
+  transform: translateY(var(--lift));
 }
 
 .hero-monsoon__cta:focus-visible {
@@ -126,8 +130,9 @@
   .hero-monsoon__cta {
     top: max(1rem, calc(env(safe-area-inset-top, 0px) + 0.75rem));
     left: 1rem;
-    height: 2.75rem;
-    padding: 0 1rem 0 0.9rem;
+    --lift: 4px;
+    height: calc(2.5rem - var(--lift));
+    padding: 0 0.9rem 0 0.8rem;
     font-size: 0.8125rem;
   }
 }
