@@ -168,21 +168,14 @@
   }
 }
 
-@media (max-width: 1023px) {
-  .figma-stickers {
-    top: clamp(4.75rem, 11vh, 6rem);
-    right: 1.25rem;
-    /* Smaller on phones; the frame still drags and resizes. */
-    scale: 0.7;
-    transform-origin: right top;
-  }
-}
-
-@media (max-width: 1023px) and (max-height: 600px) {
+/* Phones and touch tablets: the sticker only adds clutter next to the
+   intro, so it sits those out. */
+@media (max-width: 767px), (max-width: 1023px) and (hover: none) and (pointer: coarse) {
   .figma-stickers {
     display: none;
   }
 }
+
 
 .figma-frame__tooltip {
   position: absolute;

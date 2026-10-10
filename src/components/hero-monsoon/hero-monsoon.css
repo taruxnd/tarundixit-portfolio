@@ -55,7 +55,9 @@
   z-index: 4;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  /* Explicit shrink-to-fit: Safari stretched the absolutely-positioned
+     flex button to the full width without it. */
+  width: max-content;
   height: calc(2.75rem - var(--lift));
   padding: 0 1.1rem 0 0.95rem;
   border: 2px solid var(--edge);
@@ -75,8 +77,21 @@
   transition: transform 0.12s ease-out, box-shadow 0.12s ease-out, background 0.2s ease;
 }
 
+.hero-monsoon__cta-full {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .hero-monsoon__cta svg {
   flex-shrink: 0;
+}
+
+/* The emoji face is for phones only. */
+.hero-monsoon__cta-emoji {
+  display: none;
+  font-size: 1.15rem;
+  line-height: 1;
 }
 
 .hero-monsoon__cta:hover {
@@ -127,13 +142,24 @@
 }
 
 @media (max-width: 767px), (max-width: 1023px) and (hover: none) and (pointer: coarse) {
+  /* Phones: a small square key with just the weather emoji. */
   .hero-monsoon__cta {
     top: max(1rem, calc(env(safe-area-inset-top, 0px) + 0.75rem));
     left: 1rem;
     --lift: 4px;
+    width: 2.5rem;
     height: calc(2.5rem - var(--lift));
-    padding: 0 0.9rem 0 0.8rem;
-    font-size: 0.8125rem;
+    padding: 0;
+    justify-content: center;
+    border-radius: 0.7rem;
+  }
+
+  .hero-monsoon__cta-full {
+    display: none;
+  }
+
+  .hero-monsoon__cta-emoji {
+    display: block;
   }
 }
 

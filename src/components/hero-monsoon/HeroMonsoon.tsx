@@ -202,10 +202,17 @@ export default function HeroMonsoon({
         className="hero-monsoon__cta"
         onClick={onToggle}
         aria-pressed={raining}
+        aria-label={raining ? "Hang up (stop the rain)" : "Call Indradev (make it rain)"}
         data-cursor="interactive"
       >
-        {raining ? <PhoneOff size={16} strokeWidth={2.4} aria-hidden /> : <Phone size={16} strokeWidth={2.4} aria-hidden />}
-        {raining ? "Hang up" : "Call Indradev"}
+        {/* Desktop: icon + words. Phones: just the weather emoji. */}
+        <span className="hero-monsoon__cta-full" aria-hidden>
+          {raining ? <PhoneOff size={16} strokeWidth={2.4} /> : <Phone size={16} strokeWidth={2.4} />}
+          {raining ? "Hang up" : "Call Indradev"}
+        </span>
+        <span className="hero-monsoon__cta-emoji" aria-hidden>
+          {raining ? "☀️" : "🌧️"}
+        </span>
       </button>
     </>
   );
