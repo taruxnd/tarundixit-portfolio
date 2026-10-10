@@ -37,7 +37,7 @@
   opacity: 0;
 }
 
-/* The button: the same liquid glass as the nav, top-right. */
+/* The button: plain text in the top-right, on the nav's top line. */
 .hero-monsoon__cta {
   position: absolute;
   /* Same top line and height as the nav pill. */
@@ -55,10 +55,10 @@
 .hero-monsoon__cta-label {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.4rem;
   height: 3rem;
-  padding: 0 1rem 0 1.15rem;
-  color: var(--nav-text);
+  padding: 0 0.25rem;
+  color: rgba(238, 232, 217, 0.62);
   font: 500 0.8125rem/1 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   letter-spacing: -0.005em;
   white-space: nowrap;
@@ -66,7 +66,7 @@
 }
 
 .hero-monsoon__cta:hover .hero-monsoon__cta-label {
-  color: var(--nav-text-hover);
+  color: #eee8d9;
 }
 
 .hero-monsoon__cta:focus-visible {

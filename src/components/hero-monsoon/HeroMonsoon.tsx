@@ -1,6 +1,5 @@
 "use client";
 
-import LiquidGlass from "@/components/navbar/LiquidGlass";
 import { useTheme } from "@/components/ThemeController";
 import { useEffect, useRef } from "react";
 import "./hero-monsoon.css";
@@ -203,12 +202,10 @@ export default function HeroMonsoon({
         aria-pressed={raining}
         data-cursor="interactive"
       >
-        <LiquidGlass className="portfolio-navbar__pill">
-          <span className="hero-monsoon__cta-label">
-            {raining ? "Stop the rain" : "Make it rain"}
-            <span aria-hidden>{raining ? "☀️" : "🌧️"}</span>
-          </span>
-        </LiquidGlass>
+        <span className="hero-monsoon__cta-label">
+          {raining ? "Stop the rain" : "Make it rain"}
+          <span aria-hidden>{raining ? "☀️" : "🌧️"}</span>
+        </span>
       </button>
     </>
   );
