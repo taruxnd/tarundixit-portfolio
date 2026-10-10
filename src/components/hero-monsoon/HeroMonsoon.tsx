@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "@/components/ThemeController";
+import { CloudLightning, Sun } from "lucide-react";
 import { useEffect, useRef } from "react";
 import "./hero-monsoon.css";
 
@@ -18,8 +19,8 @@ const SLANT = -0.22;
 const SPLASH_LIFE = 14;
 
 /**
- * A small "Make it rain" button on the right of the hero. Tap it and the
- * monsoon starts: rain, lightning, a darker sky.
+ * A "Call Indradev" button (the god of rain and thunder) in the top-left of
+ * the hero. Tap it and the monsoon starts: rain, lightning, a darker sky.
  */
 export default function HeroMonsoon({
   raining,
@@ -53,7 +54,7 @@ export default function HeroMonsoon({
       y: Math.random() * -height,
       length: 12 + Math.random() * 16,
       speed: 13 + Math.random() * 9,
-      alpha: 0.12 + Math.random() * 0.26,
+      alpha: 0.18 + Math.random() * 0.3,
       ...drop,
     });
 
@@ -75,7 +76,7 @@ export default function HeroMonsoon({
       const ground = height * 0.8;
 
       ctx.lineCap = "round";
-      ctx.lineWidth = 1;
+      ctx.lineWidth = 1.15;
       for (let i = 0; i < visible; i++) {
         const drop = drops[i];
         drop.y += drop.speed * step;
@@ -85,7 +86,7 @@ export default function HeroMonsoon({
           if (step > 0 && Math.random() < 0.35) {
             splashes.push({ x: drop.x, y: ground + Math.random() * (height - ground), age: 0 });
           }
-          drops[i] = spawn();
+          drops[i] = spawn({ y: -24 });
           continue;
         }
         ctx.strokeStyle = `rgba(190, 208, 235, ${drop.alpha * intensity})`;
@@ -114,7 +115,7 @@ export default function HeroMonsoon({
     const tick = (now: number) => {
       const step = Math.min(3, (now - last) / 16.67);
       last = now;
-      intensity += ((rainingRef.current ? 1 : 0) - intensity) * 0.02 * step;
+      intensity += ((rainingRef.current ? 1 : 0) - intensity) * (rainingRef.current ? 0.045 : 0.02) * step;
       paint(step);
       // Keep going while it's raining or the last drops are still fading out.
       if (inView && !document.hidden && (rainingRef.current || intensity > 0.01)) {
@@ -200,13 +201,14 @@ export default function HeroMonsoon({
         className="hero-monsoon__cta"
         onClick={onToggle}
         aria-pressed={raining}
-        aria-label={raining ? "Stop the rain" : "Make it rain"}
-        title={raining ? "Stop the rain" : "Make it rain"}
         data-cursor="interactive"
       >
-        <span className="hero-monsoon__cta-label" aria-hidden>
-          {raining ? "☀️" : "🌧️"}
-        </span>
+        {raining ? (
+          <Sun size={15} strokeWidth={1.8} aria-hidden />
+        ) : (
+          <CloudLightning size={15} strokeWidth={1.8} aria-hidden />
+        )}
+        {raining ? "Let it shine" : "Call Indradev"}
       </button>
     </>
   );

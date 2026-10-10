@@ -37,35 +37,38 @@
   opacity: 0;
 }
 
-/* The button: just an emoji in the top-left, on the nav's top line. */
+/* The button: an outlined pill in the top-left, on the nav's top line. */
 .hero-monsoon__cta {
   position: absolute;
-  /* Same top line and height as the nav pill. */
   top: max(2.25rem, calc(env(safe-area-inset-top, 0px) + 1rem));
   left: clamp(1.25rem, 3vw, 2.5rem);
   z-index: 4;
-  padding: 0;
-  border: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  height: 2.75rem;
+  padding: 0 1.05rem 0 0.9rem;
+  border: 1px solid rgba(238, 232, 217, 0.18);
   border-radius: 999px;
-  background: none;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(238, 232, 217, 0.82);
+  font: 500 0.8125rem/1 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
-.hero-monsoon__cta-label {
-  display: grid;
-  place-items: center;
-  width: 3rem;
-  height: 3rem;
-  font-size: 1.5rem;
-  line-height: 1;
-  opacity: 0.85;
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
+.hero-monsoon__cta:hover {
+  color: #eee8d9;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(238, 232, 217, 0.32);
+  transform: translateY(-1px);
 }
 
-.hero-monsoon__cta:hover .hero-monsoon__cta-label {
-  opacity: 1;
-  transform: scale(1.12) rotate(-6deg);
+.hero-monsoon__cta:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .hero-monsoon__cta:focus-visible {

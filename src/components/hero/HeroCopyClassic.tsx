@@ -71,19 +71,9 @@ export default function HeroCopyClassic() {
         <span className="hero-headline__line">I untangle problems into products.</span>{" "}
         <span className="hero-headline__line">
           The{" "}
-          {/* The code keycap stands in for the word, drawn as a selected Figma frame. */}
-          <span className="hero-headline__sticker figma-frame is-selected">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/stickers/code-keycap.svg" alt="code" draggable={false} />
-            <span className="figma-frame__name" aria-hidden>
-              Code
-            </span>
-            <span className="figma-frame__box" aria-hidden />
-            <span className="figma-frame__handle figma-frame__handle--nw" aria-hidden />
-            <span className="figma-frame__handle figma-frame__handle--ne" aria-hidden />
-            <span className="figma-frame__handle figma-frame__handle--sw" aria-hidden />
-            <span className="figma-frame__handle figma-frame__handle--se" aria-hidden />
-          </span>{" "}
+          {/* The code keycap stands in for the word. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="hero-headline__sticker" src="/stickers/code-keycap.svg" alt="code" draggable={false} />{" "}
           is just fun.
         </span>
       </motion.h1>

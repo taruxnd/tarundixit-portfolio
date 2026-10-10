@@ -787,31 +787,11 @@
 /* The stickers are an independent ornament: the hero copy keeps its center and width. */
 .hero-grid__copy--stickers { position: relative; }
 
-/* Inline Code keycap in the headline, drawn as a selected Figma frame. It's
-   decoration in the line, not a draggable sticker. */
-.hero-headline__sticker.figma-frame {
+/* Inline Code keycap in the headline, standing in for the word. */
+.hero-headline__sticker {
   display: inline-block;
   width: 1.1em;
+  height: auto;
   margin: 0 0.06em;
   vertical-align: -0.16em;
-  rotate: -6deg;
-  cursor: default;
-  touch-action: auto;
-}
-
-.hero-headline__sticker img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.hero-headline__sticker .figma-frame__handle {
-  pointer-events: none;
-}
-
-@media (pointer: fine) {
-  body.custom-cursor-active .hero-headline .hero-headline__sticker,
-  body.custom-cursor-active .hero-headline .hero-headline__sticker * {
-    cursor: none !important;
-  }
 }
