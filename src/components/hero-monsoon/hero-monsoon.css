@@ -37,19 +37,16 @@
   opacity: 0;
 }
 
-/* ---------- The button: a chunky 3D key in the top-left ----------
-   A sky-blue top face sitting on a visible darker side face (a solid,
-   unblurred shadow), like a key you can press. Hover lifts it, pressing
-   pushes it down onto its base; it stays pressed while it rains. Never
-   taller than the nav pill (which is ~50px). */
+/* ---------- The button: blue glass in the top-left ----------
+   A translucent sky-blue pane: frosted blur, a bright highlight along the
+   top edge, a thin light rim and a soft blue glow. Brighter while it
+   rains. Never taller than the nav pill (~50px). */
 .hero-monsoon__cta {
-  --face: #8dd0ff;
-  --face-light: #c4e8ff;
-  --side: #3f8ac4;
-  --edge: #16324a;
-  --lift: 4px;
+  --glass: rgba(96, 170, 240, 0.22);
+  --glass-strong: rgba(120, 190, 255, 0.34);
+  --rim: rgba(190, 225, 255, 0.45);
+  --glow: rgba(90, 160, 240, 0.35);
   position: absolute;
-  /* Top edge on the nav's line, side face included in the height. */
   top: max(2.25rem, calc(env(safe-area-inset-top, 0px) + 1rem));
   left: clamp(1.25rem, 3vw, 2.5rem);
   z-index: 4;
@@ -58,23 +55,28 @@
   /* Explicit shrink-to-fit: Safari stretched the absolutely-positioned
      flex button to the full width without it. */
   width: max-content;
-  height: calc(2.4rem - var(--lift));
-  padding: 0 0.9rem 0 0.75rem;
-  border: 2px solid var(--edge);
-  border-radius: 0.7rem;
-  background: linear-gradient(180deg, var(--face-light) 0%, var(--face) 38%, var(--face) 100%);
-  color: var(--edge);
+  height: 2.5rem;
+  padding: 0 1rem 0 0.85rem;
+  border: 1px solid var(--rim);
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.04) 45%, rgba(255, 255, 255, 0) 100%),
+    var(--glass);
+  color: #eaf5ff;
   font: 700 0.8125rem/1 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   letter-spacing: -0.01em;
   white-space: nowrap;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  /* The side face: solid colour, then the dark outline around it. */
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
   box-shadow:
-    0 var(--lift) 0 0 var(--side),
-    0 var(--lift) 0 2px var(--edge),
-    0 calc(var(--lift) + 10px) 22px rgba(0, 0, 0, 0.45);
-  transition: transform 0.12s ease-out, box-shadow 0.12s ease-out, background 0.2s ease;
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -1px 0 rgba(40, 90, 150, 0.35),
+    0 8px 24px rgba(0, 0, 0, 0.35),
+    0 0 18px var(--glow);
+  text-shadow: 0 1px 0 rgba(0, 30, 70, 0.35);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
 }
 
 .hero-monsoon__cta-full {
@@ -85,6 +87,7 @@
 
 .hero-monsoon__cta svg {
   flex-shrink: 0;
+  filter: drop-shadow(0 1px 0 rgba(0, 30, 70, 0.35));
 }
 
 /* The emoji face is for phones only. */
@@ -96,25 +99,32 @@
 
 .hero-monsoon__cta:hover {
   transform: translateY(-1px);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.06) 45%, rgba(255, 255, 255, 0) 100%),
+    var(--glass-strong);
+  border-color: rgba(210, 235, 255, 0.6);
   box-shadow:
-    0 calc(var(--lift) + 1px) 0 0 var(--side),
-    0 calc(var(--lift) + 1px) 0 2px var(--edge),
-    0 calc(var(--lift) + 12px) 24px rgba(0, 0, 0, 0.5);
+    inset 0 1px 0 rgba(255, 255, 255, 0.65),
+    inset 0 -1px 0 rgba(40, 90, 150, 0.35),
+    0 10px 28px rgba(0, 0, 0, 0.4),
+    0 0 26px var(--glow);
 }
 
-/* Pressed down onto its base: the side face disappears. */
-.hero-monsoon__cta:active,
+.hero-monsoon__cta:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* While it rains the pane lights up from inside. */
 .hero-monsoon__cta[aria-pressed="true"] {
-  transform: translateY(var(--lift));
-  background: linear-gradient(180deg, var(--face) 0%, #79c2f5 100%);
+  --glass: rgba(120, 190, 255, 0.4);
+  --glass-strong: rgba(140, 205, 255, 0.5);
+  --glow: rgba(120, 190, 255, 0.55);
+  color: #ffffff;
   box-shadow:
-    0 0 0 0 var(--side),
-    0 0 0 2px var(--edge),
-    0 4px 10px rgba(0, 0, 0, 0.35);
-}
-
-.hero-monsoon__cta[aria-pressed="true"]:hover {
-  transform: translateY(var(--lift));
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 0 18px rgba(160, 215, 255, 0.45),
+    0 8px 24px rgba(0, 0, 0, 0.35),
+    0 0 26px var(--glow);
 }
 
 .hero-monsoon__cta:focus-visible {
@@ -142,32 +152,20 @@
 }
 
 @media (max-width: 767px), (max-width: 1023px) and (hover: none) and (pointer: coarse) {
-  /* Phones: a flat square with just the weather emoji, no 3D side. */
+  /* Phones: the same glass, as a small square with just the weather emoji. */
   .hero-monsoon__cta {
     top: max(1rem, calc(env(safe-area-inset-top, 0px) + 0.75rem));
     left: 1rem;
-    --lift: 0px;
     width: 2.5rem;
     height: 2.5rem;
     padding: 0;
     justify-content: center;
-    border-radius: 0.7rem;
-    background: var(--face);
-    box-shadow: none;
+    border-radius: 0.8rem;
   }
 
   .hero-monsoon__cta:hover,
-  .hero-monsoon__cta:active,
-  .hero-monsoon__cta[aria-pressed="true"],
-  .hero-monsoon__cta[aria-pressed="true"]:hover {
+  .hero-monsoon__cta:active {
     transform: none;
-    box-shadow: none;
-  }
-
-  /* Pressed: a darker face instead of a push-down. */
-  .hero-monsoon__cta:active,
-  .hero-monsoon__cta[aria-pressed="true"] {
-    background: var(--side);
   }
 
   .hero-monsoon__cta-full {
