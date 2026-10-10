@@ -118,7 +118,6 @@
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  pointer-events: none;
   transition: opacity 0.5s ease, transform 0.5s ease;
   animation: hero-monsoon-comment-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) 2.2s both;
 }
@@ -126,6 +125,7 @@
 .hero-monsoon__comment.is-hidden {
   opacity: 0;
   transform: translateY(-4px);
+  pointer-events: none;
 }
 
 @keyframes hero-monsoon-comment-in {
@@ -138,6 +138,10 @@
 .hero-monsoon__comment-pin {
   order: 2;
   flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
   width: 1.3rem;
   height: 1.3rem;
   overflow: hidden;
@@ -162,6 +166,32 @@
   font: 400 0.74rem/1.35 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   white-space: nowrap;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+/* Closed by default: only the pin shows until it's hovered or tapped. */
+.hero-monsoon__comment-card {
+  opacity: 0;
+  transform: translateX(6px) scale(0.96);
+  transform-origin: right center;
+  transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.hero-monsoon__comment:hover .hero-monsoon__comment-card,
+.hero-monsoon__comment.is-open .hero-monsoon__comment-card,
+.hero-monsoon__comment-pin:focus-visible + .hero-monsoon__comment-card {
+  opacity: 1;
+  transform: none;
+}
+
+.hero-monsoon__comment-pin:hover,
+.hero-monsoon__comment.is-open .hero-monsoon__comment-pin {
+  transform: scale(1.12);
+}
+
+.hero-monsoon__comment-pin:focus-visible {
+  outline: 2px solid #e3cf9d;
+  outline-offset: 3px;
 }
 
 /* Storm: the cloud swells and darkens. */
@@ -199,13 +229,13 @@
     top: calc(100% - 0.6rem);
   }
 
+  /* Pin stays right under the cloud; the card opens to its left. */
   .hero-monsoon__comment-pin {
-    order: 0;
-    border-radius: 50% 50% 50% 0;
+    border-radius: 50% 0 50% 50%;
   }
 
   .hero-monsoon__comment-card {
-    border-radius: 0.2rem 0.6rem 0.6rem 0.6rem;
+    border-radius: 0.6rem 0.2rem 0.6rem 0.6rem;
   }
 
   .hero-monsoon__drift {

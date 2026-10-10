@@ -2,7 +2,7 @@
 
 import { useTheme } from "@/components/ThemeController";
 import { assetUrl } from "@/lib/cdnAssets";
-import { useEffect, useId, useRef } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import "./hero-monsoon.css";
 
 /** Indian monsoon months (June–September): the storm rolls in on its own. */
@@ -31,6 +31,7 @@ export default function HeroMonsoon({
 }) {
   const { reducedMotion } = useTheme();
   const cloudId = useId();
+  const [commentOpen, setCommentOpen] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const flashRef = useRef<HTMLDivElement>(null);
   const rainingRef = useRef(raining);
@@ -235,13 +236,23 @@ export default function HeroMonsoon({
           <span className="hero-monsoon__hint">{raining ? "Stop the rain" : "Make it rain"}</span>
         </button>
 
-        {/* Figma-style comment pinned to the cloud; clears once it rains. */}
-        <div className={`hero-monsoon__comment${raining ? " is-hidden" : ""}`} aria-hidden>
-          <span className="hero-monsoon__comment-pin">
+        {/* Figma-style comment pinned to the cloud: closed to a pin until
+            hovered or tapped; clears once it rains. */}
+        <div
+          className={`hero-monsoon__comment${commentOpen ? " is-open" : ""}${raining ? " is-hidden" : ""}`}
+        >
+          <button
+            type="button"
+            className="hero-monsoon__comment-pin"
+            aria-expanded={commentOpen}
+            aria-label={commentOpen ? "Hide comment" : "Show comment"}
+            data-cursor="interactive"
+            onClick={() => setCommentOpen((open) => !open)}
+          >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={assetUrl("profile/tarun-avatar.jpg")} alt="" width={40} height={40} draggable={false} />
-          </span>
-          <span className="hero-monsoon__comment-card">Tap the cloud to make it rain</span>
+          </button>
+          <span className="hero-monsoon__comment-card" role="note">Tap the cloud to make it rain</span>
         </div>
       </div>
     </>
