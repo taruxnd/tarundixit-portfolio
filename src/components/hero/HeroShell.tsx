@@ -4,13 +4,12 @@ import dynamic from "next/dynamic";
 import ExhibitionRail from "@/components/exhibition-rail/ExhibitionRail";
 import HeroBillboard from "@/components/hero-billboard/HeroBillboard";
 import HeroGarden from "@/components/hero-garden/HeroGarden";
+import HeroMonsoon, { isMonsoonSeason } from "@/components/hero-monsoon/HeroMonsoon";
 import { useHeroScrollBoundary } from "@/components/hero/useHeroScrollBoundary";
-import LightSkyBackground from "@/components/LightSkyBackground";
-import { useTheme } from "@/components/ThemeController";
 import { heroFontClassName } from "@/lib/heroFonts";
 import { contentContainerClassName } from "@/lib/sectionLayout";
 import type { ReactNode } from "react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../hero.css";
 
 const HeroBee = dynamic(() => import("@/components/hero-bee/HeroBee"), { ssr: false });
@@ -19,30 +18,27 @@ interface HeroShellProps {
   children: ReactNode;
 }
 
-/** Shared hero chrome — sky, garden, billboard, rail. */
+/** Shared hero chrome — sky, monsoon, garden, billboard, rail. */
 export default function HeroShell({ children }: HeroShellProps) {
   const boundaryRef = useRef<HTMLDivElement>(null);
-  const { theme, hydrated, reducedMotion } = useTheme();
+  const [raining, setRaining] = useState(false);
   useHeroScrollBoundary(boundaryRef);
 
-  // Wait until hydrated so light-sky isn't in SSR HTML for dark users
-  // (theme defaults to "dark" on first paint to match the server).
-  const showLightSky = hydrated && theme === "light";
+  // During the real monsoon the storm rolls in by itself, a moment after load.
+  useEffect(() => {
+    if (!isMonsoonSeason()) return;
+    const timer = setTimeout(() => setRaining(true), 2500);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div ref={boundaryRef} className="hero-scroll-boundary">
-      <section className={`hero-section relative ${heroFontClassName}`}>
-        {showLightSky ? (
-          <LightSkyBackground
-            skyColor="rgb(186, 230, 253)"
-            horizonGlowColor="#e0f2fe"
-            horizonColor="rgb(125, 211, 252)"
-            showClouds
-            reducedMotion={reducedMotion}
-            className="light-sky--hero"
-          />
-        ) : null}
-        <HeroGarden />
+      <section
+        className={`hero-section relative ${heroFontClassName}`}
+        data-monsoon={raining ? "on" : undefined}
+      >
+        <HeroMonsoon raining={raining} onToggle={() => setRaining((value) => !value)} />
+        <HeroGarden storm={raining} />
         <HeroBillboard />
         <HeroBee />
         <div

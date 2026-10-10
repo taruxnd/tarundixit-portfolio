@@ -116,6 +116,8 @@ function paintFrame(
   time: number,
   travel: number,
   court = false,
+  /** 0 = calm, 1 = monsoon: plants bow with the rain and sway harder. */
+  gust = 0,
 ) {
   ctx.clearRect(0, 0, width, height);
   if (width < 2 || height < 2) return;
@@ -207,7 +209,7 @@ function paintFrame(
     // Drop ghost sprites — translucent paint was causing the silhouette haze.
     if (alpha < 0.72) continue;
 
-    const sway = Math.sin(time * sprite.swaySpeed + sprite.swayPhase);
+    const sway = Math.sin(time * sprite.swaySpeed + sprite.swayPhase) * (1 + gust * 1.6);
     const source = sprite.type === 0 ? flowers : leaves;
     if (!source.length) continue;
     const spriteImage = source[sprite.imgIndex % source.length];
@@ -216,10 +218,10 @@ function paintFrame(
     ctx.save();
     ctx.globalAlpha = 1;
     ctx.translate(
-      x + sway * WIND_STRENGTH * perspective * 0.2 * layoutScale,
+      x + (sway - gust * 1.2) * WIND_STRENGTH * perspective * 0.2 * layoutScale,
       drawY,
     );
-    ctx.rotate(sprite.rotation + sway * 0.01 * (WIND_STRENGTH / 50));
+    ctx.rotate(sprite.rotation + sway * 0.01 * (WIND_STRENGTH / 50) - gust * 0.2);
     ctx.drawImage(
       spriteImage,
       -(spriteImage.width * size * 0.05) / 2,
@@ -234,12 +236,19 @@ function paintFrame(
 export default function HeroGarden({
   placement = "hero",
   flowerPalette = "mixed",
+  storm = false,
 }: {
   placement?: "hero" | "footer" | "court";
   flowerPalette?: "mixed" | "white";
+  storm?: boolean;
 } = {}) {
   const { reducedMotion } = useTheme();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  // Read inside the animation loop so toggling rain doesn't restart the garden.
+  const stormRef = useRef(storm);
+  useEffect(() => {
+    stormRef.current = storm;
+  }, [storm]);
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
@@ -263,6 +272,7 @@ export default function HeroGarden({
     let spawnDensity = -1;
     let currentDpr = 0;
     let time = 0;
+    let gust = 0;
     let travel = 0;
     let scrollSmoothed = 0;
     // Canonical idle frame = travel at first paint (scroll 0 + no idle drift).
@@ -307,14 +317,15 @@ export default function HeroGarden({
       if (!reducedMotion) {
         // Keep idle pinned to the load-time depth; wind/sway keeps moving.
         idleTravel = initialIdleTravel;
-        time += 0.052;
+        gust += ((stormRef.current ? 1 : 0) - gust) * 0.015;
+        time += 0.052 * (1 + gust * 0.9);
       }
       // Touch scrolling should move the page, not scrub the mobile garden.
       // Desktop keeps the existing scroll-linked depth behavior unchanged.
       const scrollTarget = scrollDepth();
       scrollSmoothed += (scrollTarget - scrollSmoothed) * 0.08;
       travel = scrollSmoothed * SCROLL_SPEED + idleTravel;
-      paintFrame(ctx, width, height, sprites, flowers, leaves, time, travel, placement === "court");
+      paintFrame(ctx, width, height, sprites, flowers, leaves, time, travel, placement === "court", gust);
       if (!reducedMotion) {
         frame = requestAnimationFrame(render);
       }
@@ -324,7 +335,7 @@ export default function HeroGarden({
       if (reducedMotion && inView && !document.hidden) {
         scrollSmoothed = scrollDepth();
         travel = scrollSmoothed * SCROLL_SPEED + idleTravel;
-        paintFrame(ctx, width, height, sprites, flowers, leaves, time, travel, placement === "court");
+        paintFrame(ctx, width, height, sprites, flowers, leaves, time, travel, placement === "court", gust);
       }
     };
 
