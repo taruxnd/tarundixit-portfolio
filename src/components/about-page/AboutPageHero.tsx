@@ -71,18 +71,69 @@ function Word({
 
 function KumbaAiLink() {
   return (
-    <Link href="/#work" data-cursor="interactive" className="about-page-kumba">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        className="about-page-kumba__icon"
-        src={assetUrl("about/kumba-logo-icon.png")}
-        alt=""
-        width={48}
-        height={48}
-        draggable={false}
-      />
+    <Link href="/#work" data-cursor="interactive" className="about-chip">
+      <span className="about-chip__logo" aria-hidden>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={assetUrl("about/kumba-logo-icon.png")} alt="" width={48} height={48} draggable={false} />
+      </span>
       Kumba AI
     </Link>
+  );
+}
+
+/** White pill with a logo: every company reads as one family. */
+function Chip({
+  href,
+  logo,
+  children,
+}: {
+  href: string;
+  logo: ReactNode;
+  children: ReactNode;
+}) {
+  const external = href.startsWith("http");
+  return (
+    <a
+      className="about-chip"
+      href={href}
+      data-cursor="interactive"
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
+    >
+      <span className="about-chip__logo" aria-hidden>
+        {logo}
+      </span>
+      {children}
+    </a>
+  );
+}
+
+/** Tilted sticker hanging off the end of a phrase. */
+function Sticker({ emoji, tilt = -8, label }: { emoji: string; tilt?: number; label: string }) {
+  return (
+    <span className="about-sticker" style={{ "--tilt": `${tilt}deg` } as React.CSSProperties} role="img" aria-label={label}>
+      {emoji}
+    </span>
+  );
+}
+
+/** Where the road below is headed, in one line. */
+function Journey() {
+  const steps = [
+    { label: "Graphic design", emoji: "🎨", done: true },
+    { label: "WordPress", emoji: "🌐", done: true },
+    { label: "Product design", emoji: "💼", done: false },
+  ];
+  return (
+    <p className="about-journey" aria-label="Career path: graphic design, then WordPress, now product design">
+      {steps.map((step, index) => (
+        <span key={step.label} className="about-journey__step">
+          {index > 0 && <span className="about-journey__arrow" aria-hidden>→</span>}
+          <span className={step.done ? "about-journey__done" : "about-journey__now"}>{step.label}</span>
+          <span className="about-journey__emoji" aria-hidden>{step.emoji}</span>
+        </span>
+      ))}
+    </p>
   );
 }
 
@@ -156,6 +207,7 @@ export default function AboutPageHero({
           </HeadingTag>
 
           <div className="about-page-hero__prose">
+            {!story && <Journey />}
             <p>
               A <Word kind="designer">product designer</Word> who{" "}
               <Word kind="engineers">engineers</Word>, currently working at{" "}
@@ -167,24 +219,24 @@ export default function AboutPageHero({
               <p>Along the way, I also worked as a WordPress developer for Fasbeam, developing CarAdvice.in. Moving between graphics, websites, and products made me curious about both how things look and how they work.</p>
             </> : <>
             <p>
-              Three years into product design, I still enjoy figuring out how
+              <span className="about-tally"><span className="about-tally__marks" aria-hidden><i /><i /><i /></span>Three years</span> into product design, I still enjoy figuring out how
               something can look better and work better. Before Kumba AI, I was
-              at <a className="about-brand" href="https://1cardsolution.com/" target="_blank" rel="noopener noreferrer"><span className="about-brand__onecard" aria-hidden="true"><img src="/about/brands/one-card.png" alt=""/></span>One Card Solution</a>, working on products for <a className="about-brand" href="https://www.nerolac.com/" target="_blank" rel="noopener noreferrer"><img className="about-brand__nerolac" src="/about/brands/nerolac-favicon.png" alt=""/>Nerolac</a>.
-              Before that, I worked with Osos Web on <span className="about-spaarks">Spaarks</span>.
+              at <Chip href="https://1cardsolution.com/" logo={<img src="/about/brands/one-card.png" alt="" />}>One Card Solution</Chip>, working on products for <Chip href="https://www.nerolac.com/" logo={<img src="/about/brands/nerolac-favicon.png" alt="" />}>Nerolac</Chip>.
+              Before that, I worked with Osos Web on <span className="about-spaarks">Spaarks<span className="about-spaarks__spark" aria-hidden>✦</span></span>.
             </p>
             <p>
               My path into products started with building websites. As a
-              WordPress developer, I developed <a className="about-story-link" href="https://caradvice.in/" target="_blank" rel="noopener noreferrer">CarAdvice.in</a> for <a className="about-brand" href="https://www.fasbeam.com/" target="_blank" rel="noopener noreferrer"><svg className="about-brand__youtube" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="6" fill="#f04444"/><path d="m11 5 8 5-8 5Z" fill="white"/></svg>FasBeam</a>, automotive creator Faisal Khan.
-              Being a petrolhead, that was a pretty good place to start.
+              WordPress developer, I developed <a className="about-story-link" href="https://caradvice.in/" target="_blank" rel="noopener noreferrer">CarAdvice.in</a><Sticker emoji="🚗" tilt={10} label="car" /> for <Chip href="https://www.fasbeam.com/" logo={<svg viewBox="0 0 28 20"><rect width="28" height="20" rx="6" fill="#f04444"/><path d="m11 5 8 5-8 5Z" fill="white"/></svg>}>FasBeam</Chip>, automotive creator Faisal Khan.
+              Being a <span className="about-petrol">petrolhead<span className="about-petrol__pump" aria-hidden>⛽</span></span>, that was a pretty good place to start.
             </p>
             <p>
               I like looking beyond just the <Word kind="craft">design</Word>. I
               want to understand the user, the business, and what we are trying
-              to achieve. Then I try to figure out where I can bring value
+              to achieve.<span className="about-sticker-stack" aria-hidden><Sticker emoji="👤" tilt={-10} label="" /><Sticker emoji="💼" tilt={4} label="" /><Sticker emoji="🎯" tilt={12} label="" /></span> Then I try to figure out where I can bring value
               through design and technology.
             </p>
             <p>
-              I believe UX comes first. There is always a real person on the
+              I believe UX comes first. There is always <span className="about-person" data-cursor="interactive">a real person<span className="about-person__bubble" aria-hidden><Image src={AVATAR_IMAGE} alt="" width={64} height={64} /></span></span> on the
               other side of what we build, and understanding that person is
               something you have to do yourself. AI can help us explore ideas,
               make things faster, and even build a lot of what we imagine. But I
@@ -192,7 +244,7 @@ export default function AboutPageHero({
               understand people.
             </p>
             <p>
-              And then there is <Word kind="craft">taste</Word>. You can use AI
+              And then there is <span className="about-accent"><Word kind="craft">taste</Word></span>. You can use AI
               to make almost anything today, but knowing what looks right, what
               feels right, what to keep, what to remove, and what makes
               something worth remembering is a different thing. I don&apos;t

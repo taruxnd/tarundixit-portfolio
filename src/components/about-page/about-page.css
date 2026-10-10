@@ -270,25 +270,6 @@
   }
 }
 
-.about-page-kumba {
-  color: inherit;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.about-page-kumba__icon {
-  display: inline-block;
-  width: 0.92em;
-  height: 0.92em;
-  margin-right: 0.28em;
-  border-radius: 0.2em;
-  object-fit: contain;
-  /* Optical center with cap height — not flex mid-line (which hangs low) */
-  vertical-align: -0.08em;
-  user-select: none;
-  -webkit-user-drag: none;
-}
-
 @keyframes about-page-caret {
   0%,
   45% {
@@ -537,3 +518,230 @@
 .about-brand__onecard{width:.8em;height:.95em;vertical-align:-.12em;margin-right:.2em}
 .about-brand__nerolac{width:.9em;height:.9em;vertical-align:-.1em;margin-right:.2em;object-fit:contain}
 .about-brand__youtube{display:inline-block;vertical-align:-.03em;margin-right:.2em}
+
+/* ------------------------------------------------------------------
+   About — inline design elements: chips, stickers, journey line.
+   ------------------------------------------------------------------ */
+
+/* Company chip: white pill + logo, same family for every company. */
+.about-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32em;
+  vertical-align: -0.18em;
+  margin: 0 0.05em;
+  padding: 0.12em 0.55em 0.12em 0.32em;
+  border-radius: 999px;
+  background: #f6f3ea;
+  color: #1a1a1a;
+  font-weight: 600;
+  font-size: 0.86em;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset, 0 2px 8px rgba(0, 0, 0, 0.28);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+.about-chip:hover {
+  transform: translateY(-1px) rotate(-1deg);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset, 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+.about-chip__logo {
+  display: inline-grid;
+  place-items: center;
+  width: 1.15em;
+  height: 1.15em;
+  overflow: hidden;
+  border-radius: 0.3em;
+  flex-shrink: 0;
+}
+.about-chip__logo img,
+.about-chip__logo svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Tilted sticker hanging off the end of a phrase. */
+.about-sticker {
+  display: inline-grid;
+  place-items: center;
+  width: 1.55em;
+  height: 1.55em;
+  margin-left: 0.22em;
+  vertical-align: -0.42em;
+  border-radius: 0.38em;
+  background: #fbf8f0;
+  font-size: 0.95em;
+  line-height: 1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  transform: rotate(var(--tilt, -8deg));
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.about-sticker:hover {
+  transform: rotate(0deg) scale(1.1);
+}
+/* Three stickers that overlap like a fanned stack. */
+.about-sticker-stack {
+  display: inline-flex;
+  margin-left: 0.3em;
+  vertical-align: -0.42em;
+}
+.about-sticker-stack .about-sticker {
+  margin-left: -0.35em;
+  vertical-align: baseline;
+}
+.about-sticker-stack .about-sticker:first-child {
+  margin-left: 0;
+}
+.about-sticker-stack:hover .about-sticker {
+  margin-left: 0.12em;
+  transform: rotate(0deg);
+}
+
+/* Journey line: done steps struck through, current step bold. */
+.about-journey {
+  margin: 0 0 0.25rem;
+  color: var(--text-muted, #a3a3a3);
+  font-size: clamp(0.9rem, 0.6rem + 0.9svh, 1.05rem) !important;
+  line-height: 1.9 !important;
+}
+.about-journey__step {
+  white-space: nowrap;
+}
+.about-journey__arrow {
+  margin: 0 0.45em;
+  opacity: 0.6;
+}
+.about-journey__done {
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+  opacity: 0.8;
+}
+.about-journey__now {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.about-journey__emoji {
+  display: inline-block;
+  margin-left: 0.3em;
+  font-size: 0.95em;
+  transform: rotate(-6deg);
+}
+
+/* Tally marks for "Three years". */
+.about-tally {
+  white-space: nowrap;
+}
+.about-tally__marks {
+  display: inline-flex;
+  gap: 0.12em;
+  margin-right: 0.3em;
+  vertical-align: -0.08em;
+}
+.about-tally__marks i {
+  display: inline-block;
+  width: 2px;
+  height: 0.85em;
+  border-radius: 1px;
+  background: currentColor;
+  transform: rotate(-8deg);
+  opacity: 0.7;
+}
+.about-tally:hover .about-tally__marks i {
+  transform: rotate(0deg);
+  opacity: 1;
+}
+.about-tally__marks i { transition: transform 0.25s ease, opacity 0.25s ease; }
+.about-tally__marks i:nth-child(2) { transition-delay: 0.05s; }
+.about-tally__marks i:nth-child(3) { transition-delay: 0.1s; }
+
+/* A spark that flickers once on Spaarks. */
+.about-spaarks__spark {
+  display: inline-block;
+  margin-left: 0.1em;
+  color: #f1c75b;
+  font-size: 0.75em;
+  vertical-align: 0.35em;
+  animation: about-spark 2.6s ease-in-out 1s 2;
+}
+@keyframes about-spark {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  12% { opacity: 1; transform: scale(1.5) rotate(20deg); }
+  24% { opacity: 0.55; transform: scale(1); }
+}
+
+/* Fuel pump after "petrolhead": shakes on hover. */
+.about-petrol {
+  white-space: nowrap;
+}
+.about-petrol__pump {
+  display: inline-block;
+  margin-left: 0.18em;
+  font-size: 0.9em;
+}
+.about-petrol:hover .about-petrol__pump {
+  animation: about-shake 0.45s ease;
+}
+@keyframes about-shake {
+  20% { transform: rotate(-12deg); }
+  40% { transform: rotate(10deg); }
+  60% { transform: rotate(-7deg); }
+  80% { transform: rotate(5deg); }
+}
+
+/* "a real person": the avatar peeks out above the words on hover. */
+.about-person {
+  position: relative;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(255, 255, 255, 0.35);
+  white-space: nowrap;
+}
+.about-person__bubble {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.4rem);
+  width: 2.6rem;
+  height: 2.6rem;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #fbf8f0;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45), 0 0 0 2px #fbf8f0;
+  opacity: 0;
+  transform: translate(-50%, 6px) scale(0.85);
+  transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.about-person__bubble img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.about-person:hover .about-person__bubble {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+
+/* The one accent in the section. */
+.about-accent .about-page-word__label {
+  color: #f0a3c9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-chip,
+  .about-sticker,
+  .about-sticker-stack .about-sticker,
+  .about-tally__marks i,
+  .about-person__bubble {
+    transition: none;
+  }
+  .about-spaarks__spark,
+  .about-petrol:hover .about-petrol__pump {
+    animation: none;
+  }
+}
