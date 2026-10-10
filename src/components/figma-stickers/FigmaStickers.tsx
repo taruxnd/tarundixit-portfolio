@@ -5,7 +5,7 @@ import "./figma-stickers.css";
 
 const STICKERS = [
   { id: "figma", name: "Figma", src: "/stickers/figma.svg", width: 52, aspect: 384 / 256, minWidth: 28, maxWidth: 140 },
-  { id: "arrow", name: "Arrow", src: "/stickers/arrow.svg", width: 92, aspect: 21.6 / 41.6, minWidth: 48, maxWidth: 220 },
+  { id: "code", name: "Code", src: "/stickers/code-keycap.svg", width: 68, aspect: 96 / 112, minWidth: 40, maxWidth: 160 },
 ] as const;
 
 /** Figma-style stickers beside the hero headline: select, drag and resize. */
@@ -16,6 +16,7 @@ export default function FigmaStickers() {
         <div key={sticker.id} className={`figma-stickers__slot figma-stickers__slot--${sticker.id}`}>
           <InteractiveFrame
             name={sticker.name}
+            alwaysSelected
             width={sticker.width}
             aspect={sticker.aspect}
             minWidth={sticker.minWidth}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import type { PointerEvent as ReactPointerEvent, ReactNode } from "react";
 
 type Corner = "nw" | "ne" | "sw" | "se";
@@ -32,6 +32,8 @@ function track(pointerId: number, onMove: (event: PointerEvent) => void, onEnd: 
 
 export function InteractiveFrame({
   name,
+  description,
+  alwaysSelected = false,
   width: initialWidth,
   aspect,
   minWidth,
@@ -40,6 +42,8 @@ export function InteractiveFrame({
   children,
 }: {
   name: string;
+  description?: string;
+  alwaysSelected?: boolean;
   width: number;
   /** height / width of the artwork */
   aspect: number;
@@ -48,6 +52,7 @@ export function InteractiveFrame({
   className?: string;
   children: ReactNode;
 }) {
+  const descriptionId = useId();
   const frameRef = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState(false);
   const [dragging, setDragging] = useState(false);
@@ -57,7 +62,7 @@ export function InteractiveFrame({
 
   // Deselect on Escape or a press anywhere outside the frame.
   useEffect(() => {
-    if (!selected) return;
+    if (alwaysSelected || !selected) return;
     const onDown = (event: PointerEvent) => {
       if (!frameRef.current?.contains(event.target as Node)) setSelected(false);
     };
@@ -70,7 +75,7 @@ export function InteractiveFrame({
       document.removeEventListener("pointerdown", onDown);
       window.removeEventListener("keydown", onKey);
     };
-  }, [selected]);
+  }, [selected, alwaysSelected]);
 
   /** CSS scale on an ancestor (e.g. phones), so moves follow the pointer 1:1. */
   const ancestorScale = () => {
@@ -117,13 +122,16 @@ export function InteractiveFrame({
   return (
     <div
       ref={frameRef}
-      className={`figma-frame${selected ? " is-selected" : ""}${dragging ? " is-dragging" : ""} ${className}`}
+      className={`figma-frame${alwaysSelected || selected ? " is-selected" : ""}${dragging ? " is-dragging" : ""} ${className}`}
       style={{ width, height, translate: `${offset.x}px ${offset.y}px` }}
       onPointerDown={startMove}
       role="img"
       aria-label={`${name} sticker`}
+      aria-describedby={description ? descriptionId : undefined}
+      tabIndex={description ? 0 : undefined}
     >
       {children}
+      {description && <span id={descriptionId} role="tooltip" className="figma-frame__tooltip">{description}</span>}
       <span className="figma-frame__name" aria-hidden>
         {name}
       </span>
