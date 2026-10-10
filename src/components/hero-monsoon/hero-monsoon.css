@@ -123,8 +123,8 @@
   right: calc(100% + 0.25rem);
   top: 38%;
   display: flex;
-  align-items: flex-start;
-  gap: 0.4rem;
+  align-items: center;
+  gap: 0.3rem;
   pointer-events: none;
   transition: opacity 0.5s ease, transform 0.5s ease;
   animation: hero-monsoon-comment-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) 2.2s both;
@@ -145,8 +145,8 @@
 .hero-monsoon__comment-pin {
   order: 2;
   flex-shrink: 0;
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 1.3rem;
+  height: 1.3rem;
   overflow: hidden;
   /* Figma's comment teardrop, pointing at the cloud. */
   border-radius: 50% 50% 0 50%;
@@ -162,32 +162,13 @@
 }
 
 .hero-monsoon__comment-card {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  padding: 0.5rem 0.75rem 0.55rem;
+  padding: 0.35rem 0.6rem;
   border-radius: 0.6rem 0.2rem 0.6rem 0.6rem;
   background: #fbf8f0;
   color: #2b2822;
-  font: 400 0.8rem/1.35 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  font: 400 0.74rem/1.35 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   white-space: nowrap;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.08);
-}
-
-.hero-monsoon__comment-meta {
-  display: flex;
-  gap: 0.4rem;
-  align-items: baseline;
-}
-
-.hero-monsoon__comment-name {
-  color: #1a1a1a;
-  font-weight: 600;
-}
-
-.hero-monsoon__comment-time {
-  color: #7a7467;
-  font-size: 0.7rem;
 }
 
 /* Storm: the cloud swells and darkens. */
@@ -224,27 +205,16 @@
     right: auto;
     left: 50%;
     top: calc(100% - 0.6rem);
-    align-items: center;
-    gap: 0.3rem;
     translate: -50% 0;
   }
 
   .hero-monsoon__comment-pin {
     order: 0;
-    width: 1.3rem;
-    height: 1.3rem;
     border-radius: 50% 50% 50% 0;
   }
 
-  /* One compact line: no name/time row. */
-  .hero-monsoon__comment-meta {
-    display: none;
-  }
-
   .hero-monsoon__comment-card {
-    padding: 0.35rem 0.6rem;
     border-radius: 0.2rem 0.6rem 0.6rem 0.6rem;
-    font-size: 0.74rem;
   }
 
   .hero-monsoon__drift {

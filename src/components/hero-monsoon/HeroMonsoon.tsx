@@ -241,13 +241,7 @@ export default function HeroMonsoon({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={assetUrl("profile/tarun-avatar.jpg")} alt="" width={40} height={40} draggable={false} />
           </span>
-          <span className="hero-monsoon__comment-card">
-            <span className="hero-monsoon__comment-meta">
-              <span className="hero-monsoon__comment-name">Tarun Dixit</span>
-              <span className="hero-monsoon__comment-time">just now</span>
-            </span>
-            Tap the cloud to make it rain
-          </span>
+          <span className="hero-monsoon__comment-card">Tap the cloud to make it rain</span>
         </div>
       </div>
     </>
