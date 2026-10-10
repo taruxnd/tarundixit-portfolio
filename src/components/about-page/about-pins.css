@@ -1,0 +1,108 @@
+/* Figma-style comment pins in the About copy. */
+.about-pin {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  vertical-align: top;
+}
+
+.about-pin__dot {
+  position: absolute;
+  left: 0.12em;
+  top: -0.55em;
+  display: block;
+  width: 1.35rem;
+  height: 1.35rem;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  /* Figma's comment teardrop: round, with a sharp bottom-left corner. */
+  border-radius: 50% 50% 50% 0;
+  background: #fbf8f0;
+  box-shadow: 0 0 0 2px #fbf8f0, 0 4px 12px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.about-pin__dot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50% 50% 50% 0;
+}
+
+.about-pin__dot:hover,
+.about-pin.is-open .about-pin__dot {
+  transform: scale(1.15);
+}
+
+.about-pin__dot:focus-visible {
+  outline: 2px solid #e3cf9d;
+  outline-offset: 3px;
+}
+
+.about-pin__card {
+  position: absolute;
+  left: 0.5rem;
+  top: 1.1rem;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  width: max-content;
+  max-width: min(16rem, 70vw);
+  padding: 0.6rem 0.8rem 0.65rem;
+  border-radius: 0.6rem 0.6rem 0.6rem 0.2rem;
+  background: #fbf8f0;
+  color: #1a1a1a;
+  font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  text-align: left;
+  white-space: normal;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  animation: about-pin-pop 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.about-pin__card[hidden] {
+  display: none;
+}
+
+@keyframes about-pin-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.96);
+    transform-origin: top left;
+  }
+}
+
+.about-pin__meta {
+  display: flex;
+  gap: 0.45rem;
+  align-items: baseline;
+}
+
+.about-pin__name {
+  font-weight: 600;
+}
+
+.about-pin__time {
+  color: #7a7467;
+  font-size: 0.72rem;
+}
+
+.about-pin__text {
+  color: #2b2822;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-pin__dot {
+    transition: none;
+  }
+  .about-pin__card {
+    animation: none;
+  }
+}

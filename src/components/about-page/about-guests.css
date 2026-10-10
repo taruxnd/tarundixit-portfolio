@@ -1,0 +1,34 @@
+/* Collaborator cursors wandering over the About copy. Layer is pinned to the
+   prose box; cursors are positioned in its coordinate space. */
+.about-page-hero__prose {
+  position: relative;
+}
+
+.about-guests {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.about-guests__cursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  will-change: transform;
+}
+
+/* The word they're hovering gets a selection outline in their colour. */
+.about-guests__box {
+  position: absolute;
+  border: 1.5px solid;
+  border-radius: 3px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.about-guests__box.is-on {
+  opacity: 0.9;
+}
