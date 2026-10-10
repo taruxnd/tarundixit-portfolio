@@ -793,11 +793,3 @@
     font-size: min(1em, 7.9cqi);
   }
 }
-
-/* Wherever the bottom dock shows (it has its own Resume), drop the hero's
-   Resume button so "View my work" stands alone. Same query as the dock. */
-@media (max-width: 767px), (max-width: 1023px) and (hover: none) and (pointer: coarse) {
-  .hero-cta__resume {
-    display: none;
-  }
-}
