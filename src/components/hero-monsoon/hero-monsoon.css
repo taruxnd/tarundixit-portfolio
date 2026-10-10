@@ -37,43 +37,84 @@
   opacity: 0;
 }
 
-/* The button: an outlined pill in the top-left, on the nav's top line. */
+/* The button: a colourful puffy cloud in the top-left, on the nav's top line. */
 .hero-monsoon__cta {
   position: absolute;
-  top: max(2.25rem, calc(env(safe-area-inset-top, 0px) + 1rem));
+  top: max(2rem, calc(env(safe-area-inset-top, 0px) + 0.75rem));
   left: clamp(1.25rem, 3vw, 2.5rem);
   z-index: 4;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  height: 2.75rem;
-  padding: 0 1.05rem 0 0.9rem;
-  border: 1px solid rgba(238, 232, 217, 0.18);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(238, 232, 217, 0.82);
-  font: 500 0.8125rem/1 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
-  letter-spacing: -0.005em;
+  display: inline-grid;
+  place-items: center;
+  padding: 0.95rem 1.45rem 0.7rem;
+  border: 0;
+  background: none;
+  color: #1c2140;
+  font: 600 0.8125rem/1 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.01em;
   white-space: nowrap;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  filter: drop-shadow(0 6px 18px rgba(150, 140, 255, 0.35));
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), filter 0.3s ease;
+  animation: hero-monsoon-cta-float 5s ease-in-out infinite;
+}
+
+.hero-monsoon__cta-cloud {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.hero-monsoon__cta-cloud path {
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.hero-monsoon__cta-text {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.hero-monsoon__cta-emoji {
+  font-size: 1rem;
+  line-height: 1;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes hero-monsoon-cta-float {
+  50% {
+    translate: 0 -3px;
+  }
 }
 
 .hero-monsoon__cta:hover {
-  color: #eee8d9;
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(238, 232, 217, 0.32);
-  transform: translateY(-1px);
+  transform: scale(1.05);
+  filter: drop-shadow(0 8px 24px rgba(170, 150, 255, 0.55));
+}
+
+.hero-monsoon__cta:hover .hero-monsoon__cta-emoji {
+  transform: rotate(-12deg) scale(1.15);
 }
 
 .hero-monsoon__cta:active {
-  transform: translateY(0) scale(0.98);
+  transform: scale(0.97);
+}
+
+/* Sunny cloud while it rains (tap to clear the sky). */
+.hero-monsoon__cta[aria-pressed="true"] {
+  color: #4a2a0c;
+  filter: drop-shadow(0 6px 18px rgba(255, 190, 110, 0.4));
 }
 
 .hero-monsoon__cta:focus-visible {
   outline: 2px solid #e3cf9d;
-  outline-offset: 3px;
+  outline-offset: 4px;
+  border-radius: 999px;
 }
 
 /* Billboard lamps flicker in the storm. */
@@ -97,12 +138,16 @@
 
 @media (max-width: 767px), (max-width: 1023px) and (hover: none) and (pointer: coarse) {
   .hero-monsoon__cta {
-    top: max(1rem, calc(env(safe-area-inset-top, 0px) + 0.75rem));
-    left: 1rem;
+    top: max(0.75rem, calc(env(safe-area-inset-top, 0px) + 0.5rem));
+    left: 0.85rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hero-monsoon__cta {
+    animation: none;
+  }
+
   .hero-section[data-monsoon="on"] .hero-billboard__light-head {
     animation: none;
   }
