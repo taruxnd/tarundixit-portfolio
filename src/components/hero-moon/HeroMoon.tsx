@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import "./hero-moon.css";
 
 /**
- * A cut-paper moon hanging on a string from the top-left of the hero, like a
+ * A cut-paper moon hanging on a string from the top-right of the hero, like a
  * stage prop. It sways in a light breeze, swings harder in the monsoon, slowly
  * turns on its string, and can be nudged with the cursor.
  */

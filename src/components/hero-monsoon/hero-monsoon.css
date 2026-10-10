@@ -37,12 +37,12 @@
   opacity: 0;
 }
 
-/* The button: just an emoji in the top-right, on the nav's top line. */
+/* The button: just an emoji in the top-left, on the nav's top line. */
 .hero-monsoon__cta {
   position: absolute;
   /* Same top line and height as the nav pill. */
   top: max(2.25rem, calc(env(safe-area-inset-top, 0px) + 1rem));
-  right: clamp(1.25rem, 3vw, 2.5rem);
+  left: clamp(1.25rem, 3vw, 2.5rem);
   z-index: 4;
   padding: 0;
   border: 0;
@@ -95,7 +95,7 @@
 @media (max-width: 767px), (max-width: 1023px) and (hover: none) and (pointer: coarse) {
   .hero-monsoon__cta {
     top: max(1rem, calc(env(safe-area-inset-top, 0px) + 0.75rem));
-    right: 1rem;
+    left: 1rem;
   }
 }
 

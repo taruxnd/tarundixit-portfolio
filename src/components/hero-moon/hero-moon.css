@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------------
-   Hero moon — one cut-paper moon on a string, hanging from the top-left.
+   Hero moon — one cut-paper moon on a string, hanging from the top-right.
    The swing pivots where the string meets the top of the hero; the paper
    slowly turns on the string like a stage prop.
    ------------------------------------------------------------------ */
@@ -7,7 +7,7 @@
 .hero-moon {
   position: absolute;
   top: 0;
-  left: clamp(3rem, 12vw, 13rem);
+  right: clamp(3rem, 12vw, 13rem);
   z-index: 2;
   pointer-events: none;
 }
@@ -57,7 +57,7 @@
 
 @media (max-width: 767px), (max-width: 1023px) and (hover: none) and (pointer: coarse) {
   .hero-moon {
-    left: 1.75rem;
+    right: 1.75rem;
   }
 
   .hero-moon__string {
