@@ -793,3 +793,6 @@
     font-size: min(1em, 7.9cqi);
   }
 }
+
+/* The stickers are an independent ornament: the hero copy keeps its center and width. */
+.hero-grid__copy--stickers { position: relative; }

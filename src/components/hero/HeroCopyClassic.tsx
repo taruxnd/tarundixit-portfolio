@@ -7,6 +7,7 @@ import { heroEditorialTypography } from "@/lib/heroFonts";
 import { motion, type Variants } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
+import FigmaStickers from "@/components/figma-stickers/FigmaStickers";
 
 const AVATAR_IMAGE = assetUrl("profile/tarun-avatar.jpg");
 
@@ -29,7 +30,7 @@ const typography = heroEditorialTypography;
 export default function HeroCopyClassic() {
   return (
     <motion.div
-      className="hero-grid__copy flex min-w-0 flex-col"
+      className="hero-grid__copy hero-grid__copy--stickers flex min-w-0 flex-col"
       initial="hidden"
       animate="visible"
     >
@@ -121,6 +122,7 @@ export default function HeroCopyClassic() {
           </LiquidGlass>
         </motion.div>
       </motion.div>
+      <FigmaStickers />
     </motion.div>
   );
 }
