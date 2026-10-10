@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "@/components/ThemeController";
+import { Phone, PhoneOff } from "lucide-react";
 import { useEffect, useRef } from "react";
 import "./hero-monsoon.css";
 
@@ -20,6 +21,7 @@ const SPLASH_LIFE = 14;
 /**
  * A "Call Indradev" button (the god of rain and thunder) in the top-left of
  * the hero. Tap it and the monsoon starts: rain, lightning, a darker sky.
+ * Tap again ("Hang up") and it clears.
  */
 export default function HeroMonsoon({
   raining,
@@ -202,40 +204,8 @@ export default function HeroMonsoon({
         aria-pressed={raining}
         data-cursor="interactive"
       >
-        {/* A proper cumulus: overlapping domes on a flat base, drawn at a
-            fixed size so it never stretches. One clip, one fill, one shade. */}
-        <svg className="hero-monsoon__cta-cloud" viewBox="0 0 180 72" aria-hidden>
-          <defs>
-            <clipPath id="indradev-cloud">
-              <rect x="12" y="38" width="156" height="22" rx="11" />
-              <circle cx="38" cy="40" r="15" />
-              <circle cx="66" cy="30" r="25" />
-              <circle cx="100" cy="29" r="21" />
-              <circle cx="133" cy="36" r="17" />
-              <circle cx="156" cy="44" r="12" />
-            </clipPath>
-            <radialGradient id="indradev-light">
-              <stop offset="0" stopColor="var(--cloud-light)" />
-              <stop offset="1" stopColor="var(--cloud-light)" stopOpacity="0" />
-            </radialGradient>
-            <linearGradient id="indradev-shade" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0.45" stopColor="var(--cloud-shade)" stopOpacity="0" />
-              <stop offset="1" stopColor="var(--cloud-shade)" />
-            </linearGradient>
-          </defs>
-          <g clipPath="url(#indradev-cloud)">
-            <rect width="180" height="72" fill="var(--cloud)" />
-            <rect width="180" height="72" fill="url(#indradev-shade)" />
-            {/* Soft light on the big dome. */}
-            <ellipse cx="64" cy="20" rx="24" ry="13" fill="url(#indradev-light)" />
-          </g>
-        </svg>
-        <span className="hero-monsoon__cta-text">
-          <span className="hero-monsoon__cta-emoji" aria-hidden>
-            {raining ? "☀️" : "⚡"}
-          </span>
-          {raining ? "Let it shine" : "Call Indradev"}
-        </span>
+        {raining ? <PhoneOff size={16} strokeWidth={2.4} aria-hidden /> : <Phone size={16} strokeWidth={2.4} aria-hidden />}
+        {raining ? "Hang up" : "Call Indradev"}
       </button>
     </>
   );
