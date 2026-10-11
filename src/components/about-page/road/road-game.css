@@ -1,0 +1,653 @@
+/* Horn + checkpost: the interactive layer on the about-road. */
+
+/* Cars are clickable; the lane and road around them stay click-through. */
+.about-road__glb-car {
+  pointer-events: auto;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Generous thumb target around each car. */
+.about-road__glb-car::before {
+  content: "";
+  position: absolute;
+  inset: -0.45rem -0.3rem -0.5rem;
+}
+
+/* Brake lights (rear = left; they drive to the right). */
+.about-road__glb-car::after {
+  content: "";
+  position: absolute;
+  left: var(--brake-x, 0.14rem);
+  bottom: var(--brake-y, 0.58rem);
+  width: 0.2rem;
+  height: 0.22rem;
+  border-radius: 0.06rem;
+  background: #ff5a3c;
+  opacity: 0;
+  box-shadow:
+    0 0 0.35rem rgba(255, 70, 40, 0.95),
+    0 0 0.8rem rgba(255, 60, 30, 0.6);
+  transition: opacity 0.12s ease;
+  pointer-events: none;
+}
+
+.about-road__glb-car.is-braking::after {
+  opacity: 1;
+}
+
+.about-road__glb-car--carry {
+  --brake-x: 0.1rem;
+  --brake-y: 0.62rem;
+}
+
+.about-road__glb-car--maruti-800 {
+  --brake-x: 0.1rem;
+  --brake-y: 0.55rem;
+}
+
+.about-road__glb-car--kia-carens {
+  --brake-x: 0.12rem;
+  --brake-y: 0.7rem;
+}
+
+/* Waiting for their wave: parked off-screen, invisible, untouchable. */
+.about-road__glb-car.is-dormant {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Turned-around cars: the canvas mirrors and drops into the far lane, so
+ * they drive back behind the car still waiting at the barrier. */
+.about-road__glb-car canvas {
+  transition: transform 0.45s ease;
+  transform-origin: 50% 100%;
+}
+
+.about-road__glb-car.is-reversed {
+  z-index: 12;
+}
+
+.about-road__glb-car.is-reversed canvas {
+  transform: scaleX(-0.92) scaleY(0.92) translateY(-0.12rem);
+  filter: brightness(0.88);
+}
+
+.about-road__glb-car.is-reversed::after {
+  left: auto;
+  right: var(--brake-x, 0.14rem);
+}
+
+/* Extra cars (generic GLB loader) */
+.about-road__glb-car--maruti-800 {
+  width: min(4.5rem, 16vw);
+}
+
+.about-road__glb-car--kia-carens {
+  width: min(6.2rem, 22vw);
+}
+
+.about-road__glb-car--maruti-800.is-reduced-motion {
+  left: 8%;
+}
+
+.about-road__glb-car--kia-carens.is-reduced-motion {
+  left: 92%;
+}
+
+/* Horn puff: rises from the roof and fades. */
+.about-road__honk {
+  position: absolute;
+  left: 55%;
+  bottom: 100%;
+  margin-bottom: 0.15rem;
+  padding: 0.05rem 0.3rem;
+  border-radius: 0.5rem;
+  font: 700 0.72rem/1.3 var(--font-geist), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.01em;
+  color: #1a1a1a;
+  background: #fff6c2;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+  pointer-events: none;
+  transform-origin: bottom left;
+  transform: translate(-50%, 0.2rem) rotate(var(--tilt, 0deg)) scale(0.6);
+  opacity: 0;
+  animation: about-road-honk 0.95s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+  z-index: 3;
+}
+
+.about-road__honk--angry {
+  background: #ffb3a7;
+  border-color: rgba(120, 0, 0, 0.35);
+}
+
+@keyframes about-road-honk {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0.2rem) rotate(var(--tilt, 0deg)) scale(0.6);
+  }
+  18% {
+    opacity: 1;
+    transform: translate(-50%, -0.3rem) rotate(var(--tilt, 0deg)) scale(1.08);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -0.9rem) rotate(var(--tilt, 0deg)) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -1.5rem) rotate(var(--tilt, 0deg)) scale(0.96);
+  }
+}
+
+/* ---- Checkpost: booth, constable, boom barrier, stop line ------------- */
+
+.about-road {
+  /* The checkpost sits out past the Google office. Sizes are in em on the
+   * unit so one font-size scales the whole thing. */
+  --junction-x: 84%;
+  --post-scale: 1.25rem;
+  --arm-len: 4.6em;
+}
+
+.about-road__stopline {
+  position: absolute;
+  top: 0.1rem;
+  bottom: 0.1rem;
+  /* The slab spans -1%..101% of the road, so map road % into slab %, then
+   * back up by the barrier arm plus a little breathing room. */
+  left: calc((var(--junction-x) + 1%) * 0.9804 - var(--arm-len) * (var(--post-scale) / 1em) - 0.5em);
+  width: 0.22rem;
+  /* Invisible: it only exists so the controller can measure where to stop. */
+  visibility: hidden;
+  z-index: 2;
+  font-size: var(--post-scale);
+}
+
+.about-road__post {
+  position: absolute;
+  left: var(--junction-x);
+  bottom: calc(var(--road-height) - 0.42rem);
+  width: 0;
+  height: 0;
+  font-size: var(--post-scale);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Booth on the sidewalk, behind the traffic, on the office's footing. */
+.about-road__booth {
+  position: absolute;
+  left: 0;
+  bottom: 0.3em;
+  width: 2.7em;
+  height: 2.5em;
+  border-radius: 0.12em 0.12em 0 0;
+  background: linear-gradient(180deg, #e9dcc0 0%, #cdbd97 100%);
+  border: 1px solid #6b5b3a;
+  box-shadow: inset 0 0 0 0.08em rgba(255, 255, 255, 0.25);
+  z-index: 1;
+}
+
+.about-road__booth-roof {
+  position: absolute;
+  left: -0.3em;
+  right: -0.3em;
+  top: -0.42em;
+  height: 0.42em;
+  border-radius: 0.1em 0.1em 0 0;
+  background: linear-gradient(180deg, #a3362a, #7d2419);
+  box-shadow: 0 0.08em 0 rgba(0, 0, 0, 0.3);
+}
+
+.about-road__booth-lamp {
+  position: absolute;
+  left: 0.1em;
+  top: -0.86em;
+  width: 0.4em;
+  height: 0.4em;
+  border-radius: 50%;
+  border: 1px solid #0e0f10;
+  background: #27282b;
+  transition: background-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.about-road__booth-lamp[data-state="red"] {
+  background: #ff3b2f;
+  box-shadow: 0 0 0.45em rgba(255, 59, 47, 0.9);
+}
+
+.about-road__booth-lamp[data-state="green"] {
+  background: #35d35a;
+  box-shadow: 0 0 0.45em rgba(53, 211, 90, 0.9);
+}
+
+.about-road__booth-sign {
+  position: absolute;
+  left: 55%;
+  top: -1.08em;
+  transform: translateX(-50%);
+  padding: 0.08em 0.3em;
+  border-radius: 0.1em;
+  border: 1px solid #b3261e;
+  background: #f8f6ef;
+  color: #b3261e;
+  font: 700 0.42em/1.2 var(--font-geist), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.about-road__booth-window {
+  position: absolute;
+  left: 0.3em;
+  top: 1.05em;
+  width: 0.9em;
+  height: 0.6em;
+  border-radius: 0.06em;
+  background: linear-gradient(155deg, #c3d6dc 0%, #5e727d 55%, #253239 100%);
+  border: 1px solid #4a3f2a;
+}
+
+.about-road__booth-door {
+  position: absolute;
+  right: 0.3em;
+  bottom: 0;
+  width: 0.7em;
+  height: 1.3em;
+  border-radius: 0.08em 0.08em 0 0;
+  background: #6b4a2d;
+  border: 1px solid #3f2a16;
+  border-bottom: 0;
+}
+
+/* Boom barrier on the near curb, in front of the traffic. */
+.about-road__barrier {
+  position: absolute;
+  left: -0.5em;
+  bottom: 0;
+  z-index: 24;
+}
+
+.about-road__barrier-post {
+  position: absolute;
+  left: -0.26em;
+  bottom: 0;
+  width: 0.52em;
+  height: 1.35em;
+  border-radius: 0.08em 0.08em 0 0;
+  background: linear-gradient(90deg, #5a5b5e, #9a9b9e 45%, #3a3b3e);
+  border: 1px solid #222;
+}
+
+.about-road__barrier-arm {
+  position: absolute;
+  right: 0;
+  bottom: 1.12em;
+  width: var(--arm-len);
+  height: 0.24em;
+  border-radius: 0.12em;
+  background: repeating-linear-gradient(90deg, #e63a2e 0 0.6em, #fff 0.6em 1.2em);
+  border: 1px solid rgba(0, 0, 0, 0.45);
+  box-shadow: 0 0.1em 0.2em rgba(0, 0, 0, 0.4);
+  transform-origin: 100% 50%;
+  transform: rotate(0deg);
+  transition: transform 0.55s cubic-bezier(0.3, 0.8, 0.3, 1);
+}
+
+.about-road__post.is-open .about-road__barrier-arm {
+  /* Pivot is the right end; clockwise lifts the free end skyward. */
+  transform: rotate(74deg);
+}
+
+/* The constable: side view, facing the traffic, rifle across the chest. */
+.about-road__cop {
+  position: absolute;
+  left: 0.5em;
+  bottom: 0.3em;
+  width: 0.9em;
+  height: 2.35em;
+  z-index: 2;
+}
+
+.about-road__cop > span {
+  position: absolute;
+  display: block;
+}
+
+.about-road__cop-cap {
+  left: 0.08em;
+  top: 0;
+  width: 0.74em;
+  height: 0.3em;
+  border-radius: 0.3em 0.3em 0.06em 0.06em;
+  background: #1f2a44;
+  border-bottom: 0.08em solid #0f1524;
+}
+
+.about-road__cop-cap::before {
+  content: "";
+  position: absolute;
+  left: -0.2em;
+  bottom: -0.08em;
+  width: 0.34em;
+  height: 0.1em;
+  border-radius: 0.1em 0 0 0.1em;
+  background: #0f1524;
+}
+
+.about-road__cop-head {
+  left: 0.16em;
+  top: 0.24em;
+  width: 0.58em;
+  height: 0.56em;
+  border-radius: 0.26em 0.26em 0.3em 0.3em;
+  background: #b97a4a;
+}
+
+/* Eye and moustache, facing the traffic (left). */
+.about-road__cop-head::before {
+  content: "";
+  position: absolute;
+  left: 0.12em;
+  top: 0.18em;
+  width: 0.1em;
+  height: 0.1em;
+  border-radius: 50%;
+  background: #15110c;
+  box-shadow: inset 0.03em 0 0 #fff;
+}
+
+.about-road__cop-head::after {
+  content: "";
+  position: absolute;
+  left: 0.02em;
+  top: 0.36em;
+  width: 0.28em;
+  height: 0.08em;
+  border-radius: 0.04em 0.04em 0.02em 0.02em;
+  background: #2b1d12;
+}
+
+.about-road__cop-body {
+  left: 0.05em;
+  top: 0.78em;
+  width: 0.8em;
+  height: 0.82em;
+  border-radius: 0.14em 0.14em 0.06em 0.06em;
+  background: linear-gradient(180deg, #b59a5a, #9c824a);
+}
+
+.about-road__cop-belt {
+  left: 0.05em;
+  top: 1.5em;
+  width: 0.8em;
+  height: 0.12em;
+  background: #3a2a1a;
+}
+
+.about-road__cop-legs {
+  left: 0.12em;
+  top: 1.6em;
+  width: 0.66em;
+  height: 0.58em;
+  background: linear-gradient(90deg, #8c7a45 0 48%, #74633a 48% 52%, #8c7a45 52%);
+}
+
+.about-road__cop-boots {
+  left: 0.04em;
+  top: 2.14em;
+  width: 0.82em;
+  height: 0.21em;
+  border-radius: 0.1em 0.06em 0.04em 0.1em;
+  background: #15161a;
+}
+
+.about-road__cop-gun {
+  left: -0.42em;
+  top: 1.04em;
+  width: 1.5em;
+  height: 0.13em;
+  border-radius: 0.06em;
+  background: linear-gradient(90deg, #0d0e10 0 62%, #5a3a1e 62% 100%);
+  transform: rotate(-32deg);
+  transform-origin: 70% 50%;
+  box-shadow: 0 0.04em 0.06em rgba(0, 0, 0, 0.5);
+}
+
+.about-road__cop-gun::after {
+  content: "";
+  position: absolute;
+  left: 58%;
+  top: 100%;
+  width: 0.26em;
+  height: 0.16em;
+  border-radius: 0 0 0.06em 0.06em;
+  background: #0d0e10;
+}
+
+.about-road__cop-arm {
+  left: 0.02em;
+  top: 0.92em;
+  width: 0.62em;
+  height: 0.2em;
+  border-radius: 0.1em;
+  background: #b59a5a;
+  transform: rotate(-32deg);
+  transform-origin: 90% 50%;
+}
+
+/* The checkpost card: pops up on its own when a car halts. */
+.about-road__ui {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  font-family: var(--font-geist), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+.about-road__gate {
+  position: absolute;
+  right: calc(100% - var(--junction-x) - 2.2rem);
+  bottom: calc(var(--road-height) + 3.3rem);
+  width: max-content;
+  max-width: min(16rem, calc(100vw - 2rem));
+  padding: 0.6rem 0.8rem 0.6rem;
+  border-radius: 0.85rem;
+  border: 1px solid var(--border-medium, rgba(0, 0, 0, 0.12));
+  background: var(--surface-card, rgba(255, 255, 255, 0.95));
+  color: var(--text-primary, #0a0a0a);
+  box-shadow: 0 0.6rem 1.6rem var(--shadow-medium, rgba(0, 0, 0, 0.1));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  pointer-events: auto;
+  text-align: left;
+  transform-origin: calc(100% - 1.4rem) 100%;
+  animation: about-road-gate-in 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+}
+
+.about-road__gate::after {
+  content: "";
+  position: absolute;
+  right: 1.4rem;
+  top: 100%;
+  border: 0.42rem solid transparent;
+  border-top-color: var(--surface-card, rgba(255, 255, 255, 0.95));
+  transform: translateX(-50%);
+}
+
+.about-road__gate--pass {
+  border-color: rgba(53, 211, 90, 0.7);
+}
+
+.about-road__gate--fail {
+  border-color: rgba(226, 75, 58, 0.7);
+}
+
+@keyframes about-road-gate-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.3rem) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.about-road__gate-q {
+  margin: 0;
+  font-size: 0.86rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.about-road__gate-kicker {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-muted, #737373);
+}
+
+.about-road__gate-actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.55rem;
+}
+
+.about-road__gate-actions button {
+  flex: 1 1 0;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid var(--btn-secondary-border, rgba(0, 0, 0, 0.12));
+  background: var(--btn-secondary-bg, rgba(255, 255, 255, 0.8));
+  color: var(--btn-secondary-text, #404040);
+  font: 600 0.78rem/1 inherit;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.about-road__gate-actions button:first-child {
+  border-color: transparent;
+  background: var(--btn-primary-bg, #171717);
+  color: var(--btn-primary-text, #fff);
+}
+
+.about-road__gate-actions button:focus-visible {
+  outline: 2px solid var(--accent, #5b5bd6);
+  outline-offset: 2px;
+}
+
+/* Five-second fuse under the buttons. */
+.about-road__gate-timer {
+  display: block;
+  margin-top: 0.55rem;
+  height: 0.18rem;
+  border-radius: 999px;
+  background: var(--border-subtle, rgba(0, 0, 0, 0.08));
+  overflow: hidden;
+}
+
+.about-road__gate-timer i {
+  display: block;
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  background: var(--accent, #5b5bd6);
+  transform-origin: 0 50%;
+  animation: about-road-fuse linear forwards;
+  animation-duration: inherit;
+}
+
+.about-road__gate-timer {
+  animation-duration: 5s;
+}
+
+@keyframes about-road-fuse {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+.about-road__gate-hint {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.6rem;
+  color: var(--text-faint, #a3a3a3);
+}
+
+@media (max-width: 767px), (max-width: 1023px) and (hover: none) and (pointer: coarse) {
+  .about-road {
+    --post-scale: 0.74rem;
+    --arm-len: 4.2em;
+  }
+
+  .about-road__glb-car--maruti-800 {
+    width: min(3.2rem, 20vw);
+  }
+
+  .about-road__glb-car--kia-carens {
+    width: min(4.4rem, 27vw);
+  }
+
+  .about-road__glb-car--maruti-800.is-reduced-motion {
+    left: 18%;
+  }
+
+  .about-road__glb-car--kia-carens.is-reduced-motion {
+    left: 82%;
+  }
+
+  .about-road__honk {
+    font-size: 0.62rem;
+  }
+
+  .about-road__gate {
+    left: 0.75rem;
+    right: 0.75rem;
+    width: auto;
+    max-width: none;
+    bottom: calc(var(--road-height) + 2.7rem);
+    animation: none;
+  }
+
+  .about-road__gate::after {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-road__honk {
+    animation: about-road-honk-static 0.9s ease-out forwards;
+  }
+
+  @keyframes about-road-honk-static {
+    0%,
+    80% {
+      opacity: 1;
+      transform: translate(-50%, -0.3rem) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -0.3rem) scale(1);
+    }
+  }
+
+  .about-road__glb-car canvas,
+  .about-road__barrier-arm {
+    transition: none;
+  }
+
+  .about-road__gate {
+    animation: none;
+  }
+}

@@ -296,29 +296,12 @@
   height: 2.2rem;
   min-width: 2.975rem;
   min-height: 1.05rem;
-  /* Same path + speed as forward CSS traffic (fastback = 24s) */
+  /* Driven by road/trafficController.ts (translate3d on style) */
   will-change: transform;
-  animation: about-road-drive 24s linear infinite;
   pointer-events: none;
   opacity: 0;
   /* No CSS filter — drop-shadow blurs WebGL while the car translates. */
   transition: opacity 0.35s ease;
-}
-
-.about-road__glb-car--wagonr-a {
-  animation-delay: -11s;
-}
-
-.about-road__glb-car--wagonr-b {
-  animation-delay: -0.5s;
-}
-
-.about-road__glb-car--carry {
-  animation-delay: -17s;
-}
-
-.about-road__glb-car.is-paused {
-  animation-play-state: paused;
 }
 
 .about-road__glb-car[data-ready="true"],

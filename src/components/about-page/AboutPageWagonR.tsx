@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {
   ACESFilmicToneMapping,
   AmbientLight,
@@ -48,15 +48,30 @@ function collectWagonRWheels(root: Object3D): Object3D[] {
 export default function AboutPageWagonR({
   lane = "a",
   animate = true,
+  speedRef,
+  innerRef,
 }: {
-  /** Stagger multiple WagonRs on the shared 24s loop. */
+  /** Which of the two WagonRs this is (styling hook). */
   lane?: "a" | "b";
-  /** When false, freeze WebGL + CSS drive (road off-screen). */
+  /** When false, freeze WebGL + drive (road off-screen). */
   animate?: boolean;
+  /** Current road speed / cruise speed, written by the traffic controller. */
+  speedRef?: { current: number };
+  /** Receives the host element so the traffic controller can drive it. */
+  innerRef?: (el: HTMLDivElement | null) => void;
 } = {}) {
-  const hostRef = useRef<HTMLDivElement>(null);
+  const hostRef = useRef<HTMLDivElement | null>(null);
   const animateRef = useRef(animate);
   animateRef.current = animate;
+  const speedFactorRef = useRef(speedRef);
+  speedFactorRef.current = speedRef;
+  const setHost = useCallback(
+    (el: HTMLDivElement | null) => {
+      hostRef.current = el;
+      innerRef?.(el);
+    },
+    [innerRef],
+  );
 
   useEffect(() => {
     const host = hostRef.current;
@@ -216,7 +231,10 @@ export default function AboutPageWagonR({
       if (!reducedMotion) {
         if (lastFrameTime !== null) {
           const deltaSeconds = Math.min((now - lastFrameTime) / 1000, 0.1);
-          const wheelDelta = deltaSeconds * WHEEL_SPIN_RADIANS_PER_SECOND;
+          const wheelDelta =
+            deltaSeconds *
+            WHEEL_SPIN_RADIANS_PER_SECOND *
+            (speedFactorRef.current?.current ?? 1);
           for (const wheel of wheelAssemblies) wheel.rotateX(wheelDelta);
         }
         lastFrameTime = now;
@@ -257,8 +275,8 @@ export default function AboutPageWagonR({
 
   return (
     <div
-      ref={hostRef}
-      className={`about-road__glb-car about-road__glb-car--wagonr about-road__glb-car--wagonr-${lane}${animate ? "" : " is-paused"}`}
+      ref={setHost}
+      className={`about-road__glb-car about-road__glb-car--wagonr about-road__glb-car--wagonr-${lane}`}
       aria-hidden
     />
   );
