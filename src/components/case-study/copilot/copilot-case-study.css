@@ -39,29 +39,28 @@
   padding-left: 28px;
 }
 
-/* The brief, set as a pull quote rather than a sidebar rule. */
-.cs-body blockquote {
-  position: relative;
-  margin: 28px 0 28px 28px;
-  padding-left: 0;
-  border-left: 0;
-  font: italic 400 23px/1.5 var(--font-playfair), Georgia, serif;
-  letter-spacing: -0.01em;
-  color: var(--note-ink);
+/* The brief: a labelled line of plain text, no italics, no rule. */
+.cs-body .cs-brief {
+  margin: 26px 0 28px;
+  padding-left: 28px;
+  font-size: 19px;
+  line-height: 1.55;
+  color: #f7e27a;
   text-wrap: pretty;
 }
 
-.cs-body blockquote::before {
-  content: "\201C";
-  position: absolute;
-  left: -30px;
-  top: -8px;
-  font: 400 54px/1 var(--font-playfair), Georgia, serif;
-  color: var(--note-accent);
-  opacity: 0.7;
+.cs-brief__label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--note-faint);
 }
 
-.cs-kicker {
+/* Section kicker: a small uppercase label hanging just above the H2. */
+.cs-body .cs-kicker {
   margin: 56px 0 -34px;
   font: 500 11px/1.4 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   letter-spacing: 0.12em;
@@ -69,8 +68,119 @@
   color: var(--note-faint);
 }
 
-.cs-kicker:first-child {
+.cs-body .cs-kicker:first-child {
   margin-top: 0;
+}
+
+/* Summary under the title: the whole story in three lines. */
+.cs-summary {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--note-soft);
+  text-wrap: pretty;
+}
+
+/* Two people, two sentences each. */
+.cs-people {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 28px;
+  margin: 0;
+  padding: 18px 0;
+  border-top: 1px solid var(--note-rule);
+  border-bottom: 1px solid var(--note-rule);
+}
+
+.cs-people dt {
+  margin: 0 0 6px;
+  font: 600 15px/1.4 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  color: var(--note-ink);
+}
+
+.cs-people dd {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--note-soft);
+}
+
+/* Insights: bold claim, plain explanation. */
+.cs-body .cs-insights li {
+  margin-bottom: 14px;
+}
+
+/* The hypothesis is the one sentence everything tests. */
+.cs-body .cs-hypothesis {
+  padding-left: 28px;
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--note-ink);
+  text-wrap: pretty;
+}
+
+/* Effects: name · what it means · where it shows up. */
+.cs-effects {
+  margin: 24px 0 8px;
+  border-top: 1px solid var(--note-rule);
+}
+
+.cs-effects > div {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr);
+  gap: 4px 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--note-rule);
+}
+
+.cs-effects dt {
+  margin: 0;
+  font: 600 15px/1.5 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--note-ink);
+}
+
+.cs-effects dd {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cs-effects__what {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--note-ink);
+}
+
+.cs-effects__where {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--note-soft);
+}
+
+/* Details and states. */
+.cs-states {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 28px;
+  margin: 20px 0 8px;
+}
+
+.cs-states dt {
+  margin: 0 0 4px;
+  font: 600 15px/1.4 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--note-ink);
+}
+
+.cs-states dd {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--note-soft);
 }
 
 /* Timeline / contributors / contribution. */
@@ -155,6 +265,7 @@
 }
 
 .cs-body .cs-stats li {
+  display: flex;
   margin: 0;
   padding: 0;
 }
@@ -165,6 +276,7 @@
 
 .cs-stat.liquid-glass {
   position: relative;
+  flex: 1 1 auto;
   border-radius: 18px;
   overflow: hidden;
   box-shadow: var(--lg-shadow);
@@ -174,8 +286,14 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: flex-start;
   gap: 6px;
+  height: 100%;
   padding: 16px 16px 14px;
+}
+
+.cs-stats--impact .cs-stat__n {
+  font-size: 24px;
 }
 
 .cs-stat__n {
@@ -194,11 +312,10 @@
 /* User / need / goal. */
 .cs-needs {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 28px;
   margin: 0 0 30px;
-  padding: 20px 0;
-  border-top: 1px solid var(--note-rule);
+  padding: 18px 0;
   border-bottom: 1px solid var(--note-rule);
 }
 
@@ -330,14 +447,123 @@
   color: var(--note-soft);
 }
 
-/* Impact: one line of type between two rules, no box. */
-.cs-body .cs-impact {
-  margin: 22px 0 26px;
+/* Money: the funding line with the meme beside it, between two rules. */
+.cs-body .cs-money {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 190px;
+  gap: 24px;
+  align-items: center;
+  margin: 26px 0 10px;
   padding: 22px 0;
   border-top: 1px solid var(--note-rule);
   border-bottom: 1px solid var(--note-rule);
+}
+
+.cs-body .cs-impact {
+  margin: 0;
   font-size: 17px;
   color: var(--note-soft);
+}
+
+/* Famous meme in the pocket section: a plain frame under the copy. */
+.cs-body .cs-meme {
+  width: min(100%, 420px);
+  margin: 20px 0 30px;
+}
+
+.cs-meme img,
+.cs-meme__placeholder {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--cs-card-line);
+  background: var(--cs-card);
+}
+
+.cs-meme__placeholder {
+  display: grid;
+  place-items: center;
+  border-style: dashed;
+  border-color: #ffffff22;
+  color: var(--note-faint);
+  font: 500 10.5px/1 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.cs-meme figcaption {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--note-faint);
+  text-align: center;
+}
+
+/* Shin-chan, hero-avatar sized, after the equity line. */
+.cs-shin {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  margin-left: 10px;
+  vertical-align: -9px;
+  border-radius: 0.35rem;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.16),
+    0 4px 14px rgba(0, 0, 0, 0.45);
+}
+
+.cs-shin {
+  background: url("/about-bento/shin-car.jpg") 66% 34% / 250% auto no-repeat;
+}
+
+/* Polaroid of the TV segment, stuck on beside the funding line. */
+.cs-polaroid {
+  display: block;
+  text-decoration: none;
+  transform: rotate(3deg);
+  transition: transform 0.25s ease;
+}
+
+a.cs-polaroid:hover {
+  transform: rotate(1deg) scale(1.03);
+}
+
+.cs-body .cs-polaroid__frame {
+  margin: 0;
+  padding: 10px 10px 12px;
+  border-radius: 4px;
+  background: #f6f3ea;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.5) inset,
+    0 10px 28px rgba(0, 0, 0, 0.45);
+}
+
+.cs-polaroid img,
+.cs-polaroid__placeholder {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: #2a2824;
+}
+
+.cs-polaroid__placeholder {
+  display: grid;
+  place-items: center;
+  color: #8f8a7e;
+  font: 500 10.5px/1 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.cs-polaroid__frame figcaption {
+  margin-top: 10px;
+  font: 400 15px/1.2 var(--font-playfair), Georgia, serif;
+  color: #3a362e;
+  text-align: center;
 }
 
 .cs-impact strong {
@@ -390,6 +616,7 @@
 .cs-demo__tab {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 7px;
   padding: 8px 13px;
   border-radius: 999px;
@@ -397,15 +624,17 @@
   background: none;
   color: var(--note-soft);
   font: 500 13px/1 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  white-space: nowrap;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
 
-.cs-demo__tab img {
-  width: 14px;
-  height: 14px;
-  opacity: 0.55;
-  filter: invert(1);
+.cs-demo__tab .cs-demo__icon {
+  display: block;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  opacity: 0.85;
 }
 
 .cs-demo__tab:hover {
@@ -417,7 +646,11 @@
   color: var(--note-ink);
 }
 
-.cs-demo__tab.is-active img {
+.cs-demo__tab.is-active .cs-demo__icon {
+  opacity: 1;
+}
+
+.cs-demo__tab:hover .cs-demo__icon {
   opacity: 1;
 }
 
@@ -535,26 +768,77 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .cs-body .cs-money {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .cs-body .cs-polaroid {
+    width: 190px;
+    margin: 4px auto 0;
+  }
+
+  .cs-shin {
+    width: 32px;
+    height: 32px;
+    vertical-align: -8px;
+  }
+
   .cs-body .cs-decisions li {
     grid-template-columns: 28px minmax(0, 1fr);
   }
+
+  .cs-people,
+  .cs-states {
+    grid-template-columns: 1fr;
+  }
+
+  .cs-effects > div {
+    grid-template-columns: 1fr;
+  }
+
+  .cs-body .cs-hypothesis {
+    padding-left: 0;
+    font-size: 18px;
+  }
+
 
   .cs-decisions__body {
     grid-column: 2;
   }
 
-  .cs-body blockquote {
-    margin-left: 22px;
-    font-size: 20px;
+  .cs-body .cs-brief {
+    padding-left: 0;
+    font-size: 18px;
   }
 
-  .cs-body blockquote::before {
-    left: -24px;
-    font-size: 44px;
+  /* Segmented control: four equal cells, icons only, full width. */
+  .cs-demo__tabs-glass.liquid-glass {
+    width: 100%;
   }
 
   .cs-demo__tabs {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2px;
+  }
+
+  .cs-demo__tab {
+    padding: 10px 0;
+  }
+
+  .cs-demo__tab .cs-demo__icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .cs-demo__tab-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
   }
 }
 
