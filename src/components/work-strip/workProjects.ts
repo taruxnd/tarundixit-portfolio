@@ -25,7 +25,7 @@ export const workProjects: WorkProject[] = [
       "An AI workspace that turns a brief into a multi-day content plan",
     outcomes:
       "Faster campaign setup  •  Brand-voiced drafts  •  Schedule-ready posts  •  Dev-friendly handoff",
-    href: "#",
+    href: "/work/social-media-copilot",
     videoHref: "#watch-copilot",
     ctaLabel: "View case study",
     frames: [

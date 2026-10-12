@@ -1,0 +1,565 @@
+/* Social Media Copilot case study: the notes reading column, plus a few
+ * case-study blocks (facts, stats, timeline, decisions, screenshots, demo)
+ * drawn in the same ink. */
+
+.cs-page {
+  --cs-card: #ffffff08;
+  --cs-card-line: #ffffff14;
+}
+
+/* Text stays at the notes measure; screenshots and the demo spill wider. */
+.cs-column {
+  max-width: 640px;
+}
+
+.cs-header .notes-title {
+  margin-top: 14px;
+}
+
+/* Plain list markers: a numeral or an arrow in the accent, no bubbles. */
+.cs-body ul > li::before,
+.cs-body ol > li::before {
+  width: auto;
+  height: auto;
+  background: none;
+  border-radius: 0;
+  font-size: 13px;
+  line-height: inherit;
+  top: 0.2em;
+  color: var(--note-accent);
+}
+
+.cs-body ol > li::before {
+  content: counter(note-step) ".";
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.cs-body li {
+  padding-left: 28px;
+}
+
+/* The brief, set as a pull quote rather than a sidebar rule. */
+.cs-body blockquote {
+  position: relative;
+  margin: 28px 0 28px 28px;
+  padding-left: 0;
+  border-left: 0;
+  font: italic 400 23px/1.5 var(--font-playfair), Georgia, serif;
+  letter-spacing: -0.01em;
+  color: var(--note-ink);
+  text-wrap: pretty;
+}
+
+.cs-body blockquote::before {
+  content: "\201C";
+  position: absolute;
+  left: -30px;
+  top: -8px;
+  font: 400 54px/1 var(--font-playfair), Georgia, serif;
+  color: var(--note-accent);
+  opacity: 0.7;
+}
+
+.cs-kicker {
+  margin: 56px 0 -34px;
+  font: 500 11px/1.4 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--note-faint);
+}
+
+.cs-kicker:first-child {
+  margin-top: 0;
+}
+
+/* Timeline / contributors / contribution. */
+.cs-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px 24px;
+  margin: 28px 0 0;
+  padding: 20px 0 0;
+  border-top: 1px solid var(--note-rule);
+}
+
+.cs-facts div {
+  min-width: 0;
+}
+
+.cs-facts dt,
+.cs-needs dt,
+.cs-decisions dt {
+  margin: 0 0 6px;
+  font: 500 11px/1.4 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--note-faint);
+}
+
+.cs-facts dd,
+.cs-needs dd,
+.cs-decisions dd {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--note-soft);
+}
+
+.cs-proto {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 22px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid #e7cc9955;
+  background: #e7cc991a;
+  color: var(--note-ink);
+  font: 500 13px/1 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.cs-proto:hover {
+  background: #e7cc9930;
+  border-color: var(--note-accent);
+}
+
+.cs-body .cs-proto {
+  margin-top: 8px;
+}
+
+.cs-aside {
+  font-size: 14px;
+  color: var(--note-faint);
+}
+
+/* 5 days · 4 platforms · 20 posts · 20 captions: the nav's liquid glass,
+ * Geist numerals. Same dark glass recipe as the dock. */
+.cs-body .cs-stats {
+  --lg-blur: 32px;
+  --lg-saturate: 190%;
+  --lg-brightness: 1.04;
+  --lg-tint-top: rgba(30, 30, 30, 0.72);
+  --lg-tint-mid: rgba(20, 20, 20, 0.55);
+  --lg-tint-bot: rgba(12, 12, 12, 0.45);
+  --lg-rim: rgba(255, 255, 255, 0.1);
+  --lg-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(99, 102, 241, 0.08);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 26px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cs-body .cs-stats li {
+  margin: 0;
+  padding: 0;
+}
+
+.cs-body .cs-stats li::before {
+  content: none;
+}
+
+.cs-stat.liquid-glass {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--lg-shadow);
+}
+
+.cs-stat .liquid-glass__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 16px 16px 14px;
+}
+
+.cs-stat__n {
+  font: 500 30px/1 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--note-ink);
+}
+
+.cs-stat__label {
+  font: 500 12px/1.3 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.01em;
+  color: var(--note-soft);
+}
+
+/* User / need / goal. */
+.cs-needs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px 20px;
+  margin: 0 0 30px;
+  padding: 20px 0;
+  border-top: 1px solid var(--note-rule);
+  border-bottom: 1px solid var(--note-rule);
+}
+
+.cs-needs dd {
+  color: var(--note-ink);
+}
+
+/* Screenshots: full-width frames; a dashed placeholder until the file lands. */
+.cs-body .cs-shot {
+  margin: 30px 0 34px;
+}
+
+.cs-shot img,
+.cs-shot__placeholder {
+  display: block;
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--cs-card-line);
+}
+
+.cs-shot__placeholder {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 10;
+  border-style: dashed;
+  border-color: #ffffff22;
+  background:
+    repeating-linear-gradient(135deg, transparent 0 14px, #ffffff05 14px 15px),
+    var(--cs-card);
+  color: var(--note-faint);
+  font: 500 11px/1 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.cs-shot figcaption {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--note-faint);
+  text-align: center;
+}
+
+/* Week-by-week. */
+.cs-body .cs-timeline {
+  margin: 30px 0 10px;
+  padding: 0;
+  list-style: none;
+  border-left: 1px solid var(--note-rule);
+}
+
+.cs-body .cs-timeline li {
+  position: relative;
+  margin: 0;
+  padding: 2px 0 22px 24px;
+}
+
+.cs-body .cs-timeline li::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: 10px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--note-accent);
+  box-shadow: 0 0 0 4px #121310;
+}
+
+.cs-timeline__when {
+  display: block;
+  font: 500 11px/1.4 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--note-faint);
+}
+
+.cs-timeline__title {
+  display: block;
+  margin: 4px 0 4px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--note-ink);
+}
+
+.cs-timeline__body {
+  display: block;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--note-soft);
+}
+
+/* Design decisions: a ruled index, number · title · reason. */
+.cs-body .cs-decisions {
+  margin: 24px 0 8px;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--note-rule);
+}
+
+.cs-body .cs-decisions li {
+  display: grid;
+  grid-template-columns: 32px 200px minmax(0, 1fr);
+  gap: 6px 18px;
+  margin: 0;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--note-rule);
+}
+
+.cs-body .cs-decisions li::before {
+  content: none;
+}
+
+.cs-decisions__n {
+  font: 500 12px/1.6 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  color: var(--note-accent);
+}
+
+.cs-decisions__title {
+  font: 600 15.5px/1.4 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.01em;
+  color: var(--note-ink);
+}
+
+.cs-decisions__body {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--note-soft);
+}
+
+/* Impact: one line of type between two rules, no box. */
+.cs-body .cs-impact {
+  margin: 22px 0 26px;
+  padding: 22px 0;
+  border-top: 1px solid var(--note-rule);
+  border-bottom: 1px solid var(--note-rule);
+  font-size: 17px;
+  color: var(--note-soft);
+}
+
+.cs-impact strong {
+  display: block;
+  margin-bottom: 6px;
+  font: 400 34px/1.15 var(--font-playfair), Georgia, serif;
+  letter-spacing: -0.02em;
+  color: var(--note-ink);
+}
+
+.cs-foot {
+  margin-top: 28px;
+}
+
+/* ---- The platform demo: glass tabs and a post mock, no panel ---------- */
+
+.cs-body .cs-demo {
+  --lg-blur: 32px;
+  --lg-saturate: 190%;
+  --lg-brightness: 1.04;
+  --lg-tint-top: rgba(30, 30, 30, 0.72);
+  --lg-tint-mid: rgba(20, 20, 20, 0.55);
+  --lg-tint-bot: rgba(12, 12, 12, 0.45);
+  --lg-rim: rgba(255, 255, 255, 0.1);
+  --lg-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+  margin: 26px 0 34px;
+}
+
+.cs-demo__label {
+  margin: 0 0 14px;
+  font-size: 14px;
+  color: var(--note-faint);
+}
+
+.cs-demo__tabs-glass.liquid-glass {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow: var(--lg-shadow);
+}
+
+.cs-demo__tabs {
+  display: flex;
+  gap: 2px;
+  padding: 4px;
+}
+
+.cs-demo__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 13px;
+  border-radius: 999px;
+  border: 0;
+  background: none;
+  color: var(--note-soft);
+  font: 500 13px/1 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.cs-demo__tab img {
+  width: 14px;
+  height: 14px;
+  opacity: 0.55;
+  filter: invert(1);
+}
+
+.cs-demo__tab:hover {
+  color: var(--note-ink);
+}
+
+.cs-demo__tab.is-active {
+  background: #ffffff14;
+  color: var(--note-ink);
+}
+
+.cs-demo__tab.is-active img {
+  opacity: 1;
+}
+
+.cs-demo__tab:focus-visible {
+  outline: 2px solid var(--note-accent);
+  outline-offset: 2px;
+}
+
+/* The post, laid out the way that platform lays it out. */
+.cs-post {
+  width: min(100%, 380px);
+  margin: 22px 0 0;
+  font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+}
+
+.cs-post[data-platform="linkedin"],
+.cs-post[data-platform="x"] {
+  width: 100%;
+}
+
+.cs-post__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.cs-post__avatar {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e7cc99;
+  color: #1a1710;
+  font: 600 15px/1 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+}
+
+.cs-post__who {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.cs-post__name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--note-ink);
+}
+
+.cs-post__meta {
+  font-size: 12px;
+  color: var(--note-faint);
+}
+
+.cs-post__image {
+  position: relative;
+  display: grid;
+  place-items: end start;
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  background:
+    radial-gradient(120% 80% at 15% 10%, #ffffff10, transparent 60%),
+    #1a1b19;
+  box-shadow: inset 0 0 0 1px #ffffff12;
+  transition: aspect-ratio 0.35s ease;
+}
+
+.cs-post__size {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--note-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.cs-post__product {
+  font: 400 18px/1.2 var(--font-playfair), Georgia, serif;
+  color: var(--note-ink);
+}
+
+.cs-post__text {
+  margin: 12px 0 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: #d8d6cf;
+}
+
+.cs-post[data-platform="x"] .cs-post__text {
+  margin: 0 0 12px;
+  font-size: 15px;
+}
+
+.cs-post__text p {
+  margin: 0 0 8px;
+}
+
+.cs-post__note {
+  margin: 14px 0 0;
+  font-size: 13px;
+  color: var(--note-faint);
+}
+
+@media (max-width: 767px) {
+  .cs-facts,
+  .cs-needs {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .cs-body .cs-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cs-body .cs-decisions li {
+    grid-template-columns: 28px minmax(0, 1fr);
+  }
+
+  .cs-decisions__body {
+    grid-column: 2;
+  }
+
+  .cs-body blockquote {
+    margin-left: 22px;
+    font-size: 20px;
+  }
+
+  .cs-body blockquote::before {
+    left: -24px;
+    font-size: 44px;
+  }
+
+  .cs-demo__tabs {
+    flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-post__image {
+    transition: none;
+  }
+}
