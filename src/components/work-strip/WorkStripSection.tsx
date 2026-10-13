@@ -2,6 +2,7 @@
 
 import { stripFontClassName } from "@/lib/heroFonts";
 import { contentContainerClassName } from "@/lib/sectionLayout";
+import { PROJECT_LINKS_LIVE } from "@/lib/workInProgress";
 import { ArrowUpRight, Play } from "lucide-react";
 import Link from "next/link";
 import DragStrip from "./DragStrip";
@@ -9,10 +10,11 @@ import { workProjects, type WorkProject } from "./workProjects";
 import "./work-strip.css";
 
 function ProjectPanel({ project }: { project: WorkProject }) {
+  const disabled = project.ctaDisabled || !project.href || !PROJECT_LINKS_LIVE;
   const primaryCta = (
     <>
-      <span>{project.ctaLabel}</span>
-      {!project.ctaDisabled ? (
+      <span>{PROJECT_LINKS_LIVE ? project.ctaLabel : "Case study coming soon"}</span>
+      {!disabled ? (
         <ArrowUpRight size={15} strokeWidth={2} aria-hidden />
       ) : null}
     </>
@@ -27,7 +29,7 @@ function ProjectPanel({ project }: { project: WorkProject }) {
           <p className="xhulia-panel__outcomes">{project.outcomes}</p>
 
           <div className="xhulia-panel__actions">
-            {project.ctaDisabled || !project.href ? (
+            {disabled || !project.href ? (
               <span
                 className="xhulia-panel__cta xhulia-panel__cta--disabled"
                 aria-disabled="true"
@@ -44,7 +46,7 @@ function ProjectPanel({ project }: { project: WorkProject }) {
               </Link>
             )}
 
-            {project.videoHref ? (
+            {project.videoHref && PROJECT_LINKS_LIVE ? (
               <Link
                 href={project.videoHref}
                 data-cursor="interactive"

@@ -1,3 +1,5 @@
+import WipPlaceholder from "@/components/wip/WipPlaceholder";
+import { WORK_IN_PROGRESS } from "@/lib/workInProgress";
 import GlassLabel from "@/components/case-study/GlassLabel";
 import {
   aiDesignSystemCaseStudy,
@@ -32,13 +34,17 @@ function SectionFigure({ figure }: { figure: CaseStudyMedia }) {
         className="case-study__figure"
         style={{ aspectRatio: figure.aspect }}
       >
+        {WORK_IN_PROGRESS ? (
+          <WipPlaceholder />
+        ) : (
         <Image
-          src={figure.src}
-          alt={figure.alt}
-          fill
-          sizes="(min-width: 1440px) 1100px, (min-width: 810px) min(100vw - 32px, 1100px), min(100vw - 32px, 1100px)"
-          className="case-study__image"
-        />
+            src={figure.src}
+            alt={figure.alt}
+            fill
+            sizes="(min-width: 1440px) 1100px, (min-width: 810px) min(100vw - 32px, 1100px), min(100vw - 32px, 1100px)"
+            className="case-study__image"
+          />
+        )}
       </div>
       {figure.caption ? (
         <figcaption className="case-study__caption">{figure.caption}</figcaption>
@@ -186,13 +192,17 @@ export default function DesignSystemCaseStudy() {
                 className="case-study__figure"
                 style={{ aspectRatio: item.aspect }}
               >
+                {WORK_IN_PROGRESS ? (
+                  <WipPlaceholder />
+                ) : (
                 <Image
-                  src={item.src}
-                  alt={item.alt}
-                  fill
-                  sizes="(min-width: 1024px) 34vw, 92vw"
-                  className="case-study__image"
-                />
+                    src={item.src}
+                    alt={item.alt}
+                    fill
+                    sizes="(min-width: 1024px) 34vw, 92vw"
+                    className="case-study__image"
+                  />
+                )}
               </figure>
             ))}
           </div>
@@ -203,13 +213,17 @@ export default function DesignSystemCaseStudy() {
               className="case-study__figure case-study__figure--wide"
               style={{ aspectRatio: item.aspect }}
             >
+              {WORK_IN_PROGRESS ? (
+                <WipPlaceholder />
+              ) : (
               <Image
-                src={item.src}
-                alt={item.alt}
-                fill
-                sizes="(min-width: 1024px) 72vw, 92vw"
-                className="case-study__image"
-              />
+                  src={item.src}
+                  alt={item.alt}
+                  fill
+                  sizes="(min-width: 1024px) 72vw, 92vw"
+                  className="case-study__image"
+                />
+              )}
             </figure>
           ))}
 
@@ -220,13 +234,17 @@ export default function DesignSystemCaseStudy() {
                 className="case-study__figure"
                 style={{ aspectRatio: item.aspect }}
               >
+                {WORK_IN_PROGRESS ? (
+                  <WipPlaceholder />
+                ) : (
                 <Image
-                  src={item.src}
-                  alt={item.alt}
-                  fill
-                  sizes="(min-width: 1024px) 34vw, 92vw"
-                  className="case-study__image"
-                />
+                    src={item.src}
+                    alt={item.alt}
+                    fill
+                    sizes="(min-width: 1024px) 34vw, 92vw"
+                    className="case-study__image"
+                  />
+                )}
               </figure>
             ))}
           </div>
@@ -237,13 +255,17 @@ export default function DesignSystemCaseStudy() {
               className="case-study__figure case-study__figure--solo"
               style={{ aspectRatio: item.aspect }}
             >
+              {WORK_IN_PROGRESS ? (
+                <WipPlaceholder />
+              ) : (
               <Image
-                src={item.src}
-                alt={item.alt}
-                fill
-                sizes="(min-width: 1024px) 34vw, 70vw"
-                className="case-study__image"
-              />
+                  src={item.src}
+                  alt={item.alt}
+                  fill
+                  sizes="(min-width: 1024px) 34vw, 70vw"
+                  className="case-study__image"
+                />
+              )}
             </figure>
           ))}
         </section>

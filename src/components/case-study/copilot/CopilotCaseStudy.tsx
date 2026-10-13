@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import PlatformSwitcher from "./PlatformSwitcher";
+import { PROJECT_LINKS_LIVE, WORK_IN_PROGRESS } from "@/lib/workInProgress";
 import LiquidGlass from "@/components/navbar/LiquidGlass";
 import { stripFontClassName } from "@/lib/heroFonts";
 import "@/components/notes/notes.css";
@@ -27,8 +28,9 @@ export const SHOTS = {
 export type ShotId = keyof typeof SHOTS;
 export type ShotSources = Partial<Record<ShotId, string>>;
 
-function Shot({ id, src }: { id: ShotId; src?: string }) {
+function Shot({ id, src: rawSrc }: { id: ShotId; src?: string }) {
   const caption = SHOTS[id];
+  const src = WORK_IN_PROGRESS ? undefined : rawSrc;
   return (
     <figure className={`cs-shot${src ? "" : " cs-shot--empty"}`}>
       {src ? (
@@ -36,7 +38,7 @@ function Shot({ id, src }: { id: ShotId; src?: string }) {
         <img src={src} alt={caption} loading="lazy" decoding="async" />
       ) : (
         <div className="cs-shot__placeholder" aria-hidden>
-          <span>Screenshot</span>
+          <span>Work in progress</span>
         </div>
       )}
       <figcaption>{caption}</figcaption>
@@ -414,8 +416,15 @@ export default function CopilotCaseStudy({
           <span>✿</span>
         </div>
         <p className="notes-intro cs-foot">
-          More work on the <Link href="/#work">home page</Link>, or read the{" "}
-          <Link href="/work/ai-design-system">AI design system</Link> case study.
+          More work on the <Link href="/#work">home page</Link>
+          {PROJECT_LINKS_LIVE ? (
+            <>
+              , or read the <Link href="/work/ai-design-system">AI design system</Link> case
+              study.
+            </>
+          ) : (
+            "."
+          )}
         </p>
       </article>
     </main>

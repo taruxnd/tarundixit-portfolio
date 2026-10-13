@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+import { NOTES_VISIBLE } from "@/lib/workInProgress";
 import Link from "next/link";
 import NoteList from "@/components/notes/NoteList";
 import { getNotes } from "@/lib/notes/notes";
@@ -11,6 +13,7 @@ export const metadata = {
 };
 
 export default async function NotesPage() {
+  if (!NOTES_VISIBLE) notFound();
   const notes = getNotes();
   const counts = await getAllReactionCounts();
   const totals = Object.fromEntries(notes.map((note) => [note.slug, totalReactions(counts[note.slug])]));

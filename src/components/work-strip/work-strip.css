@@ -198,6 +198,7 @@
 }
 
 .xhulia-strip__frame {
+  position: relative;
   flex-shrink: 0;
   width: min(78vw, 22rem);
   height: 100%;

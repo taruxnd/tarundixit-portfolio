@@ -1,5 +1,8 @@
 "use client";
 
+import WipPlaceholder from "@/components/wip/WipPlaceholder";
+import { WORK_IN_PROGRESS } from "@/lib/workInProgress";
+
 import {
   useEffect,
   useMemo,
@@ -182,14 +185,18 @@ export default function DragStrip({ frames, label }: DragStripProps) {
             key={`${frame.src}-${index}`}
             className="xhulia-strip__frame"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={frame.src}
-              alt={frame.alt ?? ""}
-              draggable={false}
-              loading="lazy"
-              decoding="async"
-            />
+            {WORK_IN_PROGRESS ? (
+              <WipPlaceholder />
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={frame.src}
+                alt={frame.alt ?? ""}
+                draggable={false}
+                loading="lazy"
+                decoding="async"
+              />
+            )}
           </figure>
         ))}
       </div>

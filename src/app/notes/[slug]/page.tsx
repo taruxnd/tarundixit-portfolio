@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { NOTES_VISIBLE } from "@/lib/workInProgress";
 import { ArrowLeft } from "lucide-react";
 import NoteList from "@/components/notes/NoteList";
 import ReactionBar from "@/components/notes/ReactionBar";
@@ -22,6 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default async function NotePage({ params }: { params: Promise<{ slug: string }> }) {
+  if (!NOTES_VISIBLE) notFound();
   const { slug } = await params;
   const note = getNote(slug);
   if (!note) notFound();
