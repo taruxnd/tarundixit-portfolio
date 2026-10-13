@@ -1,16 +1,24 @@
 /**
- * While the case studies are being finished, project imagery is swapped for
- * "Work in progress" placeholders. The containers keep their size, so the
- * layout doesn't change. Flip to false to bring every image back.
+ * Review mode. On the live site (production builds) unfinished work is
+ * hidden; locally (`npm run dev`) everything shows so it can be worked on.
+ * A local `next build && next start` counts as production, which is handy
+ * for checking what a reviewer sees.
+ *
+ * To end review mode everywhere, set REVIEW_MODE to false and push.
  */
-export const WORK_IN_PROGRESS = true;
+const REVIEW_MODE = true;
 
-/** Notes are hidden from the nav and their pages return 404 while this is false. */
-export const NOTES_VISIBLE = false;
+const IS_PROD = process.env.NODE_ENV === "production";
+const HIDE = REVIEW_MODE && IS_PROD;
 
-/**
- * Project links (case-study and video buttons on the work strip, and
- * cross-links between case studies) are inert in production while the work
- * is in progress. They stay clickable in dev so the pages can be worked on.
- */
-export const PROJECT_LINKS_LIVE = !WORK_IN_PROGRESS || process.env.NODE_ENV !== "production";
+/** Project images become "Work in progress" placeholders (containers keep their size). */
+export const WORK_IN_PROGRESS = HIDE;
+
+/** Notes link in the nav, and the notes pages (404 when hidden). */
+export const NOTES_VISIBLE = !HIDE;
+
+/** Case-study and video buttons on the work strip, and links between case studies. */
+export const PROJECT_LINKS_LIVE = !HIDE;
+
+/** "More about me" links, and the /more-about-me page (404 when hidden). */
+export const MORE_ABOUT_VISIBLE = !HIDE;
