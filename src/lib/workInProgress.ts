@@ -1,24 +1,20 @@
 /**
- * Review mode. On the live site (production builds) unfinished work is
- * hidden; locally (`npm run dev`) everything shows so it can be worked on.
- * A local `next build && next start` counts as production, which is handy
- * for checking what a reviewer sees.
+ * Review mode hides unfinished work: project images become "Work in
+ * progress" placeholders, and Notes, project links and More about me are
+ * hidden. It applies the same way everywhere, locally and on the live site.
  *
- * To end review mode everywhere, set REVIEW_MODE to false and push.
+ * Off: everything shows. Set to true to hide it again, everywhere.
  */
-const REVIEW_MODE = true;
-
-const IS_PROD = process.env.NODE_ENV === "production";
-const HIDE = REVIEW_MODE && IS_PROD;
+const REVIEW_MODE = false;
 
 /** Project images become "Work in progress" placeholders (containers keep their size). */
-export const WORK_IN_PROGRESS = HIDE;
+export const WORK_IN_PROGRESS = REVIEW_MODE;
 
 /** Notes link in the nav, and the notes pages (404 when hidden). */
-export const NOTES_VISIBLE = !HIDE;
+export const NOTES_VISIBLE = !REVIEW_MODE;
 
 /** Case-study and video buttons on the work strip, and links between case studies. */
-export const PROJECT_LINKS_LIVE = !HIDE;
+export const PROJECT_LINKS_LIVE = !REVIEW_MODE;
 
 /** "More about me" links, and the /more-about-me page (404 when hidden). */
-export const MORE_ABOUT_VISIBLE = !HIDE;
+export const MORE_ABOUT_VISIBLE = !REVIEW_MODE;

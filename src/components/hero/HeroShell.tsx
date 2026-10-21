@@ -5,6 +5,7 @@ import ExhibitionRail from "@/components/exhibition-rail/ExhibitionRail";
 import HeroBillboard from "@/components/hero-billboard/HeroBillboard";
 import HeroGarden from "@/components/hero-garden/HeroGarden";
 import FigmaStickers from "@/components/figma-stickers/FigmaStickers";
+import HeroInspect from "@/components/hero-inspect/HeroInspect";
 import HeroMonsoon, { isMonsoonSeason } from "@/components/hero-monsoon/HeroMonsoon";
 import { useHeroScrollBoundary } from "@/components/hero/useHeroScrollBoundary";
 import { heroFontClassName } from "@/lib/heroFonts";
@@ -41,8 +42,9 @@ export default function HeroShell({ children }: HeroShellProps) {
         <HeroMonsoon raining={raining} onToggle={() => setRaining((value) => !value)} />
         <HeroGarden storm={raining} />
         <HeroBillboard />
-        <HeroBee />
+        <HeroBee storm={raining} />
         <FigmaStickers />
+        <HeroInspect />
         <div
           className={`hero-section__inner relative flex ${contentContainerClassName}`}
         >

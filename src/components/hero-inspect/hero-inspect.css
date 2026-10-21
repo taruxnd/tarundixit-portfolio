@@ -1,0 +1,166 @@
+/* Inspect mode: the hero shows its own scaffolding. Colours match the
+ * Figma stickers (selection blue) with spacing in Figma's redline red. */
+
+.hero-inspect {
+  --inspect-blue: #0d99ff;
+  --inspect-red: #f24822;
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+.hero-inspect__box {
+  position: absolute;
+  border: 1px solid var(--inspect-blue);
+  background: rgba(13, 153, 255, 0.06);
+  border-radius: 2px;
+  opacity: 0;
+  animation: hero-inspect-in 0.32s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+
+.hero-inspect__label {
+  position: absolute;
+  left: -1px;
+  bottom: calc(100% + 3px);
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: var(--inspect-blue);
+  color: #fff;
+  font-size: 10.5px;
+  line-height: 1.35;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+.is-label-below > .hero-inspect__label {
+  bottom: auto;
+  top: calc(100% + 3px);
+}
+
+/* Phones: the headline's label sits above its top-right corner, clear of
+ * the intro label on the left and the button labels below. */
+.is-label-inside > .hero-inspect__label {
+  left: auto;
+  right: -1px;
+}
+
+.hero-inspect__label b {
+  font-weight: 600;
+}
+
+.hero-inspect__gap {
+  position: absolute;
+  width: 0;
+  border-left: 1px solid var(--inspect-red);
+  opacity: 0;
+  animation: hero-inspect-in 0.32s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+
+.hero-inspect__gap::before,
+.hero-inspect__gap::after {
+  content: "";
+  position: absolute;
+  left: -4px;
+  width: 7px;
+  height: 1px;
+  background: var(--inspect-red);
+}
+
+.hero-inspect__gap::before {
+  top: 0;
+}
+
+.hero-inspect__gap::after {
+  bottom: 0;
+}
+
+.hero-inspect__gap-value {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: var(--inspect-red);
+  color: #fff;
+  font-size: 10.5px;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes hero-inspect-in {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The code keycap sticker, as a button: presses in when you click it and
+ * stays pressed while inspect mode is on. */
+.hero-headline__key {
+  display: inline-block;
+  margin: 0 0.06em;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  line-height: 0;
+  vertical-align: -0.16em;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hero-headline__key .hero-headline__sticker {
+  margin: 0;
+  vertical-align: baseline;
+  transition: transform 0.16s cubic-bezier(0.3, 1.6, 0.5, 1), filter 0.2s ease;
+}
+
+/* Straight up and down only, like a real key: no tilt, no squash. */
+@media (hover: hover) and (pointer: fine) {
+  .hero-headline__key:hover .hero-headline__sticker {
+    transform: translateY(-0.02em);
+  }
+}
+
+.hero-headline__key[aria-pressed="true"] .hero-headline__sticker {
+  transform: translateY(0.04em);
+  filter: drop-shadow(0 0 0.12em rgba(13, 153, 255, 0.55));
+}
+
+.hero-headline__key.is-down .hero-headline__sticker,
+.hero-headline__key:active .hero-headline__sticker {
+  transform: translateY(0.07em);
+  transition-duration: 0.05s;
+  transition-timing-function: ease-out;
+}
+
+.hero-headline__key:focus-visible {
+  outline: 2px solid #0d99ff;
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+@media (max-width: 767px) {
+  .hero-inspect__label {
+    font-size: 9.5px;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-inspect__box,
+  .hero-inspect__gap,
+
+  .hero-headline__key .hero-headline__sticker {
+    transition: none;
+  }
+}

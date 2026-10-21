@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import PlatformSwitcher from "./PlatformSwitcher";
+import UxTerm from "./UxTerm";
 import { PROJECT_LINKS_LIVE, WORK_IN_PROGRESS } from "@/lib/workInProgress";
 import LiquidGlass from "@/components/navbar/LiquidGlass";
 import { stripFontClassName } from "@/lib/heroFonts";
@@ -237,25 +238,25 @@ export default function CopilotCaseStudy({
             </li>
           </ul>
 
-          <h2>Hypothesis</h2>
+          <h2>
+            <UxTerm term="Hypothesis" explanation="A prediction we can test by watching what people do." />
+          </h2>
           <p className="cs-hypothesis">
-            If Arjun can see and fix the plan before anything is made, he will trust the posts
-            that come out of it, and publish them instead of redoing them.
+            Letting Arjun review and edit the plan before generation should build trust and
+            help him publish more posts with fewer edits.
           </p>
           <p>
-            The first version only planned. It gave Arjun five ideas and stopped. People liked
-            the ideas, but the 20 posts were still theirs to make. The second version made the
-            posts too, with one step in between: Arjun reads the plan and fixes it. Fixing a plan
-            takes seconds. Fixing 20 finished posts does not.
+            V1 gave him five ideas, leaving 20 posts to make. V2 generates the posts too, with{" "}
+            <UxTerm term="user control" explanation="People can review and change what the AI plans to do before it creates the posts." />
+            : review the plan, then generate. A quick plan edit saves reworking 20 posts.
           </p>
           <ul>
             <li>
-              <strong>If this is right,</strong> people open the plan, change a line or two, and
-              most posts go out as generated.
+              <strong>Success signal:</strong> People review the plan, tweak it if needed, and
+              publish most posts as generated.
             </li>
             <li>
-              <strong>If this is wrong,</strong> people skip the plan and keep regenerating posts
-              until one looks right.
+              <strong>Failure signal:</strong> People skip the plan and repeatedly regenerate posts.
             </li>
           </ul>
           <Shot id="evolution" src={shots.evolution} />

@@ -2,6 +2,8 @@
 
 import { launchResumePlane } from "@/components/resume/launchResumePlane";
 import LiquidGlass from "@/components/navbar/LiquidGlass";
+import { HERO_INSPECT_EVENT } from "@/components/hero-inspect/HeroInspect";
+import { playKeyClick } from "@/components/hero-inspect/keyClick";
 import { assetUrl } from "@/lib/cdnAssets";
 import { heroEditorialTypography } from "@/lib/heroFonts";
 import { motion, type Variants } from "framer-motion";
@@ -70,9 +72,28 @@ export default function HeroCopyClassic() {
         <span className="hero-headline__line">I untangle problems into products.</span>{" "}
         <span className="hero-headline__line">
           The{" "}
-          {/* The code keycap stands in for the word. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="hero-headline__sticker" src="/stickers/code-keycap.svg" alt="code" draggable={false} />{" "}
+          {/* The code keycap stands in for the word. Press it to inspect the hero. */}
+          <button
+            type="button"
+            className="hero-headline__key"
+            aria-label="code (press to inspect this section)"
+            aria-pressed="false"
+            data-cursor-text="Inspect"
+            onPointerDown={(e) => {
+              e.currentTarget.classList.add("is-down");
+              playKeyClick(true);
+            }}
+            onPointerUp={(e) => {
+              e.currentTarget.classList.remove("is-down");
+              playKeyClick(false);
+            }}
+            onPointerLeave={(e) => e.currentTarget.classList.remove("is-down")}
+            onPointerCancel={(e) => e.currentTarget.classList.remove("is-down")}
+            onClick={() => window.dispatchEvent(new Event(HERO_INSPECT_EVENT))}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="hero-headline__sticker" src="/stickers/code-keycap.svg" alt="" draggable={false} />
+          </button>{" "}
           is just fun.
         </span>
       </motion.h1>

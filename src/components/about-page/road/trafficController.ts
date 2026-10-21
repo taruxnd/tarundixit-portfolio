@@ -207,11 +207,21 @@ export class TrafficController {
 
   /**
    * Send a wave in from the left, in order, `gapPx` apart. Cars already on
-   * the road are left alone.
+   * the road are left alone. `startFraction` places the wave already on the
+   * road instead of off-screen (used for the first pair).
    */
-  dispatch(ids: string[], gapPx: number) {
+  dispatch(ids: string[], gapPx: number, startFraction?: number) {
     if (this.reducedMotion) return;
-    let cursor = -this.margin;
+    if (this.laneWidth === 0) this.measure();
+    // Default: just off-screen left. With startFraction, the lead car's nose
+    // starts that far along the stretch before the stop line.
+    let cursor =
+      startFraction === undefined
+        ? -this.margin
+        : Math.max(
+            0,
+            Math.min(this.stopX > 0 ? this.stopX - 40 : this.laneWidth * 0.6, (this.stopX || this.laneWidth) * startFraction),
+          );
     for (const id of ids) {
       const car = this.cars.find((c) => c.id === id);
       if (!car || car.active) continue;

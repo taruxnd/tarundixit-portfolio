@@ -50,7 +50,7 @@ export function YouPointer({ mode }: { mode: CursorMode }) {
   );
 }
 
-export function YouTag({ mode }: { mode: CursorMode }) {
+export function YouTag({ mode, text }: { mode: CursorMode; text?: string | null }) {
   const shiftX = mode === "label" ? 2 : 0;
   const shiftY = mode === "label" ? -1 : 0;
   const scale = mode === "interactive" ? 1.05 : 1;
@@ -63,7 +63,7 @@ export function YouTag({ mode }: { mode: CursorMode }) {
         transform: `translate(${shiftX}px, ${shiftY}px) scale(${scale})`,
       }}
     >
-      You
+      {text ?? "You"}
     </span>
   );
 }

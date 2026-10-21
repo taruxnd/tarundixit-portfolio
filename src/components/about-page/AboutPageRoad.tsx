@@ -210,10 +210,16 @@ export default function AboutPageRoad() {
   );
   const timersRef = useRef<number[]>([]);
   const answerTimerRef = useRef(0);
-  const waveRef = useRef<{ index: number; pending: Set<string>; queued: boolean }>({
+  const waveRef = useRef<{
+    index: number;
+    pending: Set<string>;
+    queued: boolean;
+    started: boolean;
+  }>({
     index: 0,
     pending: new Set(),
     queued: false,
+    started: false,
   });
   const compactRef = useRef(false);
   const animateRef = useRef(false);
@@ -249,14 +255,23 @@ export default function AboutPageRoad() {
     const wave = waveRef.current;
     if (!controller || !animateRef.current || wave.pending.size > 0 || wave.queued) return;
     const expected = WAVE_ORDER.filter((id) => !(compactRef.current && COMPACT_SKIP.has(id)));
-    const available = expected.filter((id) => carsRef.current.has(id));
-    // Wait for the whole fleet so the first pair is always Carens + WagonR.
-    if (available.length === 0 || available.length < expected.length) return;
-    const a = available[(wave.index * 2) % available.length];
-    const b = available[(wave.index * 2 + 1) % available.length];
+    if (expected.length === 0) return;
+    const a = expected[(wave.index * 2) % expected.length];
+    const b = expected[(wave.index * 2 + 1) % expected.length];
     const pair = a === b ? [a] : [a, b];
+    // Only this pair has to be mounted, not the whole fleet, so the first
+    // cars don't wait on the slowest model to arrive.
+    if (!pair.every((id) => carsRef.current.has(id))) return;
     const lead = carsRef.current.get(a)?.el.offsetWidth ?? 80;
-    controller.dispatch(pair, lead * 1.6 + 40);
+    const gap = lead * 1.6 + 40;
+    // The first pair starts already on the road, so the section is never
+    // empty when you scroll to it. Later pairs drive in from the left.
+    if (wave.index === 0 && !wave.started) {
+      wave.started = true;
+      controller.dispatch(pair, gap, 0.42);
+    } else {
+      controller.dispatch(pair, gap);
+    }
     // The index only advances once the pair has cleared the road, so a
     // dev-mode strict remount re-sends the same pair instead of skipping it.
     wave.pending = new Set(pair);
@@ -361,6 +376,9 @@ export default function AboutPageRoad() {
     if (!lane) return;
     const controller = new TrafficController(lane, (event) => eventRef.current(event));
     controllerRef.current = controller;
+    // A fresh controller starts a fresh show (dev remounts included), so the
+    // first pair is placed on the road again.
+    waveRef.current = { index: 0, pending: new Set(), queued: false, started: false };
     // Dev hook: `__roadTraffic` from the console.
     const w = window as unknown as { __roadTraffic?: TrafficController };
     if (process.env.NODE_ENV !== "production") w.__roadTraffic = controller;
@@ -374,6 +392,8 @@ export default function AboutPageRoad() {
       controller.setStopLine(x);
     };
     measureStopLine();
+    // Cars that mounted before this controller existed get their first pair now.
+    dispatchNext();
     const ro = new ResizeObserver(measureStopLine);
     ro.observe(lane);
 
@@ -403,7 +423,20 @@ export default function AboutPageRoad() {
           } else {
             carsRef.current.delete(id);
             controllerRef.current?.remove(id);
-            waveRef.current.pending.delete(id);
+            const wave = waveRef.current;
+            wave.pending.delete(id);
+            // A car remounting during the opening pair (model reload, dev
+            // remount) should land back on the road, not restart off-screen.
+            if (wave.index === 0) {
+              wave.started = false;
+              const others = [...wave.pending];
+              for (const other of others) controllerRef.current?.remove(other);
+              for (const other of others) {
+                const car = carsRef.current.get(other);
+                if (car) controllerRef.current?.add(other, car.el, car.options);
+              }
+              wave.pending.clear();
+            }
           }
         };
         cache.set(id, fn);

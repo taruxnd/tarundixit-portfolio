@@ -205,13 +205,10 @@ export default function HeroMonsoon({
         aria-label={raining ? "Hang up (stop the rain)" : "Call Indradev (make it rain)"}
         data-cursor="interactive"
       >
-        {/* Desktop: icon + words. Phones: just the weather emoji. */}
+        {/* Desktop only; hidden on phones. */}
         <span className="hero-monsoon__cta-full" aria-hidden>
           {raining ? <PhoneOff size={14} strokeWidth={2.4} /> : <Phone size={14} strokeWidth={2.4} />}
           {raining ? "Hang up" : "Call Indradev"}
-        </span>
-        <span className="hero-monsoon__cta-emoji" aria-hidden>
-          {raining ? "☀️" : "🌧️"}
         </span>
       </button>
     </>

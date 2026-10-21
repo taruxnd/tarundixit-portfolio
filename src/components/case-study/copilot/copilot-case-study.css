@@ -111,6 +111,48 @@
 }
 
 /* The hypothesis is the one sentence everything tests. */
+.cs-ux-term__help {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin-left: 2px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--note-soft);
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.cs-ux-term__help:hover {
+  color: var(--note-ink);
+  background: var(--note-rule);
+}
+
+.cs-ux-term__help:focus-visible {
+  outline: 2px solid var(--note-ink);
+  outline-offset: 2px;
+}
+
+.cs-ux-term__explanation {
+  position: fixed;
+  box-sizing: border-box;
+  width: min(264px, calc(100vw - 32px));
+  margin: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--note-rule);
+  border-radius: 10px;
+  background: var(--bg-page);
+  color: var(--note-ink);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 10%);
+  font: 400 14px/1.5 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
 .cs-body .cs-hypothesis {
   padding-left: 28px;
   font-size: 20px;

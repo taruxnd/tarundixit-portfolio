@@ -14,6 +14,7 @@ import FigmaMarquee from "./FigmaMarquee";
 import {
   isFinePointerDevice,
   resolveCursorMode,
+  resolveCursorText,
   type CursorMode,
 } from "./utils";
 import "./cursor.css";
@@ -24,6 +25,7 @@ const ROAMING_NAME = "Tarun Dixit";
 function YouCursor({ enabled }: { enabled: boolean }) {
   const [visible, setVisible] = useState(true);
   const [mode, setMode] = useState<CursorMode>("default");
+  const [text, setText] = useState<string | null>(null);
   const nodeRef = usePointerFollow(enabled, () => setVisible(true));
 
   useEffect(() => {
@@ -34,6 +36,7 @@ function YouCursor({ enabled }: { enabled: boolean }) {
     const onOver = (event: MouseEvent) => {
       setVisible(true);
       setMode(resolveCursorMode(event.target));
+      setText(resolveCursorText(event.target));
     };
 
     // Safari rarely fires document.mouseenter — use mouseout on <html> instead.
@@ -57,7 +60,7 @@ function YouCursor({ enabled }: { enabled: boolean }) {
     >
       <YouPointer mode={mode} />
       <div className="you-cursor__tag-wrap">
-        <YouTag mode={mode} />
+        <YouTag mode={mode} text={text} />
       </div>
     </div>
   );

@@ -11,10 +11,14 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import "./hero-bee.css";
 
 /** Armabee by Quaternius, using the model's authored flying animation. */
-export default function HeroBee({ placement = "hero" }: {
+export default function HeroBee({ placement = "hero", storm = false }: {
   placement?: "hero" | "footer" | "timeline";
+  /** When it rains, the bee bolts off-screen and comes back once it clears. */
+  storm?: boolean;
 } = {}) {
   const hostRef = useRef<HTMLButtonElement>(null);
+  const stormRef = useRef(storm);
+  const wakeRef = useRef<() => void>(() => {});
   const tapRef = useRef<() => void>(() => {});
   const [ready, setReady] = useState(false);
   const { reducedMotion } = useTheme();
@@ -65,6 +69,8 @@ export default function HeroBee({ placement = "hero" }: {
     let frame = 0;
     let previous = 0;
     let elapsed = 0;
+    /** 0 = flying around, 1 = fled off-screen. Eases toward the storm state. */
+    let flee = stormRef.current ? 1 : 0;
     let heroWidth = 0;
     let heroHeight = 0;
     let beeSize = 100;
@@ -87,11 +93,21 @@ export default function HeroBee({ placement = "hero" }: {
       const swingX = Math.min(heroWidth * (footer ? 0.23 : mobile ? 0.18 : 0.15), 210);
       const centerY = heroHeight * (footer ? 0.32 : mobile ? 0.73 : 0.59);
       const swingY = Math.min(heroHeight * (footer ? 0.1 : 0.07), 55);
-      const x = Math.min(heroWidth - beeSize - 8, Math.max(8, centerX + Math.sin(phase) * swingX - beeSize / 2));
-      const y = centerY + Math.sin(phase * 2) * swingY - beeSize / 2;
+      const homeX = Math.min(heroWidth - beeSize - 8, Math.max(8, centerX + Math.sin(phase) * swingX - beeSize / 2));
+      const homeY = centerY + Math.sin(phase * 2) * swingY - beeSize / 2;
+      // Fleeing: dart off past the right edge and up, away from the rain,
+      // with a panicky little wobble on the way.
+      const e = flee * flee * (3 - 2 * flee);
+      const awayX = heroWidth + beeSize * 1.4;
+      const awayY = homeY - Math.min(heroHeight * 0.35, 260);
+      const wobble = Math.sin(elapsed * 22) * 10 * flee * (1 - flee) * 4;
+      const x = homeX + (awayX - homeX) * e;
+      const y = homeY + (awayY - homeY) * e + wobble;
       host.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-      bee.rotation.y = headbutting ? 0 : -0.4 + Math.cos(phase) * 0.7;
-      bee.rotation.z = headbutting ? 0 : -Math.cos(phase) * 0.12;
+      const calmY = -0.4 + Math.cos(phase) * 0.7;
+      bee.rotation.y = headbutting ? 0 : calmY + (0.9 - calmY) * Math.min(1, flee * 3);
+      bee.rotation.z = headbutting ? 0 : -Math.cos(phase) * 0.12 * (1 - flee) + 0.25 * Math.min(1, flee * 3);
+      host.style.pointerEvents = flee > 0.5 ? "none" : "";
     };
 
     const render = (timestamp: number) => {
@@ -99,10 +115,17 @@ export default function HeroBee({ placement = "hero" }: {
       const delta = previous ? Math.min((timestamp - previous) / 1000, 0.05) : 0;
       previous = timestamp;
       if (!reducedMotion && !headbutting) elapsed += delta;
-      if (!reducedMotion || headbutting) mixer?.update(delta);
+      const target = stormRef.current ? 1 : 0;
+      const fleeing = flee !== target;
+      if (reducedMotion) flee = target;
+      // Leaves fast (about 0.9s), comes back slower (about 2.5s).
+      else if (fleeing) flee = target > flee ? Math.min(1, flee + delta / 0.9) : Math.max(0, flee - delta / 2.5);
+      if (flightAction) flightAction.timeScale = 1 + flee * 1.6;
+      if (!reducedMotion || headbutting || fleeing) mixer?.update(delta);
       place();
+      host.style.opacity = reducedMotion && flee === 1 ? "0" : "";
       renderer.render(scene, camera);
-      if (!reducedMotion || headbutting) frame = requestAnimationFrame(render);
+      if (!reducedMotion || headbutting || flee !== target) frame = requestAnimationFrame(render);
     };
 
     const start = () => {
@@ -111,8 +134,10 @@ export default function HeroBee({ placement = "hero" }: {
       if (visible && loaded && !document.hidden) frame = requestAnimationFrame(render);
     };
 
+    wakeRef.current = start;
+
     tapRef.current = () => {
-      if (!loaded || !headbuttAction || headbutting) return;
+      if (!loaded || !headbuttAction || headbutting || flee > 0.5) return;
       headbutting = true;
       flightAction?.stop();
       headbuttAction.reset().setLoop(LoopOnce, 1);
@@ -196,6 +221,7 @@ export default function HeroBee({ placement = "hero" }: {
       visibilityObserver.disconnect();
       document.removeEventListener("visibilitychange", start);
       tapRef.current = () => {};
+      wakeRef.current = () => {};
       mixer?.removeEventListener("finished", finishHeadbutt);
       mixer?.stopAllAction();
       mixer?.uncacheRoot(mixer.getRoot());
@@ -204,6 +230,11 @@ export default function HeroBee({ placement = "hero" }: {
       renderer.domElement.remove();
     };
   }, [reducedMotion, placement]);
+
+  useEffect(() => {
+    stormRef.current = storm;
+    wakeRef.current();
+  }, [storm]);
 
   return (
     <button
