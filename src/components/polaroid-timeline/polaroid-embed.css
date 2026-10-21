@@ -129,3 +129,14 @@ body {
 #polaroid-timeline-host div[style*="backface-visibility"]>div[style*="bottom"]{
   font-family:var(--font-geist),ui-sans-serif,system-ui,sans-serif!important;
 }
+
+/* Pins: yellow instead of Framer's red. Only colours change; Framer's shape and animation stay. */
+#polaroid-timeline-host svg + div > div > div > div:nth-child(2) {
+  background: radial-gradient(circle at 35% 30%, #ffe27a 0%, #f5c22b 45%, #c98f0a 100%) !important;
+}
+#polaroid-timeline-host svg + div > div > div > div:nth-child(2)[style*="6px 20px"] {
+  box-shadow: 0 6px 20px rgba(245, 194, 43, 0.4), 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+}
+#polaroid-timeline-host svg + div > div > div > div:first-child {
+  background: radial-gradient(circle, rgba(245, 194, 43, 0.38) 0%, rgba(245, 194, 43, 0.2) 40%, transparent 70%) !important;
+}

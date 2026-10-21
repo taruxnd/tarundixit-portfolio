@@ -50,3 +50,4 @@ src/components/*-framer-*-optimized/
 src/components/*-framer-app-optimized/
 src/components/www-*-optimized/
 src/components/liquid-metal-button/
+.backup/
