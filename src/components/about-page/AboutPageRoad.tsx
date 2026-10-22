@@ -37,6 +37,22 @@ const AboutPageGlbCar = dynamic(() => import("./AboutPageGlbCar"), {
 /** Start loading GLBs ~1 viewport before the road enters view. */
 const LOAD_ROOT_MARGIN = "100% 0px";
 
+/**
+ * Head start: once the work section is on screen, fetch the car files into the
+ * HTTP cache one by one (low priority, first car first), so the loaders above
+ * hit the cache instead of starting 7 MB of downloads a screen before the road.
+ * Keep in sync with the model URLs in the car components.
+ */
+const PREFETCH_TRIGGER_ID = "work";
+const DRACO_FILES = ["/draco/draco_wasm_wrapper.js", "/draco/draco_decoder.wasm"];
+const MODEL_FILES: Record<string, string> = {
+  "kia-carens": "/models/kia-carens.glb",
+  "wagonr-a": "/models/suzuki-wagonr.glb",
+  "maruti-800": "/models/maruti-800.glb",
+  carry: "/models/suzuki-carry.glb",
+  "wagonr-b": "/models/suzuki-wagonr.glb",
+};
+
 const CARS: Record<string, { name: string; voice: HornVoice; honk: string }> = {
   "kia-carens": { name: "Kia Carens", voice: "mpv", honk: "पों पों" },
   "wagonr-a": { name: "WagonR", voice: "hatch", honk: "पों पों" },
@@ -451,6 +467,31 @@ export default function AboutPageRoad() {
     innerRef: registerCar(id, { speedRef: speedRefs.current[id] }),
   });
   const show = (id: string) => loadCars && !(compact && COMPACT_SKIP.has(id));
+
+  useEffect(() => {
+    const trigger = document.getElementById(PREFETCH_TRIGGER_ID) ?? roadRef.current;
+    if (!trigger) return;
+    let cancelled = false;
+    const prefetch = async () => {
+      const compactNow = window.matchMedia(COMPACT_QUERY).matches;
+      const models = WAVE_ORDER.filter((id) => !(compactNow && COMPACT_SKIP.has(id))).map((id) => MODEL_FILES[id]);
+      for (const url of [...DRACO_FILES, ...new Set(models)]) {
+        if (cancelled) return;
+        // Sequential, so the first car on the road is ready first.
+        await fetch(url, { priority: "low" } as RequestInit).then((res) => res.blob()).catch(() => undefined);
+      }
+    };
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry?.isIntersecting) return;
+      io.disconnect();
+      void prefetch();
+    });
+    io.observe(trigger);
+    return () => {
+      cancelled = true;
+      io.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     const road = roadRef.current;
