@@ -1,0 +1,113 @@
+/* Client logos in a slow marquee. Black on the light theme, white on the dark one. */
+.client-strip {
+  width: 100%;
+}
+
+.client-strip__label {
+  margin: 0 0 20px;
+  font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text-secondary, var(--note-faint));
+  text-align: center;
+}
+
+.client-strip__label strong {
+  color: var(--text-primary, #fff);
+  font-weight: 600;
+}
+
+.client-strip__rail {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+
+.client-strip__track {
+  --logo-gap: 56px;
+  display: flex;
+  align-items: center;
+  gap: var(--logo-gap);
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  animation: client-strip-scroll 48s linear infinite;
+}
+
+.client-strip__rail:hover .client-strip__track {
+  animation-play-state: paused;
+}
+
+@keyframes client-strip-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-50% - var(--logo-gap) / 2));
+  }
+}
+
+/* Reset list styling that article bodies add (arrows, padding). */
+.client-strip .client-strip__logo {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 124px;
+  height: 48px;
+  margin: 0;
+  padding: 0;
+}
+
+.client-strip .client-strip__logo::before,
+.client-strip .client-strip__logo::marker {
+  content: none;
+}
+
+.client-strip__logo img {
+  width: auto;
+  height: auto;
+  max-width: 124px;
+  max-height: 40px;
+  object-fit: contain;
+  filter: brightness(0);
+  opacity: 0.6;
+  transition: opacity 0.25s ease;
+}
+
+[data-theme="dark"] .client-strip__logo img,
+.cs-page .client-strip__logo img {
+  filter: brightness(0) invert(1);
+  opacity: 0.72;
+}
+
+.client-strip__logo:hover img {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .client-strip__track {
+    animation-duration: 180s;
+  }
+}
+
+@media (max-width: 640px) {
+  .client-strip__track {
+    --logo-gap: 36px;
+  }
+
+  .client-strip .client-strip__logo {
+    width: 100px;
+    height: 40px;
+  }
+
+  .client-strip__logo img {
+    max-width: 100px;
+    max-height: 32px;
+  }
+}
+
+/* Homepage: sits between the work heading and the first project. */
+.xhulia-work__header + .client-strip {
+  margin: calc(-1 * clamp(1.5rem, 4vw, 2.75rem)) 0 clamp(3.5rem, 8vw, 5.5rem);
+}

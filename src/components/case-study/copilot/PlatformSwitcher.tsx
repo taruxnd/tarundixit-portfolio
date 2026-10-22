@@ -10,6 +10,8 @@ type Platform = {
   shape: string;
   /** Aspect ratio of the post image, width / height. */
   ratio: number;
+  /** public/work/copilot/platforms/post-<id>.webp: the Mamaearth poster for this platform. */
+  image: string;
   caption: string[];
   note: string;
 };
@@ -21,6 +23,7 @@ const PLATFORMS: Platform[] = [
     size: "1080 × 1350",
     shape: "Portrait",
     ratio: 1080 / 1350,
+    image: "/work/copilot/platforms/post-instagram.webp",
     caption: [
       "Hair fall season is here 🍂",
       "Our Onion Hair Fall Shampoo is made with onion oil and plant keratin to help strengthen hair from the root.",
@@ -32,9 +35,10 @@ const PLATFORMS: Platform[] = [
   {
     id: "facebook",
     name: "Facebook",
-    size: "1080 × 1080",
-    shape: "Square",
-    ratio: 1,
+    size: "1200 × 630",
+    shape: "Landscape",
+    ratio: 1200 / 630,
+    image: "/work/copilot/platforms/post-facebook.webp",
     caption: [
       "Seeing more hair on your comb lately? You're not the only one. Seasonal hair fall affects most of us.",
       "We made our Onion Hair Fall Shampoo for exactly this. Tell us in the comments: how often do you wash your hair?",
@@ -47,6 +51,7 @@ const PLATFORMS: Platform[] = [
     size: "1200 × 627",
     shape: "Landscape",
     ratio: 1200 / 627,
+    image: "/work/copilot/platforms/post-linkedin.webp",
     caption: [
       "Today we are launching our Onion Hair Fall Shampoo.",
       "Hair fall is one of the most common concerns we hear from customers. This shampoo is our answer: onion oil and plant keratin, made for regular use.",
@@ -60,6 +65,7 @@ const PLATFORMS: Platform[] = [
     size: "1600 × 900",
     shape: "Wide",
     ratio: 1600 / 900,
+    image: "/work/copilot/platforms/post-x.webp",
     caption: ["Hair fall season? Meet our new Onion Hair Fall Shampoo. Onion oil + keratin. 🧅"],
     note: "Short and direct, under 280 characters.",
   },
@@ -139,10 +145,11 @@ export default function PlatformSwitcher() {
         {platform.id === "x" ? <p className="cs-post__text">{platform.caption[0]}</p> : null}
 
         <div className="cs-post__image" style={{ aspectRatio: platform.ratio }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={platform.image} alt="Mamaearth Onion Hair Fall Control Shampoo post" loading="lazy" decoding="async" />
           <span className="cs-post__size">
             {platform.size} · {platform.shape}
           </span>
-          <span className="cs-post__product">Onion Hair Fall Shampoo</span>
         </div>
 
         {platform.id !== "x" ? (

@@ -5,11 +5,15 @@ import { contentContainerClassName } from "@/lib/sectionLayout";
 import { PROJECT_LINKS_LIVE } from "@/lib/workInProgress";
 import { ArrowUpRight, Play } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import DragStrip from "./DragStrip";
+import ClientStrip from "@/components/client-strip/ClientStrip";
+import VideoLightbox from "./VideoLightbox";
 import { workProjects, type WorkProject } from "./workProjects";
 import "./work-strip.css";
 
 function ProjectPanel({ project }: { project: WorkProject }) {
+  const [watching, setWatching] = useState(false);
   const disabled = project.ctaDisabled || !project.href || !PROJECT_LINKS_LIVE;
   const primaryCta = (
     <>
@@ -46,7 +50,17 @@ function ProjectPanel({ project }: { project: WorkProject }) {
               </Link>
             )}
 
-            {project.videoHref && PROJECT_LINKS_LIVE ? (
+            {project.video && PROJECT_LINKS_LIVE ? (
+              <button
+                type="button"
+                data-cursor="interactive"
+                className="xhulia-panel__cta xhulia-panel__cta--video"
+                onClick={() => setWatching(true)}
+              >
+                <Play size={12} strokeWidth={2.4} aria-hidden />
+                <span>Watch as video</span>
+              </button>
+            ) : project.videoHref && PROJECT_LINKS_LIVE ? (
               <Link
                 href={project.videoHref}
                 data-cursor="interactive"
@@ -61,6 +75,16 @@ function ProjectPanel({ project }: { project: WorkProject }) {
       </div>
 
       <DragStrip frames={project.frames} label={project.label} />
+
+      {project.video ? (
+        <VideoLightbox
+          open={watching}
+          onClose={() => setWatching(false)}
+          src={project.video.src}
+          poster={project.video.poster}
+          title={`${project.label}: walkthrough video`}
+        />
+      ) : null}
     </article>
   );
 }
@@ -78,9 +102,10 @@ export default function WorkStripSection() {
             Some of my recent work.
           </h2>
           <p className="xhulia-work__lede">
-            The problems, decisions, and details behind the work.
+            The tools I design are used every day by <strong>2,000+ brands</strong>
           </p>
         </header>
+        <ClientStrip />
       </div>
 
       <div className="xhulia-work__list">

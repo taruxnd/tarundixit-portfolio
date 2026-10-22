@@ -140,3 +140,11 @@ body {
 #polaroid-timeline-host svg + div > div > div > div:first-child {
   background: radial-gradient(circle, rgba(245, 194, 43, 0.38) 0%, rgba(245, 194, 43, 0.2) 40%, transparent 70%) !important;
 }
+
+/* Front captions stay on one line in the polaroid's bottom band. A caption
+ * that's too long gets an ellipsis instead of wrapping up over the photo. */
+#polaroid-timeline-host div[style*="backface-visibility"] > div[style*="bottom"] > div {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { launchResumePlane } from "@/components/resume/launchResumePlane";
+import { launchResumePlane, RESUME_DOWNLOAD_URL, RESUME_FILE_NAME } from "@/components/resume/launchResumePlane";
 import LiquidGlass from "@/components/navbar/LiquidGlass";
 import { HERO_INSPECT_EVENT } from "@/components/hero-inspect/HeroInspect";
 import { playKeyClick } from "@/components/hero-inspect/keyClick";
@@ -130,8 +130,8 @@ export default function HeroCopyClassic() {
         >
           <LiquidGlass className="hero-cta__resume-glass">
             <a
-              href="/resume-sample.pdf"
-              download="Tarun-Dixit-Sample-Resume.pdf"
+              href={RESUME_DOWNLOAD_URL}
+              download={RESUME_FILE_NAME}
               onClick={launchResumePlane}
               data-cursor="interactive"
               className="hero-cta__resume-link theme-transition"

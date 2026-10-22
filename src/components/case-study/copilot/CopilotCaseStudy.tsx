@@ -20,6 +20,8 @@ export const SHOTS = {
   spreadsheet: "Arjun's old spreadsheet: days down, platforms across",
   evolution: "Early planner screen next to the final Copilot screen",
   brief: "Copilot home: text box, goal menu, attached product photo",
+  moments: "Moment marketing: upcoming dates to build from on the home screen, and optional campaign moments inside the plan",
+  momentsDetail: "Close up: upcoming-date cards with their angle and Build button, and the Campaign moments list with Movember, a midweek reset, Stress Awareness Day and Dhanteras",
   plan: "Campaign plan screen with all five sections",
   ideas: "Campaign Ideas screen with Day 2 expanded and the post type menu open",
   posts: "Generated posts grid for the five days",
@@ -88,7 +90,7 @@ export default function CopilotCaseStudy({
   shots?: ShotSources;
   /** public/work/copilot/funding-tv.(webp|png|jpg): a still from the TV segment. */
   tv?: string;
-  /** public/work/copilot/pocket-meme.(webp|png|jpg|gif): the famous one. */
+  /** public/work/copilot/pocket-meme.(webp|png|jpg|gif): Om Shanti Om, "picture abhi baaki hai mere dost". */
   pocket?: string;
   /** public/work/copilot/shin-money.(webp|png|jpg): Shin-chan with cash. Falls back to the toy car. */
   shin?: string;
@@ -114,7 +116,8 @@ export default function CopilotCaseStudy({
           <p className="cs-summary">
             Social media managers were making 20 posts by hand for every five-day campaign.
             Copilot turns one brief into a plan they can check, then a scheduled week across four
-            platforms. It is the product behind Kumba&apos;s Series A at a $10 million valuation.
+            platforms. Kumba pitched it on the TV show Falcons of Majlis and raised a Series A at a $10
+            million valuation.
           </p>
           <dl className="cs-facts">
             <div>
@@ -286,13 +289,13 @@ export default function CopilotCaseStudy({
           <figure className={`cs-meme${pocket ? "" : " cs-meme--empty"}`}>
             {pocket ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={pocket} alt="The epic handshake meme" loading="lazy" />
+              <img src={pocket} alt="Shah Rukh Khan in Om Shanti Om: picture abhi baaki hai mere dost" loading="lazy" />
             ) : (
               <div className="cs-meme__placeholder" aria-hidden>
                 <span>Famous meme</span>
               </div>
             )}
-            <figcaption>My ideas, meet the deadline. Shipped.</figcaption>
+            <figcaption>Picture abhi baaki hai, mere dost. The rest of the ideas wait for the next release.</figcaption>
           </figure>
 
           <h2>Making it feel right</h2>
@@ -317,6 +320,21 @@ export default function CopilotCaseStudy({
             where to start, cards below suggest upcoming dates to build a campaign around.
           </p>
           <Shot id="brief" src={shots.brief} />
+
+          <h3>Or start from a moment</h3>
+          <p>
+            Half of social media is timing. Under the brief, Copilot lists the dates coming up,
+            like Hiroshima Day, International Cat Day or World Automobile Day, each with a
+            one-line angle. One click on Build starts a five-day campaign from that date.
+          </p>
+          <p>
+            Inside the plan, Campaign moments lists the dates that fall inside the campaign
+            window and fit the brand, like Movember, Stress Awareness Day or Dhanteras, along
+            with routine beats such as a midweek reset. Each one is a switch, so the week
+            follows how people live and not only the launch.
+          </p>
+          <Shot id="moments" src={shots.moments} />
+          <Shot id="momentsDetail" src={shots.momentsDetail} />
 
           <h3>Check the plan</h3>
           <p>
@@ -379,20 +397,28 @@ export default function CopilotCaseStudy({
                   style={shin ? { backgroundImage: `url(${shin})`, backgroundPosition: "50% 40%" } : undefined}
                 />
               </strong>{" "}
-              Copilot was the product Kumba raised on.
+              Kumba raised it on Falcons of Majlis, a startup funding show coming to ZEE5
+              and Aaj Tak. Copilot was the product we pitched.
+              <span className="cs-client">
+                <b>Tata Motors EV</b> signed on as a client after seeing the Copilot demo, a
+                campaign built for the Kia Carens Clavis.
+              </span>
             </p>
             {(() => {
               const frame = (
                 <figure className="cs-polaroid__frame">
                   {tv ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={tv} alt="The Kumba funding segment on TV" loading="lazy" />
+                    <img src={tv} alt="Kumba on Falcons of Majlis" loading="lazy" />
                   ) : (
-                    <div className="cs-polaroid__placeholder" aria-hidden>
-                      <span>TV still</span>
+                    <div className="cs-polaroid__placeholder">
+                      <span className="cs-polaroid__show">Falcons of Majlis</span>
+                      <span className="cs-polaroid__soon">Coming soon</span>
                     </div>
                   )}
-                  <figcaption>It was on TV.{TV_VIDEO_URL ? " Watch ↗" : ""}</figcaption>
+                  <figcaption>
+                    {TV_VIDEO_URL ? "Watch the pitch ↗" : "Coming to ZEE5 & Aaj Tak"}
+                  </figcaption>
                 </figure>
               );
               return TV_VIDEO_URL ? (

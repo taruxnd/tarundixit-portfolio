@@ -342,14 +342,31 @@ export function FramerRuntimeIsland() {
       probeTimer = window.setTimeout(probe, 180);
     };
 
-    // Skip Strict Mode's discarded first effect pass.
+    // The Framer runtime is ~800 KB of scripts, so wait until the timeline is
+    // about a screen and a half away. setTimeout still skips Strict Mode's
+    // discarded first effect pass.
+    let nearObserver: IntersectionObserver | undefined;
     const startId = window.setTimeout(() => {
-      void boot();
+      const host = document.getElementById(HOST_ID);
+      if (!host || !("IntersectionObserver" in window)) {
+        void boot();
+        return;
+      }
+      nearObserver = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+          nearObserver?.disconnect();
+          void boot();
+        },
+        { rootMargin: "1200px 0px" },
+      );
+      nearObserver.observe(host);
     }, 0);
 
     return () => {
       cancelled = true;
       window.clearTimeout(startId);
+      nearObserver?.disconnect();
       if (probeTimer) window.clearTimeout(probeTimer);
       detachHover?.();
       if (didMount) tearDownMain();

@@ -491,11 +491,11 @@ export default function AboutPageRoad() {
       <div className="about-road__scene" aria-hidden>
         <Landmark
           className="about-road__landmark about-road__landmark--kumba"
-          src={assetUrl("about/kumba-office-sm.png")}
+          src={assetUrl("about/kumba-office-sm.webp")}
         />
         <Landmark
           className="about-road__landmark about-road__landmark--google"
-          src={assetUrl("about/google-office-sm.png")}
+          src={assetUrl("about/google-office-sm.webp")}
         />
 
         <div className="about-road__lights">

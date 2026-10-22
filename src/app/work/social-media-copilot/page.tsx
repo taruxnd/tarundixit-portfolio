@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
 import type { Metadata } from "next";
+import { assetUrl } from "@/lib/cdnAssets";
 import CopilotCaseStudy, {
   SHOTS,
   type ShotId,
@@ -20,7 +21,7 @@ function findShots(): ShotSources {
   for (const id of Object.keys(SHOTS) as ShotId[]) {
     for (const ext of ["webp", "png", "jpg"]) {
       if (existsSync(path.join(dir, `${id}.${ext}`))) {
-        found[id] = `/work/copilot/shots/${id}.${ext}`;
+        found[id] = assetUrl(`work/copilot/shots/${id}.${ext}`);
         break;
       }
     }
@@ -32,7 +33,7 @@ function findShots(): ShotSources {
 function findPicture(name: string): string | undefined {
   const dir = path.join(process.cwd(), "public", "work", "copilot");
   for (const ext of ["webp", "png", "jpg", "gif"]) {
-    if (existsSync(path.join(dir, `${name}.${ext}`))) return `/work/copilot/${name}.${ext}`;
+    if (existsSync(path.join(dir, `${name}.${ext}`))) return assetUrl(`work/copilot/${name}.${ext}`);
   }
   return undefined;
 }

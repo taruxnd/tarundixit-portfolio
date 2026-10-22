@@ -1,10 +1,12 @@
 "use client";
 
 import { useTheme } from "@/components/ThemeController";
-import { assetUrl } from "@/lib/cdnAssets";
 import { motion } from "framer-motion";
-import Image from "next/image";
+import { assetUrl } from "@/lib/cdnAssets";
 import "./hero-billboard.css";
+
+/** Juspay logo recoloured all-white so the blue mark shows on the blue board. Set to null to fall back to type. */
+const JUSPAY_LOGO: string | null = assetUrl("about/brands/juspay-logo-white.svg");
 
 export default function HeroBillboard() {
   const { reducedMotion } = useTheme();
@@ -37,19 +39,14 @@ export default function HeroBillboard() {
 
           <div className="hero-billboard__board">
             <div className="hero-billboard__frame">
-              <div className="hero-billboard__artwork">
-                <Image
-                  src={assetUrl("profile/life-lately-samvaad.jpg")}
-                  alt=""
-                  fill
-                  priority
-                  sizes="(max-width: 1280px) 200px, 250px"
-                  className="hero-billboard__photo"
-                />
-                <div className="hero-billboard__grade" />
-                <div className="hero-billboard__caption">
-                  <span className="hero-billboard__label">life lately</span>
-                </div>
+              <div className="hero-billboard__artwork hero-billboard__artwork--juspay">
+                <span className="hero-billboard__hello">Hi Team</span>
+                {JUSPAY_LOGO ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img className="hero-billboard__juspay-logo" src={JUSPAY_LOGO} alt="Juspay" draggable={false} />
+                ) : (
+                  <span className="hero-billboard__juspay-wordmark">juspay</span>
+                )}
               </div>
             </div>
           </div>

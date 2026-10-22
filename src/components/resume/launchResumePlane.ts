@@ -1,16 +1,19 @@
 import type { MouseEvent } from "react";
 
-export const RESUME_DOWNLOAD_URL = "/resume-sample.pdf";
+// Built from scripts/resume/resume.html (node scripts/resume/build.mjs). Served from
+// our own origin, not the CDN, because browsers ignore `download` on cross-origin links.
+export const RESUME_DOWNLOAD_URL = "/tarun-dixit-resume.pdf";
+export const RESUME_FILE_NAME = "Tarun-Dixit-Resume.pdf";
 let flying = false;
 
-/** Fly toward the browser's top-right corner, then download the sample PDF. */
+/** Fly toward the browser's top-right corner, then download the resume PDF. */
 export function launchResumePlane(event: MouseEvent<HTMLAnchorElement>) {
   event.preventDefault();
   if (flying) return;
   const download = () => {
     const link = document.createElement("a");
     link.href = RESUME_DOWNLOAD_URL;
-    link.download = "Tarun-Dixit-Sample-Resume.pdf";
+    link.download = RESUME_FILE_NAME;
     document.body.appendChild(link);
     link.click();
     link.remove();

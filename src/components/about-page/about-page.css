@@ -13,7 +13,11 @@
   min-height: 100dvh;
   max-height: 100svh;
   max-height: 100dvh;
-  /* Landmark art is a 640×426 PNG. Google's opaque pixels start near y=19, so
+  /* Guest cursors roam past the right edge and the road slab overhangs a few
+   * px; on phones that widened the whole layout viewport. clip (not hidden)
+   * keeps sticky children and vertical overflow working. */
+  overflow-x: clip;
+  /* Landmark art is a 640×426 PNG (480×320 WebP now, same ratio). Google's opaque pixels start near y=19, so
    * its visible roof sits ~0.636 × rendered width above the image bottom.
    * Re-derive --landmark-roof if artwork is swapped. */
   --landmark-roof: 0.636;

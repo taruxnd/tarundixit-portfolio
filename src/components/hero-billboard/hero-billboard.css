@@ -4,7 +4,7 @@
   position: absolute;
   left: clamp(4.5rem, 8vw, 7.5rem);
   bottom: calc(var(--hero-rail-height, 8px) + 16vh);
-  width: clamp(7.4375rem, 10.625vw, 9.9875rem);
+  width: clamp(5.95rem, 8.5vw, 8rem);
   /* No perspective/z-index here — poles must stack under the garden canvas */
   pointer-events: none;
   -webkit-user-select: none;
@@ -264,7 +264,7 @@
   .hero-billboard {
     left: clamp(5.5rem, 9vw, 9rem);
     bottom: calc(var(--hero-rail-height, 8px) + 18vh);
-    width: clamp(8.2875rem, 11.05vw, 10.8375rem);
+    width: clamp(6.63rem, 8.84vw, 8.67rem);
   }
 
   .hero-billboard__poles {
@@ -276,7 +276,7 @@
   .hero-billboard {
     left: clamp(6.5rem, 10vw, 10.5rem);
     bottom: calc(var(--hero-rail-height, 8px) + 20vh);
-    width: 11.475rem;
+    width: 9.18rem;
   }
 
   .hero-billboard__poles {
@@ -310,7 +310,9 @@
 @media (min-width: 1024px) and (max-height: 640px) {
   .hero-billboard {
     bottom: calc(var(--hero-rail-height, 8px) + 5vh);
-    width: 7rem;
+    /* Shrinks with the window height instead of snapping to a small fixed
+       size: about 113px at 640px tall, never below 5.6rem. */
+    width: max(5.6rem, 17.6vh);
   }
 
   .hero-billboard__poles {
@@ -322,4 +324,49 @@
   .hero-billboard {
     display: none;
   }
+}
+
+/* Juspay greeting: their blue, their logo, a hello. */
+.hero-billboard__artwork--juspay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.5rem;
+  container-type: inline-size;
+  background:
+    radial-gradient(120% 90% at 20% 0%, rgba(255, 255, 255, 0.22), transparent 55%),
+    linear-gradient(150deg, #3079ea 0%, #0561e2 55%, #0447b0 100%);
+  text-align: center;
+}
+
+.hero-billboard__juspay-logo {
+  display: block;
+  width: 84%;
+  height: auto;
+  object-fit: contain;
+}
+
+.hero-billboard__juspay-wordmark {
+  color: #fff;
+  font-family: var(--font-geist), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.hero-billboard__juspay-wordmark[hidden] {
+  display: none;
+}
+
+.hero-billboard__hello {
+  color: #fff;
+  font-family: var(--font-geist), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-size: 11cqw;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  white-space: nowrap;
 }

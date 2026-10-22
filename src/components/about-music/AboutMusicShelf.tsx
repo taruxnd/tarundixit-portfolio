@@ -22,7 +22,7 @@ const COVERS: {
     key: "a",
     title: "Ranjish Hi Sahi",
     artist: "Mehdi Hassan",
-    coverSrc: assetUrl("about-music/ranjish-hi-sahi.jpg"),
+    coverSrc: assetUrl("about-music/ranjish-hi-sahi.webp"),
     coverAlt: "Ranjish Hi Sahi — Mehdi Hassan",
     // Trimmed to the former preview window (4:52 → end)
     audioSrc: assetUrl("about-music/ranjish-hi-sahi.mp3"),
@@ -32,7 +32,7 @@ const COVERS: {
     key: "b",
     title: "Raabta",
     artist: "Arijit Singh & Shreya Ghoshal",
-    coverSrc: assetUrl("about-music/raabta.jpg"),
+    coverSrc: assetUrl("about-music/raabta.webp"),
     coverAlt: "Raabta — Arijit Singh & Shreya Ghoshal",
     // Trimmed to the former preview window (2:00 → 3:00)
     audioSrc: assetUrl("about-music/raabta.mp3"),
@@ -41,7 +41,7 @@ const COVERS: {
     key: "c",
     title: "Khat",
     artist: "Navjot Ahuja",
-    coverSrc: assetUrl("about-music/khat.jpg"),
+    coverSrc: assetUrl("about-music/khat.webp"),
     coverAlt: "Khat — Navjot Ahuja",
     // Trimmed to the former preview window (1:49 → 2:30)
     audioSrc: assetUrl("about-music/khat.mp3"),
@@ -49,13 +49,13 @@ const COVERS: {
   },
   {
     key: "d",
-    title: "Khat",
-    artist: "Navjot Ahuja",
-    coverSrc: assetUrl("about-music/khat.jpg"),
-    coverAlt: "Khat — Navjot Ahuja",
-    audioSrc: assetUrl("about-music/khat.mp3"),
-    discColor: "#111111",
-    darkModeDiscColor: "#C5C7C9",
+    title: "Pehla Nasha",
+    artist: "Udit Narayan & Sadhana Sargam",
+    coverSrc: assetUrl("about-music/pehla-nasha.webp"),
+    coverAlt: "Pehla Nasha — Udit Narayan & Sadhana Sargam",
+    // 30s hook from the vocal entry (0:24 → 0:54)
+    audioSrc: assetUrl("about-music/pehla-nasha.mp3"),
+    discColor: "#E9604A",
   },
 ];
 

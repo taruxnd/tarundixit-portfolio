@@ -18,3 +18,7 @@ export const PROJECT_LINKS_LIVE = !REVIEW_MODE;
 
 /** "More about me" links, and the /more-about-me page (404 when hidden). */
 export const MORE_ABOUT_VISIBLE = !REVIEW_MODE;
+
+/** Links pointing to /more-about-me. Off for now; the page itself still works. */
+const MORE_ABOUT_LINKED = false;
+export const MORE_ABOUT_LINKS = MORE_ABOUT_VISIBLE && MORE_ABOUT_LINKED;

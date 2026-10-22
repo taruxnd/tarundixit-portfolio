@@ -1,0 +1,62 @@
+/* Brand Hub case study: reuses the Copilot case-study styles, adds the client strip and the consumer grid. */
+
+/* Client logos: the brands on Kumba, in a slow marquee like the Azuri landing page. */
+.cs-body .bh-proof {
+  margin: 28px 0 36px;
+}
+
+/* First strip sits between the facts and the first kicker. */
+.cs-body > .bh-proof:first-child {
+  margin: 4px 0 44px;
+}
+
+/* Where the brand goes: one card per tool that reads from Brand Hub. */
+.cs-body .bh-consumers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 20px 0 32px;
+  padding: 0;
+  list-style: none;
+}
+
+.bh-consumers > div {
+  padding: 16px 18px;
+  border: 1px solid var(--cs-card-line);
+  border-radius: 10px;
+  background: var(--cs-card);
+}
+
+.bh-consumers dt {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.bh-consumers dd {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--note-faint);
+}
+
+@media (max-width: 640px) {
+  .cs-body .bh-consumers {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bh-proof__track {
+    --logo-gap: 36px;
+  }
+
+  .bh-proof__logo {
+    width: 100px;
+    height: 40px;
+  }
+
+  .bh-proof__logo img {
+    max-width: 100px;
+    max-height: 32px;
+  }
+}

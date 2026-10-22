@@ -187,6 +187,18 @@ export default function DragStrip({ frames, label }: DragStripProps) {
           >
             {WORK_IN_PROGRESS ? (
               <WipPlaceholder />
+            ) : frame.type === "video" ? (
+              <video
+                poster={frame.poster}
+                aria-label={frame.alt}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+              >
+                <source src={frame.src} type="video/mp4" />
+              </video>
             ) : (
               // eslint-disable-next-line @next/next/no-img-element
               <img

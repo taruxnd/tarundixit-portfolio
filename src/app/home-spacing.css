@@ -18,6 +18,9 @@
   padding-top:var(--section-gap);
   padding-bottom:0;
   overflow:visible;
+  /* Sideways only: the road slab and guest cursors overhang the edges, which
+     widened the layout viewport on phones. The skyline still rises above. */
+  overflow-x:clip;
 }
 #top > #about .about-page-hero__stage{overflow:visible}
 #top > #about .about-page-hero__inner{margin-block:0;transform:none;padding-bottom:0}
