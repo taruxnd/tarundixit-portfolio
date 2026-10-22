@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import PlatformSwitcher from "./PlatformSwitcher";
 import UxTerm from "./UxTerm";
-import { PROJECT_LINKS_LIVE, WORK_IN_PROGRESS } from "@/lib/workInProgress";
+import { WORK_IN_PROGRESS } from "@/lib/workInProgress";
 import LiquidGlass from "@/components/navbar/LiquidGlass";
 import { stripFontClassName } from "@/lib/heroFonts";
 import "@/components/notes/notes.css";
@@ -439,20 +439,6 @@ export default function CopilotCaseStudy({
           <PrototypeLink />
         </div>
 
-        <div className="note-divider" aria-hidden="true">
-          <span>✿</span>
-        </div>
-        <p className="notes-intro cs-foot">
-          More work on the <Link href="/#work">home page</Link>
-          {PROJECT_LINKS_LIVE ? (
-            <>
-              , or read the <Link href="/work/ai-design-system">AI design system</Link> case
-              study.
-            </>
-          ) : (
-            "."
-          )}
-        </p>
       </article>
     </main>
   );
