@@ -114,7 +114,7 @@ export default function CopilotCaseStudy({
           <p className="cs-summary">
             Social media managers were making 20 posts by hand for every five-day campaign.
             Copilot turns one brief into a plan they can check, then a scheduled week across four
-            platforms. It is the product that raised Kumba $100,000 at a $10 million valuation.
+            platforms. It is the product behind Kumba&apos;s Series A at a $10 million valuation.
           </p>
           <dl className="cs-facts">
             <div>
@@ -372,14 +372,14 @@ export default function CopilotCaseStudy({
           <div className="cs-money">
             <p className="cs-impact">
               <strong>
-                $100,000 raised for 1% equity.
+                Series A at a $10 million valuation.
                 <span
                   className="cs-shin"
                   aria-hidden
                   style={shin ? { backgroundImage: `url(${shin})`, backgroundPosition: "50% 40%" } : undefined}
                 />
               </strong>{" "}
-              This values Kumba at $10 million.
+              Copilot was the product Kumba raised on.
             </p>
             {(() => {
               const frame = (
