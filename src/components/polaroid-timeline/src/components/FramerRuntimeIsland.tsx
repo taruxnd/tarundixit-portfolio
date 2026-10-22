@@ -2,10 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { framerRuntime } from "../lib/framer-runtime";
+import { assetUrl } from "@/lib/cdnAssets";
 
 declare global {
   interface Window {
     __framerToNextBooted?: boolean;
+    /** Read by public/polaroid-timeline/milestones.mjs so photos follow assetUrl(). */
+    __portfolioAssetBase?: string;
   }
 }
 
@@ -279,6 +282,8 @@ export function FramerRuntimeIsland() {
       ensureBadge();
       ensureSvgTemplates();
       ensureProcessEnv();
+      // "" locally, the commit-pinned CDN on the live site.
+      window.__portfolioAssetBase = assetUrl("").replace(/\/$/, "");
       preloadModules();
 
       const parent = mountParent();

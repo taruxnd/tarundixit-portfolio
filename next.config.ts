@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  env: {
+    // jsDelivr URLs are pinned to the commit being deployed (see src/lib/cdnAssets.ts).
+    ASSET_REF: process.env.VERCEL_GIT_COMMIT_SHA || "main",
+  },
   experimental: {
     // Guestbook photos arrive as base64 JPEGs (≤1 MB of image, ~1.4 MB encoded).
     serverActions: { bodySizeLimit: "2mb" },
@@ -14,7 +18,7 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "cdn.jsdelivr.net",
-        pathname: "/gh/taruxnd/tarundixit-portfolio@main/public/**",
+        pathname: "/gh/taruxnd/**",
       },
     ],
   },

@@ -4,11 +4,13 @@
 // To add a photo, give a card an `image`, e.g. image: asset("/timeline/kumba.jpg")
 // (put the file in public/timeline/). Cards without one use sample photos.
 // Give a card `images` (an array) instead and it switches photo every 5 seconds.
-// Same rule as assetUrl() in src/lib/cdnAssets.ts: the dev server reads
-// public/ directly, the live site loads photos from the jsDelivr CDN.
-const ASSET_CDN = "https://cdn.jsdelivr.net/gh/taruxnd/tarundixit-portfolio@main/public";
+// Photos follow assetUrl() in src/lib/cdnAssets.ts: FramerRuntimeIsland sets
+// __portfolioAssetBase ("" locally, the commit-pinned jsDelivr CDN live).
+// The fallback only matters if this file is loaded on its own.
+const FALLBACK_CDN = "https://cdn.jsdelivr.net/gh/taruxnd/tarundixit-portfolio@main/public";
 const isDev = typeof location !== "undefined" && /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
-const asset = (path) => (isDev ? path : ASSET_CDN + path);
+const base = globalThis.__portfolioAssetBase ?? (isDev ? "" : FALLBACK_CDN);
+const asset = (path) => base + path;
 
 export const milestones = [
   {
