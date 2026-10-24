@@ -194,7 +194,6 @@ export default function CopilotCaseStudy({
           </p>
 
           <h2>Product flow</h2>
-          <p className="cs-aside">The screens use Mamaearth as an example, not a real campaign.</p>
 
           <h3>1. Start with a brief</h3>
           <p>
