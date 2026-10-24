@@ -1,0 +1,14 @@
+/* Use the existing case study's reading column, typography and page theme. */
+.page .illustration { width: 180px; margin: 30px auto; position: relative; }
+.illustration::before { content: ""; position: absolute; inset: 12% 0 5%; border-radius: 50%; background: #eee9df; }
+.arjun { position: relative; width: 100%; aspect-ratio: 1 / 2; background: url('/work/copilot/story/arjun-poses.png') no-repeat; background-size: 300% 100%; }
+.overwhelmed { background-position: left center; }
+.reviewing { background-position: center center; }
+.relieved { background-position: right center; }
+.page .screen { margin: 30px 0; }
+.screen a { display: block; }
+.screen img { display: block; width: 100%; height: auto; border-radius: 8px; }
+.page .footer { margin-top: 44px; font-size: 14px; }
+@media (max-width: 680px) {
+  .page .illustration { width: 150px; margin: 26px auto; }
+}

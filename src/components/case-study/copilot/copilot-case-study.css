@@ -81,6 +81,94 @@
   text-wrap: pretty;
 }
 
+/* One white illustration frame in the reading flow, without extra labels. */
+.cs-body .cs-editorial {
+  width: 100%;
+  margin: 26px 0 34px;
+  overflow: hidden;
+  border: 1px solid #ffffff18;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.cs-editorial img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 1;
+  object-fit: contain;
+  background: #fff;
+}
+
+.cs-body .cs-money.cs-money--text {
+  display: block;
+}
+
+.cs-body .cs-cat-meme {
+  position: relative;
+  width: 100%;
+  margin: 26px 0 34px;
+  overflow: hidden;
+  border: 1px solid var(--cs-card-line);
+  border-radius: 8px;
+  background: #080808;
+}
+
+.cs-cat-meme img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cs-body .cs-cat-meme figcaption {
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  width: 36%;
+  margin: 0;
+  padding: 0;
+  transform: translateY(-50%);
+  color: #fff;
+  font: 500 clamp(13px, 3.2vw, 23px)/1.45 var(--font-geist), sans-serif;
+  letter-spacing: -0.02em;
+  text-align: left;
+  text-wrap: pretty;
+}
+
+.cs-cat-meme figcaption span {
+  display: block;
+}
+
+.cs-cat-meme figcaption span + span {
+  margin-top: 0.6em;
+}
+
+.cs-body .cs-cat-meme--mechanic figcaption {
+  position: static;
+  width: auto;
+  padding: 20px;
+  transform: none;
+  background: #fff;
+  color: #171717;
+  text-align: center;
+}
+
+.cs-cat-meme--mechanic figcaption span + span {
+  margin-top: 0.1em;
+}
+
+.cs-cat-meme--mechanic img {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center 48%;
+}
+
+@media (max-width: 640px) {
+  .cs-editorial img {
+    aspect-ratio: 3 / 2;
+  }
+}
+
 /* Two people, two sentences each. */
 .cs-people {
   display: grid;

@@ -1,7 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import PlatformSwitcher from "./PlatformSwitcher";
 import UxTerm from "./UxTerm";
+import SectionVisual from "./SectionVisual";
 import { WORK_IN_PROGRESS } from "@/lib/workInProgress";
 import LiquidGlass from "@/components/navbar/LiquidGlass";
 import { stripFontClassName } from "@/lib/heroFonts";
@@ -146,6 +148,7 @@ export default function CopilotCaseStudy({
             <strong>User need:</strong> Turn a brief into a consistent campaign without
             rebuilding it in several tools.
           </p>
+          <SectionVisual name="problem" />
 
           <h2>Symptoms</h2>
           <ul>
@@ -161,6 +164,19 @@ export default function CopilotCaseStudy({
             Each tool did its own task, so users carried the message, assets and timing between
             steps themselves, and keeping the campaign consistent depended on them.
           </p>
+          <figure className="cs-cat-meme cs-cat-meme--mechanic">
+            <figcaption>
+              <span>Found the problem.</span>
+              <span>Nothing’s connected.</span>
+            </figcaption>
+            <Image
+              src="/work/copilot/memes/mechanic-cat.jpg"
+              alt="A cat holding a wrench beside a car like a mechanic inspecting the problem"
+              width={600}
+              height={1064}
+              sizes="(max-width: 680px) calc(100vw - 40px), 640px"
+            />
+          </figure>
 
           <h2>
             <UxTerm term="Hypothesis" explanation="A prediction we can test by watching what people do." />
@@ -173,24 +189,35 @@ export default function CopilotCaseStudy({
             <li><strong>Success signal:</strong> Users complete campaigns in Copilot and publish most posts with few edits.</li>
             <li><strong>Failure signal:</strong> Users still need other tools to finish, or keep regenerating instead of publishing.</li>
           </ul>
+          <SectionVisual name="hypothesis" />
 
           <h2>Design decisions</h2>
           <p>
-            The first version, Campaign Planner, offered five ideas and stopped. People liked
-            the ideas, but the 20 posts were still theirs to make. I extended the flow through
-            generation and scheduling so users could finish the campaign in one place.
+            Campaign Planner only supported event campaigns. Users couldn’t bring their own brief.
+          </p>
+          <figure className="cs-cat-meme">
+            <Image
+              src="/work/copilot/memes/crying-cat-thumbs-up.png"
+              alt="Crying cat giving a thumbs-up"
+              width={1050}
+              height={591}
+              sizes="(max-width: 680px) calc(100vw - 40px), 640px"
+            />
+            <figcaption>
+              <span>Great. An event campaign.</span>
+              <span>But I need a custom one.</span>
+            </figcaption>
+          </figure>
+          <p>
+            I added custom briefs and connected planning, generation and scheduling in one flow.
           </p>
           <p>
-            I kept a review step before generation for <UxTerm term="user control" explanation="People can change what the AI plans to do before it creates the posts." />.
-            I could have generated the posts straight away and let users fix them after, but
-            fixing a plan takes seconds and fixing 20 finished posts does not. Users correct
-            the direction once, before it shapes every post. This was also how I aimed to build
-            trust in the output.
+            A review step gave users <UxTerm term="user control" explanation="People can change what the AI plans to do before it creates the posts." />:
+            fix the plan before generating 20 posts.
           </p>
           <p>
-            I agreed the six-week scope with the founders and developers, leaving larger
-            ideas for later. I designed the flow and interactions in Figma, then coded a
-            prototype for the team. By week three, the full flow was ready for investors to try.
+            I used <UxTerm term="progressive disclosure" explanation="Show the essentials first. Let people open more detail when they need it." /> to keep the plan review manageable.
+            Users see an overview and open details only when they need to make a change.
           </p>
 
           <h2>Product flow</h2>
@@ -209,8 +236,8 @@ export default function CopilotCaseStudy({
 
           <h3>2. Review the plan and ideas</h3>
           <p>
-            Users open only the plan sections they want to change. This is <UxTerm term="progressive disclosure" explanation="Show the essentials first. Let people open more detail when they need it." />.
-            They then review the daily ideas, adjust a post type or ask for another direction.
+            Review the campaign direction, then check the daily ideas, adjust a post type
+            or ask for another direction.
           </p>
           <Shot id="plan" src={shots.plan} />
 
@@ -230,6 +257,7 @@ export default function CopilotCaseStudy({
           <Shot id="details" src={shots.details} />
 
           <h2>Impact</h2>
+          <SectionVisual name="impact" />
           {/* Real numbers from the admin dashboard (Oct 2026). */}
           <ul className="cs-stats cs-stats--impact" aria-label="Impact in numbers">
             {[
@@ -244,7 +272,7 @@ export default function CopilotCaseStudy({
               </li>
             ))}
           </ul>
-          <div className="cs-money">
+          <div className={`cs-money${tv ? "" : " cs-money--text"}`}>
             <p className="cs-impact">
               <strong>
                 Series A at a $10 million valuation.
@@ -255,12 +283,9 @@ export default function CopilotCaseStudy({
                 />
               </strong>{" "}
               Kumba pitched Copilot on Falcons of Majlis, the startup funding show.
-              <span className="cs-client">
-                <b>Tata Motors EV became a client</b> after seeing a Copilot demo built
-                around a competitor’s car, the Kia Carens Clavis.
-              </span>
             </p>
             {(() => {
+              if (!tv) return null;
               const frame = (
                 <figure className="cs-polaroid__frame">
                   {tv ? (
