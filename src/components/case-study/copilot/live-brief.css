@@ -141,7 +141,8 @@
   align-items: center;
   padding: 20px 0;
   border-right: 1px solid var(--lb-line);
-  background: var(--lb-surface);
+  /* Same panel surface as the secondary menu (navPanelSurface). */
+  background: var(--lb-surface-2);
 }
 
 .cs-body .lb-window .lb-rail__logo {
