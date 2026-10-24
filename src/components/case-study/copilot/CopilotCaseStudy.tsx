@@ -278,11 +278,6 @@ export default function CopilotCaseStudy({
               );
             })()}
           </div>
-          <p>
-            To test the UX hypothesis, I would track tool handoffs, campaign completion
-            and edits before publishing. The funding and client win show
-            business traction; they do not measure the usability of the flow.
-          </p>
           <PrototypeLink />
         </div>
 
