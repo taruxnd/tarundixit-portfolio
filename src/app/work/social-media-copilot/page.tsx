@@ -43,7 +43,6 @@ export default function SocialMediaCopilotPage() {
     <CopilotCaseStudy
       shots={findShots()}
       tv={findPicture("funding-tv")}
-      pocket={findPicture("pocket-meme")}
       shin={findPicture("shin-money")}
     />
   );
