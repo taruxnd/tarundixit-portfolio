@@ -18,6 +18,16 @@ type Platform = {
 
 const PLATFORMS: Platform[] = [
   {
+    id: "x",
+    name: "X",
+    size: "1600 × 900",
+    shape: "Wide",
+    ratio: 1600 / 900,
+    image: "/work/copilot/platforms/post-x.webp",
+    caption: ["Hair fall season? Meet our new Onion Hair Fall Shampoo. Onion oil + keratin. 🧅"],
+    note: "Short and direct, under 280 characters.",
+  },
+  {
     id: "instagram",
     name: "Instagram",
     size: "1080 × 1350",
@@ -57,18 +67,9 @@ const PLATFORMS: Platform[] = [
       "Hair fall is one of the most common concerns we hear from customers. This shampoo is our answer: onion oil and plant keratin, made for regular use.",
       "Thank you to the product team who brought it to life.",
     ],
-    note: "Professional tone, focus on the story and the numbers.",
+    note: "Professional tone, focused on the product launch.",
   },
-  {
-    id: "x",
-    name: "X",
-    size: "1600 × 900",
-    shape: "Wide",
-    ratio: 1600 / 900,
-    image: "/work/copilot/platforms/post-x.webp",
-    caption: ["Hair fall season? Meet our new Onion Hair Fall Shampoo. Onion oil + keratin. 🧅"],
-    note: "Short and direct, under 280 characters.",
-  },
+
 ];
 
 const ICONS: Record<string, string> = {
@@ -80,7 +81,7 @@ const ICONS: Record<string, string> = {
 
 /** One idea, four platforms: switch to see the size and caption change. */
 export default function PlatformSwitcher() {
-  const [active, setActive] = useState<Platform["id"]>("instagram");
+  const [active, setActive] = useState<Platform["id"]>(PLATFORMS[0].id);
   const baseId = useId();
   const platform = PLATFORMS.find((p) => p.id === active) ?? PLATFORMS[0];
 
