@@ -191,35 +191,6 @@ export default function CopilotCaseStudy({
           </ul>
           <SectionVisual name="hypothesis" />
 
-          <h2>Design decisions</h2>
-          <p>
-            Campaign Planner only supported event campaigns. Users couldn’t bring their own brief.
-          </p>
-          <figure className="cs-cat-meme">
-            <Image
-              src="/work/copilot/memes/crying-cat-thumbs-up.png"
-              alt="Crying cat giving a thumbs-up"
-              width={1050}
-              height={591}
-              sizes="(max-width: 680px) calc(100vw - 40px), 640px"
-            />
-            <figcaption>
-              <span>Great. An event campaign.</span>
-              <span>But I need a custom one.</span>
-            </figcaption>
-          </figure>
-          <p>
-            I added custom briefs and connected planning, generation and scheduling in one flow.
-          </p>
-          <p>
-            A review step gave users <UxTerm term="user control" explanation="People can change what the AI plans to do before it creates the posts." />:
-            fix the plan before generating 20 posts.
-          </p>
-          <p>
-            I used <UxTerm term="progressive disclosure" explanation="Show the essentials first. Let people open more detail when they need it." /> to keep the plan review manageable.
-            Users see an overview and open details only when they need to make a change.
-          </p>
-
           <h2>Product flow</h2>
 
           <h3>1. Start with a brief</h3>
