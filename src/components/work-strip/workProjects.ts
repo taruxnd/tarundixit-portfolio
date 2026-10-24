@@ -10,7 +10,6 @@ export type WorkProject = {
   title: string;
   outcomes: string;
   href?: string;
-  alternativeHref?: string;
   videoHref?: string;
   /** Walkthrough that plays in a lightbox from the "Watch as video" button. */
   video?: { src: string; poster?: string };
@@ -35,7 +34,6 @@ const allWorkProjects: WorkProject[] = [
     outcomes:
       "Faster campaign setup  •  Brand-voiced drafts  •  Schedule-ready posts  •  Dev-friendly handoff",
     href: "/work/social-media-copilot",
-    alternativeHref: "/work/social-media-copilot/alternative-story",
     // Walkthrough is ready but hidden for now. To bring the button back:
     // video: { src: "/work/copilot/smc-copilot-demo.mp4", poster: "/work/copilot/smc-copilot-demo-poster.jpg" },
     ctaLabel: "View case study",

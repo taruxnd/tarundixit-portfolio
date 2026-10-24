@@ -50,17 +50,6 @@ function ProjectPanel({ project }: { project: WorkProject }) {
               </Link>
             )}
 
-            {project.alternativeHref && PROJECT_LINKS_LIVE ? (
-              <Link
-                href={project.alternativeHref}
-                data-cursor="interactive"
-                className="xhulia-panel__cta xhulia-panel__cta--video"
-              >
-                <span>Alternative story</span>
-                <ArrowUpRight size={15} aria-hidden />
-              </Link>
-            ) : null}
-
             {project.video && PROJECT_LINKS_LIVE ? (
               <button
                 type="button"
