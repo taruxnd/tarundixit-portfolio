@@ -2,7 +2,6 @@
 
 import dynamic from "next/dynamic";
 import ExhibitionRail from "@/components/exhibition-rail/ExhibitionRail";
-import HeroBillboard from "@/components/hero-billboard/HeroBillboard";
 import HeroGarden from "@/components/hero-garden/HeroGarden";
 import FigmaStickers from "@/components/figma-stickers/FigmaStickers";
 import HeroInspect from "@/components/hero-inspect/HeroInspect";
@@ -20,7 +19,7 @@ interface HeroShellProps {
   children: ReactNode;
 }
 
-/** Shared hero chrome — sky, monsoon, garden, billboard, rail. */
+/** Shared hero chrome — sky, monsoon, garden, rail. */
 export default function HeroShell({ children }: HeroShellProps) {
   const boundaryRef = useRef<HTMLDivElement>(null);
   const [raining, setRaining] = useState(false);
@@ -41,7 +40,6 @@ export default function HeroShell({ children }: HeroShellProps) {
       >
         <HeroMonsoon raining={raining} onToggle={() => setRaining((value) => !value)} />
         <HeroGarden storm={raining} />
-        <HeroBillboard />
         <HeroBee storm={raining} />
         <FigmaStickers />
         <HeroInspect />

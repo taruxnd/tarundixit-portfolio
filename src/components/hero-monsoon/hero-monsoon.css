@@ -125,25 +125,6 @@
   outline-offset: 4px;
 }
 
-/* Billboard lamps flicker in the storm. */
-.hero-section[data-monsoon="on"] .hero-billboard__light-head {
-  animation: hero-monsoon-flicker 5.5s steps(1, end) infinite;
-}
-
-.hero-section[data-monsoon="on"] .hero-billboard__light:nth-child(2) .hero-billboard__light-head {
-  animation-delay: -2.3s;
-}
-
-@keyframes hero-monsoon-flicker {
-  0%, 100% { opacity: 1; }
-  41% { opacity: 0.35; }
-  43% { opacity: 1; }
-  46% { opacity: 0.2; }
-  48% { opacity: 1; }
-  82% { opacity: 0.55; }
-  84% { opacity: 1; }
-}
-
 @media (max-width: 767px), (max-width: 1023px) and (hover: none) and (pointer: coarse) {
   /* Phones: no button. The rain still arrives on its own in monsoon months. */
   .hero-monsoon__cta {
@@ -151,8 +132,3 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .hero-section[data-monsoon="on"] .hero-billboard__light-head {
-    animation: none;
-  }
-}

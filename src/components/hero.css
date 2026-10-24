@@ -24,7 +24,7 @@
   max-height: 100svh;
   max-height: 100dvh;
   box-sizing: border-box;
-  /* Keep billboard posts (z-index: -1) behind flowers but inside the hero */
+  /* Keep negative z-index layers behind the flowers but inside the hero */
   isolation: isolate;
 }
 
