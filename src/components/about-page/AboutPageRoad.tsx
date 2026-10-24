@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { assetUrl } from "@/lib/cdnAssets";
+import { whenTimelineReady } from "@/lib/polaroidTimeline";
 import {
   useCallback,
   useEffect,
@@ -38,7 +39,8 @@ const AboutPageGlbCar = dynamic(() => import("./AboutPageGlbCar"), {
 const LOAD_ROOT_MARGIN = "100% 0px";
 
 /**
- * Head start: once the work section is on screen, fetch the car files into the
+ * Head start: once the work section is on screen and the polaroid timeline has
+ * loaded (so the two don't fight for bandwidth), fetch the car files into the
  * HTTP cache one by one (low priority, first car first), so the loaders above
  * hit the cache instead of starting 7 MB of downloads a screen before the road.
  * Keep in sync with the model URLs in the car components.
@@ -484,7 +486,7 @@ export default function AboutPageRoad() {
     const io = new IntersectionObserver(([entry]) => {
       if (!entry?.isIntersecting) return;
       io.disconnect();
-      void prefetch();
+      void whenTimelineReady().then(prefetch);
     });
     io.observe(trigger);
     return () => {

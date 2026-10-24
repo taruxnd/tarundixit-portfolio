@@ -2,13 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { framerRuntime } from "../lib/framer-runtime";
-import { assetUrl } from "@/lib/cdnAssets";
+import { TIMELINE_READY_EVENT } from "@/lib/polaroidTimeline";
 
 declare global {
   interface Window {
     __framerToNextBooted?: boolean;
-    /** Read by public/polaroid-timeline/milestones.mjs so photos follow assetUrl(). */
-    __portfolioAssetBase?: string;
   }
 }
 
@@ -282,8 +280,6 @@ export function FramerRuntimeIsland() {
       ensureBadge();
       ensureSvgTemplates();
       ensureProcessEnv();
-      // "" locally, the commit-pinned CDN on the live site.
-      window.__portfolioAssetBase = assetUrl("").replace(/\/$/, "");
       preloadModules();
 
       const parent = mountParent();
@@ -304,6 +300,8 @@ export function FramerRuntimeIsland() {
 
       window.__framerToNextBooted = true;
       setReady(true);
+      window.__polaroidTimelineReady = true;
+      window.dispatchEvent(new Event(TIMELINE_READY_EVENT));
       wakeFramerLayout();
 
       const host = (document.getElementById(HOST_ID) ?? parent) as HTMLElement;
@@ -347,30 +345,48 @@ export function FramerRuntimeIsland() {
       probeTimer = window.setTimeout(probe, 180);
     };
 
-    // The Framer runtime is ~800 KB of scripts, so wait until the timeline is
-    // about a screen and a half away. setTimeout still skips Strict Mode's
-    // discarded first effect pass.
+    // The Framer runtime is ~800 KB of scripts. Boot it once the page has loaded
+    // and the browser is idle, so it's ready long before anyone scrolls here
+    // without slowing the hero. Scrolling close first boots it straight away.
+    // setTimeout still skips Strict Mode's discarded first effect pass.
+    let started = false;
     let nearObserver: IntersectionObserver | undefined;
+    let idleHandle: number | undefined;
+    const usesIdleCallback = "requestIdleCallback" in window;
+    const start = () => {
+      if (started || cancelled) return;
+      started = true;
+      nearObserver?.disconnect();
+      void boot();
+    };
+    const startWhenIdle = () => {
+      idleHandle = usesIdleCallback
+        ? window.requestIdleCallback(start, { timeout: 2500 })
+        : window.setTimeout(start, 1500);
+    };
     const startId = window.setTimeout(() => {
       const host = document.getElementById(HOST_ID);
-      if (!host || !("IntersectionObserver" in window)) {
-        void boot();
-        return;
+      if (host && "IntersectionObserver" in window) {
+        nearObserver = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((entry) => entry.isIntersecting)) start();
+          },
+          { rootMargin: "1200px 0px" },
+        );
+        nearObserver.observe(host);
       }
-      nearObserver = new IntersectionObserver(
-        (entries) => {
-          if (!entries.some((entry) => entry.isIntersecting)) return;
-          nearObserver?.disconnect();
-          void boot();
-        },
-        { rootMargin: "1200px 0px" },
-      );
-      nearObserver.observe(host);
+      if (document.readyState === "complete") startWhenIdle();
+      else window.addEventListener("load", startWhenIdle, { once: true });
     }, 0);
 
     return () => {
       cancelled = true;
       window.clearTimeout(startId);
+      window.removeEventListener("load", startWhenIdle);
+      if (idleHandle !== undefined) {
+        if (usesIdleCallback) window.cancelIdleCallback(idleHandle);
+        else window.clearTimeout(idleHandle);
+      }
       nearObserver?.disconnect();
       if (probeTimer) window.clearTimeout(probeTimer);
       detachHover?.();
@@ -389,6 +405,14 @@ export function FramerRuntimeIsland() {
         width: "100%",
         pointerEvents: "none",
       }}
-    />
+    >
+      {ready ? null : (
+        <div className="polaroid-skeleton" aria-hidden>
+          {[0, 1, 2].map((i) => (
+            <span key={i} className="polaroid-skeleton__card" />
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

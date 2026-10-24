@@ -148,3 +148,44 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* Placeholder while the Framer runtime boots: three faint polaroids zig-zagging
+   down the centre line, like the real timeline. */
+.polaroid-skeleton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+  padding: 40px 0;
+  color: var(--text-primary, #fff);
+}
+
+.polaroid-skeleton__card {
+  display: block;
+  width: 168px;
+  aspect-ratio: 0.82;
+  border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+  border-radius: 3px;
+  background:
+    linear-gradient(color-mix(in srgb, currentColor 7%, transparent) 0 0) 10px 10px / calc(100% - 20px) 72% no-repeat,
+    color-mix(in srgb, currentColor 3%, transparent);
+  animation: polaroid-skeleton-pulse 1.6s ease-in-out infinite;
+}
+
+.polaroid-skeleton__card:nth-child(1) { transform: translateX(-120px) rotate(-4deg); }
+.polaroid-skeleton__card:nth-child(2) { transform: translateX(120px) rotate(3deg); animation-delay: 0.2s; }
+.polaroid-skeleton__card:nth-child(3) { transform: translateX(-120px) rotate(-2deg); animation-delay: 0.4s; }
+
+@media (max-width: 767px) {
+  .polaroid-skeleton__card { width: 132px; }
+  .polaroid-skeleton__card:nth-child(odd) { transform: translateX(-60px) rotate(-3deg); }
+  .polaroid-skeleton__card:nth-child(2) { transform: translateX(60px) rotate(3deg); }
+}
+
+@keyframes polaroid-skeleton-pulse {
+  50% { opacity: 0.55; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .polaroid-skeleton__card { animation: none; }
+}
