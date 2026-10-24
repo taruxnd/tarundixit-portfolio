@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import PlatformSwitcher from "./PlatformSwitcher";
 import UxTerm from "./UxTerm";
 import { WORK_IN_PROGRESS } from "@/lib/workInProgress";
+import LiquidGlass from "@/components/navbar/LiquidGlass";
 import { stripFontClassName } from "@/lib/heroFonts";
 import "@/components/notes/notes.css";
 import "./copilot-case-study.css";
@@ -230,6 +231,20 @@ export default function CopilotCaseStudy({
           <Shot id="details" src={shots.details} />
 
           <h2>Impact</h2>
+          {/* Real numbers from the admin dashboard (Oct 2026). */}
+          <ul className="cs-stats cs-stats--impact" aria-label="Impact in numbers">
+            {[
+              ["614", "campaigns generated"],
+              ["223", "Pro upgrades"],
+            ].map(([n, label]) => (
+              <li key={label}>
+                <LiquidGlass className="cs-stat">
+                  <span className="cs-stat__n">{n}</span>
+                  <span className="cs-stat__label">{label}</span>
+                </LiquidGlass>
+              </li>
+            ))}
+          </ul>
           <div className="cs-money">
             <p className="cs-impact">
               <strong>
