@@ -2,26 +2,7 @@
 
 import { Roboto_Flex } from "next/font/google";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import {
-  ArrowUpRight,
-  Briefcase,
-  CalendarDays,
-  ChevronDown,
-  Clapperboard,
-  Crown,
-  Folder,
-  FolderOpen,
-  House,
-  Image as ImageIcon,
-  Link2,
-  LayoutList,
-  Megaphone,
-  MessageCircle,
-  Settings,
-  ShoppingBag,
-  Smartphone,
-  type LucideIcon,
-} from "lucide-react";
+import { KUMBA_ICONS, type KumbaIconName } from "./liveBriefIcons";
 import "./live-brief.css";
 
 /** Kumba's product font. */
@@ -42,12 +23,12 @@ const APP_H = 900;
 const MAMAEARTH_BRIEF =
   "Launch Mamaearth Onion Hair Fall Control Shampoo: five days, warm wash-day moments, Instagram, Facebook and X.";
 
-const OBJECTIVES: { title: string; supporting: string; icon: LucideIcon }[] = [
-  { title: "Promote a Product", supporting: "Launch or market a physical or digital product.", icon: ShoppingBag },
-  { title: "Promote a Service", supporting: "Generate awareness and leads for your service.", icon: Briefcase },
-  { title: "Build Brand Awareness", supporting: "Increase visibility and recognition for your brand.", icon: Megaphone },
-  { title: "Announce an Event", supporting: "Promote launches, webinars, festivals or campaigns.", icon: CalendarDays },
-  { title: "Other", supporting: "Something else? Start with a custom campaign objective.", icon: LayoutList },
+const OBJECTIVES: { title: string; supporting: string; icon: KumbaIconName }[] = [
+  { title: "Promote a Product", supporting: "Launch or market a physical or digital product.", icon: "shopping-bag-01" },
+  { title: "Promote a Service", supporting: "Generate awareness and leads for your service.", icon: "briefcase-01" },
+  { title: "Build Brand Awareness", supporting: "Increase visibility and recognition for your brand.", icon: "megaphone-02" },
+  { title: "Announce an Event", supporting: "Promote launches, webinars, festivals or campaigns.", icon: "calendar-03" },
+  { title: "Other", supporting: "Something else? Start with a custom campaign objective.", icon: "menu-square" },
 ];
 
 const EVENTS = [
@@ -74,14 +55,20 @@ const EVENTS = [
   },
 ];
 
-const RAIL: { label: string; icon: LucideIcon; active?: boolean }[] = [
-  { label: "Home", icon: House },
-  { label: "Copilot", icon: Megaphone, active: true },
-  { label: "Chat", icon: MessageCircle },
-  { label: "Image", icon: ImageIcon },
-  { label: "Video", icon: Clapperboard },
-  { label: "Assets", icon: Folder },
+/** Kumba's Copilot primary rail (smpPrimaryRailNavItems). */
+const RAIL: { label: string; icon: KumbaIconName; active?: boolean }[] = [
+  { label: "Home", icon: "home-01" },
+  { label: "Copilot", icon: "megaphone-02", active: true },
+  { label: "Chat", icon: "chatting-01" },
+  { label: "Image", icon: "image-01" },
+  { label: "Video", icon: "video-01" },
+  { label: "Assets", icon: "folder-01" },
 ];
+
+/** A Kumba sharp icon, inlined. Size it with the wrapper's width/height. */
+function KIcon({ name, className }: { name: KumbaIconName; className?: string }) {
+  return <span className={`lb-icon ${className ?? ""}`} aria-hidden dangerouslySetInnerHTML={{ __html: KUMBA_ICONS[name] }} />;
+}
 
 function prefersReducedMotion() {
   return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -246,21 +233,23 @@ function BriefApp({ nextStepId }: { nextStepId: string }) {
     }, 1400);
   };
 
-  const ObjectiveIcon = OBJECTIVES[objective].icon;
-
   return (
     <div ref={appRef} className="lb-app">
       <nav className="lb-rail" aria-label="Kumba">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="lb-rail__logo" src="/about/kumba-logo-icon.png" alt="" width={40} height={40} />
-        {RAIL.map(({ label, icon: Icon, active }) => (
-          <span key={label} className={`lb-rail__item${active ? " is-active" : ""}`}>
-            <Icon size={22} strokeWidth={1.5} />
-            {label}
-          </span>
-        ))}
+        <span className="lb-rail__logo" aria-hidden>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/work/copilot/live/kumba-logo-mark.webp" alt="" width={29} height={17} />
+        </span>
+        <span className="lb-rail__items">
+          {RAIL.map(({ label, icon, active }) => (
+            <span key={label} className={`lb-rail__item${active ? " is-active" : ""}`}>
+              <KIcon name={icon} className="lb-icon--24" />
+              {label}
+            </span>
+          ))}
+        </span>
         <span className="lb-rail__item lb-rail__item--settings">
-          <Settings size={22} strokeWidth={1.5} />
+          <KIcon name="setting-02" className="lb-icon--24" />
           Settings
         </span>
       </nav>
@@ -268,22 +257,23 @@ function BriefApp({ nextStepId }: { nextStepId: string }) {
       <aside className="lb-nav">
         <p className="lb-nav__label">Navigation</p>
         <span className="lb-nav__item is-active">
-          <Megaphone size={18} strokeWidth={1.5} />
+          <KIcon name="megaphone-02" className="lb-icon--20" />
           Social Media Copilot
         </span>
         <span className="lb-nav__item">
-          <FolderOpen size={18} strokeWidth={1.5} />
+          <KIcon name="folder-01" className="lb-icon--20" />
           My Campaigns
         </span>
       </aside>
 
       <div className="lb-main">
         <header className="lb-top">
-          <span className="lb-top__device" aria-hidden>
-            <Smartphone size={16} strokeWidth={1.5} />
+          {/* Kumba's light switch for the preview theme (on = light). */}
+          <span className="lb-switch" aria-hidden>
+            <span className="lb-switch__rocker" />
           </span>
           <span className="lb-upgrade">
-            <Crown size={16} strokeWidth={1.6} />
+            <KIcon name="crown" className="lb-icon--16" />
             Upgrade
           </span>
         </header>
@@ -303,7 +293,7 @@ function BriefApp({ nextStepId }: { nextStepId: string }) {
             <div className={`lb-composer${generating ? " is-thinking" : ""}`}>
               <div className="lb-composer__row">
                 <span className="lb-composer__attach" aria-hidden>
-                  <Link2 size={20} strokeWidth={1.5} />
+                  <KIcon name="attachment-01" className="lb-icon--20" />
                 </span>
                 <span className="lb-composer__divider" aria-hidden />
                 <textarea
@@ -332,13 +322,13 @@ function BriefApp({ nextStepId }: { nextStepId: string }) {
                     data-cursor="interactive"
                     onClick={() => setMenuOpen((open) => !open)}
                   >
-                    <ObjectiveIcon size={16} strokeWidth={1.5} />
+                    <KIcon name={OBJECTIVES[objective].icon} className="lb-icon--16" />
                     {OBJECTIVES[objective].title}
-                    <ChevronDown size={16} strokeWidth={1.5} />
+                    <KIcon name="arrow-down-01-round" className="lb-icon--16" />
                   </button>
                   {menuOpen ? (
                     <ul className="lb-menu" role="listbox" aria-label="Campaign objective">
-                      {OBJECTIVES.map(({ title, supporting, icon: Icon }, i) => (
+                      {OBJECTIVES.map(({ title, supporting, icon }, i) => (
                         <li key={title} role="option" aria-selected={i === objective}>
                           <button
                             type="button"
@@ -349,11 +339,12 @@ function BriefApp({ nextStepId }: { nextStepId: string }) {
                               setMenuOpen(false);
                             }}
                           >
-                            <Icon size={18} strokeWidth={1.5} />
+                            <KIcon name={icon} className="lb-icon--20" />
                             <span>
                               <b>{title}</b>
                               {supporting}
                             </span>
+                            {i === objective ? <KIcon name="tick-01" className="lb-icon--16 lb-menu__tick" /> : null}
                           </button>
                         </li>
                       ))}
@@ -375,7 +366,7 @@ function BriefApp({ nextStepId }: { nextStepId: string }) {
                   ) : (
                     <>
                       Generate
-                      <ArrowUpRight size={16} strokeWidth={1.6} />
+                      <KIcon name="arrow-up-right-01-round" className="lb-icon--16" />
                     </>
                   )}
                 </button>
@@ -416,7 +407,8 @@ function BriefApp({ nextStepId }: { nextStepId: string }) {
                         typeOut(event.brief);
                       }}
                     >
-                      → Build
+                      <KIcon name="arrow-right-02-round" className="lb-icon--16" />
+                      Build
                     </button>
                   </div>
                 </article>

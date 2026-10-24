@@ -71,6 +71,21 @@
   border-radius: 0;
 }
 
+/* Kumba sharp icons (inlined SVG) */
+.cs-body .lb-window .lb-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.cs-body .lb-window .lb-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.cs-body .lb-window .lb-icon--16 { width: 16px; height: 16px; }
+.cs-body .lb-window .lb-icon--20 { width: 20px; height: 20px; }
+.cs-body .lb-window .lb-icon--24 { width: 24px; height: 24px; }
+
 /* Browser chrome */
 .cs-body .lb-window .lb-chrome {
   position: relative;
@@ -118,82 +133,110 @@
   min-height: 0;
 }
 
+/* Kumba primary rail (nav-tokens: primaryRail). */
 .cs-body .lb-window .lb-rail {
   flex: 0 0 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 20px;
+  padding: 20px 0;
   border-right: 1px solid var(--lb-line);
   background: var(--lb-surface);
 }
 
 .cs-body .lb-window .lb-rail__logo {
-  width: 40px;
-  height: 40px;
-  border-radius: 4px;
-  margin-bottom: 10px;
+  position: relative;
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  margin-bottom: 16px;
+  border: 1px solid #d4d4d8;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #e2a4dd 0%, #f9c383 100%);
+}
+
+.cs-body .lb-window .lb-rail__logo img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 29px;
+  height: 17px;
+  object-fit: contain;
+  translate: -50% -50%;
+}
+
+.cs-body .lb-window .lb-rail__items {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .cs-body .lb-window .lb-rail__item {
-  position: relative;
   width: 100%;
-  height: 64px;
+  height: 56px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 4px;
-  color: var(--lb-text-2);
+  padding: 8px 12px;
+  border-left: 2px solid transparent;
+  color: #52525b;
   font-size: 12px;
-  line-height: 16px;
+  line-height: 18px;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.cs-body .lb-window .lb-rail__item.is-active {
+.cs-body .lb-window .lb-rail__item:hover {
+  background: var(--lb-surface-3);
   color: var(--lb-text);
 }
 
-.cs-body .lb-window .lb-rail__item.is-active::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 6px;
-  bottom: 6px;
-  width: 3px;
-  background: var(--lb-brand);
+.cs-body .lb-window .lb-rail__item.is-active {
+  border-left-color: var(--lb-brand);
+  color: var(--lb-text);
 }
 
 .cs-body .lb-window .lb-rail__item--settings {
   margin-top: auto;
-  margin-bottom: 18px;
 }
 
+/* Kumba secondary menu (nav-tokens: secondaryNav). */
 .cs-body .lb-window .lb-nav {
   flex: 0 0 248px;
-  padding: 26px 12px 0;
+  padding: 24px 12px;
   background: var(--lb-surface-2);
   border-right: 1px solid var(--lb-line);
 }
 
 .cs-body .lb-window .lb-nav__label {
-  margin: 0 0 12px 1px !important;
+  margin: 0 0 8px !important;
+  padding: 4px 0;
   color: var(--lb-text-3);
   font-size: 12px;
+  line-height: 16px;
   font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
 .cs-body .lb-window .lb-nav__item {
-  height: 39px;
+  height: 40px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 0 10px;
-  margin-bottom: 5px;
+  gap: 12px;
+  padding: 8px;
+  margin-bottom: 4px;
   border-radius: 2px;
-  color: var(--lb-text-2);
+  color: #52525b;
   font-size: 14px;
+  transition: background-color 0.15s ease;
+}
+
+.cs-body .lb-window .lb-nav__item:not(.is-active):hover {
+  background: var(--lb-surface-3);
+  color: var(--lb-text);
 }
 
 .cs-body .lb-window .lb-nav__item.is-active {
@@ -218,14 +261,44 @@
   border-bottom: 1px solid var(--lb-line);
 }
 
-.cs-body .lb-window .lb-top__device {
-  width: 28px;
+/* Kumba's wall light switch (theme-switch.module.css), in the on position. */
+.cs-body .lb-window .lb-switch {
+  position: relative;
+  width: 26px;
   height: 36px;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--lb-border);
-  border-radius: 4px;
-  color: var(--lb-text-3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e4e4e7;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #ffffff 0%, #f4f4f5 100%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.06);
+  perspective: 120px;
+}
+
+.cs-body .lb-window .lb-switch::before,
+.cs-body .lb-window .lb-switch::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #d4d4d8;
+  translate: -50% 0;
+}
+
+.cs-body .lb-window .lb-switch::before { top: 2px; }
+.cs-body .lb-window .lb-switch::after { bottom: 2px; }
+
+.cs-body .lb-window .lb-switch__rocker {
+  width: 14px;
+  height: 20px;
+  border: 1px solid #d4d4d8;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #ffffff 0%, #ffffff 48%, #e4e4e7 52%, #f4f4f5 100%);
+  box-shadow: 0 2px 0 #d4d4d8, 0 3px 4px rgba(0, 0, 0, 0.12);
+  transform: rotateX(16deg);
 }
 
 .cs-body .lb-window .lb-upgrade {
@@ -371,7 +444,7 @@
   background: transparent;
   color: var(--lb-text);
   font: inherit;
-  font-size: 14.5px;
+  font-size: 14px;
   line-height: 21px;
   caret-color: var(--lb-brand);
 }
@@ -455,7 +528,12 @@
   color: var(--lb-brand) !important;
 }
 
-.cs-body .lb-window .lb-menu__item span {
+.cs-body .lb-window .lb-menu__tick {
+  margin-left: auto;
+  color: var(--lb-brand);
+}
+
+.cs-body .lb-window .lb-menu__item > span:not(.lb-icon) {
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -624,6 +702,9 @@
 
 .cs-body .lb-window .lb-build {
   height: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   padding: 0 12px;
   border: 0;
   border-radius: 2px;
