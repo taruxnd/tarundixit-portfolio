@@ -13,7 +13,9 @@ import { useEffect, useState } from "react";
 import "../hero.css";
 import "./about-page.css";
 
-const AVATAR_IMAGE = assetUrl("profile/tarun-avatar.jpg");
+// Same origin, not the CDN: next/image optimizes it from the deployment, and a
+// cold jsDelivr fetch right after a deploy could time out into a broken image.
+const AVATAR_IMAGE = "/profile/tarun-avatar.jpg";
 
 type AboutWordKind = "designer" | "engineers" | "craft" | "years";
 

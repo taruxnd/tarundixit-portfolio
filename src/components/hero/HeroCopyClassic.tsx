@@ -4,13 +4,14 @@ import { launchResumePlane, RESUME_DOWNLOAD_URL, RESUME_FILE_NAME } from "@/comp
 import LiquidGlass from "@/components/navbar/LiquidGlass";
 import { HERO_INSPECT_EVENT } from "@/components/hero-inspect/HeroInspect";
 import { playKeyClick } from "@/components/hero-inspect/keyClick";
-import { assetUrl } from "@/lib/cdnAssets";
 import { heroEditorialTypography } from "@/lib/heroFonts";
 import { motion, type Variants } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 
-const AVATAR_IMAGE = assetUrl("profile/tarun-avatar.jpg");
+// Same origin, not the CDN: next/image optimizes it from the deployment, and a
+// cold jsDelivr fetch right after a deploy could time out into a broken image.
+const AVATAR_IMAGE = "/profile/tarun-avatar.jpg";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },
