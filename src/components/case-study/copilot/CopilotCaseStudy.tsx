@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import PlatformSwitcher from "./PlatformSwitcher";
 import UxTerm from "./UxTerm";
+import LiveBriefScreen from "./LiveBriefScreen";
 import SectionVisual from "./SectionVisual";
 import { WORK_IN_PROGRESS } from "@/lib/workInProgress";
 import LiquidGlass from "@/components/navbar/LiquidGlass";
@@ -198,14 +199,14 @@ export default function CopilotCaseStudy({
             Add a goal, a short brief and a product photo. Upcoming dates offer campaign
             ideas when users need a starting point.
           </p>
-          <Shot id="brief" src={shots.brief} />
+          <LiveBriefScreen screenshot={shots.brief} caption={SHOTS.brief} nextStepId="cs-step-plan" />
           <p>
             Relevant <strong>campaign moments</strong> can also be switched on inside the
             plan, so the content fits both the launch and what’s happening that week.
           </p>
           <Shot id="moments" src={shots.moments} />
 
-          <h3>2. Review the plan and ideas</h3>
+          <h3 id="cs-step-plan">2. Review the plan and ideas</h3>
           <p>
             Review the campaign direction, then check the daily ideas, adjust a post type
             or ask for another direction.

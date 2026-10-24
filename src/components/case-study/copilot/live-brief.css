@@ -1,0 +1,651 @@
+/* Live Copilot brief screen (LiveBriefScreen.tsx). Values are the Kumba design
+   system's light-theme tokens; the window is laid out at 1440 × 948 and scaled
+   to the figure, so every size here is in that design space. */
+
+.lb-figure .lb-box {
+  --lb-text: #09090b;
+  --lb-text-2: #52525b;
+  --lb-text-3: #71717a;
+  --lb-brand: #8a3886;
+  --lb-brand-subtle: #f4d7f3;
+  --lb-surface: #ffffff;
+  --lb-surface-2: #fafafa;
+  --lb-surface-3: #f4f4f5;
+  --lb-line: #f4f4f5;
+  --lb-border: #e4e4e7;
+  --lb-gradient: linear-gradient(125deg, #e2a4dd 0%, #f9c383 100%);
+
+  position: relative;
+  /* Same frame as the screenshot it replaces: a 16:10 light backdrop. */
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--cs-card-line);
+  background: linear-gradient(180deg, #f6f6f7 0%, #ececee 100%);
+}
+
+/* The window sits where it does in the screenshot: 82.75% wide, centred. */
+.lb-window {
+  position: absolute;
+  top: 6.4%;
+  left: 8.625%;
+  transform-origin: 0 0;
+  /* Scaled box is 82.75% of the frame; the inline transform maps 1440px to the
+     frame width, so shrink once more to 82.75%. */
+  scale: 0.8275;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 18px;
+  background: var(--lb-surface);
+  color: var(--lb-text);
+  box-shadow: 0 30px 80px rgba(20, 20, 30, 0.18), 0 2px 6px rgba(20, 20, 30, 0.06);
+  font-size: 14px;
+  line-height: 20px;
+  text-align: left;
+  -webkit-font-smoothing: antialiased;
+}
+
+.lb-window *,
+.lb-window *::before,
+.lb-window *::after {
+  box-sizing: border-box;
+}
+
+.cs-body .lb-window button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.cs-body .lb-window p {
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.cs-body .lb-window img {
+  display: block;
+  width: auto;
+  border: 0;
+  border-radius: 0;
+}
+
+/* Browser chrome */
+.cs-body .lb-window .lb-chrome {
+  position: relative;
+  flex: 0 0 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  background: #f7f7f8;
+  border-bottom: 1px solid #ececee;
+}
+
+.cs-body .lb-window .lb-dots {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.cs-body .lb-window .lb-dots i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff5f57;
+}
+
+.lb-dots i:nth-child(2) { background: #febc2e; }
+.lb-dots i:nth-child(3) { background: #28c840; }
+
+.cs-body .lb-window .lb-url {
+  position: absolute;
+  left: 98px;
+  width: 456px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: #ededef;
+  color: #6b6b72;
+  font-size: 14px;
+}
+
+/* App */
+.cs-body .lb-window .lb-app {
+  position: relative;
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.cs-body .lb-window .lb-rail {
+  flex: 0 0 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  border-right: 1px solid var(--lb-line);
+  background: var(--lb-surface);
+}
+
+.cs-body .lb-window .lb-rail__logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.cs-body .lb-window .lb-rail__item {
+  position: relative;
+  width: 100%;
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--lb-text-2);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.cs-body .lb-window .lb-rail__item.is-active {
+  color: var(--lb-text);
+}
+
+.cs-body .lb-window .lb-rail__item.is-active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  background: var(--lb-brand);
+}
+
+.cs-body .lb-window .lb-rail__item--settings {
+  margin-top: auto;
+  margin-bottom: 18px;
+}
+
+.cs-body .lb-window .lb-nav {
+  flex: 0 0 248px;
+  padding: 26px 12px 0;
+  background: var(--lb-surface-2);
+  border-right: 1px solid var(--lb-line);
+}
+
+.cs-body .lb-window .lb-nav__label {
+  margin: 0 0 12px 1px !important;
+  color: var(--lb-text-3);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cs-body .lb-window .lb-nav__item {
+  height: 39px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px;
+  margin-bottom: 5px;
+  border-radius: 2px;
+  color: var(--lb-text-2);
+  font-size: 14px;
+}
+
+.cs-body .lb-window .lb-nav__item.is-active {
+  background: var(--lb-brand-subtle);
+  color: var(--lb-brand);
+}
+
+.cs-body .lb-window .lb-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.cs-body .lb-window .lb-top {
+  flex: 0 0 56px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--lb-line);
+}
+
+.cs-body .lb-window .lb-top__device {
+  width: 28px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--lb-border);
+  border-radius: 4px;
+  color: var(--lb-text-3);
+}
+
+.cs-body .lb-window .lb-upgrade {
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px;
+  border-radius: 2px;
+  background: var(--lb-gradient);
+  color: var(--lb-text);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Scrolls inside the window, like the real app. */
+.cs-body .lb-window .lb-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.cs-body .lb-window .lb-column {
+  width: 778px;
+  margin: 0 auto;
+  padding: 170px 0 48px;
+}
+
+.cs-body .lb-window .lb-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.cs-body .lb-window .lb-eyebrow {
+  color: var(--lb-brand);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cs-body .lb-window .lb-title {
+  margin: 0;
+  color: var(--lb-text);
+  font-size: 48px;
+  line-height: 51px;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+}
+
+.cs-body .lb-window .lb-title__brand {
+  color: var(--lb-brand);
+}
+
+.cs-body .lb-window .lb-lead {
+  color: var(--lb-text-3);
+  font-size: 14px;
+}
+
+.cs-body .lb-window .lb-lead b {
+  color: var(--lb-text-2);
+  font-weight: 600;
+}
+
+/* Composer */
+.cs-body .lb-window .lb-composer {
+  position: relative;
+  margin-top: 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 30px 24px 24px;
+  border: 1px solid #ececef;
+  border-radius: 2px;
+  background: var(--lb-surface);
+  box-shadow: 0 1px 2px rgb(16 24 40 / 0.04);
+}
+
+/* The warm accent under the composer. */
+.cs-body .lb-window .lb-composer::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -1px;
+  width: 200px;
+  height: 2px;
+  translate: -50% 0;
+  background: linear-gradient(90deg, transparent, #f9c383 30%, #f9c383 70%, transparent);
+  opacity: 0.8;
+}
+
+.cs-body .lb-window .lb-composer.is-thinking {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--lb-surface), var(--lb-surface)) padding-box,
+    conic-gradient(from var(--lb-angle, 0deg), #e2a4dd, #f9c383, #8a3886, #e2a4dd) border-box;
+  animation: lb-spin-border 1.4s linear infinite;
+}
+
+@property --lb-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes lb-spin-border {
+  to { --lb-angle: 360deg; }
+}
+
+.cs-body .lb-window .lb-composer__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  min-height: 92px;
+  padding: 0 6px 0 22px;
+}
+
+.cs-body .lb-window .lb-composer__attach {
+  padding-top: 2px;
+  color: var(--lb-text-2);
+}
+
+.cs-body .lb-window .lb-composer__divider {
+  width: 1px;
+  height: 16px;
+  margin-top: 4px;
+  background: var(--lb-border);
+}
+
+.cs-body .lb-window .lb-composer__input {
+  flex: 1;
+  min-height: 72px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  resize: none;
+  background: transparent;
+  color: var(--lb-text);
+  font: inherit;
+  font-size: 14.5px;
+  line-height: 21px;
+  caret-color: var(--lb-brand);
+}
+
+.cs-body .lb-window .lb-composer__input::placeholder {
+  color: var(--lb-text-3);
+}
+
+.cs-body .lb-window .lb-composer__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cs-body .lb-window .lb-objective {
+  position: relative;
+}
+
+.cs-body .lb-window .lb-chip {
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 2px;
+  background: var(--lb-surface-3);
+  color: var(--lb-text-2) !important;
+  font-size: 14px !important;
+  transition: background-color 0.15s ease;
+}
+
+.cs-body .lb-window .lb-chip:hover,
+.cs-body .lb-window .lb-chip[aria-expanded="true"] {
+  background: #e9e9ec;
+}
+
+.cs-body .lb-window .lb-menu {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 320px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  border: 1px solid var(--lb-border);
+  border-radius: 4px;
+  background: var(--lb-surface);
+  box-shadow: 0 16px 40px rgb(16 24 40 / 0.14);
+}
+
+.cs-body .lb-window .lb-menu li {
+  margin: 0;
+  padding: 0;
+}
+
+.cs-body .lb-window .lb-menu li::before {
+  content: none;
+}
+
+.cs-body .lb-window .lb-menu__item {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--lb-text-2) !important;
+  text-align: left;
+}
+
+.cs-body .lb-window .lb-menu__item:hover {
+  background: var(--lb-surface-3);
+}
+
+.cs-body .lb-window .lb-menu__item.is-selected {
+  background: var(--lb-brand-subtle);
+  color: var(--lb-brand) !important;
+}
+
+.cs-body .lb-window .lb-menu__item span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--lb-text-3);
+}
+
+.cs-body .lb-window .lb-menu__item b {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  color: var(--lb-text);
+}
+
+.cs-body .lb-window .lb-generate {
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 2px;
+  background: var(--lb-gradient);
+  color: var(--lb-text) !important;
+  font-size: 14px !important;
+  font-weight: 500;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.cs-body .lb-window .lb-generate:hover {
+  filter: saturate(1.15) brightness(0.98);
+}
+
+.cs-body .lb-window .lb-generate:active {
+  transform: translateY(1px);
+}
+
+.cs-body .lb-window .lb-generate:disabled {
+  cursor: default;
+}
+
+.cs-body .lb-window .lb-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgb(9 9 11 / 0.25);
+  border-top-color: var(--lb-text);
+  border-radius: 50%;
+  animation: lb-spin 0.7s linear infinite;
+}
+
+@keyframes lb-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Inspiration */
+.cs-body .lb-window .lb-inspire {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: 76px 0 20px;
+  padding: 8px 0;
+}
+
+.cs-body .lb-window .lb-inspire::before {
+  content: "";
+  position: absolute;
+  inset: 50% 0 auto;
+  height: 1px;
+  background: var(--lb-border);
+  opacity: 0.4;
+}
+
+.cs-body .lb-window .lb-inspire p {
+  position: relative;
+  padding: 0 12px;
+  background: var(--lb-surface);
+  color: var(--lb-text-3);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.cs-body .lb-window .lb-events {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.cs-body .lb-window .lb-event {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--lb-border);
+  border-radius: 2px;
+  background: var(--lb-surface);
+}
+
+.cs-body .lb-window .lb-event__media {
+  position: relative;
+  height: 87px;
+  background: var(--lb-surface-3);
+}
+
+.cs-body .lb-window .lb-event__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+.cs-body .lb-window .lb-event__date {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  min-width: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px 6px;
+  border-radius: 2px;
+  background: var(--lb-surface);
+  box-shadow: 0 1px 2px rgb(16 24 40 / 0.04);
+  color: var(--lb-text);
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 600;
+}
+
+.cs-body .lb-window .lb-event__date small {
+  color: var(--lb-text-3);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+}
+
+.cs-body .lb-window .lb-event__body {
+  padding: 8px 12px 10px;
+}
+
+.cs-body .lb-window .lb-event__title {
+  color: var(--lb-text);
+  font-size: 14px;
+}
+
+.cs-body .lb-window .lb-event__sub {
+  margin-top: 4px !important;
+  color: var(--lb-text-3);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.cs-body .lb-window .lb-event__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--lb-line);
+  color: var(--lb-text-3);
+  font-size: 12px;
+}
+
+.cs-body .lb-window .lb-build {
+  height: 32px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--lb-text) !important;
+  font-size: 12px !important;
+  font-weight: 500;
+  transition: background-color 0.15s ease;
+}
+
+.cs-body .lb-window .lb-build:hover {
+  background: #e9e9ec;
+}
+
+.lb-hint {
+  color: var(--note-faint);
+  opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-body .lb-window .lb-composer.is-thinking,
+  .cs-body .lb-window .lb-spinner {
+    animation: none;
+  }
+}
