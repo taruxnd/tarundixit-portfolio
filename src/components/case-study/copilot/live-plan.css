@@ -1,0 +1,732 @@
+/* Live Campaign Overview screen (LivePlanScreen.tsx). Kumba design-system values
+   in the 1440 × 900 design space; the shared shell lives in live-brief.css. */
+
+.cs-body .lb-window .lp-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.cs-body .lb-window .lp-column {
+  padding: 40px 24px 56px 148px;
+}
+
+.cs-body .lb-window .lp-back {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--lb-line);
+  border-radius: 2px;
+  background: var(--lb-surface);
+  color: var(--lb-text);
+  box-shadow: 0 1px 2px rgb(16 24 40 / 0.04);
+  transition: background-color 0.15s ease;
+}
+
+.cs-body .lb-window .lp-back:hover {
+  background: var(--lb-surface-3);
+}
+
+.cs-body .lb-window .lp-eyebrow {
+  margin-top: 44px;
+  color: var(--lb-brand);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cs-body .lb-window .lp-title {
+  margin-top: 10px;
+  color: var(--lb-text);
+  font-size: 48px;
+  line-height: 51px;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+}
+
+.cs-body .lb-window .lp-lead {
+  max-width: 560px;
+  margin-top: 12px;
+  color: var(--lb-text-3);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+/* Sections (campaign-overview-accordion-section.tsx) */
+.cs-body .lb-window .lp-stack {
+  max-width: 691px;
+  margin-top: 40px;
+}
+
+.cs-body .lb-window .lp-section {
+  padding: 32px 0;
+  border-bottom: 1px solid var(--lb-line);
+}
+
+.cs-body .lb-window .lp-section--bordered {
+  padding: 28px 0;
+  border-top: 1px solid var(--lb-line);
+}
+
+.cs-body .lb-window .lp-section__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 8px;
+  border-radius: 2px;
+  cursor: pointer;
+  outline: none;
+}
+
+.cs-body .lb-window .lp-section.is-open .lp-section__head {
+  align-items: flex-start;
+}
+
+.cs-body .lb-window .lp-well {
+  flex: 0 0 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  border-radius: 2px;
+}
+
+.cs-body .lb-window .lp-section__titles {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 8px;
+}
+
+.cs-body .lb-window .lp-section__title {
+  color: var(--lb-text);
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.cs-body .lb-window .lp-section__summary {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  color: var(--lb-text-2);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* Tertiary small button */
+.cs-body .lb-window .lp-view {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--lb-text) !important;
+  font-size: 13px !important;
+  line-height: 18px;
+  font-weight: 500;
+  transition: background-color 0.15s ease;
+}
+
+.cs-body .lb-window .lp-view:hover {
+  background: var(--lb-surface-2);
+}
+
+/* AccordionExpand: grid rows 0fr -> 1fr over 250ms. */
+.cs-body .lb-window .lp-expand {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 250ms ease-out;
+}
+
+.cs-body .lb-window .lp-section.is-open .lp-expand {
+  grid-template-rows: 1fr;
+}
+
+.cs-body .lb-window .lp-expand__inner {
+  overflow: hidden;
+}
+
+.cs-body .lb-window .lp-section__body {
+  padding: 4px 8px;
+}
+
+.cs-body .lb-window .lp-section.is-open .lp-section__body {
+  padding-top: 20px;
+}
+
+/* Type helpers */
+.cs-body .lb-window .lp-strong {
+  color: var(--lb-text);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+}
+
+.cs-body .lb-window .lp-muted,
+.cs-body .lb-window .lp-body {
+  color: var(--lb-text-2);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.cs-body .lb-window .lp-body-primary {
+  color: var(--lb-text);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.cs-body .lb-window .lp-body-primary b {
+  font-weight: 500;
+}
+
+.cs-body .lb-window .lp-tertiary {
+  color: var(--lb-text-3);
+}
+
+.cs-body .lb-window .lp-overline {
+  color: var(--lb-text-3);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cs-body .lb-window .lp-caption {
+  color: var(--lb-text-2);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.cs-body .lb-window .lp-caption--tertiary {
+  color: var(--lb-text-3);
+}
+
+.cs-body .lb-window .lp-gap-4 { margin-top: 4px; }
+.cs-body .lb-window .lp-gap-6 { margin-top: 6px; }
+
+.cs-body .lb-window .lp-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.cs-body .lb-window .lp-icon-14 {
+  width: 14px;
+  height: 14px;
+}
+
+/* Field-label links */
+.cs-body .lb-window .lp-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--lb-text-2) !important;
+  font-size: 14px !important;
+  line-height: 20px;
+  font-weight: 500;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.cs-body .lb-window .lp-link:hover {
+  color: var(--lb-text) !important;
+}
+
+.cs-body .lb-window .lp-link--brand {
+  color: #a3409e !important;
+}
+
+.cs-body .lb-window .lp-link--brand:hover {
+  color: #a3409e !important;
+  opacity: 0.8;
+}
+
+.cs-body .lb-window .lp-link--brand b {
+  font-weight: 600;
+}
+
+/* Brief: view panel (campaign-overview-brief-view-panel.tsx) */
+.cs-body .lb-window .lp-brief {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 0.85fr);
+  align-items: start;
+  margin-top: 4px;
+}
+
+.cs-body .lb-window .lp-brief__col {
+  padding-left: 16px;
+  border-left: 1px solid var(--lb-line);
+}
+
+.cs-body .lb-window .lp-brief > div:first-child {
+  padding-right: 16px;
+}
+
+.cs-body .lb-window .lp-thumbs {
+  display: flex;
+  padding-top: 8px;
+}
+
+.cs-body .lb-window .lp-thumbs img {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  border: 2px solid var(--lb-line);
+  border-radius: 2px;
+  background: var(--lb-surface-3);
+  transition: box-shadow 0.15s ease;
+}
+
+.cs-body .lb-window .lp-thumbs img + img {
+  margin-left: -6px;
+}
+
+.cs-body .lb-window .lp-thumbs img:hover {
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 4px 12px rgb(16 24 40 / 0.16);
+}
+
+.cs-body .lb-window .lp-thumbs + .lp-caption {
+  margin-top: 6px;
+}
+
+/* Brief: edit panel (campaign-overview-brief-edit-panel.tsx) */
+.cs-body .lb-window .lp-brief-edit {
+  margin-top: 4px;
+}
+
+.cs-body .lb-window .lp-sentence {
+  color: var(--lb-text-2);
+  font-size: 16px;
+  line-height: 32px;
+}
+
+.cs-body .lb-window .lp-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+  padding: 0 2px 1px;
+  border: 0;
+  border-bottom: 1px solid var(--lb-brand);
+  border-radius: 2px 2px 0 0;
+  background: transparent;
+  vertical-align: baseline;
+  color: var(--lb-brand) !important;
+  font-size: 16px !important;
+  line-height: 24px;
+  font-weight: 600;
+}
+
+.cs-body .lb-window .lp-field--locked {
+  border-bottom-color: transparent;
+  color: var(--lb-text) !important;
+  cursor: default;
+}
+
+.cs-body .lb-window .lp-sources {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--lb-line);
+}
+
+.cs-body .lb-window .lp-sources__label {
+  margin-right: 4px;
+  line-height: 40px;
+}
+
+.cs-body .lb-window .lp-source {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border: 1px solid var(--lb-line);
+  border-radius: 2px;
+  background: var(--lb-surface-3);
+}
+
+.cs-body .lb-window .lp-source-add {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px dashed #e4e4e7;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--lb-text-3);
+}
+
+/* Positioning: core message as a statement */
+.cs-body .lb-window .lp-quote {
+  margin: 12px 0 0;
+  padding: 20px 24px 22px;
+  border-left: 3px solid var(--lb-brand);
+  border-radius: 0 2px 2px 0;
+  background: var(--lb-surface-2);
+}
+
+.cs-body .lb-window .lp-quote__message {
+  color: var(--lb-text);
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.cs-body .lb-window .lp-quote__supporting {
+  max-width: 560px;
+  margin-top: 12px;
+  color: var(--lb-text-3);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.cs-body .lb-window .lp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+/* Moments */
+.cs-body .lb-window .lp-moments {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 32px;
+  margin-top: 20px;
+}
+
+.cs-body .lb-window .lp-moment {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 0;
+  border-top: 1px solid var(--lb-line);
+}
+
+.cs-body .lb-window .lp-moment__dot {
+  flex: 0 0 8px;
+  height: 8px;
+  margin-top: 6px;
+  border-radius: 2px;
+}
+
+.cs-body .lb-window .lp-moment__text {
+  flex: 1;
+  min-width: 0;
+  padding-right: 8px;
+}
+
+/* Kumba brand switch (campaign-overview-brand-switch.tsx) */
+.cs-body .lb-window .lp-switch {
+  position: relative;
+  flex: 0 0 32px;
+  height: 18.4px;
+  margin-top: 4px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #d4d4d8;
+  border-radius: 2px;
+  background: var(--lb-surface-2);
+  transition: background-color 0.2s ease-out, border-color 0.2s ease-out;
+}
+
+.cs-body .lb-window .lp-switch.is-on {
+  border-color: transparent;
+  background: linear-gradient(90deg, #e2a4dd 0%, #f9c383 100%);
+}
+
+.cs-body .lb-window .lp-switch__thumb {
+  position: absolute;
+  top: 0.2px;
+  left: 1px;
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgb(16 24 40 / 0.12);
+  transition: left 0.2s ease-out;
+}
+
+.cs-body .lb-window .lp-switch.is-on .lp-switch__thumb {
+  left: 14px;
+}
+
+/* Watermark (campaign-overview-watermark-section.tsx) */
+.cs-body .lb-window .lp-watermark {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 32px;
+  margin-top: 20px;
+}
+
+.cs-body .lb-window .lp-preview {
+  position: relative;
+  min-height: 331px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: linear-gradient(125.94deg, #A85690 0%, #D69CBF 38%, #F0D6A6 39%, #F6E8C6 100%);
+}
+
+.cs-body .lb-window .lp-preview__label {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  color: var(--lb-text);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.cs-body .lb-window .lp-preview__mark {
+  position: absolute;
+  max-width: calc(100% - 24px);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 2px;
+  background: #ffffff;
+  color: var(--lb-text);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  transition: opacity 0.1s linear;
+}
+
+.cs-body .lb-window .lp-preview__mark img {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
+.cs-body .lb-window .lp-preview__mark span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cs-body .lb-window .lp-preview__mark.is-top-left { top: 12px; left: 12px; }
+.cs-body .lb-window .lp-preview__mark.is-top-right { top: 12px; right: 12px; }
+.cs-body .lb-window .lp-preview__mark.is-bottom-left { bottom: 12px; left: 12px; }
+.cs-body .lb-window .lp-preview__mark.is-bottom-right { bottom: 12px; left: 28px; }
+
+.cs-body .lb-window .lp-watermark__controls {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.cs-body .lb-window .lp-asset {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 8px;
+  padding: 12px 0;
+  border-top: 1px solid var(--lb-line);
+  border-bottom: 1px solid var(--lb-line);
+}
+
+.cs-body .lb-window .lp-asset__info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.cs-body .lb-window .lp-asset__info img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  border-radius: 2px;
+}
+
+.cs-body .lb-window .lp-asset__name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--lb-text);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.cs-body .lb-window .lp-asset__name + .lp-caption {
+  margin-top: 2px;
+}
+
+.cs-body .lb-window .lp-asset-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.cs-body .lb-window .lp-position {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--lb-line);
+}
+
+.cs-body .lb-window .lp-chips {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  max-width: 432px;
+  margin-top: 8px;
+}
+
+.cs-body .lb-window .lp-chip {
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lb-line);
+  border-radius: 2px;
+  background: var(--lb-surface-2);
+  color: var(--lb-text-2) !important;
+  font-size: 12px !important;
+  line-height: 16px;
+  font-weight: 500;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.cs-body .lb-window .lp-chip:hover {
+  background: var(--lb-surface-3);
+}
+
+.cs-body .lb-window .lp-chip.is-selected {
+  border-color: var(--lb-brand);
+  background: var(--lb-brand-subtle);
+  color: var(--lb-brand) !important;
+}
+
+.cs-body .lb-window .lp-opacity {
+  max-width: 432px;
+  margin-top: 20px;
+}
+
+.cs-body .lb-window .lp-opacity .lp-row {
+  align-items: center;
+}
+
+.cs-body .lb-window .lp-range {
+  display: block;
+  width: 100%;
+  height: 4px;
+  margin: 18px 0 6px;
+  appearance: none;
+  border-radius: 2px;
+  background: var(--lb-surface-3);
+  cursor: pointer;
+}
+
+.cs-body .lb-window .lp-range::-webkit-slider-thumb {
+  width: 16px;
+  height: 16px;
+  appearance: none;
+  border: 1px solid #e4e4e7;
+  border-radius: 2px;
+  background: #ffffff;
+}
+
+.cs-body .lb-window .lp-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 1px solid #e4e4e7;
+  border-radius: 2px;
+  background: #ffffff;
+}
+
+/* Distribution */
+.cs-body .lb-window .lp-platforms {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 44px;
+  margin-top: 16px;
+}
+
+.cs-body .lb-window .lp-platform {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--lb-text-2) !important;
+  font-size: 14px !important;
+}
+
+.cs-body .lb-window .lp-platform:hover {
+  opacity: 0.9;
+}
+
+.cs-body .lb-window .lp-checkbox {
+  width: 16px;
+  height: 16px;
+}
+
+.cs-body .lb-window .lp-platform__logo {
+  width: 16px;
+  height: 16px;
+  margin-right: -6px;
+  object-fit: contain;
+}
+
+/* Footer */
+.cs-body .lb-window .lp-footer {
+  flex: 0 0 72px;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid var(--lb-line);
+  background: var(--lb-surface);
+}
+
+.cs-body .lb-window .lp-footer__inner {
+  width: 100%;
+  max-width: 888px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cs-body .lb-window .lp-continue {
+  height: 40px;
+  padding: 0 20px;
+  font-size: 15px !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-body .lb-window .lp-expand,
+  .cs-body .lb-window .lp-switch,
+  .cs-body .lb-window .lp-switch__thumb,
+  .cs-body .lb-window .lp-preview__mark {
+    transition: none;
+  }
+}

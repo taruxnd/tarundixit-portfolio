@@ -1,5 +1,5 @@
 // Prints scripts/resume/resume.html to public/tarun-dixit-resume.pdf with headless Chrome.
-// Usage: node scripts/resume/build.mjs
+// Usage: node scripts/resume/build.mjs [input.html] [output.pdf]   (defaults to the site resume)
 import { spawn } from "node:child_process";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -7,8 +7,9 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const source = pathToFileURL(path.join(here, "resume.html")).href;
-const out = path.join(here, "..", "..", "public", "tarun-dixit-resume.pdf");
+const [inputArg, outputArg] = process.argv.slice(2);
+const source = pathToFileURL(inputArg ? path.resolve(inputArg) : path.join(here, "resume.html")).href;
+const out = outputArg ? path.resolve(outputArg) : path.join(here, "..", "..", "public", "tarun-dixit-resume.pdf");
 const chromePath = process.env.CHROME ?? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 
 const profile = mkdtempSync(path.join(tmpdir(), "resume-chrome-"));

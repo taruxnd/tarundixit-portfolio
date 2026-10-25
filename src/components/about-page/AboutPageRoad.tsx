@@ -6,6 +6,7 @@ import { whenTimelineReady } from "@/lib/polaroidTimeline";
 import {
   useCallback,
   useEffect,
+  useId,
   useMemo,
   useRef,
   useState,
@@ -118,21 +119,24 @@ const LAMPS = [
 function Landmark({
   src,
   className,
+  tooltip,
 }: {
   src: string;
   className: string;
+  tooltip?: string;
 }) {
   const imgRef = useRef<HTMLImageElement>(null);
   const [ready, setReady] = useState(false);
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const tooltipId = useId();
 
   useEffect(() => {
     const img = imgRef.current;
     if (img?.complete && img.naturalWidth > 0) setReady(true);
   }, []);
 
-  return (
-    <div className={className} role="presentation">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
+  const artwork = (
+      // eslint-disable-next-line @next/next/no-img-element
       <img
         ref={imgRef}
         className="about-road__landmark-img"
@@ -145,7 +149,31 @@ function Landmark({
         style={{ opacity: ready ? 1 : 0 }}
         onLoad={() => setReady(true)}
       />
-    </div>
+  );
+
+  if (!tooltip) return <div className={className} role="presentation">{artwork}</div>;
+
+  return (
+    <button
+      type="button"
+      className={`${className} about-road__landmark--interactive`}
+      aria-label="Microsoft office at DLF Downtown, Gurugram"
+      aria-describedby={tooltipOpen ? tooltipId : undefined}
+      data-tooltip-open={tooltipOpen}
+      onMouseEnter={() => setTooltipOpen(true)}
+      onMouseLeave={() => setTooltipOpen(false)}
+      onFocus={() => setTooltipOpen(true)}
+      onBlur={() => setTooltipOpen(false)}
+      onClick={() => setTooltipOpen(true)}
+      onKeyDown={(event) => {
+        if (event.key === "Escape") setTooltipOpen(false);
+      }}
+    >
+      {artwork}
+      <span id={tooltipId} role="tooltip" className="about-road__landmark-tooltip" hidden={!tooltipOpen}>
+        {tooltip}
+      </span>
+    </button>
   );
 }
 
@@ -531,14 +559,15 @@ export default function AboutPageRoad() {
 
   return (
     <div ref={roadRef} className="about-road" data-barrier={barrierOpen ? "open" : "closed"}>
+      <Landmark
+        className="about-road__landmark about-road__landmark--microsoft"
+        src="/about/microsoft-dlf-downtown-sm.webp"
+        tooltip="i wanna be here one day"
+      />
       <div className="about-road__scene" aria-hidden>
         <Landmark
           className="about-road__landmark about-road__landmark--kumba"
           src={assetUrl("about/kumba-office-sm.webp")}
-        />
-        <Landmark
-          className="about-road__landmark about-road__landmark--google"
-          src={assetUrl("about/google-office-sm.webp")}
         />
 
         <div className="about-road__lights">

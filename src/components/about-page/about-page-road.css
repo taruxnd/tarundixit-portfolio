@@ -133,9 +133,45 @@
   z-index: 3;
 }
 
-.about-road__landmark--google {
+.about-road__landmark--microsoft {
   left: 62%;
   z-index: 1;
+}
+
+.about-road__landmark--interactive {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  pointer-events: auto;
+  z-index: 4;
+}
+
+.about-road__landmark--interactive:focus-visible {
+  outline: 2px solid #83baff;
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+.about-road__landmark-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 220px;
+  padding: 9px 13px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  background: #242424;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  pointer-events: none;
 }
 
 .about-road__landmark-img {
@@ -693,7 +729,7 @@
     width: min(36vw, 7.75rem);
   }
 
-  .about-road__landmark--google {
+  .about-road__landmark--microsoft {
     left: 62%;
     width: min(36vw, 7.75rem);
   }

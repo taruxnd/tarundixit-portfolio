@@ -100,10 +100,6 @@
   background: #fff;
 }
 
-.cs-body .cs-money.cs-money--text {
-  display: block;
-}
-
 .cs-body .cs-cat-meme {
   position: relative;
   width: 100%;
@@ -241,8 +237,97 @@
   text-transform: none;
 }
 
-.cs-body .cs-hypothesis {
-  padding-left: 28px;
+/* Chapter opener before the walkthrough: a filmstrip of the four screens with the title over it. */
+.cs-body .cs-chapter {
+  position: relative;
+  margin: 56px 0 10px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--cs-card-line);
+  background: var(--cs-card);
+}
+
+.cs-body .cs-chapter__strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2px;
+  height: 168px;
+}
+
+.cs-body .cs-chapter__strip img,
+.cs-body .cs-chapter__strip span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  object-fit: cover;
+  object-position: 50% 18%;
+  filter: saturate(0.85);
+  opacity: 0.55;
+  transition: opacity 0.4s ease;
+}
+
+.cs-body .cs-chapter:hover .cs-chapter__strip img {
+  opacity: 0.8;
+}
+
+.cs-body .cs-chapter::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 10, 10, 0.15) 0%, rgba(10, 10, 10, 0.72) 100%);
+  pointer-events: none;
+}
+
+.cs-body .cs-chapter__title {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: 22px;
+  margin: 0;
+  translate: -50% 0;
+  font: 400 34px/1.1 var(--font-playfair), Georgia, serif;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+}
+
+.cs-body .cs-chapter__first {
+  margin-top: 30px;
+}
+
+@media (max-width: 680px) {
+  .cs-body .cs-chapter__strip { height: 120px; }
+  .cs-body .cs-chapter__title { font-size: 26px; bottom: 16px; }
+}
+
+/* The bet, in the nav's glass. */
+.cs-body .cs-bet {
+  --lg-blur: 32px;
+  --lg-saturate: 190%;
+  --lg-brightness: 1.04;
+  --lg-tint-top: rgba(30, 30, 30, 0.72);
+  --lg-tint-mid: rgba(20, 20, 20, 0.55);
+  --lg-tint-bot: rgba(12, 12, 12, 0.45);
+  --lg-rim: rgba(255, 255, 255, 0.1);
+  --lg-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(99, 102, 241, 0.08);
+  position: relative;
+  display: block;
+  margin: 18px 0 22px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--lg-shadow);
+}
+
+.cs-body .cs-bet .cs-hypothesis {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 22px 26px;
   font-size: 20px;
   line-height: 1.5;
   color: var(--note-ink);
@@ -422,10 +507,6 @@
   padding: 16px 16px 14px;
 }
 
-.cs-body .cs-stats--impact {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
 .cs-stats--impact .cs-stat__n {
   font-size: 24px;
 }
@@ -582,13 +663,13 @@
 }
 
 /* Money: the funding line with the meme beside it, between two rules. */
+/* Money: what the tiles mean, the funding line, then the TV polaroid below. */
 .cs-body .cs-money {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 190px;
-  gap: 24px;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
   margin: 26px 0 10px;
-  padding: 22px 0;
+  padding: 22px 0 28px;
   border-top: 1px solid var(--note-rule);
   border-bottom: 1px solid var(--note-rule);
 }
@@ -596,6 +677,7 @@
 .cs-body .cs-impact {
   margin: 0;
   font-size: 17px;
+  line-height: 1.6;
   color: var(--note-soft);
 }
 
@@ -635,29 +717,13 @@
   text-align: center;
 }
 
-/* Shin-chan, hero-avatar sized, after the equity line. */
-.cs-shin {
-  display: inline-block;
-  width: 36px;
-  height: 36px;
-  margin-left: 10px;
-  vertical-align: -9px;
-  border-radius: 0.35rem;
-  overflow: hidden;
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.16),
-    0 4px 14px rgba(0, 0, 0, 0.45);
-}
-
-.cs-shin {
-  background: url("/about-bento/shin-car.jpg") 66% 34% / 250% auto no-repeat;
-}
-
 /* Polaroid of the TV segment, stuck on beside the funding line. */
 .cs-polaroid {
   display: block;
+  width: min(100%, 360px);
+  margin: 18px auto 0;
   text-decoration: none;
-  transform: rotate(3deg);
+  transform: rotate(2deg);
   transition: transform 0.25s ease;
 }
 
@@ -972,21 +1038,12 @@ a.cs-polaroid:hover {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .cs-body .cs-money {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
 
   .cs-body .cs-polaroid {
     width: 190px;
     margin: 4px auto 0;
   }
 
-  .cs-shin {
-    width: 32px;
-    height: 32px;
-    vertical-align: -8px;
-  }
 
   .cs-body .cs-decisions li {
     grid-template-columns: 28px minmax(0, 1fr);
@@ -1001,8 +1058,8 @@ a.cs-polaroid:hover {
     grid-template-columns: 1fr;
   }
 
-  .cs-body .cs-hypothesis {
-    padding-left: 0;
+  .cs-body .cs-bet .cs-hypothesis {
+    padding: 18px 20px;
     font-size: 18px;
   }
 

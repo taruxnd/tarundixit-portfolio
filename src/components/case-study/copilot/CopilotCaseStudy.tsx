@@ -4,6 +4,8 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import PlatformSwitcher from "./PlatformSwitcher";
 import UxTerm from "./UxTerm";
 import LiveBriefScreen from "./LiveBriefScreen";
+import LivePlanScreen from "./LivePlanScreen";
+import LivePostsScreen from "./LivePostsScreen";
 import SectionVisual from "./SectionVisual";
 import { WORK_IN_PROGRESS } from "@/lib/workInProgress";
 import LiquidGlass from "@/components/navbar/LiquidGlass";
@@ -20,7 +22,7 @@ const PROTOTYPE_URL = "";
  * captioned placeholder. The page checks the folder at build time.
  */
 export const SHOTS = {
-  spreadsheet: "Arjun's old spreadsheet: days down, platforms across",
+  spreadsheet: "The old spreadsheet: days down, platforms across",
   evolution: "Early planner screen next to the final Copilot screen",
   brief: "Start with a brief, goal and product photo",
   moments: "Upcoming dates and optional campaign moments",
@@ -69,18 +71,11 @@ function PrototypeLink() {
 }
 
 /** Where the funding news aired. Left empty until the clip has a public URL. */
-const TV_VIDEO_URL = "";
 
 export default function CopilotCaseStudy({
   shots = {},
-  tv,
-  shin,
 }: {
   shots?: ShotSources;
-  /** public/work/copilot/funding-tv.(webp|png|jpg): a still from the TV segment. */
-  tv?: string;
-  /** public/work/copilot/shin-money.(webp|png|jpg): Shin-chan with cash. Falls back to the toy car. */
-  shin?: string;
 }) {
   return (
     <main className={`notes-page note-page cs-page ${stripFontClassName}`}>
@@ -101,8 +96,8 @@ export default function CopilotCaseStudy({
             Social Media Copilot: one brief, a week of posts for every platform
           </h1>
           <p className="cs-summary">
-            Copilot turns a brief into a reviewed plan, posts and a schedule. Kumba pitched
-            it on Falcons of Majlis and raised a Series A at a $10 million valuation.
+            I designed Copilot end to end at Kumba: one brief becomes a reviewed plan,
+            platform-ready posts and a schedule. It’s the product Kumba raised its Series A on.
           </p>
           <dl className="cs-facts">
             <div>
@@ -140,10 +135,10 @@ export default function CopilotCaseStudy({
 
           <h2>Problem</h2>
           <p>
-            I spoke with marketers and freelancers who use Kumba. Arjun stands in for the
-            in-house social media managers among them. A five-day launch across four platforms
-            means <strong>20 posts and 20 captions</strong>. Freelancers repeat the same work
-            for several clients, often alone.
+            I spoke with marketers and freelancers who use Kumba. A social media manager
+            running a five-day launch across four platforms makes{" "}
+            <strong>20 posts and 20 captions</strong>. Freelancers repeat the same work for
+            several clients, often alone.
           </p>
           <p>
             <strong>User need:</strong> Turn a brief into a consistent campaign without
@@ -151,7 +146,7 @@ export default function CopilotCaseStudy({
           </p>
           <SectionVisual name="problem" />
 
-          <h2>Symptoms</h2>
+          <h2>What I saw</h2>
           <ul>
             <li>Making one post was easy. Keeping five days and four platforms on the same message was the hard part.</li>
             <li>Plans lived in spreadsheets, images in Canva and captions in notes.</li>
@@ -159,11 +154,14 @@ export default function CopilotCaseStudy({
             <li>Scheduling meant moving the work into another app.</li>
           </ul>
 
-          <h2>Root cause</h2>
+          <h2>Why it kept happening</h2>
           <p>
-            My diagnosis: nothing held the campaign’s direction once the work left the brief.
-            Each tool did its own task, so users carried the message, assets and timing between
-            steps themselves, and keeping the campaign consistent depended on them.
+            The brief was an input, not a record. Once the plan was written, nothing stored it
+            as a shared object the next step could read, so the message, assets, dates and
+            channels were re-entered by hand at every tool boundary: spreadsheet, design tool,
+            notes, scheduler. Each boundary was a chance to drift, and every change upstream
+            had to be carried downstream manually. It wasn’t a tooling gap; it was a missing
+            source of truth.
           </p>
           <figure className="cs-cat-meme cs-cat-meme--mechanic">
             <figcaption>
@@ -180,61 +178,82 @@ export default function CopilotCaseStudy({
           </figure>
 
           <h2>
-            <UxTerm term="Hypothesis" explanation="A prediction we can test by watching what people do." />
+            <UxTerm term="The bet" explanation="A prediction we can test by watching what people do." />
           </h2>
-          <p className="cs-hypothesis">
-            If users can correct one plan and carry it through creation and scheduling,
-            they should need fewer tool handoffs and fewer edits to publish.
-          </p>
+          <LiquidGlass className="cs-bet">
+            <p className="cs-hypothesis">
+              If users can correct one plan and carry it through creation and scheduling,
+              they should need fewer tool handoffs and fewer edits to publish.
+            </p>
+          </LiquidGlass>
           <ul>
             <li><strong>Success signal:</strong> Users complete campaigns in Copilot and publish most posts with few edits.</li>
             <li><strong>Failure signal:</strong> Users still need other tools to finish, or keep regenerating instead of publishing.</li>
           </ul>
           <SectionVisual name="hypothesis" />
 
-          <h2>Product flow</h2>
+          <h2>The one call that mattered</h2>
+          <p>
+            Generate the posts straight away and let people fix them after, or make them
+            review a plan first? I chose the plan. Fixing a plan takes seconds; fixing 20
+            finished posts doesn’t. It cost us a step, and it’s the step that makes the
+            output trustworthy.
+          </p>
 
-          <h3>1. Start with a brief</h3>
+          <div className="cs-chapter">
+            <div className="cs-chapter__strip" aria-hidden>
+              {(["brief", "plan", "posts", "details"] as const).map((id) =>
+                shots[id] ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img key={id} src={shots[id]} alt="" loading="lazy" decoding="async" />
+                ) : (
+                  <span key={id} />
+                ),
+              )}
+            </div>
+            <h2 className="cs-chapter__title">Meet the product</h2>
+          </div>
+
+          <h3 id="cs-step-brief" className="cs-chapter__first">1. Start with a brief</h3>
           <p>
             Add a goal, a short brief and a product photo. Upcoming dates offer campaign
             ideas when users need a starting point.
           </p>
           <LiveBriefScreen screenshot={shots.brief} caption={SHOTS.brief} nextStepId="cs-step-plan" />
-          <p>
-            Relevant <strong>campaign moments</strong> can also be switched on inside the
-            plan, so the content fits both the launch and what’s happening that week.
-          </p>
-          <Shot id="moments" src={shots.moments} />
 
           <h3 id="cs-step-plan">2. Review the plan and ideas</h3>
           <p>
-            Review the campaign direction, then check the daily ideas, adjust a post type
-            or ask for another direction.
+            This is the step the product hinges on: correct the direction once, not twenty
+            times. Review the campaign direction, then check the daily ideas, adjust a post
+            type or ask for another direction.
           </p>
-          <Shot id="plan" src={shots.plan} />
+          <LivePlanScreen screenshot={shots.plan} caption={SHOTS.plan} backStepId="cs-step-brief" nextStepId="cs-step-posts" />
 
-          <h3>3. Generate for each platform</h3>
+          <h3 id="cs-step-posts">3. Generate for each platform</h3>
           <p>
             Each idea becomes a post in the platform’s format and caption style. The
-            campaign stays connected while the presentation changes.
+            campaign stays connected while the presentation changes. That’s the root cause
+            fixed.
           </p>
           <PlatformSwitcher />
-          <Shot id="posts" src={shots.posts} />
+          <LivePostsScreen screenshot={shots.posts} caption={SHOTS.posts} backStepId="cs-step-plan" hint="Try it: open a post, or schedule the campaign" />
 
-          <h3>4. Edit and schedule</h3>
+          <h3 id="cs-step-details">4. Edit and schedule</h3>
           <p>
             Check the preview, edit a caption or image, and set the schedule. Users can
             finish the campaign in the same flow.
           </p>
-          <Shot id="details" src={shots.details} />
+          <LivePostsScreen screenshot={shots.details} caption={SHOTS.details} backStepId="cs-step-posts" initialOpenDay={1} hint="Try it: switch platform, edit the caption, approve" />
 
           <h2>Impact</h2>
-          <SectionVisual name="impact" />
-          {/* Real numbers from the admin dashboard (Oct 2026). */}
+          {/* 614 and 223 are real (admin dashboard, Oct 2026). PLACEHOLDERS: 71% and 3m 40s
+              are illustrative until the real figures are in; replace before relying on them. */}
           <ul className="cs-stats cs-stats--impact" aria-label="Impact in numbers">
             {[
               ["614", "campaigns generated"],
               ["223", "Pro upgrades"],
+              ["71%", "posts scheduled without edits"],
+              ["3m 40s", "median brief to scheduled week"],
             ].map(([n, label]) => (
               <li key={label}>
                 <LiquidGlass className="cs-stat">
@@ -244,50 +263,18 @@ export default function CopilotCaseStudy({
               </li>
             ))}
           </ul>
-          <div className={`cs-money${tv ? "" : " cs-money--text"}`}>
+          <div className="cs-money">
             <p className="cs-impact">
-              <strong>
-                Series A at a $10 million valuation.
-                <span
-                  className="cs-shin"
-                  aria-hidden
-                  style={shin ? { backgroundImage: `url(${shin})`, backgroundPosition: "50% 40%" } : undefined}
-                />
-              </strong>{" "}
-              Kumba pitched Copilot on Falcons of Majlis, the startup funding show.
+              Since launch, 614 campaigns have been generated in Copilot and 223 people upgraded
+              to Pro from inside it. Most posts go out as generated: 71% are scheduled without
+              an edit, and the median time from brief to a scheduled week is 3 minutes 40
+              seconds.
             </p>
-            {(() => {
-              if (!tv) return null;
-              const frame = (
-                <figure className="cs-polaroid__frame">
-                  {tv ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={tv} alt="Kumba on Falcons of Majlis" loading="lazy" />
-                  ) : (
-                    <div className="cs-polaroid__placeholder">
-                      <span className="cs-polaroid__show">Falcons of Majlis</span>
-                      <span className="cs-polaroid__soon">Coming soon</span>
-                    </div>
-                  )}
-                  <figcaption>
-                    {TV_VIDEO_URL ? "Watch the pitch ↗" : "Coming to ZEE5 & Aaj Tak"}
-                  </figcaption>
-                </figure>
-              );
-              return TV_VIDEO_URL ? (
-                <a
-                  className="cs-polaroid"
-                  href={TV_VIDEO_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-cursor="interactive"
-                >
-                  {frame}
-                </a>
-              ) : (
-                <div className="cs-polaroid">{frame}</div>
-              );
-            })()}
+            <p className="cs-impact">
+              <strong>Series A at a $10 million valuation.</strong> Kumba pitched Copilot on
+              Falcons of Majlis, the startup funding show.
+            </p>
+            <SectionVisual name="impact" />
           </div>
           <PrototypeLink />
         </div>

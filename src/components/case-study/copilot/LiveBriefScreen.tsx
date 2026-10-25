@@ -1,24 +1,14 @@
 "use client";
 
-import { Roboto_Flex } from "next/font/google";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { KUMBA_ICONS, type KumbaIconName } from "./liveBriefIcons";
-import "./live-brief.css";
-
-/** Kumba's product font. */
-const robotoFlex = Roboto_Flex({ subsets: ["latin"], display: "swap" });
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { KIcon, KumbaAppShell, LiveFigure, prefersReducedMotion, scrollToStep } from "./LiveKumbaFrame";
+import type { KumbaIconName } from "./liveBriefIcons";
 
 /**
- * Step 1 of the Copilot flow, rebuilt so readers can use it: the Mamaearth brief
- * types itself, the objective menu opens, event cards fill the brief, and
- * Generate moves the page on to step 2. Matches the real screen (tokens from the
- * Kumba design system) but has no backend. Laid out at 1440 × 900, the size the
- * screenshot was taken at, and scaled to the frame. Phones keep the screenshot.
+ * Step 1 of the Copilot flow, working: the Mamaearth brief types itself, the
+ * objective menu opens, event cards fill the brief, and Generate moves the page
+ * on to step 2. No backend.
  */
-
-const DESIGN_W = 1440;
-const CHROME_H = 48;
-const APP_H = 900;
 
 const MAMAEARTH_BRIEF =
   "Launch Mamaearth Onion Hair Fall Control Shampoo: five days, warm wash-day moments, Instagram, Facebook and X.";
@@ -31,48 +21,35 @@ const OBJECTIVES: { title: string; supporting: string; icon: KumbaIconName }[] =
   { title: "Other", supporting: "Something else? Start with a custom campaign objective.", icon: "menu-square" },
 ];
 
+/* Event cards. Photos from Wikimedia Commons: Friendship Day, "Three friends laugh and toast…"
+   (CC BY-SA 4.0); Independence Day, "Flag of India, Kodaikanal" (CC BY 2.0); Raksha Bandhan,
+   "A sister tying rakhi thread…" (CC BY 2.0). */
 const EVENTS = [
   {
-    day: "06",
-    image: "/work/copilot/live/event-aug-06.webp",
-    title: "Hiroshima Day",
-    subtitle: ["Thoughtful remembrance.", "Respectful, purpose-led posts."],
-    brief: "Hiroshima Day for Mamaearth: five days of thoughtful, purpose-led posts on Instagram and Facebook.",
+    month: "AUG",
+    day: "02",
+    image: "/work/copilot/live/event-friendship.webp",
+    title: "Friendship Day",
+    subtitle: ["Celebrate the people who show up.", "Tag-a-friend posts and giveaways."],
+    brief: "Friendship Day for Mamaearth: five days of tag-a-friend posts and shared wash-day moments on Instagram, Facebook and X.",
   },
   {
-    day: "09",
-    image: "/work/copilot/live/event-aug-09.webp",
-    title: "International Cat Day",
-    subtitle: ["Playful pet content & engagement.", "Polls, UGC, and community fun."],
-    brief: "International Cat Day for Mamaearth: five days of playful pet posts, polls and UGC on Instagram and X.",
+    month: "AUG",
+    day: "15",
+    image: "/work/copilot/live/event-independence.webp",
+    title: "Independence Day",
+    subtitle: ["Patriotic retail & celebration.", "Tricolour promos and pride moments."],
+    brief: "Independence Day for Mamaearth: five days of tricolour-themed posts and freedom-week offers on Instagram, Facebook and X.",
   },
   {
-    day: "12",
-    image: "/work/copilot/live/event-aug-12.webp",
-    title: "World Automobile Day",
-    subtitle: ["Launches & test-drive campaigns.", "Models, offers, and the open road."],
-    brief: "World Automobile Day: five days of road-trip hair care moments for Mamaearth on Instagram, Facebook and X.",
+    month: "AUG",
+    day: "28",
+    image: "/work/copilot/live/event-rakhi.webp",
+    title: "Raksha Bandhan",
+    subtitle: ["Gifting for brothers and sisters.", "Rakhi bundles and family moments."],
+    brief: "Raksha Bandhan for Mamaearth: five days of gift-ready hair care and sibling moments on Instagram, Facebook and X.",
   },
 ];
-
-/** Kumba's Copilot primary rail (smpPrimaryRailNavItems). */
-const RAIL: { label: string; icon: KumbaIconName; active?: boolean }[] = [
-  { label: "Home", icon: "home-01" },
-  { label: "Copilot", icon: "megaphone-02", active: true },
-  { label: "Chat", icon: "chatting-01" },
-  { label: "Image", icon: "image-01" },
-  { label: "Video", icon: "video-01" },
-  { label: "Assets", icon: "folder-01" },
-];
-
-/** A Kumba sharp icon, inlined. Size it with the wrapper's width/height. */
-function KIcon({ name, className }: { name: KumbaIconName; className?: string }) {
-  return <span className={`lb-icon ${className ?? ""}`} aria-hidden dangerouslySetInnerHTML={{ __html: KUMBA_ICONS[name] }} />;
-}
-
-function prefersReducedMotion() {
-  return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
 
 export default function LiveBriefScreen({
   screenshot,
@@ -82,65 +59,13 @@ export default function LiveBriefScreen({
   /** Shown on phones, and before the live screen hydrates. */
   screenshot?: string;
   caption: string;
-  /** Element Generate scrolls to. */
+  /** Step heading Generate scrolls to. */
   nextStepId: string;
 }) {
-  const [live, setLive] = useState(false);
-
-  // Phones get the screenshot: a scaled-down desktop app is too small to type into.
-  useEffect(() => {
-    const query = window.matchMedia("(min-width: 768px)");
-    const sync = () => setLive(query.matches);
-    sync();
-    query.addEventListener("change", sync);
-    return () => query.removeEventListener("change", sync);
-  }, []);
-
   return (
-    <figure className="cs-shot lb-figure">
-      {live ? (
-        <LiveFrame caption={caption} nextStepId={nextStepId} />
-      ) : screenshot ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={screenshot} alt={caption} loading="lazy" decoding="async" />
-      ) : null}
-      <figcaption>
-        {caption}
-        {live ? <span className="lb-hint"> · Try it: edit the brief or press Generate</span> : null}
-      </figcaption>
-    </figure>
-  );
-}
-
-function LiveFrame({ caption, nextStepId }: { caption: string; nextStepId: string }) {
-  const boxRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(0);
-
-  useLayoutEffect(() => {
-    const box = boxRef.current;
-    if (!box) return;
-    const update = () => setScale(box.clientWidth / DESIGN_W);
-    update();
-    const observer = new ResizeObserver(update);
-    observer.observe(box);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div ref={boxRef} className="lb-box" role="group" aria-label={`${caption} (interactive)`}>
-      <div
-        className={`lb-window ${robotoFlex.className}`}
-        style={{ width: DESIGN_W, height: CHROME_H + APP_H, transform: `scale(${scale})`, visibility: scale ? "visible" : "hidden" }}
-      >
-        <div className="lb-chrome" aria-hidden>
-          <span className="lb-dots">
-            <i /> <i /> <i />
-          </span>
-          <span className="lb-url">kumba.ai/copilot</span>
-        </div>
-        <BriefApp nextStepId={nextStepId} />
-      </div>
-    </div>
+    <LiveFigure screenshot={screenshot} caption={caption} hint="Try it: edit the brief or press Generate" url="kumba.ai/copilot">
+      <BriefApp nextStepId={nextStepId} />
+    </LiveFigure>
   );
 }
 
@@ -175,8 +100,12 @@ function BriefApp({ nextStepId }: { nextStepId: string }) {
         // A little uneven, like a person typing.
         typingRef.current = window.setTimeout(step, 22 + Math.random() * 38);
       } else {
-        typingRef.current = null;
-        setTyping(false);
+        // Hold the finished brief, then type it again from the start.
+        typingRef.current = window.setTimeout(() => {
+          i = 0;
+          setBrief("");
+          typingRef.current = window.setTimeout(step, 400);
+        }, 2600);
       }
     };
     typingRef.current = window.setTimeout(step, 250);
@@ -227,57 +156,11 @@ function BriefApp({ nextStepId }: { nextStepId: string }) {
       setBrief(MAMAEARTH_BRIEF);
     }
     setGenerating(true);
-    window.setTimeout(() => {
-      document.getElementById(nextStepId)?.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth", block: "start" });
-      window.setTimeout(() => setGenerating(false), 900);
-    }, 1400);
+    window.setTimeout(() => scrollToStep(nextStepId), 1400);
   };
 
   return (
-    <div ref={appRef} className="lb-app">
-      <nav className="lb-rail" aria-label="Kumba">
-        <span className="lb-rail__logo" aria-hidden>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/work/copilot/live/kumba-logo-mark.webp" alt="" width={29} height={17} />
-        </span>
-        <span className="lb-rail__items">
-          {RAIL.map(({ label, icon, active }) => (
-            <span key={label} className={`lb-rail__item${active ? " is-active" : ""}`}>
-              <KIcon name={icon} className="lb-icon--24" />
-              {label}
-            </span>
-          ))}
-        </span>
-        <span className="lb-rail__item lb-rail__item--settings">
-          <KIcon name="setting-02" className="lb-icon--24" />
-          Settings
-        </span>
-      </nav>
-
-      <aside className="lb-nav">
-        <p className="lb-nav__label">Navigation</p>
-        <span className="lb-nav__item is-active">
-          <KIcon name="megaphone-02" className="lb-icon--20" />
-          Social Media Copilot
-        </span>
-        <span className="lb-nav__item">
-          <KIcon name="folder-01" className="lb-icon--20" />
-          My Campaigns
-        </span>
-      </aside>
-
-      <div className="lb-main">
-        <header className="lb-top">
-          {/* Kumba's light switch for the preview theme (on = light). */}
-          <span className="lb-switch" aria-hidden>
-            <span className="lb-switch__rocker" />
-          </span>
-          <span className="lb-upgrade">
-            <KIcon name="crown" className="lb-icon--16" />
-            Upgrade
-          </span>
-        </header>
-
+    <KumbaAppShell appRef={appRef}>
         <div className="lb-scroll">
           <div className="lb-column">
             <div className="lb-hero">
@@ -291,6 +174,8 @@ function BriefApp({ nextStepId }: { nextStepId: string }) {
             </div>
 
             <div className={`lb-composer${generating ? " is-thinking" : ""}`}>
+              <NeonSnakeBorder />
+              <div className="lb-composer__shell">
               <div className="lb-composer__row">
                 <span className="lb-composer__attach" aria-hidden>
                   <KIcon name="attachment-01" className="lb-icon--20" />
@@ -303,6 +188,7 @@ function BriefApp({ nextStepId }: { nextStepId: string }) {
                   placeholder="Describe your campaign…"
                   aria-label="Campaign brief"
                   rows={3}
+                  disabled={generating}
                   onFocus={() => {
                     if (typing) {
                       stopTyping();
@@ -320,6 +206,7 @@ function BriefApp({ nextStepId }: { nextStepId: string }) {
                     aria-haspopup="listbox"
                     aria-expanded={menuOpen}
                     data-cursor="interactive"
+                    disabled={generating}
                     onClick={() => setMenuOpen((open) => !open)}
                   >
                     <KIcon name={OBJECTIVES[objective].icon} className="lb-icon--16" />
@@ -361,7 +248,7 @@ function BriefApp({ nextStepId }: { nextStepId: string }) {
                   {generating ? (
                     <>
                       <span className="lb-spinner" aria-hidden />
-                      Planning…
+                      <span className="lb-pulse">Generating...</span>
                     </>
                   ) : (
                     <>
@@ -370,6 +257,7 @@ function BriefApp({ nextStepId }: { nextStepId: string }) {
                     </>
                   )}
                 </button>
+              </div>
               </div>
             </div>
 
@@ -384,7 +272,7 @@ function BriefApp({ nextStepId }: { nextStepId: string }) {
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={event.image} alt="" loading="lazy" />
                     <span className="lb-event__date">
-                      <small>AUG</small>
+                      <small>{event.month}</small>
                       {event.day}
                     </span>
                   </div>
@@ -416,7 +304,56 @@ function BriefApp({ nextStepId }: { nextStepId: string }) {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+    </KumbaAppShell>
+  );
+}
+
+/** Kumba's neon snake border (neon-snake-border.tsx): brand gradient trail around the composer, always running. */
+function NeonSnakeBorder() {
+  const svgRef = useRef<SVGSVGElement>(null);
+  const uid = useId().replace(/:/g, "");
+  const [size, setSize] = useState({ width: 778, height: 180 });
+  useLayoutEffect(() => {
+    const host = svgRef.current?.parentElement;
+    if (!host) return;
+    const update = () => setSize({ width: host.clientWidth, height: host.clientHeight });
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(host);
+    return () => observer.disconnect();
+  }, []);
+  const inset = 2.5;
+  const w = Math.max(size.width - inset * 2, 0);
+  const h = Math.max(size.height - inset * 2, 0);
+  const grad = `lb-snake-grad-${uid}`;
+  const glow = `lb-snake-glow-${uid}`;
+  const rect = { x: inset, y: inset, width: w, height: h, rx: 2, ry: 2, fill: "none", stroke: `url(#${grad})`, strokeLinecap: "round" as const, pathLength: 1 };
+  return (
+    <svg ref={svgRef} className="lb-snake" aria-hidden width={size.width} height={size.height} viewBox={`0 0 ${size.width} ${size.height}`}>
+      <defs>
+        <linearGradient id={grad} gradientUnits="userSpaceOnUse" x1={0} y1={0} x2={size.width} y2={size.height}>
+          <stop offset="0%" stopColor="#e2a4dd" />
+          <stop offset="45%" stopColor="#e2a4dd" />
+          <stop offset="55%" stopColor="#f9c383" />
+          <stop offset="100%" stopColor="#f9c383" />
+        </linearGradient>
+        <filter id={glow} x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+      <rect {...rect} strokeWidth={1.5} strokeDasharray="0.22 0.78" opacity={0.35}>
+        <animate attributeName="stroke-dashoffset" from="0" to="1" dur="6s" repeatCount="indefinite" />
+      </rect>
+      <rect {...rect} strokeWidth={2} strokeDasharray="0.09 0.91" filter={`url(#${glow})`} opacity={0.95}>
+        <animate attributeName="stroke-dashoffset" from="0" to="-1" dur="2.8s" repeatCount="indefinite" />
+      </rect>
+      <rect {...rect} strokeWidth={2.5} strokeDasharray="0.04 0.96" opacity={0.75}>
+        <animate attributeName="stroke-dashoffset" from="-0.5" to="0.5" dur="2.8s" repeatCount="indefinite" />
+      </rect>
+    </svg>
   );
 }

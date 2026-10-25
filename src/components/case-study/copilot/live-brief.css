@@ -369,49 +369,52 @@
   font-weight: 600;
 }
 
-/* Composer */
+/* Composer (smart-campaign-planner-input.tsx): 2px padded wrapper traced by the snake */
 .cs-body .lb-window .lb-composer {
   position: relative;
   margin-top: 34px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 30px 24px 24px;
-  border: 1px solid #ececef;
+  padding: 2px;
   border-radius: 2px;
-  background: var(--lb-surface);
-  box-shadow: 0 1px 2px rgb(16 24 40 / 0.04);
-}
-
-/* The warm accent under the composer. */
-.cs-body .lb-window .lb-composer::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -1px;
-  width: 200px;
-  height: 2px;
-  translate: -50% 0;
-  background: linear-gradient(90deg, transparent, #f9c383 30%, #f9c383 70%, transparent);
-  opacity: 0.8;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+  transition: box-shadow 0.3s ease;
 }
 
 .cs-body .lb-window .lb-composer.is-thinking {
-  border-color: transparent;
-  background:
-    linear-gradient(var(--lb-surface), var(--lb-surface)) padding-box,
-    conic-gradient(from var(--lb-angle, 0deg), #e2a4dd, #f9c383, #8a3886, #e2a4dd) border-box;
-  animation: lb-spin-border 1.4s linear infinite;
+  box-shadow: 0 12px 28px -10px color-mix(in srgb, #e2a4dd 35%, transparent);
 }
 
-@property --lb-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
+.cs-body .lb-window .lb-snake {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  border-radius: 2px;
+  pointer-events: none;
 }
 
-@keyframes lb-spin-border {
-  to { --lb-angle: 360deg; }
+.cs-body .lb-window .lb-composer__shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 28px 22px 22px;
+  border: 1px solid var(--lb-line);
+  border-radius: 2px;
+  background: var(--lb-surface);
+}
+
+.cs-body .lb-window .lb-composer__input:disabled,
+.cs-body .lb-window .lb-chip:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.cs-body .lb-window .lb-pulse {
+  animation: lb-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes lb-pulse {
+  50% { opacity: 0.5; }
 }
 
 .cs-body .lb-window .lb-composer__row {

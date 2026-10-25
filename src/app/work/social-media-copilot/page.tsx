@@ -29,21 +29,10 @@ function findShots(): ShotSources {
   return found;
 }
 
-/** Optional pictures next to the copy: public/work/copilot/<name>.(webp|png|jpg|gif). */
-function findPicture(name: string): string | undefined {
-  const dir = path.join(process.cwd(), "public", "work", "copilot");
-  for (const ext of ["webp", "png", "jpg", "gif"]) {
-    if (existsSync(path.join(dir, `${name}.${ext}`))) return assetUrl(`work/copilot/${name}.${ext}`);
-  }
-  return undefined;
-}
-
 export default function SocialMediaCopilotPage() {
   return (
     <CopilotCaseStudy
       shots={findShots()}
-      tv={findPicture("funding-tv")}
-      shin={findPicture("shin-money")}
     />
   );
 }
