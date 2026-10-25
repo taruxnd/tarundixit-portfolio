@@ -99,7 +99,8 @@ export default function CopilotCaseStudy({
           </h1>
           <p className="cs-summary">
             I designed Copilot end to end at Kumba: one brief becomes a reviewed plan,
-            platform-ready posts and a schedule. It’s the product Kumba raised its Series A on.
+            platform-ready posts and a schedule.{" "}
+            <span className="cs-summary__highlight">It’s the product Kumba raised its Series A on, at a $10M valuation.</span>
           </p>
           <dl className="cs-facts">
             <div>

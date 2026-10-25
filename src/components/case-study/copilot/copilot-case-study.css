@@ -222,9 +222,6 @@
   margin: 56px 0 32px;
   padding-top: 28px;
   border-top: 1px solid var(--cs-card-line);
-  font-size: clamp(30px, 5vw, 42px);
-  line-height: 1.2;
-  letter-spacing: -0.04em;
 }
 
 .cs-body .cs-flow-first {
@@ -1293,4 +1290,9 @@ a.cs-polaroid:hover {
 
 @media (max-width: 680px) {
   .cs-iter__row { grid-template-columns: 1fr; }
+}
+
+.cs-summary__highlight {
+  color: var(--note-accent);
+  font-weight: 500;
 }

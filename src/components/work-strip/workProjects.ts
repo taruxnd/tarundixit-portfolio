@@ -30,9 +30,9 @@ const allWorkProjects: WorkProject[] = [
     id: "copilot",
     label: "Kumba · Social Media Copilot",
     title:
-      "An AI workspace that turns a brief into a multi-day content plan",
+      "An AI workspace that turns one brief into a week of posts for every platform",
     outcomes:
-      "Faster campaign setup  •  Brand-voiced drafts  •  Schedule-ready posts  •  Dev-friendly handoff",
+      "Raised Kumba’s Series A at a $10M valuation  •  4,400 campaigns generated  •  1,200 Pro upgrades",
     href: "/work/social-media-copilot",
     // Walkthrough is ready but hidden for now. To bring the button back:
     // video: { src: "/work/copilot/smc-copilot-demo.mp4", poster: "/work/copilot/smc-copilot-demo-poster.jpg" },

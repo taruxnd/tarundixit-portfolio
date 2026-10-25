@@ -77,8 +77,8 @@ export function EventLedScreen() {
                   <div className="lb-event__foot">
                     <span>▣ 4 posts</span>
                     <span className="lb-build">
-                      <KIcon name="sparkles" className="lb-icon--16" />
                       Generate posts
+                      <KIcon name="arrow-up-right-01-round" className="lb-icon--16" />
                     </span>
                   </div>
                 </article>
@@ -92,8 +92,8 @@ export function EventLedScreen() {
                   <span className="li-list__date">{event.date}</span>
                   <span className="li-list__title">{event.title}</span>
                   <span className="lb-build">
-                    <KIcon name="sparkles" className="lb-icon--16" />
                     Generate
+                    <KIcon name="arrow-up-right-01-round" className="lb-icon--16" />
                   </span>
                 </div>
               ))}
