@@ -6,6 +6,7 @@ import LiveBriefScreen from "./LiveBriefScreen";
 import LivePlanScreen from "./LivePlanScreen";
 import LivePostsScreen from "./LivePostsScreen";
 import SectionVisual from "./SectionVisual";
+import IterationPairs from "./IterationPairs";
 import { Detail, DetailProvider, DetailSection, DetailToggle, ReadTime } from "./CaseDetail";
 import { WORK_IN_PROGRESS } from "@/lib/workInProgress";
 import LiquidGlass from "@/components/navbar/LiquidGlass";
@@ -129,10 +130,20 @@ export default function CopilotCaseStudy({
         </header>
 
         <div className="note-body cs-body">
-          <h2>Context</h2>
+          <h2>Problem</h2>
           <p>
-            Kumba makes AI marketing tools for brands and freelancers. I designed Social
-            Media Copilot to connect campaign planning, post creation and scheduling in one flow.
+            Kumba makes AI marketing tools for brands and agencies. A social media manager
+            running a five-day launch on four platforms makes{" "}
+            <strong>20 posts and 20 captions</strong>, spread across several tools.
+          </p>
+          <ul>
+            <li>Plans lived in spreadsheets, images in Canva, captions in notes.</li>
+            <li>Every platform meant resizing and rewriting.</li>
+            <li>Scheduling meant moving it all into another app.</li>
+          </ul>
+          <p>
+            <strong>Root cause:</strong> nothing stored the campaign, so every tool started
+            from scratch.
           </p>
           <Detail label="Where it started">
             <p>
@@ -154,18 +165,6 @@ export default function CopilotCaseStudy({
               marketers actually plan.
             </p>
           </Detail>
-
-          <h2>Problem</h2>
-          <p>
-            I spoke with marketers and freelancers who use Kumba. A social media manager
-            running a five-day launch across four platforms makes{" "}
-            <strong>20 posts and 20 captions</strong>. Freelancers repeat the same work for
-            several clients, often alone.
-          </p>
-          <p>
-            <strong>User need:</strong> Turn a brief into a consistent campaign without
-            rebuilding it in several tools.
-          </p>
           <Detail label="How I researched it">
             <p>
               Over the two months I kept talking to agency people: social media managers,
@@ -189,15 +188,6 @@ export default function CopilotCaseStudy({
               days in a plan. They are not where it starts.
             </p>
           </Detail>
-          <SectionVisual name="problem" />
-
-          <h2>What I saw</h2>
-          <ul>
-            <li>Making one post was easy. Keeping five days and four platforms on the same message was the hard part.</li>
-            <li>Plans lived in spreadsheets, images in Canva and captions in notes.</li>
-            <li>Images were resized and captions rewritten for each platform.</li>
-            <li>Scheduling meant moving the work into another app.</li>
-          </ul>
           <Detail label="The mismatch">
             <p>
               The biggest finding was a{" "}
@@ -227,16 +217,6 @@ export default function CopilotCaseStudy({
               meme. Context lives in the campaign, not in the calendar.
             </p>
           </Detail>
-
-          <h2>Root cause</h2>
-          <p>
-            The brief was an input, not a record. Once the plan was written, nothing stored it
-            as a shared object the next step could read, so the message, assets, dates and
-            channels were re-entered by hand at every tool boundary: spreadsheet, design tool,
-            notes, scheduler. Each boundary was a chance to drift, and every change upstream
-            had to be carried downstream manually. It wasn’t a tooling gap; it was a missing
-            source of truth.
-          </p>
           <Detail label="What that meant for the product">
             <p>
               In the event-led version, the event was the main object. Nothing stored a
@@ -251,6 +231,7 @@ export default function CopilotCaseStudy({
               which is how they could finally take the campaign’s context with them.
             </p>
           </Detail>
+          <SectionVisual name="problem" />
 
           <h2>
             <UxTerm term="Hypothesis" explanation="A prediction we can test by watching what people do." />
@@ -259,10 +240,16 @@ export default function CopilotCaseStudy({
             If users can correct one plan and carry it through creation and scheduling,
             they should need fewer tool handoffs and fewer edits to publish.
           </p>
-          <ul>
-            <li><strong>Success signal:</strong> Users complete campaigns in Copilot and publish most posts with few edits.</li>
-            <li><strong>Failure signal:</strong> Users still need other tools to finish, or keep regenerating instead of publishing.</li>
-          </ul>
+          <p>
+            So I put a plan before generation. It costs one step, and it’s the step that makes
+            the output trustworthy.
+          </p>
+          <Detail label="How we’d know">
+            <ul>
+              <li><strong>Success signal:</strong> Users complete campaigns in Copilot and publish most posts with few edits.</li>
+              <li><strong>Failure signal:</strong> Users still need other tools to finish, or keep regenerating instead of publishing.</li>
+            </ul>
+          </Detail>
           <Detail label="Why a plan, not a prompt">
             <p>
               Nielsen Norman Group watched people work with generative AI and named two habits
@@ -279,15 +266,6 @@ export default function CopilotCaseStudy({
               checkpoint, broken into sections you can edit or refine one at a time.
             </p>
           </Detail>
-          <SectionVisual name="hypothesis" />
-
-          <h2>The one call that mattered</h2>
-          <p>
-            Generate the posts straight away and let people fix them after, or make them
-            review a plan first? I chose the plan. Fixing a plan takes seconds; fixing 20
-            finished posts doesn’t. It cost us a step, and it’s the step that makes the
-            output trustworthy.
-          </p>
           <Detail label="The options we weighed">
             <ul>
               <li>
@@ -309,9 +287,26 @@ export default function CopilotCaseStudy({
               sections stay collapsed until you open one, and editing happens in place.
             </p>
           </Detail>
+          <figure className="cs-cat-meme">
+            <figcaption>
+              <span>The AI made 20 posts.</span>
+              <span>All with the wrong angle.</span>
+            </figcaption>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/work/copilot/memes/crying-cat-thumbs-up.png"
+              alt="A crying cat giving a thumbs up"
+              width={1050}
+              height={591}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
 
+          <h2>What changed along the way</h2>
+          <IterationPairs />
           <DetailSection>
-            <h2>Two months of iteration</h2>
+            <h3>Two months of iteration</h3>
             <p>
               We built Copilot over about two months, with a lot of back and forth. Each round
               followed the same loop: design in Figma, build a coded prototype, review it with the
@@ -347,10 +342,7 @@ export default function CopilotCaseStudy({
           <h2 className="cs-product-title">Meet the product</h2>
 
           <h3 id="cs-step-brief" className="cs-flow-first">1. Start with a brief</h3>
-          <p>
-            Add a goal, a short brief and a product photo. Upcoming dates offer campaign
-            ideas when users need a starting point.
-          </p>
+          <p>Add a goal, a short brief and a product photo. Upcoming dates can join as campaign days.</p>
           <Detail>
             <p>
               This is where the pivot shows. The campaign is custom: it starts from the user’s
@@ -369,11 +361,7 @@ export default function CopilotCaseStudy({
           <LiveBriefScreen screenshot={shots.brief} caption={SHOTS.brief} nextStepId="cs-step-plan" />
 
           <h3 id="cs-step-plan">2. Review the plan and ideas</h3>
-          <p>
-            This is the step the product hinges on: correct the direction once, not twenty
-            times. Review the campaign direction, then check the daily ideas, adjust a post
-            type or ask for another direction.
-          </p>
+          <p>Correct the direction once, not twenty times.</p>
           <Detail>
             <p>
               The plan’s{" "}
@@ -399,11 +387,7 @@ export default function CopilotCaseStudy({
           <LivePlanScreen screenshot={shots.plan} caption={SHOTS.plan} backStepId="cs-step-brief" nextStepId="cs-step-posts" />
 
           <h3 id="cs-step-posts">3. Generate for each platform</h3>
-          <p>
-            Each idea becomes a post in the platform’s format and caption style. The
-            campaign stays connected while the presentation changes. That’s the root cause
-            fixed.
-          </p>
+          <p>Each idea becomes a post in each platform’s format and voice.</p>
           <Detail>
             <p>
               Platform-native means more than resizing. Each platform gets its own aspect ratio,
@@ -421,10 +405,7 @@ export default function CopilotCaseStudy({
           <LivePostsScreen screenshot={shots.posts} caption={SHOTS.posts} backStepId="cs-step-plan" hint="Try it: open a post, or schedule the campaign" />
 
           <h3 id="cs-step-details">4. Edit and schedule</h3>
-          <p>
-            Check the preview, edit a caption or image, and set the schedule. Users can
-            finish the campaign in the same flow.
-          </p>
+          <p>Preview, edit and schedule without leaving the post.</p>
           <Detail>
             <p>
               The editor previews each post at its real feed width, so what you approve is
@@ -443,12 +424,12 @@ export default function CopilotCaseStudy({
           <LivePostsScreen screenshot={shots.details} caption={SHOTS.details} backStepId="cs-step-posts" initialOpenDay={1} hint="Try it: switch platform, edit the caption, approve" />
 
           <h2>Impact</h2>
-          {/* 614 and 223 are real (admin dashboard, Oct 2026). PLACEHOLDERS: 71% and 3m 40s
+          {/* 4,400 and 1,200 are real (from Tarun, Oct 2026). PLACEHOLDERS: 71% and 3m 40s
               are illustrative until the real figures are in; replace before relying on them. */}
           <ul className="cs-stats cs-stats--impact" aria-label="Impact in numbers">
             {[
-              ["614", "campaigns generated"],
-              ["223", "Pro upgrades"],
+              ["4,400", "campaigns generated"],
+              ["1,200", "Pro upgrades"],
               ["71%", "posts scheduled without edits"],
               ["3m 40s", "median brief to scheduled week"],
             ].map(([n, label]) => (
@@ -462,16 +443,9 @@ export default function CopilotCaseStudy({
           </ul>
           <div className="cs-money">
             <p className="cs-impact">
-              Since launch, 614 campaigns have been generated in Copilot and 223 people upgraded
-              to Pro from inside it. Most posts go out as generated: 71% are scheduled without
-              an edit, and the median time from brief to a scheduled week is 3 minutes 40
-              seconds.
-            </p>
-            <p className="cs-impact">
-              <strong>Series A at a $10 million valuation.</strong> Kumba pitched Copilot on
+              <strong>Series A at a $10 million valuation.</strong> Kumba pitched Social Media Copilot on
               Falcons of Majlis, the startup funding show.
             </p>
-            <SectionVisual name="impact" />
           </div>
 
           <DetailSection>

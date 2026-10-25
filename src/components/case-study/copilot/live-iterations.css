@@ -1,0 +1,114 @@
+/* Rejected Copilot directions (IterationMockScreens), in Kumba's tokens. */
+.cs-body .lb-window .li-month {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 64px 0 20px;
+  padding: 10px 12px;
+  border: 1px solid var(--lb-border);
+  border-radius: 2px;
+  background: var(--lb-surface);
+}
+
+.cs-body .lb-window .li-month p {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--lb-text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.cs-body .lb-window .li-month__nav {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 2px;
+  color: var(--lb-text-2);
+}
+
+.cs-body .lb-window .li-list {
+  margin-top: 28px;
+  border: 1px solid var(--lb-border);
+  border-radius: 2px;
+  background: var(--lb-surface);
+}
+
+.cs-body .lb-window .li-list__label {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--lb-line);
+  color: var(--lb-text-3);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.cs-body .lb-window .li-list__row {
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  align-items: center;
+  padding: 6px 4px 6px 16px;
+  border-bottom: 1px solid var(--lb-line);
+}
+
+.cs-body .lb-window .li-list__row:last-child {
+  border-bottom: 0;
+}
+
+.cs-body .lb-window .li-list__date {
+  color: var(--lb-text-3);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.cs-body .lb-window .li-list__title {
+  color: var(--lb-text);
+  font-size: 14px;
+}
+
+.cs-body .lb-window .li-brief {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 28px;
+  padding: 12px 12px 12px 16px;
+  border: 1px solid var(--lb-border);
+  border-radius: 2px;
+  background: var(--lb-surface-2, #fafafa);
+  color: var(--lb-text-2);
+}
+
+.cs-body .lb-window .li-brief p {
+  flex: 1;
+  min-width: 0;
+  color: var(--lb-text-2);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.cs-body .lb-window .li-brief b {
+  margin-right: 8px;
+  color: var(--lb-text);
+  font-weight: 600;
+}
+
+.cs-body .lb-window .li-ghost {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--lb-border);
+  border-radius: 2px;
+  background: var(--lb-surface);
+  color: var(--lb-text);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.cs-body .lb-window .li-regen {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}

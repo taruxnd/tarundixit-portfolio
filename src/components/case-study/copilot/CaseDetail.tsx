@@ -69,10 +69,10 @@ function Switch({ compact = false }: { compact?: boolean }) {
       <span className="cs-detail-switch__track" aria-hidden>
         <span className="cs-detail-switch__thumb" />
       </span>
-      <span className="cs-detail-switch__label">Show details</span>
+      <span className="cs-detail-switch__label">{compact ? "Full case study" : "Read the full case study"}</span>
       {!compact && (
         <span className="cs-detail-switch__hint">
-          {on ? "Full story, ~10 min" : "Short read, 3 min"}
+          {on ? "Research, iterations and trade-offs added · 10 min" : "Adds the research, iterations and trade-offs · 10 min"}
         </span>
       )}
     </button>
@@ -110,7 +110,7 @@ export function DetailToggle() {
 /** Reading time that follows the toggle. */
 export function ReadTime() {
   const { on } = useContext(DetailContext);
-  return <span>{on ? "10 min read" : "3 min read"}</span>;
+  return <span>{on ? "10 min read" : "2 min read"}</span>;
 }
 
 /** A block that only appears in detail mode. */
