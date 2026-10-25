@@ -1,5 +1,6 @@
 "use client";
 
+import ClickSounds from "@/components/ClickSounds";
 import CustomCursor from "@/components/CustomCursor";
 import GridBackground from "@/components/GridBackground";
 import Navbar from "@/components/Navbar";
@@ -11,6 +12,7 @@ export default function SiteShell({ children }: { children: ReactNode }) {
     <ThemeController>
       <GridBackground />
       <CustomCursor />
+      <ClickSounds />
       <Navbar />
       <div className="relative z-10">{children}</div>
     </ThemeController>
