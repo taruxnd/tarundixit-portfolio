@@ -14,7 +14,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Product Designer Portfolio",
+  title: "Tarun Dixit Portfolio",
   description:
     "Product designer crafting AI products, scalable design systems, and thoughtful user experiences.",
 };

@@ -139,26 +139,6 @@
   margin-top: 0.6em;
 }
 
-.cs-body .cs-cat-meme--mechanic figcaption {
-  position: static;
-  width: auto;
-  padding: 20px;
-  transform: none;
-  background: #fff;
-  color: #171717;
-  text-align: center;
-}
-
-.cs-cat-meme--mechanic figcaption span + span {
-  margin-top: 0.1em;
-}
-
-.cs-cat-meme--mechanic img {
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  object-position: center 48%;
-}
-
 @media (max-width: 640px) {
   .cs-editorial img {
     aspect-ratio: 3 / 2;
@@ -237,100 +217,25 @@
   text-transform: none;
 }
 
-/* Chapter opener before the walkthrough: a filmstrip of the four screens with the title over it. */
-.cs-body .cs-chapter {
-  position: relative;
-  margin: 56px 0 10px;
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid var(--cs-card-line);
-  background: var(--cs-card);
+/* Shared product walkthrough title. */
+.cs-body .cs-product-title {
+  margin: 56px 0 32px;
+  padding-top: 28px;
+  border-top: 1px solid var(--cs-card-line);
+  font-size: clamp(30px, 5vw, 42px);
+  line-height: 1.2;
+  letter-spacing: -0.04em;
 }
 
-.cs-body .cs-chapter__strip {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 2px;
-  height: 168px;
+.cs-body .cs-flow-first {
+  margin-top: 24px;
 }
 
-.cs-body .cs-chapter__strip img,
-.cs-body .cs-chapter__strip span {
-  display: block;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  border: 0;
-  border-radius: 0;
-  object-fit: cover;
-  object-position: 50% 18%;
-  filter: saturate(0.85);
-  opacity: 0.55;
-  transition: opacity 0.4s ease;
-}
-
-.cs-body .cs-chapter:hover .cs-chapter__strip img {
-  opacity: 0.8;
-}
-
-.cs-body .cs-chapter::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, rgba(10, 10, 10, 0.15) 0%, rgba(10, 10, 10, 0.72) 100%);
-  pointer-events: none;
-}
-
-.cs-body .cs-chapter__title {
-  position: absolute;
-  z-index: 1;
-  left: 50%;
-  bottom: 22px;
-  margin: 0;
-  translate: -50% 0;
-  font: 400 34px/1.1 var(--font-playfair), Georgia, serif;
-  letter-spacing: -0.02em;
-  color: #fff;
-  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.5);
-  white-space: nowrap;
-}
-
-.cs-body .cs-chapter__first {
-  margin-top: 30px;
-}
-
-@media (max-width: 680px) {
-  .cs-body .cs-chapter__strip { height: 120px; }
-  .cs-body .cs-chapter__title { font-size: 26px; bottom: 16px; }
-}
-
-/* The bet, in the nav's glass. */
-.cs-body .cs-bet {
-  --lg-blur: 32px;
-  --lg-saturate: 190%;
-  --lg-brightness: 1.04;
-  --lg-tint-top: rgba(30, 30, 30, 0.72);
-  --lg-tint-mid: rgba(20, 20, 20, 0.55);
-  --lg-tint-bot: rgba(12, 12, 12, 0.45);
-  --lg-rim: rgba(255, 255, 255, 0.1);
-  --lg-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(99, 102, 241, 0.08);
-  position: relative;
-  display: block;
-  margin: 18px 0 22px;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: var(--lg-shadow);
-}
-
-.cs-body .cs-bet .cs-hypothesis {
-  position: relative;
-  z-index: 1;
-  margin: 0;
-  padding: 22px 26px;
+.cs-body .cs-hypothesis {
+  padding-left: 28px;
   font-size: 20px;
   line-height: 1.5;
-  color: var(--note-ink);
+  color: var(--note-accent);
   text-wrap: pretty;
 }
 
@@ -1058,8 +963,8 @@ a.cs-polaroid:hover {
     grid-template-columns: 1fr;
   }
 
-  .cs-body .cs-bet .cs-hypothesis {
-    padding: 18px 20px;
+  .cs-body .cs-hypothesis {
+    padding-left: 0;
     font-size: 18px;
   }
 
@@ -1107,4 +1012,144 @@ a.cs-polaroid:hover {
   .cs-post__image {
     transition: none;
   }
+}
+
+/* ---------- Show details mode ---------- */
+.cs-detail-toggle {
+  margin-top: 26px;
+}
+
+.cs-detail-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--note-ink);
+  font: 500 14px/1 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.cs-detail-switch__track {
+  position: relative;
+  width: 34px;
+  height: 20px;
+  flex: none;
+  border-radius: 999px;
+  background: #ffffff1f;
+  box-shadow: inset 0 0 0 1px #ffffff14;
+  transition: background 0.25s ease;
+}
+
+.cs-detail-switch__thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #f5f5f5;
+  transition: translate 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.cs-detail-switch[aria-checked="true"] .cs-detail-switch__track {
+  background: var(--note-accent);
+}
+
+.cs-detail-switch[aria-checked="true"] .cs-detail-switch__thumb {
+  translate: 14px 0;
+  background: #1a1712;
+}
+
+.cs-detail-switch__hint {
+  color: var(--note-faint);
+  font-weight: 400;
+  font-size: 13px;
+}
+
+.cs-detail-switch:focus-visible {
+  outline: 2px solid var(--note-accent);
+  outline-offset: 6px;
+  border-radius: 6px;
+}
+
+.cs-detail-float {
+  position: fixed;
+  z-index: 40;
+  right: 24px;
+  bottom: 24px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(18, 18, 18, 0.78);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow: inset 0 0 0 1px #ffffff17, 0 10px 30px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  translate: 0 12px;
+  pointer-events: none;
+  transition: opacity 0.25s ease, translate 0.25s ease;
+}
+
+.cs-detail-float[data-visible="true"] {
+  opacity: 1;
+  translate: 0 0;
+  pointer-events: auto;
+}
+
+.cs-detail {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease;
+}
+
+.cs-detail[data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.cs-detail__inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.cs-detail__body {
+  margin: 18px 0 8px;
+  padding: 2px 0 2px 20px;
+  border-left: 2px solid color-mix(in srgb, var(--note-accent) 55%, transparent);
+}
+
+.cs-detail__body > :last-child {
+  margin-bottom: 0;
+}
+
+.cs-body .cs-detail__label {
+  margin: 0 0 10px;
+  color: var(--note-accent);
+  font: 500 12px/1.2 var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cs-body .cs-detail__quote {
+  margin: 14px 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  color: var(--note-accent);
+  text-wrap: pretty;
+}
+
+
+@media (max-width: 680px) {
+  .cs-detail-float { right: 16px; bottom: 16px; }
+  .cs-detail__body { padding-left: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-detail,
+  .cs-detail-float,
+  .cs-detail-switch__thumb,
+  .cs-detail-switch__track { transition: none; }
 }

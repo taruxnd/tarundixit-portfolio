@@ -271,6 +271,13 @@ export function FramerRuntimeIsland() {
       safeRemove(document.getElementById("polaroid-timeline-stash"));
     };
 
+    const pageTitle = document.title;
+    const titleGuard = new MutationObserver(() => {
+      if (document.title !== pageTitle) document.title = pageTitle;
+    });
+    const titleEl = document.querySelector("title");
+    if (titleEl) titleGuard.observe(titleEl, { childList: true, characterData: true, subtree: true });
+
     const boot = async () => {
       if (cancelled) return;
 
@@ -298,6 +305,8 @@ export function FramerRuntimeIsland() {
         return;
       }
 
+      // The Framer bundle writes its own <title>; keep the portfolio's.
+      if (document.title !== pageTitle) document.title = pageTitle;
       window.__framerToNextBooted = true;
       setReady(true);
       window.__polaroidTimelineReady = true;
@@ -381,6 +390,7 @@ export function FramerRuntimeIsland() {
 
     return () => {
       cancelled = true;
+      titleGuard.disconnect();
       window.clearTimeout(startId);
       window.removeEventListener("load", startWhenIdle);
       if (idleHandle !== undefined) {

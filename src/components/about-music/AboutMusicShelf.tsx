@@ -71,7 +71,7 @@ export default function AboutMusicShelf() {
       <div className={`${contentContainerClassName} about-music__inner`}>
         <header className="about-music__header">
           <h2 id="about-music-heading" className="about-music__heading">
-            Some of the songs I keep close.
+            What I play while I work.
           </h2>
           <p className="about-music__subline">
             Tap a cover to play or pause.

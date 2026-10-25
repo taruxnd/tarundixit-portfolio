@@ -262,8 +262,7 @@ export default function BrandHubCaseStudy({
             detected brand lands on a gradient panel built from the brand&apos;s own colours.
           </p>
 
-          <Kicker>The product</Kicker>
-          <h2>The final product</h2>
+          <h2 className="cs-product-title">The <span>final product</span></h2>
 
           <h3>Import in seconds</h3>
           <p>
