@@ -1,22 +1,28 @@
-import { Geist, Instrument_Sans, Playfair_Display } from "next/font/google";
+import localFont from "next/font/local";
 
-export const instrumentSans = Instrument_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
+// Self-hosted (src/fonts) so builds never fetch from Google Fonts; Latin subset, variable weight.
+
+export const instrumentSans = localFont({
+  src: "../fonts/instrument-sans.woff2",
+  weight: "400 700",
   variable: "--font-hero-instrument-sans",
+  display: "swap",
 });
 
 /** Xhulia project-card voice — Geist only (strip experiment) */
-export const geist = Geist({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+export const geist = localFont({
+  src: "../fonts/geist.woff2",
+  weight: "100 900",
   variable: "--font-geist",
+  display: "swap",
 });
 
-export const playfairDisplay = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+export const playfairDisplay = localFont({
+  src: "../fonts/playfair-display.woff2",
+  weight: "400 900",
   variable: "--font-playfair",
+  display: "swap",
+  adjustFontFallback: "Times New Roman",
 });
 
 /** Editorial display + Instrument Sans body */

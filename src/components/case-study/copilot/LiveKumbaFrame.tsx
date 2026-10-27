@@ -1,6 +1,6 @@
 "use client";
 
-import { Roboto_Flex } from "next/font/google";
+import localFont from "next/font/local";
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from "react";
 import { KUMBA_ICONS, type KumbaIconName } from "./liveBriefIcons";
 import "./live-brief.css";
@@ -15,7 +15,7 @@ import "./live-brief.css";
  */
 
 /** Kumba's product font. */
-const robotoFlex = Roboto_Flex({ subsets: ["latin"], display: "swap" });
+const robotoFlex = localFont({ src: "../../../fonts/roboto-flex.woff2", weight: "100 1000", display: "swap" });
 
 const DESIGN_W = 1440;
 const CHROME_H = 48;

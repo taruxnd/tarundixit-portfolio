@@ -1,11 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import SiteShell from "@/components/SiteShell";
 import "./globals.css";
 
-const inter = Inter({
+// Self-hosted (src/fonts) so builds never fetch from Google Fonts.
+const inter = localFont({
+  src: "../fonts/inter.woff2",
+  weight: "100 900",
   variable: "--font-inter",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 export const viewport: Viewport = {
